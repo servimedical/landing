@@ -5,24 +5,50 @@ import Rueda from '../components/ciclo/Rueda.astro';
 import { home } from '../content/institucional.ts';
 import { marcas } from '../content/sitio.ts';
 ---
+
+<script>
+  /* Pista de deslizamiento: aparece sólo cuando la franja desborda, y se
+     apaga al llegar al final. No se anuncia al lector de pantalla porque no
+     hay nada que deslizar con teclado: la lista se recorre con Tab. */
+  const track = document.getElementById('marcas-pista-track');
+  const pista = document.getElementById('marcas-pista');
+
+  if (track && pista) {
+    const revisar = () => {
+      const desborda = track.scrollWidth - track.clientWidth > 8;
+      pista.hidden = !desborda;
+      const alFinal = track.scrollLeft + track.clientWidth >= track.scrollWidth - 8;
+      pista.style.opacity = desborda && !alFinal ? '1' : '0';
+    };
+    revisar();
+    track.addEventListener('scroll', revisar, { passive: true });
+    addEventListener('resize', revisar);
+    if (document.fonts) document.fonts.ready.then(revisar);
+  }
+</script>
 <Base
   titulo="Servimedical Group — Centrales de esterilización en Colombia"
   descripcion="Equipos de esterilización, consumibles, accesorios, repuestos, mobiliario en acero y trazabilidad de paquete, con servicio técnico propio. Importación directa desde Bogotá, cobertura nacional."
 >
+  {/* Hero y franja de marcas ocupan juntos la primera pantalla: la franja
+      queda justo en el borde de lo que se ve al entrar, en móvil y en
+      escritorio. Se usa svh y no dvh para que la barra del navegador móvil no
+      la empuje fuera de la vista. */}
+  <div class="flex min-h-[calc(100svh-var(--spacing-header))] flex-col">
   <!-- 1 · Hero -->
-  <div class="contenedor grid items-center gap-[clamp(32px,5vw,72px)] py-12 lg:grid-cols-[1.03fr_.97fr] lg:py-16">
+  <div class="contenedor grid flex-1 items-center gap-5 py-6 lg:grid-cols-[1.03fr_.97fr] lg:gap-[clamp(32px,5vw,72px)] lg:py-12">
     <div>
       <p class="meta flex items-center gap-2.5 text-steel">
         <span aria-hidden="true" class="senal"></span>Central de esterilización · Colombia
       </p>
-      <h1 class="mt-5 max-w-[15ch] text-[clamp(34px,4.6vw,58px)]">
+      <h1 class="mt-4 max-w-[15ch] text-[clamp(30px,4.6vw,58px)] lg:mt-5">
         El ciclo completo<span class="block text-steel">con un solo responsable.</span>
       </h1>
-      <p class="mt-6 max-w-[52ch] text-[clamp(16px,1.3vw,18.5px)] text-steel">
+      <p class="mt-5 max-w-[52ch] text-[15px] leading-relaxed text-steel lg:mt-6 lg:text-[clamp(16px,1.3vw,18.5px)]">
         Un paquete estéril pasa por seis estaciones antes de llegar al quirófano. Ponemos el
         equipo, el insumo, el repuesto y la trazabilidad de cada una, y respondemos cuando algo falla.
       </p>
-      <div class="mt-8 flex flex-wrap gap-3">
+      <div class="mt-6 flex flex-wrap gap-3 lg:mt-8">
         <a href="/contacto" class="inline-flex items-center gap-2.5 border border-navy bg-navy px-5 py-3.5 text-[14.5px] font-medium text-white hover:bg-navy-deep">
           <span aria-hidden="true" class="senal"></span>Solicitar cotización
         </a>
@@ -34,21 +60,39 @@ import { marcas } from '../content/sitio.ts';
     <CartaCiclo />
   </div>
 
-  <!-- 2 · Franja de marcas -->
-  <div class="field-navy border-t border-rule">
-    <div class="contenedor flex flex-wrap items-center gap-x-[clamp(18px,3vw,44px)] gap-y-3 py-6">
-      <span class="meta text-[10px] text-white/70">Marcas que representamos</span>
-      <ul class="ml-auto flex flex-wrap items-center gap-x-[clamp(18px,3.2vw,44px)] gap-y-2">
+  <!-- 2 · Franja de marcas · cierra la primera pantalla -->
+  <section class="field-navy border-t border-rule" aria-labelledby="marcas-h">
+    <div class="contenedor flex flex-wrap items-center gap-x-[clamp(18px,3vw,44px)] gap-y-3 py-3 lg:py-6">
+      {/* Rótulo y pista comparten línea; por debajo de 1000 px ocupan la suya
+          y la franja pasa a la siguiente, sangrada hasta el borde. */}
+      <div class="flex w-full items-baseline justify-between gap-4 lg:w-auto">
+        <h2 id="marcas-h" class="meta shrink-0 text-[10px] text-white/70">Marcas que representamos</h2>
+
+        {/* La pista se revela sólo si el contenido no cabe: si no hay nada que
+            deslizar, la indicación sobra y estorba. */}
+        <p id="marcas-pista" class="meta shrink-0 text-[10px] text-white/55 transition-opacity" hidden>
+          Deslice <span aria-hidden="true">→</span>
+        </p>
+      </div>
+
+      <ul
+        id="marcas-pista-track"
+        class="deslizable [--sangria:clamp(20px,5vw,64px)] -mx-[clamp(20px,5vw,64px)]
+               flex min-w-0 basis-full items-center gap-x-[clamp(18px,3.2vw,44px)]
+               px-[clamp(20px,5vw,64px)]
+               lg:mx-0 lg:flex-1 lg:basis-auto lg:justify-end lg:px-0 lg:[--sangria:0px]"
+      >
         {marcas.map((m) => (
-          <li class="font-display text-[clamp(14px,1.4vw,18px)] font-bold text-white/92 [font-variation-settings:'wdth'_105]">
+          <li class="shrink-0 font-display text-[clamp(14px,1.4vw,18px)] font-bold text-white/92 [font-variation-settings:'wdth'_105]">
             {m.nombre}
           </li>
         ))}
       </ul>
     </div>
+  </section>
   </div>
 
-  <!-- 3 · La rueda del ciclo -->
+  <!-- 2 · La rueda del ciclo -->
   <section id="ciclo" class="field-paper border-t border-rule" aria-labelledby="ciclo-titulo">
     <div class="contenedor py-14 lg:py-20">
       <div class="mb-10 max-w-[62ch] lg:mb-14">
@@ -68,7 +112,7 @@ import { marcas } from '../content/sitio.ts';
     </div>
   </section>
 
-  <!-- 4 · Líneas de negocio -->
+  <!-- 3 · Líneas de negocio -->
   <section class="border-t border-rule" aria-labelledby="lineas">
     <div class="contenedor py-14 lg:py-20">
       <h2 id="lineas" class="sr-only">Líneas de negocio</h2>
@@ -87,7 +131,7 @@ import { marcas } from '../content/sitio.ts';
     </div>
   </section>
 
-  <!-- 5 · A quién servimos -->
+  <!-- 4 · A quién servimos -->
   <div class="border-t border-rule">
     <div class="contenedor flex flex-wrap items-baseline gap-x-8 gap-y-3 py-7">
       <span class="meta text-[10px] text-steel">A quién servimos</span>
@@ -97,7 +141,7 @@ import { marcas } from '../content/sitio.ts';
     </div>
   </div>
 
-  <!-- 6 · Puente a trazabilidad -->
+  <!-- 5 · Puente a trazabilidad -->
   <section class="field-navy border-t border-rule" aria-labelledby="puente">
     <div class="contenedor flex flex-wrap items-end justify-between gap-8 py-14 lg:py-16">
       <div>
@@ -115,7 +159,7 @@ import { marcas } from '../content/sitio.ts';
     </div>
   </section>
 
-  <!-- 7 · CTA de cierre -->
+  <!-- 6 · CTA de cierre -->
   <section class="border-t border-rule" aria-labelledby="cierre">
     <div class="contenedor flex flex-wrap items-end justify-between gap-8 py-14 lg:py-20">
       <div>

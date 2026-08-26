@@ -128,6 +128,25 @@
   background: var(--color-paper);
 }
 
+/**
+ * Pista horizontal: se desliza cuando no cabe, sin barra a la vista.
+ *
+ * `--sangria` debe valer lo mismo que el padding lateral de la pista. Sin
+ * ella el ajuste alinea el primer elemento con el borde y se come ese
+ * padding, así que el primer ítem queda pegado al filo de la pantalla.
+ */
+@utility deslizable {
+  --sangria: 0px;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: var(--sangria);
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+
+  &::-webkit-scrollbar { display: none; }
+  & > * { scroll-snap-align: start; }
+}
+
 /** Metadatos: eyebrows, migas y numeración. */
 @utility meta {
   font-family: var(--font-mono);

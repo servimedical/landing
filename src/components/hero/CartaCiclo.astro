@@ -8,9 +8,9 @@ const CURVA =
   'M46,212 L74,168 L92,196 L118,150 L136,182 L162,128 L182,160 ' +
   'L206,74 L228,40 L340,40 L360,96 L392,150 L440,182 L510,196';
 ---
-<figure class="carta border border-rule bg-paper p-[22px] m-0">
+<figure class="carta m-0 border border-rule bg-paper p-4 lg:p-[22px]">
   <figcaption class="flex items-baseline justify-between gap-3 border-b border-rule pb-3">
-    <span class="meta text-[10px] text-steel">VAPOR 134 °C · PREVACÍO FRACCIONADO</span>
+    <span class="meta text-[10px] text-steel">VAPOR 134 °C<span class="fase-larga"> · PREVACÍO FRACCIONADO</span></span>
     <span class="meta flex shrink-0 items-center gap-2 text-[10px] text-navy">
       <span class="piloto senal" aria-hidden="true"></span>
       <span id="carta-estado">Ciclo en curso</span>
@@ -47,15 +47,15 @@ const CURVA =
   <div class="mt-4 grid grid-cols-3 border-t border-rule" aria-live="off">
     <div class="pt-3.5">
       <p class="lectura" id="carta-temp">20 °C</p>
-      <p class="meta mt-1.5 text-[10px] text-steel">Temperatura cámara</p>
+      <p class="rotulo meta mt-1.5 text-[10px] text-steel">Temperatura<span class="rotulo-largo"> cámara</span></p>
     </div>
     <div class="border-l border-rule pt-3.5 pl-4">
       <p class="lectura" id="carta-bar">0.0 bar</p>
-      <p class="meta mt-1.5 text-[10px] text-steel">Presión</p>
+      <p class="rotulo meta mt-1.5 text-[10px] text-steel">Presión</p>
     </div>
     <div class="border-l border-rule pt-3.5 pl-4">
       <p class="lectura" id="carta-tiempo">00:00</p>
-      <p class="meta mt-1.5 text-[10px] text-steel">Tiempo de ciclo</p>
+      <p class="rotulo meta mt-1.5 text-[10px] text-steel">Tiempo<span class="rotulo-largo"> de ciclo</span></p>
     </div>
   </div>
 </figure>
@@ -82,13 +82,18 @@ const CURVA =
     .piloto { animation: none }
   }
 
+  /* En móvil las tres lecturas se mantienen en fila: apiladas costaban
+     190 px y empujaban la franja de marcas fuera de la primera pantalla. */
   @media (max-width: 560px) {
-    .carta > div:last-child { grid-template-columns: 1fr }
-    .carta > div:last-child > div + div {
-      border-left: 0;
-      border-top: 1px solid var(--color-rule);
-      padding-left: 0;
-    }
+    .lectura { font-size: 19px }
+    .carta > div:last-child > div + div { padding-left: 10px }
+    /* La fase también está rotulada dentro de la gráfica: en el pie sobra y
+       hacía envolver la cabecera a dos líneas. */
+    .fase-larga { display: none }
+    /* Rótulos cortos: en una columna de ~100 px, «TEMPERATURA CÁMARA»
+       envolvía a dos líneas y empujaba la franja fuera de la pantalla. */
+    .rotulo { font-size: 8.5px; letter-spacing: .09em; line-height: 1.3 }
+    .rotulo-largo { display: none }
   }
 </style>
 
