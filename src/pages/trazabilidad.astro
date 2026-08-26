@@ -1,47 +1,84 @@
 ---
-/* Página propia de /trazabilidad. Sustituye a la provisional de
-   [...ruta].astro: Astro da prioridad a la ruta estática.
-   Sólo se integra la pieza de la etiqueta; el resto del contenido sigue
-   pendiente. */
 import Pagina from '../layouts/Pagina.astro';
 import EtiquetaTrazabilidad from '../components/trazabilidad/EtiquetaTrazabilidad.astro';
-import { rutaActiva, normalizar } from '../content/navegacion.ts';
-import { sitio } from '../content/sitio.ts';
-
-const nodo = rutaActiva(normalizar(Astro.url.pathname))[0]!;
+import Formulario from '../components/formulario/Formulario.astro';
+import { trazabilidad } from '../content/institucional.ts';
 ---
 <Pagina
-  titulo={`${nodo.titulo} — ${sitio.nombre} · {{ POR CONFIRMAR }}`}
-  descripcion={`{{ POR CONFIRMAR: descripción de ${nodo.titulo} }}`}
-  encabezado={nodo.titulo}
+  titulo="Trazabilidad de paquete estéril, del empaque al paciente — Servimedical Group"
+  descripcion="Etiquetas, impresora de central y software para seguir cada paquete desde el sellado hasta el paciente: recall dirigido, liberación con evidencia y control de vencimientos."
+  encabezado={trazabilidad.titulo}
 >
-  <p class="meta mt-8 inline-block border border-rule px-4 py-3 text-steel">
-    {'{{ CONTENIDO PENDIENTE — paso 4 }}'}
-  </p>
-
-  <section class="mt-12 border-t border-rule pt-12 lg:mt-16 lg:pt-16" aria-labelledby="etiqueta-titulo">
-    <div class="mb-8 max-w-[58ch] lg:mb-12">
-      <p class="meta flex items-center gap-2.5 text-steel">
-        <span aria-hidden="true" class="senal"></span>
-        Un paquete, un rótulo
-      </p>
-      <h2 id="etiqueta-titulo" class="mt-4 text-[clamp(24px,3vw,36px)]">
-        Cada paquete cuenta dónde estuvo.
-      </h2>
-    </div>
-
-    <EtiquetaTrazabilidad />
-  </section>
-
-  {nodo.hijos && (
-    <nav aria-label={`Dentro de ${nodo.titulo}`} class="mt-12 max-w-xl border-t border-rule">
-      <ul>
-        {nodo.hijos.map((hijo) => (
-          <li class="border-b border-rule">
-            <a href={hijo.url} class="block py-3.5 text-[16px] hover:text-steel">{hijo.titulo}</a>
-          </li>
-        ))}
-      </ul>
-    </nav>
-  )}
+  <p class="mt-6 max-w-[64ch] text-[clamp(16px,1.3vw,18px)] text-steel">{trazabilidad.bajada}</p>
 </Pagina>
+
+<section class="border-t border-rule" aria-labelledby="etiqueta-t">
+  <div class="contenedor py-12 lg:py-16">
+    <p class="meta flex items-center gap-2.5 text-steel">
+      <span aria-hidden="true" class="senal"></span>Un paquete, un rótulo
+    </p>
+    <h2 id="etiqueta-t" class="mt-4 max-w-[26ch] text-[clamp(24px,3vw,34px)]">
+      Así se ve un paquete con historia.
+    </h2>
+    <div class="mt-9"><EtiquetaTrazabilidad /></div>
+  </div>
+</section>
+
+<section class="field-paper border-t border-rule" aria-labelledby="resuelve">
+  <div class="contenedor py-12 lg:py-16">
+    <p class="meta text-steel">Qué resuelve</p>
+    <h2 id="resuelve" class="mt-4 max-w-[26ch] text-[clamp(24px,3vw,34px)]">{trazabilidad.resuelve.titulo}</h2>
+
+    <div class="mt-9 grid gap-px border border-rule bg-rule sm:grid-cols-2">
+      {trazabilidad.resuelve.items.map((x, i) => (
+        <div class="bg-white p-6 lg:p-8">
+          <p class="meta text-[11px] text-steel">{String(i + 1).padStart(2, '0')}</p>
+          <h3 class="mt-3 text-[clamp(18px,2vw,23px)]">{x.titulo}</h3>
+          <p class="mt-3 max-w-[46ch] text-[15px] leading-relaxed text-steel">{x.texto}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="border-t border-rule" aria-labelledby="sistema">
+  <div class="contenedor py-12 lg:py-16">
+    <p class="meta text-steel">El sistema</p>
+    <h2 id="sistema" class="mt-4 max-w-[26ch] text-[clamp(24px,3vw,34px)]">{trazabilidad.sistema.titulo}</h2>
+
+    <div class="mt-9 grid gap-px border border-rule bg-rule lg:grid-cols-3">
+      {trazabilidad.sistema.componentes.map((c) => (
+        <div class="flex flex-col bg-white p-6 lg:p-8">
+          <h3 class="text-[clamp(18px,2vw,22px)]">{c.titulo}</h3>
+          <p class="mt-3 flex-1 text-[15px] leading-relaxed text-steel">{c.texto}</p>
+          {'url' in c && c.url && (
+            <a href={c.url} class="meta mt-5 border-t border-rule pt-4 text-[10px] text-steel hover:text-navy">
+              Ver el software →
+            </a>
+          )}
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="field-paper border-t border-rule" aria-labelledby="implementacion">
+  <div class="contenedor py-12 lg:py-16">
+    <p class="meta text-steel">Implementación</p>
+    <h2 id="implementacion" class="mt-4 max-w-[26ch] text-[clamp(24px,3vw,34px)]">{trazabilidad.implementacion.titulo}</h2>
+
+    <ol class="mt-9 max-w-[74ch] border-t border-rule">
+      {trazabilidad.implementacion.etapas.map((e, i) => (
+        <li class="grid grid-cols-[48px_1fr] items-baseline gap-4 border-b border-rule py-5">
+          <span class="meta text-[11px] text-steel">{String(i + 1).padStart(2, '0')}</span>
+          <span>
+            <span class="block text-[16.5px] font-medium">{e.titulo}</span>
+            <span class="mt-1.5 block max-w-[52ch] text-[15px] text-steel">{e.texto}</span>
+          </span>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<Formulario tipo="cotizacion" fijo="Demostración de trazabilidad" titulo={trazabilidad.cta.titulo} />

@@ -1,0 +1,291 @@
+---
+/* Base de los tres formularios. Cambian los campos, no el comportamiento:
+   validación, errores por campo, estado de envío, acuse en la misma página y
+   conservación de lo escrito si el envío falla.
+
+   La casilla de autorización no viene marcada y sin ella no se envía:
+   Ley 1581 de 2012 y Decreto 1377 de 2013. */
+import { FORMULARIOS, TEXTO_AUTORIZACION, URL_POLITICA, CAMPO_TRAMPA, type Formulario } from '../../lib/formularios.ts';
+import { contacto } from '../../content/sitio.ts';
+
+interface Props {
+  tipo: Formulario['id'];
+  /** Valor del campo fijo «Qué necesita». */
+  fijo?: string;
+  id?: string;
+  titulo?: string;
+}
+const { tipo, fijo, id = tipo, titulo } = Astro.props;
+const form = FORMULARIOS[tipo];
+---
+<section id={id} class="field-navy border-t border-rule" aria-labelledby={`${id}-t`}>
+  <div class="contenedor py-14 lg:py-20">
+    <div class="grid gap-[clamp(28px,5vw,64px)] lg:grid-cols-[1fr_1.2fr]">
+      <div>
+        <p class="meta flex items-center gap-2.5 text-white/70">
+          <span aria-hidden="true" class="senal"></span>{form.titulo}
+        </p>
+        <h2 id={`${id}-t`} class="mt-4 text-[clamp(24px,3vw,36px)] text-white">
+          {titulo ?? form.titulo}
+        </h2>
+        <p class="mt-5 max-w-[44ch] text-ink-dark">{form.intro}</p>
+
+        <ul class="mt-8 border-t border-rule-dark">
+          <li class="border-b border-rule-dark py-3 text-[14.5px] text-ink-dark">
+            <a href={contacto.whatsapp.href} rel="noopener" data-wa class="hover:text-white">WhatsApp {contacto.whatsapp.valor}</a>
+          </li>
+          <li class="border-b border-rule-dark py-3 text-[14.5px] text-ink-dark">
+            <a href={contacto.fijo.href} class="hover:text-white">Fijo {contacto.fijo.valor}</a>
+          </li>
+          <li class="border-b border-rule-dark py-3 text-[14.5px] text-ink-dark">
+            <a href={contacto.comercial.href} class="hover:text-white">{contacto.comercial.valor}</a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <form class="svmg-form" data-tipo={tipo} novalidate>
+          <div class="grid gap-px border border-rule-dark bg-rule-dark sm:grid-cols-2">
+            {form.campos.map((c) => {
+              const idc = `${id}-${c.nombre}`;
+              const desc = [c.ayuda ? `${idc}-ayuda` : null, `${idc}-error`].filter(Boolean).join(' ');
+              return (
+                <div class:list={['campo', c.ancho && 'campo--full']}>
+                  <label class="k" for={idc}>
+                    {c.rotulo}{c.requerido && <i class="req" aria-hidden="true"></i>}
+                    {c.requerido && <span class="sr-only"> (obligatorio)</span>}
+                  </label>
+
+                  {c.tipo === 'area' ? (
+                    <textarea id={idc} name={c.nombre} rows="3" placeholder={c.marcador}
+                      aria-describedby={desc} required={c.requerido} />
+                  ) : c.tipo === 'seleccion' ? (
+                    <select id={idc} name={c.nombre} aria-describedby={desc} required={c.requerido}>
+                      <option value="">Seleccione…</option>
+                      {c.opciones?.map((o) => (<option value={o}>{o}</option>))}
+                    </select>
+                  ) : (
+                    <input id={idc} name={c.nombre}
+                      type={c.tipo === 'correo' ? 'email' : c.tipo === 'telefono' ? 'tel' : 'text'}
+                      value={c.fijo ? fijo ?? '' : undefined}
+                      readonly={c.fijo || undefined}
+                      placeholder={c.marcador} autocomplete={c.autocomplete}
+                      aria-describedby={desc} required={c.requerido} />
+                  )}
+
+                  {c.ayuda && <p id={`${idc}-ayuda`} class="ayuda">{c.ayuda}</p>}
+                  <p id={`${idc}-error`} class="error" data-error={c.nombre} hidden></p>
+                </div>
+              );
+            })}
+          </div>
+
+          <!-- Trampa antispam: invisible para personas, irresistible para robots. -->
+          <div class="trampa" aria-hidden="true">
+            <label for={`${id}-${CAMPO_TRAMPA}`}>No rellene este campo</label>
+            <input id={`${id}-${CAMPO_TRAMPA}`} name={CAMPO_TRAMPA} type="text" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <!-- Habeas data -->
+          <div class="mt-6 border border-rule-dark p-5">
+            <p class="meta text-[10px] text-white/70">Finalidad del tratamiento</p>
+            <p class="mt-2 text-[14.5px] text-ink-dark">{form.finalidad}</p>
+
+            <div class="mt-4 flex items-start gap-3">
+              <input id={`${id}-autorizacion`} name="autorizacion" type="checkbox"
+                class="casilla" required aria-describedby={`${id}-autorizacion-error`} />
+              <label for={`${id}-autorizacion`} class="text-[14.5px] leading-relaxed text-white">
+                {TEXTO_AUTORIZACION}{' '}
+                <a href={URL_POLITICA} class="underline decoration-white/40 underline-offset-4 hover:decoration-white">
+                  Ver la política de tratamiento de datos
+                </a>.
+              </label>
+            </div>
+            <p id={`${id}-autorizacion-error`} class="error" data-error="autorizacion" hidden></p>
+          </div>
+
+          <p class="error error--global" data-error-global hidden role="alert"></p>
+
+          <div class="mt-6 flex flex-wrap gap-3">
+            <button type="submit" class="enviar inline-flex items-center gap-2.5 border border-signal bg-signal px-5 py-3.5 text-[14.5px] font-semibold text-navy-deep disabled:opacity-60">
+              <span class="senal !bg-navy-deep" aria-hidden="true"></span>
+              <span data-etiqueta>Enviar solicitud</span>
+            </button>
+          </div>
+        </form>
+
+        <!-- Acuse: reemplaza el formulario, no lleva a otra página. -->
+        <div class="acuse border border-signal p-6 lg:p-8" role="status" hidden>
+          <p class="meta text-[10px] text-signal">Solicitud enviada</p>
+          <p class="mt-3 max-w-[46ch] text-[17px] text-white" data-acuse></p>
+          <dl class="mt-6 border-t border-rule-dark" data-resumen></dl>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .campo { background: var(--color-navy); padding: 14px 16px 15px; display: block }
+  .campo--full { grid-column: 1 / -1 }
+  .campo:focus-within { box-shadow: inset 3px 0 0 var(--color-signal) }
+  .campo:has([aria-invalid='true']) { box-shadow: inset 3px 0 0 #ff8f7a }
+
+  .k {
+    font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .14em;
+    text-transform: uppercase; color: rgba(255,255,255,.72); display: block;
+  }
+  .req { display: inline-block; width: 5px; height: 5px; background: var(--color-signal); margin-left: 5px }
+
+  input:not(.casilla), textarea, select {
+    width: 100%; margin-top: 8px; border: 0; padding: 0; background: transparent;
+    font-family: var(--font-body); font-size: 16px; color: #fff; line-height: 1.45;
+  }
+  select { appearance: none; cursor: pointer }
+  select option { color: var(--color-navy) }
+  input[readonly] { color: rgba(255,255,255,.78) }
+  textarea { resize: vertical }
+  input::placeholder, textarea::placeholder { color: rgba(255,255,255,.5) }
+  input:not(.casilla):focus, textarea:focus, select:focus { outline: 0 }
+
+  .casilla {
+    width: 18px; height: 18px; flex: none; margin-top: 3px;
+    accent-color: var(--color-signal); cursor: pointer;
+  }
+
+  .ayuda { margin-top: 6px; font-size: 12.5px; color: rgba(255,255,255,.55) }
+  .error { margin-top: 6px; font-size: 13px; color: #ff8f7a }
+  .error--global { margin-top: 20px; font-size: 14.5px }
+
+  /* Fuera de pantalla, no display:none: algunos robots ignoran lo oculto. */
+  .trampa {
+    position: absolute; left: -9999px; width: 1px; height: 1px;
+    overflow: hidden;
+  }
+</style>
+
+<script>
+  import { FORMULARIOS, validar, hayErrores, CAMPO_TRAMPA } from '../../lib/formularios.ts';
+
+  const emitir = (nombre: string, detalle: Record<string, unknown>) => {
+    document.dispatchEvent(new CustomEvent(`svmg:${nombre}`, { detail: detalle }));
+    (window as unknown as { dataLayer?: unknown[] }).dataLayer?.push({ event: `svmg.${nombre}`, ...detalle });
+  };
+
+  document.querySelectorAll<HTMLFormElement>('form.svmg-form').forEach((form) => {
+    const tipo = form.dataset.tipo as keyof typeof FORMULARIOS;
+    const def = FORMULARIOS[tipo];
+    const seccion = form.closest('section')!;
+    const acuse = seccion.querySelector<HTMLElement>('.acuse')!;
+    const boton = form.querySelector<HTMLButtonElement>('.enviar')!;
+    const etiqueta = boton.querySelector<HTMLElement>('[data-etiqueta]')!;
+    const global = form.querySelector<HTMLElement>('[data-error-global]')!;
+    const abierto = Date.now();
+
+    const campo = (n: string) => form.querySelector<HTMLElement>(`[name="${n}"]`);
+    const cajaError = (n: string) => form.querySelector<HTMLElement>(`[data-error="${n}"]`);
+
+    const limpiar = () => {
+      global.hidden = true;
+      form.querySelectorAll<HTMLElement>('[data-error]').forEach((e) => { e.hidden = true; e.textContent = ''; });
+      form.querySelectorAll('[aria-invalid]').forEach((e) => e.removeAttribute('aria-invalid'));
+    };
+
+    const pintar = (errores: Record<string, string>) => {
+      limpiar();
+      for (const [n, msg] of Object.entries(errores)) {
+        const caja = cajaError(n);
+        if (caja) { caja.textContent = msg; caja.hidden = false; }
+        campo(n)?.setAttribute('aria-invalid', 'true');
+      }
+      const primero = Object.keys(errores)[0];
+      if (primero) campo(primero)?.focus();
+    };
+
+    const datos = () => {
+      const d = new FormData(form);
+      const o: Record<string, string> = {};
+      for (const c of def.campos) o[c.nombre] = String(d.get(c.nombre) ?? '');
+      return o;
+    };
+
+    /* Un error de envío nunca pierde lo escrito: el formulario sigue ahí, con
+       sus valores, y se ofrece la vía alterna. */
+    const comoTexto = () => {
+      const d = datos();
+      return `${def.titulo} — servimedicalgroup.com\n\n` +
+        def.campos.filter((c) => d[c.nombre]?.trim())
+          .map((c) => `${c.rotulo}: ${d[c.nombre]!.trim()}`).join('\n');
+    };
+
+    const falloDeEnvio = (motivo: string) => {
+      const texto = encodeURIComponent(comoTexto());
+      global.innerHTML =
+        `No pudimos enviar la solicitud desde el sitio. Lo que escribió sigue aquí. ` +
+        `Puede enviarlo por <a class="underline underline-offset-4" target="_blank" rel="noopener" ` +
+        `href="https://wa.me/573192060943?text=${texto}">WhatsApp</a> o por ` +
+        `<a class="underline underline-offset-4" href="mailto:comercial@servimedicalgroup.com` +
+        `?subject=${encodeURIComponent(def.titulo)}&body=${texto}">correo</a>.`;
+      global.hidden = false;
+      emitir('formulario-error', { formulario: tipo, motivo });
+    };
+
+    form.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      if (boton.disabled) return;
+
+      const autorizacion = form.querySelector<HTMLInputElement>('[name="autorizacion"]')!.checked;
+      const errores = validar(def, datos(), { autorizacion });
+      if (hayErrores(errores)) { pintar(errores); return; }
+      limpiar();
+
+      boton.disabled = true;
+      etiqueta.textContent = 'Enviando…';
+
+      try {
+        const r = await fetch('/api/formulario', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...datos(),
+            formulario: tipo,
+            autorizacion,
+            abierto,
+            origen: location.pathname + location.search,
+            [CAMPO_TRAMPA]: String(new FormData(form).get(CAMPO_TRAMPA) ?? ''),
+          }),
+        });
+        const cuerpo = await r.json().catch(() => ({}));
+
+        if (r.ok && cuerpo.ok) {
+          const d = datos();
+          acuse.querySelector('[data-acuse]')!.textContent = def.acuse;
+          acuse.querySelector('[data-resumen]')!.innerHTML = def.campos
+            .filter((c) => d[c.nombre]?.trim())
+            .map((c) => `<div class="flex justify-between gap-4 border-b border-rule-dark py-2.5">` +
+              `<dt class="meta text-[10px] text-white/70">${c.rotulo}</dt>` +
+              `<dd class="max-w-[26ch] text-right text-[14.5px] text-white">${d[c.nombre]!.trim().replace(/</g, '&lt;')}</dd></div>`)
+            .join('');
+          form.hidden = true;
+          acuse.hidden = false;
+          acuse.focus?.();
+          emitir('formulario-enviado', { formulario: tipo, origen: location.pathname });
+          return;
+        }
+
+        if (r.status === 422 && cuerpo.errores) { pintar(cuerpo.errores); return; }
+        falloDeEnvio(cuerpo.motivo ?? String(r.status));
+      } catch {
+        falloDeEnvio('sin-red');
+      } finally {
+        boton.disabled = false;
+        etiqueta.textContent = 'Enviar solicitud';
+      }
+    });
+  });
+
+  /* Clic a WhatsApp como conversión. */
+  document.querySelectorAll('a[href*="wa.me"]').forEach((a) => {
+    a.addEventListener('click', () => emitir('whatsapp', { desde: location.pathname }));
+  });
+</script>

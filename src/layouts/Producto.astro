@@ -5,7 +5,7 @@
 import Base from './Base.astro';
 import Migas from '../components/Migas.astro';
 import MiniRueda from '../components/ciclo/MiniRueda.astro';
-import FormularioCotizacion from '../components/producto/FormularioCotizacion.astro';
+import Formulario from '../components/formulario/Formulario.astro';
 import { estaciones } from '../content/ciclo.ts';
 import { normalizar } from '../content/navegacion.ts';
 import { sitio } from '../content/sitio.ts';
@@ -192,7 +192,7 @@ const jsonld = {
   </section>
 
   <!-- 6 · Solicitar cotización -->
-  <FormularioCotizacion producto={p.titulo} />
+  <Formulario tipo="cotizacion" fijo={p.titulo} titulo={`Pida la cotización de ${p.titulo.toLowerCase()}.`} />
 
   <script type="application/ld+json" set:html={JSON.stringify(jsonld)} is:inline />
 </Base>

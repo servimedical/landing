@@ -1,13 +1,43 @@
 # Servimedical Group — sitio web
 
-**Estado: paso 1 — esqueleto navegable.** Las 24 rutas existen, la navegación
-funciona de punta a punta y no hay enlaces muertos. El contenido y los
-componentes de página llegan en el paso 2; todo lo pendiente está marcado con
-`{{ POR CONFIRMAR }}` o `{{ CONTENIDO PENDIENTE — paso 2 }}`.
+**Estado: paso 5 — sitio completo, pendiente de revisión jurídica.** 25 rutas con contenido real, la rueda del ciclo, la carta del hero, la
+etiqueta de trazabilidad, el catálogo completo y los tres formularios.
 
 ```bash
-grep -rn "POR CONFIRMAR\|CONTENIDO PENDIENTE" src
+npm run marcadores   # qué falta, separado por comercial y jurídico
 ```
+
+> **No publicar sin revisión jurídica.** `src/content/legal.ts` es un borrador
+> de la política de tratamiento de datos marcado con
+> `{{ REQUIERE REVISIÓN JURÍDICA }}`. La Ley 1581 de 2012 exige política
+> accesible y autorización expresa; lo segundo ya está implementado, lo
+> primero necesita que alguien de la empresa valide el texto.
+
+## Formularios
+
+Tres formularios —cotización, repuestos y servicio técnico— comparten
+componente, validación y manejo de estados en `src/lib/formularios.ts`. Ese
+módulo lo usan el navegador **y** la función de servidor, para que las dos
+validaciones digan lo mismo.
+
+`api/formulario.ts` es una función de Vercel: revalida, descarta robots
+(campo trampa y marca de tiempo), registra el consentimiento con fecha, hora
+y versión del texto, y envía dos correos por Resend —notificación interna con
+la URL de origen, y acuse al remitente—.
+
+**Variables de entorno** (en Vercel → Settings → Environment Variables):
+
+| Variable | Para qué |
+|---|---|
+| `RESEND_API_KEY` | Clave del servicio de envío. **Sin ella no sale ningún correo.** |
+| `CORREO_REMITENTE` | Remitente verificado del dominio (SPF, DKIM y DMARC) |
+| `CORREO_INTERNO` | Destinatario por defecto |
+| `CORREO_REPUESTOS` | Opcional: desvía los pedidos de repuesto |
+| `CORREO_SERVICIO` | Opcional: desvía las solicitudes de servicio técnico |
+
+Mientras `RESEND_API_KEY` no exista, la función responde 503 y el navegador
+conserva lo escrito y ofrece WhatsApp o correo directo. El sitio funciona;
+simplemente no envía por correo todavía.
 
 ---
 

@@ -102,6 +102,15 @@ export const navegacion: NodoNav[] = [
   { titulo: 'Servicios', url: '/servicios', enNavbar: true, enFooter: 'servicios' },
 
   { titulo: 'Contacto', url: '/contacto', enNavbar: true, enFooter: false },
+
+  /* Va en la línea de derechos del pie, no en una columna. Vive aquí para que
+     ninguna plantilla tenga que escribir la URL a mano. */
+  {
+    titulo: 'Política de tratamiento de datos',
+    url: '/politica-de-tratamiento-de-datos',
+    enNavbar: false,
+    enFooter: false,
+  },
 ];
 
 /* ---------------------------------------------------------------------------
@@ -160,6 +169,10 @@ export const inicio: NodoNav = navegacion[0]!;
 /** Los cinco nodos de producto, en el orden comercial definido arriba. */
 export const categoriasProducto: NodoNav[] =
   navegacion.find((n) => n.url === '/productos')?.hijos ?? [];
+
+/** Política de tratamiento de datos, enlazada desde el pie y los formularios. */
+export const politicaDatos: NodoNav =
+  navegacion.find((n) => n.url === '/politica-de-tratamiento-de-datos')!;
 
 /** Nodos de la barra principal. */
 export const enNavbar: NodoNav[] = navegacion.filter((n) => n.enNavbar);

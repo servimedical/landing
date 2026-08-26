@@ -12,8 +12,7 @@ export function getStaticPaths() {
     .map((ficha) => ({ params: { categoria: ficha.slug }, props: { ficha } }));
 }
 
-interface Props { ficha: FichaCategoria }
-const { ficha } = Astro.props;
+const { ficha } = Astro.props as { ficha: FichaCategoria };
 const hijos = porCategoria(ficha.slug as CategoriaProducto);
 const rutaActual = normalizar(Astro.url.pathname);
 

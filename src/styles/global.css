@@ -114,6 +114,20 @@
   padding-inline: clamp(20px, 5vw, 64px);
 }
 
+/** Campo oscuro: secciones sobre navy. Fija también el color del texto, para
+    que ningún hijo tenga que declararlo. */
+@utility field-navy {
+  background: var(--color-navy);
+  color: var(--color-white);
+
+  & h1, & h2, & h3, & h4 { color: var(--color-white); }
+}
+
+/** Campo claro: la sección alterna del ritmo vertical. */
+@utility field-paper {
+  background: var(--color-paper);
+}
+
 /** Metadatos: eyebrows, migas y numeración. */
 @utility meta {
   font-family: var(--font-mono);

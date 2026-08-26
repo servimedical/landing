@@ -1,0 +1,85 @@
+---
+import Pagina from '../../layouts/Pagina.astro';
+import Formulario from '../../components/formulario/Formulario.astro';
+import { software } from '../../content/institucional.ts';
+---
+<Pagina
+  titulo="Software de trazabilidad para central de esterilización — Servimedical Group"
+  descripcion="Módulos de registro de carga, liberación, almacenamiento, recall y reportes; perfiles por rol y trazabilidad de la evidencia para auditoría en central de esterilización."
+  encabezado={software.titulo}
+>
+  <p class="mt-6 max-w-[64ch] text-[clamp(16px,1.3vw,18px)] text-steel">{software.bajada}</p>
+
+  <div class="mt-8 max-w-[64ch] border border-rule p-5">
+    <p class="meta text-[10px] text-steel">Dato pendiente de fábrica</p>
+    <p class="meta mt-3 text-[10.5px] leading-relaxed text-navy normal-case tracking-[.08em]">{software.pendiente}</p>
+    <p class="mt-4 text-[14.5px] leading-relaxed text-steel">{software.nota}</p>
+  </div>
+</Pagina>
+
+<section class="border-t border-rule" aria-labelledby="modulos">
+  <div class="contenedor py-12 lg:py-16">
+    <p class="meta text-steel">01 · Módulos</p>
+    <h2 id="modulos" class="mt-4 max-w-[26ch] text-[clamp(24px,3vw,34px)]">{software.modulos.titulo}</h2>
+    <div class="mt-9 grid gap-px border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-3">
+      {software.modulos.items.map((m) => (
+        <div class="bg-white p-6">
+          <h3 class="text-[clamp(17px,1.9vw,21px)]">{m.titulo}</h3>
+          <p class="mt-3 text-[15px] leading-relaxed text-steel">{m.texto}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="field-paper border-t border-rule" aria-labelledby="perfiles">
+  <div class="contenedor grid gap-[clamp(28px,5vw,64px)] py-12 lg:grid-cols-2 lg:py-16">
+    <div>
+      <p class="meta text-steel">02 · Perfiles</p>
+      <h2 id="perfiles" class="mt-4 max-w-[22ch] text-[clamp(24px,3vw,34px)]">{software.perfiles.titulo}</h2>
+      <p class="mt-5 max-w-[44ch] text-steel">{software.perfiles.texto}</p>
+    </div>
+    <ul class="border-t border-rule">
+      {software.perfiles.items.map((x) => (
+        <li class="flex items-start gap-3 border-b border-rule py-3.5 text-[15.5px]">
+          <span aria-hidden="true" class="senal mt-2"></span>{x}
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<section class="border-t border-rule" aria-labelledby="evidencia">
+  <div class="contenedor grid gap-[clamp(28px,5vw,64px)] py-12 lg:grid-cols-2 lg:py-16">
+    <div>
+      <p class="meta text-steel">03 · Evidencia</p>
+      <h2 id="evidencia" class="mt-4 max-w-[22ch] text-[clamp(24px,3vw,34px)]">{software.evidencia.titulo}</h2>
+    </div>
+    <ul class="border-t border-rule">
+      {software.evidencia.puntos.map((x) => (
+        <li class="flex items-start gap-3 border-b border-rule py-3.5 text-[15.5px]">
+          <span aria-hidden="true" class="senal mt-2"></span>{x}
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<section class="field-paper border-t border-rule" aria-labelledby="requisitos">
+  <div class="contenedor grid gap-[clamp(28px,5vw,64px)] py-12 lg:grid-cols-2 lg:py-16">
+    <div>
+      <p class="meta text-steel">04 · Requisitos</p>
+      <h2 id="requisitos" class="mt-4 max-w-[22ch] text-[clamp(24px,3vw,34px)]">{software.requisitos.titulo}</h2>
+      <p class="mt-5 max-w-[44ch] text-steel">{software.requisitos.texto}</p>
+    </div>
+    <ul class="border-t border-rule">
+      {software.requisitos.puntos.map((x) => (
+        <li class="flex items-start gap-3 border-b border-rule py-3.5 text-[15.5px]">
+          <span aria-hidden="true" class="senal mt-2"></span>{x}
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<Formulario tipo="cotizacion" fijo="Software de trazabilidad" titulo="Pida una demostración del sistema." />
