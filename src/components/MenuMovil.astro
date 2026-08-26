@@ -1,0 +1,187 @@
+---
+import { enNavbar, categoriasProducto, rutaActiva, normalizar } from '../content/navegacion.ts';
+import { cta } from '../content/sitio.ts';
+
+interface Props { rutaActual: string }
+const { rutaActual } = Astro.props;
+const cadena = rutaActiva(rutaActual).map((n) => n.url);
+const exacta = normalizar(rutaActual);
+const marcado = (url: string) => cadena.includes(url);
+---
+<button
+  id="boton-menu"
+  type="button"
+  class="flex h-11 w-11 flex-col items-center justify-center gap-[5px] border border-rule lg:hidden"
+  aria-expanded="false"
+  aria-controls="menu-movil"
+  aria-label="Abrir el menú"
+>
+  <span class="linea block h-px w-[18px] bg-navy transition-transform"></span>
+  <span class="linea block h-px w-[18px] bg-navy transition-opacity"></span>
+  <span class="linea block h-px w-[18px] bg-navy transition-transform"></span>
+</button>
+
+<div
+  id="menu-movil"
+  class="fixed inset-x-0 bottom-0 top-(--spacing-header) z-50 overflow-y-auto overscroll-contain
+         border-t border-rule bg-white lg:hidden"
+  hidden
+>
+  <nav aria-label="Menú principal" class="contenedor pb-40 pt-2">
+    <ul>
+      {enNavbar.map((nodo) => (
+        <li class="border-b border-rule">
+          {nodo.url === '/productos' ? (
+            <>
+              <div class="flex items-stretch">
+                <a
+                  href={nodo.url}
+                  aria-current={normalizar(nodo.url) === exacta ? 'page' : undefined}
+                  class:list={[
+                    'flex-1 py-4 text-[17px]',
+                    marcado(nodo.url) && 'border-l-2 border-signal pl-3',
+                  ]}
+                >{nodo.titulo}</a>
+                <button
+                  type="button"
+                  class="acordeon flex w-12 items-center justify-center text-steel"
+                  aria-expanded="false"
+                  aria-controls="acordeon-productos"
+                  aria-label="Desplegar las categorías de productos"
+                >
+                  <svg viewBox="0 0 10 6" class="chevron h-[7px] w-[12px] transition-transform" aria-hidden="true">
+                    <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" />
+                  </svg>
+                </button>
+              </div>
+
+              <ul id="acordeon-productos" class="border-t border-rule pl-3" hidden>
+                {categoriasProducto.map((cat, i) => (
+                  <li class={i > 0 ? 'border-t border-rule' : ''}>
+                    <div class="flex items-stretch">
+                      <a
+                        href={cat.url}
+                        aria-current={normalizar(cat.url) === exacta ? 'page' : undefined}
+                        class:list={[
+                          'flex-1 py-3.5 text-[15.5px]',
+                          marcado(cat.url) && 'border-l-2 border-signal pl-3',
+                        ]}
+                      >{cat.titulo}</a>
+                      {cat.hijos && (
+                        <button
+                          type="button"
+                          class="acordeon flex w-12 items-center justify-center text-steel"
+                          aria-expanded="false"
+                          aria-controls={`acordeon-${cat.url.split('/').pop()}`}
+                          aria-label={`Desplegar ${cat.titulo}`}
+                        >
+                          <svg viewBox="0 0 10 6" class="chevron h-[7px] w-[12px] transition-transform" aria-hidden="true">
+                            <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+                    {cat.hijos && (
+                      <ul id={`acordeon-${cat.url.split('/').pop()}`} class="border-t border-rule pl-3" hidden>
+                        {cat.hijos.map((hijo, j) => (
+                          <li class={j > 0 ? 'border-t border-rule' : ''}>
+                            <a
+                              href={hijo.url}
+                              aria-current={normalizar(hijo.url) === exacta ? 'page' : undefined}
+                              class:list={[
+                                'block py-3 text-[15px] text-steel',
+                                marcado(hijo.url) && 'border-l-2 border-signal pl-3 text-navy',
+                              ]}
+                            >{hijo.titulo}</a>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </>
+          ) : (
+            <a
+              href={nodo.url}
+              aria-current={normalizar(nodo.url) === exacta ? 'page' : undefined}
+              class:list={[
+                'block py-4 text-[17px]',
+                marcado(nodo.url) && 'border-l-2 border-signal pl-3',
+              ]}
+            >{nodo.titulo}</a>
+          )}
+        </li>
+      ))}
+    </ul>
+  </nav>
+
+  <div class="fixed inset-x-0 bottom-0 border-t border-rule bg-white">
+    <div class="contenedor py-3">
+      <a href={cta.url} class="flex w-full items-center justify-center gap-2.5 bg-navy px-5 py-3.5 text-[14.5px] font-medium text-white">
+        <span class="block h-[7px] w-[7px] bg-signal" aria-hidden="true"></span>{cta.texto}
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  #boton-menu[aria-expanded='true'] .linea:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  #boton-menu[aria-expanded='true'] .linea:nth-child(2) { opacity: 0; }
+  #boton-menu[aria-expanded='true'] .linea:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+  .acordeon[aria-expanded='true'] .chevron { transform: rotate(180deg); }
+</style>
+
+<script>
+  const boton = document.getElementById('boton-menu') as HTMLButtonElement | null;
+  const menu = document.getElementById('menu-movil');
+
+  if (boton && menu) {
+    const FOCALIZABLES = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    const visibles = () =>
+      [...menu.querySelectorAll<HTMLElement>(FOCALIZABLES)].filter((el) => el.offsetParent !== null);
+
+    const abrir = (v: boolean) => {
+      boton.setAttribute('aria-expanded', String(v));
+      boton.setAttribute('aria-label', v ? 'Cerrar el menú' : 'Abrir el menú');
+      menu.hidden = !v;
+      document.body.style.overflow = v ? 'hidden' : '';
+      if (v) visibles()[0]?.focus();
+      else boton.focus();
+    };
+
+    const abierto = () => boton.getAttribute('aria-expanded') === 'true';
+
+    boton.addEventListener('click', () => abrir(!abierto()));
+
+    // Acordeones: tocar el chevron despliega, nunca navega.
+    menu.querySelectorAll<HTMLButtonElement>('.acordeon').forEach((b) => {
+      b.addEventListener('click', () => {
+        const destino = document.getElementById(b.getAttribute('aria-controls') ?? '');
+        if (!destino) return;
+        const ahora = b.getAttribute('aria-expanded') === 'true';
+        b.setAttribute('aria-expanded', String(!ahora));
+        destino.hidden = ahora;
+      });
+    });
+
+    // Foco contenido mientras el panel esté abierto.
+    menu.addEventListener('keydown', (e) => {
+      if (e.key !== 'Tab' || !abierto()) return;
+      const items = visibles();
+      if (!items.length) return;
+      const primero = items[0]!, ultimo = items[items.length - 1]!;
+      if (e.shiftKey && document.activeElement === primero) { e.preventDefault(); ultimo.focus(); }
+      else if (!e.shiftKey && document.activeElement === ultimo) { e.preventDefault(); primero.focus(); }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && abierto()) abrir(false);
+    });
+
+    // Al pasar a ancho de escritorio el panel se cierra y se libera el scroll.
+    window.matchMedia('(min-width: 1000px)').addEventListener('change', (e) => {
+      if (e.matches && abierto()) abrir(false);
+    });
+  }
+</script>

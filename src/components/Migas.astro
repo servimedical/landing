@@ -1,0 +1,40 @@
+---
+import { rutaActiva, inicio } from '../content/navegacion.ts';
+import { sitio } from '../content/sitio.ts';
+
+interface Props { rutaActual: string }
+const { rutaActual } = Astro.props;
+
+/* Inicio siempre encabeza; la cadena viene del árbol de navegación. */
+const cadena = [inicio, ...rutaActiva(rutaActual).filter((n) => n.url !== inicio.url)];
+
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: cadena.map((n, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: n.titulo,
+    item: new URL(n.url, sitio.dominio).href,
+  })),
+};
+---
+<nav aria-label="Migas de pan" class="border-b border-rule">
+  <div class="contenedor py-3.5">
+    <ol class="meta flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-steel">
+      {cadena.map((n, i) => {
+        const ultimo = i === cadena.length - 1;
+        return (
+          <li class="flex items-center gap-2">
+            {ultimo
+              ? <span aria-current="page" class="text-navy">{n.titulo}</span>
+              : <a href={n.url} class="hover:text-navy">{n.titulo}</a>}
+            {!ultimo && <span aria-hidden="true" class="text-mist">/</span>}
+          </li>
+        );
+      })}
+    </ol>
+  </div>
+</nav>
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonld)} is:inline />

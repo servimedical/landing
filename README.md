@@ -1,147 +1,122 @@
 # Servimedical Group — sitio web
 
-Sitio estático de **Servimedical Group SAS** (Bogotá, Colombia): equipamiento
-hospitalario y centrales de esterilización.
+**Estado: paso 1 — esqueleto navegable.** Las 24 rutas existen, la navegación
+funciona de punta a punta y no hay enlaces muertos. El contenido y los
+componentes de página llegan en el paso 2; todo lo pendiente está marcado con
+`{{ POR CONFIRMAR }}` o `{{ CONTENIDO PENDIENTE — paso 2 }}`.
 
-Construido con [Astro](https://astro.build) sin framework de UI: HTML y CSS
-propios, cero JavaScript de terceros, fuentes autoalojadas. Las tres piezas
-gráficas del sitio —la carta de ciclo, el anillo de seis estaciones y la
-etiqueta de trazabilidad— son SVG hechos a mano, no imágenes.
+```bash
+grep -rn "POR CONFIRMAR\|CONTENIDO PENDIENTE" src
+```
 
 ---
 
-## Requisitos
+## Stack
 
-Node **22.12 o superior**. El repositorio trae `.nvmrc`:
+Astro · TypeScript estricto · `output: 'static'` · Tailwind CSS 4 · sin
+librerías de componentes. JavaScript sólo en el panel de productos y el menú
+móvil; todo lo demás es HTML estático.
+
+> **Nota sobre la versión de Astro.** El pliego pedía Astro 5; el proyecto usa
+> **Astro 7**, que es la versión vigente y la que ya estaba instalada. Todo lo
+> especificado (salida estática, TS estricto, Tailwind 4, `@fontsource`)
+> funciona igual en ambas. Si se prefiere 5 por alguna dependencia externa:
+> `npm i astro@5`.
+
+### Requisitos
+
+Node **22.12 o superior**. El repositorio trae `.nvmrc`.
 
 ```bash
-nvm use
-```
-
-## Comandos
-
-```bash
-npm install       # instalar dependencias
-npm run dev       # servidor local en http://localhost:4321
-npm run build     # genera dist/  (es lo que corre Vercel)
+nvm use && npm install
+npm run dev       # http://localhost:4321
+npm run build     # genera dist/ (es lo que corre Vercel)
 npm run check     # verificación de tipos
 npm run verify    # check + build, antes de hacer push
 npm run preview   # sirve dist/ tal como quedará en producción
-npm run og        # regenera public/og.png
 ```
 
 `build` no incluye `check` a propósito: un aviso de tipos no debe tumbar un
-deploy de producción. Para eso está `verify`, que es lo que conviene correr
-antes de subir cambios.
+deploy de producción.
 
 ---
 
 ## Estructura
 
 ```
-scripts/og.mjs        ← generador de la tarjeta para compartir
-public/
-├─ fonts/             ← Archivo + IBM Plex (subconjunto latino, OFL)
-├─ img/productos/     ← fotos de las familias de producto
-└─ og.png             ← generado, no editar a mano
 src/
-├─ data/
-│  ├─ site.ts         ← contacto, menú, MARCAS, sectores
-│  └─ catalogo.ts     ← LÍNEAS DE NEGOCIO (fuente única de verdad)
-├─ styles/global.css  ← tokens, tipografía y primitivas
-├─ components/        ← Header, Footer, formulario y piezas gráficas
-├─ layouts/Base.astro
-└─ pages/
-   ├─ index · nosotros · contacto · 404
-   ├─ productos/index  ·  productos/[slug]
-   ├─ servicios/index  ·  servicios/[slug]
-   └─ marcas/[slug]
+  content/
+    navegacion.ts     ← FUENTE ÚNICA DE VERDAD de toda la navegación
+    sitio.ts          ← datos de contacto y textos globales
+  components/
+    Header.astro  NavEscritorio.astro  PanelProductos.astro
+    MenuMovil.astro  Footer.astro  Migas.astro  Logo.astro
+  layouts/
+    Base.astro        ← html, head, header, footer
+    Pagina.astro      ← página interna, con migas
+  pages/
+    index.astro       ← home
+    [...ruta].astro   ← genera las 23 páginas internas desde navegacion.ts
+    404.astro
+  styles/global.css   ← Tailwind 4: tokens, base y utilidades
 ```
 
-### Dónde se edita el contenido
+### `navegacion.ts` manda
 
-Casi todo el texto vive en **`src/data/catalogo.ts`** y **`src/data/site.ts`**.
-Alimentan a la vez el menú, la home, las páginas de detalle, el pie y el
-sitemap. Las cifras que muestra el sitio («6 marcas», «5 categorías», «6 / 6
-estaciones») **se calculan desde esos datos**: no hay que actualizarlas a mano.
+Header, panel de productos, menú móvil, pie, migas, sitemap y las 24 páginas
+salen de ese archivo. **No hay ningún enlace de navegación escrito a mano en
+una plantilla.** Añadir un nodo crea su página, su entrada de menú, su lugar
+en el pie y su fila en el sitemap sin tocar nada más.
 
-- `productos[]` → las categorías de la Línea 1 → crean `/productos/<slug>/`
-- `servicios[]` → los servicios de la Línea 2 → crean `/servicios/<slug>/`
-- `marcas[]` → cada marca crea su `/marcas/<slug>/`, su fila en Nosotros, su
-  lugar en la cinta y en el pie
-- `ciclo[]` → las seis estaciones del anillo interactivo
+Funciones derivadas: `rutaActiva(url)` devuelve la cadena de ancestros —la
+usan el estado activo y las migas—, más `esActivo`, `todosLosNodos`,
+`columnaFooter` y `normalizar`.
 
-La relación marca ↔ producto **no se escribe dos veces**: vive en el campo
-`marcas` de cada familia, y las páginas de marca la consultan con
-`porMarca()` y `estacionesDeMarca()`.
+`normalizar()` quita el `.html` del pathname: con `build.format: 'file'`,
+`Astro.url.pathname` llega como `/productos/mobiliario.html` durante la
+generación y sin eso no casaría con ningún nodo del árbol.
 
-### Fotos de producto
+### Cuando llegue el contenido (paso 2)
 
-Cada familia acepta `imagen` e `imagenAlt`. Si no tiene foto, la ficha se
-muestra sólo con texto y no se rompe nada — se pueden ir llenando de a poco.
-Formato y convención de nombres en `public/img/productos/README.md`.
-
-### Dónde se edita el diseño
-
-`src/styles/global.css`. Los tokens del bloque `:root` gobiernan todo el sitio.
-
-| Token         | Valor     | Uso                                   |
-|---------------|-----------|---------------------------------------|
-| `--navy`      | `#26416B` | Color institucional, texto, campos     |
-| `--navy-deep` | `#1B3050` | Pie de página, estados hover           |
-| `--steel`     | `#395A85` | Texto secundario                       |
-| `--blue`      | `#446791` | Trazos y detalles                      |
-| `--mist`      | `#DBDBDB` | Trazo inerte                           |
-| `--paper`     | `#F2F5F8` | Fondo de sección alterna               |
-| `--signal`    | `#89D800` | Acento único: marca estado, no decora  |
-
-Tipografías: **Archivo** (títulos), **IBM Plex Sans** (texto) e **IBM Plex
-Mono** (metadatos). Se sirven desde `/fonts/`, no desde Google Fonts.
-Procedencia y licencia en `public/fonts/LICENSE.txt`.
+Basta con crear el archivo de la ruta concreta —por ejemplo
+`src/pages/productos/esterilizacion.astro`—. Astro da prioridad a la ruta
+estática sobre `[...ruta].astro`, así que la página nueva sustituye a la
+provisional sin refactorizar nada.
 
 ---
 
-## Formulario de cotización
+## Decisiones que conviene revisar
 
-`/contacto/` arma la solicitud y la entrega por WhatsApp —el canal real de
-este negocio— con el correo como alternativa. **No hay servidor detrás:** los
-datos no salen del navegador hasta que la persona pulsa el botón, y no se
-envían a ningún tercero.
-
-Si más adelante quieren que la solicitud quede registrada (CRM, hoja de
-cálculo o correo automático), hay que añadir una función serverless en
-`api/` y las credenciales del proveedor de correo. El componente
-`FormularioCotizacion.astro` ya construye el objeto de datos.
+- **Panel de productos.** El pliego dice «cuatro columnas» y después «la
+  quinta columna es un bloque de cierre», que no cuadran con cinco
+  categorías. Implementado como rejilla de **cuatro columnas**: las cinco
+  categorías en orden y el bloque de cierre ocupando el resto de la segunda
+  fila. Si se quería otra cosa, es un cambio de una clase.
+- **Trazabilidad en el pie.** El mapa del pie sólo nombra las cinco
+  categorías en la columna de productos. Trazabilidad, por ser pilar propio y
+  no categoría de producto, quedó en la columna «Servicios y compañía».
+- **Ancla del ciclo.** El pliego escribe `/#/ciclo`; se interpretó como
+  `/#ciclo`. La home ya trae la sección con ese `id` para que el enlace del
+  panel no quede muerto.
+- **Corte del menú móvil.** 1000 px, según el pliego. Se hizo redefiniendo
+  `--breakpoint-lg` en `@theme` para que todo el sitio use un único umbral.
+- **`IBM Plex Mono` no tiene versión variable** en Fontsource: se usan los
+  pesos estáticos 400/500/600. Archivo e IBM Plex Sans sí son variables.
+- **`og.png`** viene del trabajo anterior y sigue referenciado en `Base.astro`.
+  Su titular es contenido y habrá que revisarlo en el paso 2. El generador
+  está en el commit `d465a53`.
 
 ---
 
 ## Deploy en Vercel
 
-1. Subir el repositorio a GitHub.
-2. En Vercel: **Add New → Project → Import**.
-3. `vercel.json` fija build, salida, barra final, cabeceras de seguridad y
-   caché inmutable de `_astro/` y `fonts/`.
-4. Al conectar el dominio, revisar `site` en `astro.config.mjs`: de ahí salen
-   la URL canónica, el `og:url` y el `sitemap.xml`.
+`vercel.json` fija build, salida, `cleanUrls`, el **301 de
+`/productos/trazabilidad` → `/trazabilidad`** y las cabeceras de seguridad.
 
-**Analítica.** El sitio carga Vercel Web Analytics sólo en producción. Hay que
-activarla una vez en el panel del proyecto (*Analytics → Enable*); mientras no
-se active, el script simplemente no registra nada.
+Las URLs no llevan barra final: `build.format: 'file'` más `cleanUrls` las
+sirve tal cual, sin saltos de redirección. La entrada `redirects` de
+`astro.config.mjs` existe sólo para que la redirección también funcione en
+`dev` y `preview`; en producción manda la de Vercel, que sí es un 301 real.
 
-**Previews.** Los despliegues de preview salen con `noindex` y sin analítica,
-para que no compitan en Google con el dominio real.
-
----
-
-## Pendiente de decisión del cliente
-
-- **Celitron y Easy Medical** aparecen en el sitio en producción y no están
-  aquí. Agregarlas es añadir una entrada a `marcas[]` en `src/data/site.ts`:
-  la página, el menú y las cifras se actualizan solas.
-- **Trazabilidad** está como categoría 1.2 de Productos. Si se prefiere que
-  no sea categoría propia, se mueve como familia dentro de Equipos.
-- **Origen y año de representación** de cada marca: los campos `origen` y
-  `desde` existen en `src/data/site.ts` y están vacíos a propósito, para no
-  publicar datos de fábrica sin confirmar. Si tienen valor, se muestran solos.
-- **Cifras de credibilidad** (años de operación, equipos instalados, clientes
-  atendidos). Hoy la página de Nosotros sólo tiene cifras cualitativas.
+Los despliegues de preview salen con `noindex` para no competir con el
+dominio.

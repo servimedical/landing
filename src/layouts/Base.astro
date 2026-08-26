@@ -2,30 +2,26 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { site, contacto, marcas } from '../data/site.ts';
+import { sitio, contacto } from '../content/sitio.ts';
+import { normalizar } from '../content/navegacion.ts';
 
-interface Props { titulo: string; descripcion: string; ruta?: string }
-const { titulo, descripcion, ruta = Astro.url.pathname } = Astro.props;
-const canonical = new URL(ruta, site.dominio).href;
-const og = new URL('/og.png', site.dominio).href;
+interface Props { titulo: string; descripcion: string }
+const { titulo, descripcion } = Astro.props;
 
-/* En preview de Vercel el sitio no debe indexarse: compite con el dominio real. */
+const rutaActual = normalizar(Astro.url.pathname);
+const canonica = new URL(rutaActual, sitio.dominio).href;
+const og = new URL('/og.png', sitio.dominio).href;
 const produccion = import.meta.env.PROD && process.env.VERCEL_ENV !== 'preview';
 
-/* LocalBusiness (no Organization): hay sede física y el negocio compite en
-   búsquedas locales del tipo «autoclave bogotá». */
 const jsonld = {
   '@context': 'https://schema.org',
-  '@type': ['LocalBusiness', 'Organization'],
-  '@id': `${site.dominio}/#organizacion`,
-  name: site.razon,
-  alternateName: site.nombre,
-  url: site.dominio,
-  description: site.descripcion,
-  image: og,
-  telephone: contacto.fijo.label,
-  email: contacto.comercial.label,
-  priceRange: '$$$',
+  '@type': 'Organization',
+  '@id': `${sitio.dominio}/#organizacion`,
+  name: sitio.razon,
+  alternateName: sitio.nombre,
+  url: sitio.dominio,
+  telephone: contacto.fijo.valor,
+  email: contacto.comercial.valor,
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'Transversal 27 N.º 53C-47',
@@ -34,12 +30,6 @@ const jsonld = {
     addressCountry: 'CO',
   },
   areaServed: { '@type': 'Country', name: 'Colombia' },
-  knowsLanguage: 'es-CO',
-  brand: marcas.map((m) => ({
-    '@type': 'Brand',
-    name: m.nombre,
-    url: `${site.dominio}/marcas/${m.slug}/`,
-  })),
 };
 ---
 <!doctype html>
@@ -49,52 +39,27 @@ const jsonld = {
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>{titulo}</title>
   <meta name="description" content={descripcion} />
-  <link rel="canonical" href={canonical} />
+  <link rel="canonical" href={canonica} />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <meta name="theme-color" content="#26416B" />
 
   <meta property="og:type" content="website" />
-  <meta property="og:site_name" content={site.nombre} />
+  <meta property="og:site_name" content={sitio.nombre} />
   <meta property="og:title" content={titulo} />
   <meta property="og:description" content={descripcion} />
-  <meta property="og:url" content={canonical} />
+  <meta property="og:url" content={canonica} />
   <meta property="og:locale" content="es_CO" />
   <meta property="og:image" content={og} />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:image:alt" content="Servimedical Group — el ciclo completo de esterilización" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content={og} />
 
   {!produccion && <meta name="robots" content="noindex, nofollow" />}
 
-  <!-- Fuentes autoalojadas: las dos del primer render se precargan. -->
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-        href="/fonts/archivo-latin-wdth-normal.woff2" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin
-        href="/fonts/ibm-plex-sans-latin-400-normal.woff2" />
-
   <script type="application/ld+json" set:html={JSON.stringify(jsonld)} is:inline />
-  <script is:inline>document.documentElement.classList.add('js');</script>
 </head>
 <body>
-  <a class="skip" href="#main">Saltar al contenido</a>
-  <Header />
-  <main id="main"><slot /></main>
+  <a href="#contenido" class="salto">Saltar al contenido</a>
+  <Header rutaActual={rutaActual} />
+  <main id="contenido"><slot /></main>
   <Footer />
-
-  {produccion && <script is:inline defer src="/_vercel/insights/script.js"></script>}
-
-  <script>
-    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      const io = new IntersectionObserver(
-        (es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }),
-        { threshold: .15 }
-      );
-      document.querySelectorAll('.reveal').forEach((e) => io.observe(e));
-    } else {
-      document.querySelectorAll('.reveal').forEach((e) => e.classList.add('in'));
-    }
-  </script>
 </body>
 </html>

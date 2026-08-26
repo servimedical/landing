@@ -1,205 +1,38 @@
 ---
 import Logo from './Logo.astro';
-import { productos, servicios } from '../data/catalogo.ts';
+import NavEscritorio from './NavEscritorio.astro';
+import MenuMovil from './MenuMovil.astro';
+import { inicio } from '../content/navegacion.ts';
+import { cta, sitio } from '../content/sitio.ts';
 
-const path = Astro.url.pathname;
-const on = (href: string) => href === '/' ? path === '/' : path.startsWith(href);
+interface Props { rutaActual: string }
+const { rutaActual } = Astro.props;
 ---
-<header class="site-head">
-  <div class="wrap bar">
-    <a class="brand" href="/" aria-label="Servimedical Group — inicio"><Logo /></a>
+<!--
+  El desenfoque va en una capa de fondo propia y no en el <header>.
+  `backdrop-filter` convierte a su elemento en bloque contenedor de los
+  descendientes `position: fixed`, y eso dejaba el panel del menú móvil
+  encerrado en los 72 px de la barra. La capa no tiene descendientes, así que
+  el efecto es idéntico y el panel vuelve a medirse contra el viewport.
+-->
+<header class="sticky top-0 z-50 border-b border-rule">
+  <div class="absolute inset-0 -z-10 bg-white/93 backdrop-blur-[12px]" aria-hidden="true"></div>
 
-    <nav class="nav" aria-label="Principal">
-      <ul>
-        <li><a href="/nosotros/" class:list={{ on: on('/nosotros') }}>Nosotros</a></li>
+  <div class="contenedor flex h-(--spacing-header) items-center gap-7">
+    <a href={inicio.url} class="mr-auto" aria-label={`${sitio.nombre} — ir al inicio`}>
+      <Logo />
+    </a>
 
-        <li class="has-menu">
-          <a href="/productos/" class:list={{ on: on('/productos') }} aria-haspopup="true">Productos</a>
-          <div class="menu">
-            <p class="mono menu-k">Línea 1 · Productos</p>
-            <ul>
-              {productos.map((c) => (
-                <li>
-                  <a href={`/productos/${c.slug}/`}>
-                    <span class="mono i num">{c.idx}</span>
-                    <span class="t">{c.nombre}</span>
-                    <span class="d">{c.corto === 'Trazabilidad' ? 'Línea nueva' : c.marcas.slice(0, 2).join(' · ')}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </li>
+    <NavEscritorio rutaActual={rutaActual} />
 
-        <li class="has-menu">
-          <a href="/servicios/" class:list={{ on: on('/servicios') }} aria-haspopup="true">Servicios</a>
-          <div class="menu menu--narrow">
-            <p class="mono menu-k">Línea 2 · Servicios</p>
-            <ul>
-              {servicios.map((s) => (
-                <li>
-                  <a href={`/servicios/${s.slug}/`}>
-                    <span class="mono i num">{s.idx}</span>
-                    <span class="t">{s.nombre}</span>
-                    <span class="d">{s.corto}</span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </li>
+    <a
+      href={cta.url}
+      class="hidden items-center gap-2.5 border border-navy bg-navy px-5 py-3 text-[14.5px]
+             font-medium text-white transition-colors hover:bg-navy-deep hover:border-navy-deep lg:inline-flex"
+    >
+      <span class="block h-[7px] w-[7px] bg-signal" aria-hidden="true"></span>{cta.texto}
+    </a>
 
-        <li><a href="/contacto/" class:list={{ on: on('/contacto') }}>Contacto</a></li>
-      </ul>
-    </nav>
-
-    <a class="btn cta" href="/contacto/"><span class="dot"></span>Solicitar cotización</a>
-
-    <button class="burger" type="button" aria-expanded="false" aria-controls="menu-movil" aria-label="Abrir menú">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-
-  <div class="movil" id="menu-movil" hidden>
-    <div class="wrap">
-      <p class="mono menu-k">Línea 1 · Productos</p>
-      <ul class="movil-list">
-        <li><a href="/productos/"><span class="mono i">1.0</span>Todos los productos</a></li>
-        {productos.map((c) => (
-          <li><a href={`/productos/${c.slug}/`}><span class="mono i num">{c.idx}</span>{c.nombre}</a></li>
-        ))}
-      </ul>
-      <p class="mono menu-k">Línea 2 · Servicios</p>
-      <ul class="movil-list">
-        {servicios.map((s) => (
-          <li><a href={`/servicios/${s.slug}/`}><span class="mono i num">{s.idx}</span>{s.nombre}</a></li>
-        ))}
-      </ul>
-      <p class="mono menu-k">Compañía</p>
-      <ul class="movil-list">
-        <li><a href="/nosotros/"><span class="mono i">—</span>Nosotros</a></li>
-        <li><a href="/contacto/"><span class="mono i">—</span>Contacto</a></li>
-      </ul>
-      <a class="btn btn--signal movil-cta" href="/contacto/"><span class="dot"></span>Solicitar cotización</a>
-    </div>
+    <MenuMovil rutaActual={rutaActual} />
   </div>
 </header>
-
-<style>
-  .site-head{
-    position:sticky; top:0; z-index:60;
-    background:rgba(255,255,255,.93); backdrop-filter:blur(12px);
-    border-bottom:1px solid var(--rule);
-  }
-  .bar{ display:flex; align-items:center; gap:28px; height:76px }
-  .brand{ margin-right:auto; text-decoration:none }
-
-  .nav > ul{ display:flex; gap:26px }
-  .nav > ul > li{ position:relative }
-  .nav > ul > li > a{
-    display:block; font-size:14.5px; text-decoration:none;
-    padding:28px 0; border-bottom:2px solid transparent;
-    transition:border-color .2s ease;
-  }
-  .nav > ul > li > a:hover,
-  .nav > ul > li > a.on{ border-color:var(--signal) }
-
-  /* menú desplegable */
-  .menu{
-    position:absolute; top:100%; left:-18px; min-width:330px;
-    background:var(--white); border:1px solid var(--rule);
-    padding:16px 18px 8px; opacity:0; visibility:hidden;
-    transform:translateY(-6px); transition:opacity .18s ease, transform .18s ease, visibility .18s;
-    box-shadow:0 18px 40px -24px rgba(27,48,80,.45);
-  }
-  .menu--narrow{ min-width:300px }
-  .has-menu:hover .menu,
-  .has-menu:focus-within .menu{ opacity:1; visibility:visible; transform:none }
-  .menu-k{ color:var(--steel); font-size:10.5px; margin-bottom:10px }
-  .menu li + li{ border-top:1px solid var(--rule) }
-  .menu a{
-    display:grid; grid-template-columns:34px 1fr auto; gap:10px;
-    align-items:baseline; padding:11px 0; text-decoration:none; font-size:15px;
-  }
-  .menu a:hover .t{ color:var(--navy) }
-  .menu a:hover{ background:linear-gradient(90deg, rgba(137,216,0,.12), transparent 70%) }
-  .menu .i{ font-size:10.5px; color:var(--steel) }
-  .menu .d{
-    font-family:var(--meta); font-size:9.5px; letter-spacing:.1em;
-    text-transform:uppercase; color:var(--steel); text-align:right;
-  }
-
-  /* menú móvil */
-  .burger{
-    display:none; width:44px; height:44px; border:1px solid var(--rule);
-    background:transparent; padding:0; cursor:pointer;
-    flex-direction:column; justify-content:center; align-items:center; gap:5px;
-  }
-  .burger span{ width:18px; height:1.5px; background:var(--navy); transition:transform .2s ease, opacity .2s ease }
-  .burger[aria-expanded='true'] span:nth-child(1){ transform:translateY(6.5px) rotate(45deg) }
-  .burger[aria-expanded='true'] span:nth-child(2){ opacity:0 }
-  .burger[aria-expanded='true'] span:nth-child(3){ transform:translateY(-6.5px) rotate(-45deg) }
-
-  .movil{
-    border-top:1px solid var(--rule); background:var(--white);
-    padding:22px 0 30px; max-height:calc(100dvh - 76px); overflow-y:auto;
-  }
-  .movil .menu-k{ color:var(--steel); font-size:10.5px; margin:22px 0 6px }
-  .movil .menu-k:first-child{ margin-top:0 }
-  .movil-list li{ border-top:1px solid var(--rule) }
-  .movil-list a{
-    display:flex; gap:14px; align-items:baseline;
-    padding:13px 0; text-decoration:none; font-size:16px;
-  }
-  .movil-list .i{ font-size:10.5px; color:var(--steel); min-width:26px }
-  .movil-cta{ margin-top:26px; width:100% ; justify-content:center }
-
-  @media (max-width:1040px){
-    .nav, .cta{ display:none }
-    .burger{ display:flex }
-    .bar{ height:68px }
-  }
-</style>
-
-<script>
-  const b = document.querySelector<HTMLButtonElement>('.burger');
-  const m = document.getElementById('menu-movil');
-
-  const set = (open: boolean) => {
-    if (!b) return;
-    b.setAttribute('aria-expanded', String(open));
-    b.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
-    if (m) m.hidden = !open;
-  };
-
-  b?.addEventListener('click', () => set(b.getAttribute('aria-expanded') !== 'true'));
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') set(false); });
-
-  // al pasar a ancho de escritorio el menú móvil se oculta: si no, queda abierto sobre la página
-  const ancho = window.matchMedia('(min-width: 1041px)');
-  ancho.addEventListener('change', (e) => { if (e.matches) set(false); });
-
-  /* En la home el menú marca la sección visible; en el resto manda la ruta. */
-  if (location.pathname === '/') {
-    const destino: Record<string, string> = {
-      productos: '/productos/',
-      servicios: '/servicios/',
-      trazabilidad: '/productos/trazabilidad/',
-      nosotros: '/nosotros/',
-      contacto: '/contacto/',
-    };
-    const enlaces = [...document.querySelectorAll<HTMLAnchorElement>('.nav > ul > li > a')];
-    const spy = new IntersectionObserver(
-      (es) => es.forEach((e) => {
-        if (!e.isIntersecting) return;
-        const href = destino[e.target.id];
-        enlaces.forEach((a) => a.classList.toggle('on', a.getAttribute('href') === href));
-      }),
-      { rootMargin: '-45% 0px -50% 0px' }
-    );
-    Object.keys(destino).forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) spy.observe(el);
-    });
-  }
-</script>

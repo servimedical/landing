@@ -1,0 +1,16 @@
+---
+import Base from './Base.astro';
+import Migas from '../components/Migas.astro';
+import { normalizar } from '../content/navegacion.ts';
+
+interface Props { titulo: string; descripcion: string; encabezado: string }
+const { titulo, descripcion, encabezado } = Astro.props;
+const rutaActual = normalizar(Astro.url.pathname);
+---
+<Base titulo={titulo} descripcion={descripcion}>
+  <Migas rutaActual={rutaActual} />
+  <div class="contenedor py-12 lg:py-16">
+    <h1 class="max-w-[20ch] text-[clamp(30px,4vw,48px)]">{encabezado}</h1>
+    <slot />
+  </div>
+</Base>

@@ -1,0 +1,38 @@
+---
+/* Las 23 páginas internas se generan desde el árbol de navegación. Cuando en
+   el paso 2 llegue el contenido de una ruta concreta, basta con crear su
+   archivo en src/pages/: Astro da prioridad a la ruta estática sobre esta. */
+import Pagina from '../layouts/Pagina.astro';
+import { todosLosNodos, type NodoNav } from '../content/navegacion.ts';
+import { sitio } from '../content/sitio.ts';
+
+export function getStaticPaths() {
+  return todosLosNodos()
+    .filter((n) => n.url !== '/')
+    .map((nodo) => ({ params: { ruta: nodo.url.slice(1) }, props: { nodo } }));
+}
+
+interface Props { nodo: NodoNav }
+const { nodo } = Astro.props;
+---
+<Pagina
+  titulo={`${nodo.titulo} — ${sitio.nombre} · {{ POR CONFIRMAR }}`}
+  descripcion={`{{ POR CONFIRMAR: descripción de ${nodo.titulo} }}`}
+  encabezado={nodo.titulo}
+>
+  <p class="meta mt-8 inline-block border border-rule px-4 py-3 text-steel">
+    {'{{ CONTENIDO PENDIENTE — paso 2 }}'}
+  </p>
+
+  {nodo.hijos && (
+    <nav aria-label={`Dentro de ${nodo.titulo}`} class="mt-10 max-w-xl border-t border-rule">
+      <ul>
+        {nodo.hijos.map((hijo) => (
+          <li class="border-b border-rule">
+            <a href={hijo.url} class="block py-3.5 text-[16px] hover:text-steel">{hijo.titulo}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )}
+</Pagina>

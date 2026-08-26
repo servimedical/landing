@@ -1,29 +1,23 @@
 ---
-interface Props { sub?: string; class?: string }
-const { sub = 'GROUP', class: cls = '' } = Astro.props;
+/* {{ POR CONFIRMAR: logotipo definitivo en SVG }}
+   Mientras tanto, marca tipográfica. Aislado a propósito: cuando llegue el
+   SVG definitivo se reemplaza aquí y no hay que tocar nada más. */
+interface Props {
+  sufijo?: string;
+  /** `oscuro` para fondos navy: sube el contraste del sufijo a AA. */
+  variante?: 'claro' | 'oscuro';
+  class?: string;
+}
+const { sufijo = 'GROUP', variante = 'claro', class: clase = '' } = Astro.props;
 ---
-<span class:list={['logo', cls]}>
-  <svg class="logo-mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-    <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2.6"
-            stroke-dasharray="42.4 14.1" stroke-linecap="butt" />
-    <rect x="15.9" y="3.1" width="5" height="5" fill="var(--signal)" />
-  </svg>
-  <span class="logo-type">
-    <span class="logo-name">SERVIMEDICAL</span>
-    <span class="logo-sub">{sub}</span>
+<span class:list={['inline-flex items-baseline gap-[7px]', clase]}>
+  <span class="font-display text-[19px] leading-none [font-variation-settings:'wdth'_118] font-extrabold">
+    SERVIMEDICAL
   </span>
+  <span
+    class:list={[
+      'font-mono text-[10px] leading-none tracking-[.22em]',
+      variante === 'oscuro' ? 'text-white/70' : 'text-steel',
+    ]}
+  >{sufijo}</span>
 </span>
-
-<style>
-  .logo{ display:inline-flex; align-items:center; gap:10px; text-decoration:none; color:inherit }
-  .logo-mark{ width:26px; height:26px; flex:none }
-  .logo-type{ display:flex; align-items:baseline; gap:7px }
-  .logo-name{
-    font-family:var(--display); font-variation-settings:'wdth' 118;
-    font-weight:800; font-size:19px; letter-spacing:-.005em; line-height:1;
-  }
-  .logo-sub{
-    font-family:var(--meta); font-size:10px; letter-spacing:.22em;
-    color:var(--steel); line-height:1;
-  }
-</style>

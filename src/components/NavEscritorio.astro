@@ -1,0 +1,107 @@
+---
+import { enNavbar, rutaActiva, normalizar } from '../content/navegacion.ts';
+import PanelProductos from './PanelProductos.astro';
+
+interface Props { rutaActual: string }
+const { rutaActual } = Astro.props;
+
+const cadena = rutaActiva(rutaActual).map((n) => n.url);
+const exacta = normalizar(rutaActual);
+---
+<nav aria-label="Principal" class="hidden lg:block">
+  <ul class="flex items-center gap-7">
+    {enNavbar.map((nodo) => {
+      const enCadena = cadena.includes(nodo.url);
+      const esExacta = normalizar(nodo.url) === exacta;
+      const tienePanel = nodo.url === '/productos';
+      return (
+        <li class:list={['h-(--spacing-header) flex items-center', tienePanel && 'grupo-productos']}>
+          <a
+            href={nodo.url}
+            aria-current={esExacta ? 'page' : undefined}
+            class:list={[
+              'flex h-full items-center border-b-2 text-[14.5px] transition-colors',
+              enCadena ? 'border-signal' : 'border-transparent hover:border-rule',
+            ]}
+          >{nodo.titulo}</a>
+
+          {tienePanel && (
+            <button
+              type="button"
+              class="disparador ml-1.5 flex h-6 w-6 items-center justify-center text-steel"
+              aria-expanded="false"
+              aria-controls="panel-productos"
+              aria-label="Abrir el menú de productos"
+            >
+              <svg viewBox="0 0 10 6" class="chevron h-[6px] w-[10px] transition-transform" aria-hidden="true">
+                <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" />
+              </svg>
+            </button>
+          )}
+        </li>
+      );
+    })}
+  </ul>
+</nav>
+
+<PanelProductos rutaActual={rutaActual} />
+
+<style>
+  .disparador[aria-expanded='true'] .chevron { transform: rotate(180deg); }
+</style>
+
+<script>
+  const grupo = document.querySelector<HTMLElement>('.grupo-productos');
+  const disparador = document.querySelector<HTMLButtonElement>('.disparador');
+  const panel = document.getElementById('panel-productos');
+  const finoOApuntador = window.matchMedia('(hover: hover) and (pointer: fine)');
+
+  if (grupo && disparador && panel) {
+    let cerrarDiferido: number | undefined;
+
+    const abrir = (v: boolean) => {
+      window.clearTimeout(cerrarDiferido);
+      disparador.setAttribute('aria-expanded', String(v));
+      disparador.setAttribute('aria-label', v ? 'Cerrar el menú de productos' : 'Abrir el menú de productos');
+      if (v) {
+        panel.hidden = false;
+        // el atributo hidden debe caer antes de que corra la transición
+        requestAnimationFrame(() => panel.setAttribute('data-abierto', ''));
+      } else {
+        panel.removeAttribute('data-abierto');
+        cerrarDiferido = window.setTimeout(() => { panel.hidden = true; }, 150);
+      }
+    };
+
+    const abierto = () => disparador.getAttribute('aria-expanded') === 'true';
+
+    disparador.addEventListener('click', () => abrir(!abierto()));
+
+    // Hover sólo en apuntadores finos: en táctil manda el clic.
+    const entra = () => { if (finoOApuntador.matches) abrir(true); };
+    const sale = (e: MouseEvent) => {
+      if (!finoOApuntador.matches) return;
+      const hacia = e.relatedTarget as Node | null;
+      if (hacia && (grupo.contains(hacia) || panel.contains(hacia))) return;
+      abrir(false);
+    };
+    grupo.addEventListener('mouseenter', entra);
+    grupo.addEventListener('mouseleave', sale);
+    panel.addEventListener('mouseenter', entra);
+    panel.addEventListener('mouseleave', sale);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && abierto()) { abrir(false); disparador.focus(); }
+    });
+
+    // Clic fuera y pérdida de foco.
+    document.addEventListener('pointerdown', (e) => {
+      const t = e.target as Node;
+      if (abierto() && !panel.contains(t) && !grupo.contains(t)) abrir(false);
+    });
+    document.addEventListener('focusin', (e) => {
+      const t = e.target as Node;
+      if (abierto() && !panel.contains(t) && !grupo.contains(t)) abrir(false);
+    });
+  }
+</script>
