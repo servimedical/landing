@@ -1,0 +1,24 @@
+---
+import { marcas } from '../data/site.ts';
+---
+<div class="brands">
+  <div class="wrap row">
+    <span class="mono lbl">Marcas que representamos</span>
+    <ul>
+      {marcas.map((m) => (
+        <li class="b" title={m.rol}>{m.nombre}</li>
+      ))}
+    </ul>
+  </div>
+</div>
+
+<style>
+  .brands{ background:var(--navy); color:#fff; padding:24px 0 }
+  .row{ display:flex; align-items:center; gap:clamp(18px,3vw,44px); flex-wrap:wrap }
+  .lbl{ color:rgba(255,255,255,.5); flex:none }
+  ul{ display:flex; align-items:center; gap:clamp(18px,3.2vw,44px); flex-wrap:wrap; margin-left:auto }
+  .b{
+    font-family:var(--display); font-variation-settings:'wdth' 105; font-weight:700;
+    font-size:clamp(14px,1.4vw,18px); color:rgba(255,255,255,.92); cursor:default;
+  }
+</style>

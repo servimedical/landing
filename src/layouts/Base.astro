@@ -1,0 +1,74 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { site, contacto, marcas } from '../data/site.ts';
+
+interface Props { titulo: string; descripcion: string; ruta?: string }
+const { titulo, descripcion, ruta = Astro.url.pathname } = Astro.props;
+const canonical = new URL(ruta, site.dominio).href;
+
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: site.razon,
+  alternateName: site.nombre,
+  url: site.dominio,
+  description: site.descripcion,
+  telephone: contacto.fijo.label,
+  email: contacto.comercial.label,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Transversal 27 N.º 53C-47',
+    addressLocality: 'Bogotá',
+    addressCountry: 'CO',
+  },
+  brand: marcas.map((m) => ({ '@type': 'Brand', name: m.nombre })),
+};
+---
+<!doctype html>
+<html lang="es-CO">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{titulo}</title>
+  <meta name="description" content={descripcion} />
+  <link rel="canonical" href={canonical} />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <meta name="theme-color" content="#26416B" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content={site.nombre} />
+  <meta property="og:title" content={titulo} />
+  <meta property="og:description" content={descripcion} />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:locale" content="es_CO" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" />
+
+  <script type="application/ld+json" set:html={JSON.stringify(jsonld)} is:inline />
+  <script is:inline>document.documentElement.classList.add('js');</script>
+</head>
+<body>
+  <a class="skip" href="#main">Saltar al contenido</a>
+  <Header />
+  <main id="main"><slot /></main>
+  <Footer />
+
+  <script>
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      const io = new IntersectionObserver(
+        (es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }),
+        { threshold: .15 }
+      );
+      document.querySelectorAll('.reveal').forEach((e) => io.observe(e));
+    } else {
+      document.querySelectorAll('.reveal').forEach((e) => e.classList.add('in'));
+    }
+  </script>
+</body>
+</html>

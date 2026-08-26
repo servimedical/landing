@@ -1,0 +1,73 @@
+---
+import Logo from './Logo.astro';
+import { contacto, site } from '../data/site.ts';
+import { productos, servicios } from '../data/catalogo.ts';
+const year = new Date().getFullYear();
+---
+<footer class="foot">
+  <div class="wrap">
+    <div class="fgrid">
+      <div class="fbrand">
+        <a href="/" aria-label="Servimedical Group — inicio"><Logo sub="GROUP SAS" /></a>
+        <p>Equipamiento hospitalario y centrales de esterilización.<br />{site.ciudad}, {site.pais}.</p>
+        <p class="mono addr">{contacto.sede.label}</p>
+      </div>
+
+      <div>
+        <h5 class="mono">Productos</h5>
+        <ul>
+          {productos.map((c) => (
+            <li><a href={`/productos/${c.slug}/`}>{c.nombre}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h5 class="mono">Servicios</h5>
+        <ul>
+          {servicios.map((s) => (
+            <li><a href={`/servicios/${s.slug}/`}>{s.nombre}</a></li>
+          ))}
+          <li><a href="/#ciclo">El ciclo completo</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5 class="mono">Contacto</h5>
+        <ul>
+          <li><a href={contacto.fijo.href}>{contacto.fijo.label}</a></li>
+          <li><a href={contacto.whatsapp.href} rel="noopener">{contacto.whatsapp.label}</a></li>
+          <li><a href={contacto.comercial.href}>{contacto.comercial.label}</a></li>
+          <li><a href="/nosotros/">Nosotros</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="fbot mono">
+      <span>© {year} {site.razon}</span>
+      <span>{site.ciudad} · {site.pais}</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .foot{ background:var(--navy-deep); color:rgba(255,255,255,.6); padding:56px 0 34px }
+  .fgrid{
+    display:grid; grid-template-columns:1.5fr 1fr 1fr 1fr; gap:32px;
+    padding-bottom:34px; border-bottom:1px solid var(--rule-d);
+  }
+  .fbrand :global(.logo-name){ color:#fff }
+  .fbrand :global(.logo-sub){ color:rgba(255,255,255,.5) }
+  .fbrand p{ margin-top:16px; font-size:14.5px; max-width:34ch; line-height:1.55 }
+  .addr{ font-size:10.5px; letter-spacing:.1em; color:rgba(255,255,255,.42); margin-top:14px }
+  h5{
+    font-family:var(--meta); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
+    color:rgba(255,255,255,.45); margin:0 0 14px; font-weight:500;
+  }
+  li{ padding:5px 0; font-size:14.5px }
+  a{ text-decoration:none; transition:color .18s ease }
+  a:hover{ color:var(--signal) }
+  .fbot{ display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; padding-top:22px; font-size:11px }
+  @media (max-width:900px){ .fgrid{ grid-template-columns:1fr 1fr } }
+  @media (max-width:560px){ .fgrid{ grid-template-columns:1fr } }
+</style>

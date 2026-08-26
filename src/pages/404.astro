@@ -1,0 +1,35 @@
+---
+import Base from '../layouts/Base.astro';
+import { productos, servicios } from '../data/catalogo.ts';
+---
+<Base titulo="Página no encontrada — Servimedical Group" descripcion="La página que busca no existe o cambió de dirección.">
+  <section class="nf">
+    <div class="wrap">
+      <p class="mono eyebrow">Error 404 · ciclo interrumpido</p>
+      <h1>Esta página no existe<em>o cambió de dirección.</em></h1>
+      <p class="muted lede">Estas sí están donde deberían:</p>
+      <ul class="rutas hair">
+        <li><a href="/"><span class="mono i">—</span>Inicio</a></li>
+        {productos.map((c) => (
+          <li><a href={`/productos/${c.slug}/`}><span class="mono i num">{c.idx}</span>{c.nombre}</a></li>
+        ))}
+        {servicios.map((s) => (
+          <li><a href={`/servicios/${s.slug}/`}><span class="mono i num">{s.idx}</span>{s.nombre}</a></li>
+        ))}
+        <li><a href="/nosotros/"><span class="mono i">—</span>Nosotros</a></li>
+        <li><a href="/contacto/"><span class="mono i">—</span>Contacto</a></li>
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf{ padding-block:clamp(60px,9vw,120px) }
+  h1{ font-size:clamp(32px,4.4vw,54px); margin-top:20px; max-width:16ch }
+  h1 em{ font-style:normal; display:block; color:var(--steel) }
+  .lede{ margin-top:26px }
+  .rutas{ grid-template-columns:1fr; margin-top:22px; max-width:640px }
+  .rutas a{ display:flex; gap:16px; align-items:baseline; padding:14px 20px; text-decoration:none; font-size:16px; transition:background .2s ease }
+  .rutas a:hover{ background:var(--paper) }
+  .rutas .i{ font-size:10.5px; color:var(--steel); min-width:28px }
+</style>

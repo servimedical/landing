@@ -1,0 +1,232 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionHead from '../components/SectionHead.astro';
+import BrandStrip from '../components/BrandStrip.astro';
+import CycleChart from '../components/CycleChart.astro';
+import CycleRing from '../components/CycleRing.astro';
+import TraceLabel from '../components/TraceLabel.astro';
+import CtaContacto from '../components/CtaContacto.astro';
+import { productos, servicios } from '../data/catalogo.ts';
+import { sectores } from '../data/site.ts';
+---
+<Base
+  titulo="Servimedical Group — Centrales de esterilización en Colombia"
+  descripcion="Equipos, accesorios, consumibles, repuestos, trazabilidad y servicio técnico para centrales de esterilización. Importación directa y cobertura nacional desde Bogotá."
+>
+
+  <!-- ═══ HERO ═══ -->
+  <div class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="mono eyebrow">Central de esterilización · Colombia</p>
+        <h1>El ciclo completo<em>con un solo responsable.</em></h1>
+        <p class="lede">
+          Un paquete estéril pasa por seis estaciones antes de llegar al quirófano. Ponemos el equipo,
+          el insumo, el repuesto y la trazabilidad de cada una — y respondemos cuando algo falla.
+        </p>
+        <div class="actions">
+          <a class="btn" href="/contacto/"><span class="dot"></span>Solicitar cotización</a>
+          <a class="btn btn--ghost" href="#ciclo">Recorrer el ciclo</a>
+        </div>
+        <div class="hero-meta mono">
+          <span>Representantes Tuttnauer</span>
+          <span>Bogotá · cobertura nacional</span>
+          <span>Servicio técnico propio</span>
+        </div>
+      </div>
+      <CycleChart />
+    </div>
+  </div>
+
+  <BrandStrip />
+
+  <!-- ═══ EL CICLO ═══ -->
+  <section id="ciclo" class="field-paper">
+    <div class="wrap">
+      <SectionHead
+        eyebrow="Cómo trabajamos"
+        titulo="Seis estaciones y un hilo que las cose."
+        texto="El material sucio entra por un extremo y sale estéril por el otro. Cada etapa necesita un equipo, un insumo y un repuesto detrás; y todas necesitan la misma etiqueta encima para poder demostrar lo que pasó. Toque una estación."
+      />
+      <CycleRing />
+    </div>
+  </section>
+
+  <!-- ═══ TRAZABILIDAD ═══ -->
+  <section id="trazabilidad" class="field-navy">
+    <div class="wrap">
+      <SectionHead
+        eyebrow="Línea nueva"
+        titulo="Cada paquete cuenta dónde estuvo."
+        texto="Si un ciclo sale no conforme, la pregunta del comité de infecciones es una sola: qué paquetes salieron de ahí y a qué pacientes llegaron. Con trazabilidad se responde en un minuto; sin ella, se recoge todo el inventario."
+      />
+      <TraceLabel />
+
+      <div class="kit hair">
+        {productos.find((p) => p.slug === 'trazabilidad')!.familias.slice(0, 3).map((f, i) => (
+          <div>
+            <p class="n mono num">{String(i + 1).padStart(2, '0')}</p>
+            <h4>{f.nombre}</h4>
+            <p class="muted">{f.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      <a class="btn btn--signal kit-cta" href="/productos/trazabilidad/">
+        <span class="dot"></span>Ver la línea de trazabilidad
+      </a>
+    </div>
+  </section>
+
+  <!-- ═══ PRODUCTOS ═══ -->
+  <section id="productos">
+    <div class="wrap">
+      <SectionHead
+        eyebrow="Línea 1 · Productos"
+        titulo="Todo lo que una central consume."
+        texto="Cinco categorías, un solo proveedor: importación directa, existencias en Bogotá y despacho a todo el país."
+      />
+      <div class="cards hair">
+        {productos.map((c) => (
+          <a class:list={['card', { 'card--wide': c.idx === '1.1' || c.destacada }]} href={`/productos/${c.slug}/`}>
+            <p class="mono idx num">{c.idx}</p>
+            <h3>{c.nombre}</h3>
+            <p class="muted">{c.resumen}</p>
+            <div class="tags">
+              {c.destacada
+                ? c.familias.slice(0, 3).map((f) => (<span class="tag tag--hi">{f.nombre}</span>))
+                : c.marcas.slice(0, 3).map((m) => (<span class="tag">{m}</span>))}
+            </div>
+            <span class="go mono">Ver categoría →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ SERVICIOS ═══ -->
+  <section id="servicios" class="field-paper">
+    <div class="wrap">
+      <SectionHead
+        eyebrow="Línea 2 · Servicios"
+        titulo="Antes de comprar el equipo y mucho después."
+        texto="El equipo es una parte del problema. El resto es cómo se diseña la central y quién responde cuando el ciclo falla un martes a las 6 a. m."
+      />
+      <div class="svc hair">
+        {servicios.map((s) => (
+          <div>
+            <p class="mono idx num">{s.idx}</p>
+            <h3>{s.nombre}</h3>
+            <p class="muted svc-p">{s.resumen}</p>
+            <ul class="marks">{s.puntos.slice(0, 4).map((p) => (<li>{p}</li>))}</ul>
+            <a class="go mono" href={`/servicios/${s.slug}/`}>Ver el servicio →</a>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ NOSOTROS ═══ -->
+  <section id="nosotros">
+    <div class="wrap about">
+      <div>
+        <p class="mono eyebrow">Nosotros</p>
+        <h2>Una empresa colombiana de equipamiento hospitalario.</h2>
+        <div class="tags who">
+          {sectores.map((s) => (<span class="tag">{s}</span>))}
+        </div>
+        <a class="btn btn--ghost about-cta" href="/nosotros/">Conocer la compañía</a>
+      </div>
+      <div>
+        <p class="muted">
+          Servimedical Group SAS importa y comercializa equipamiento hospitalario en Colombia, con
+          especialidad en esterilización. Representamos marcas internacionales, sostenemos su servicio
+          técnico en el país y acompañamos a la institución desde el estudio previo hasta la operación
+          diaria de la central.
+        </p>
+        <p class="muted mt">
+          No vendemos un equipo y desaparecemos: la mayoría de nuestros clientes vuelve por el
+          consumible, el repuesto y el mantenimiento del mismo equipo que instalamos.
+        </p>
+        <div class="figs hair">
+          <div><p class="figure-v num">6</p><p class="figure-k mono">Marcas representadas</p></div>
+          <div><p class="figure-v">Nacional</p><p class="figure-k mono">Cobertura de servicio</p></div>
+          <div><p class="figure-v">Bogotá</p><p class="figure-k mono">Sala de ventas y taller</p></div>
+          <div><p class="figure-v">6 / 6</p><p class="figure-k mono">Estaciones cubiertas</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <CtaContacto />
+</Base>
+
+<style>
+  /* hero */
+  .hero{ padding:clamp(46px,6.5vw,84px) 0 clamp(46px,6.5vw,76px); border-bottom:1px solid var(--rule) }
+  .hero-grid{ display:grid; grid-template-columns:1.03fr .97fr; gap:clamp(32px,5vw,72px); align-items:center }
+  h1{ font-size:clamp(36px,4.6vw,60px); max-width:15ch; margin-top:20px }
+  h1 em{ font-style:normal; display:block; color:var(--steel) }
+  .lede{ margin-top:24px; max-width:52ch; color:var(--steel); font-size:clamp(16px,1.3vw,18.5px) }
+  .actions{ display:flex; flex-wrap:wrap; gap:12px; margin-top:32px }
+  .hero-meta{
+    display:flex; gap:clamp(14px,2vw,26px); flex-wrap:wrap; margin-top:36px;
+    padding-top:20px; border-top:1px solid var(--rule); color:var(--steel);
+  }
+
+  /* trazabilidad · kit */
+  .kit{ grid-template-columns:repeat(3,1fr); margin-top:clamp(32px,4vw,52px) }
+  .kit > div{ padding:26px }
+  .kit h4{ font-family:var(--display); font-variation-settings:'wdth' 108; font-size:18px; margin:10px 0 8px }
+  .kit p{ font-size:14.5px }
+  .kit .n{ font-size:11px; letter-spacing:.12em; color:var(--signal) }
+  .kit-cta{ margin-top:32px }
+  @media (max-width:900px){ .kit{ grid-template-columns:1fr } }
+
+  /* productos */
+  .cards{ grid-template-columns:repeat(6,1fr) }
+  .card{
+    padding:clamp(24px,2.8vw,38px); display:flex; flex-direction:column; gap:14px;
+    grid-column:span 2; text-decoration:none; transition:background .2s ease;
+  }
+  .card--wide{ grid-column:span 3 }
+  .card:hover{ background:#fbfcfe }
+  .card:hover .go{ color:var(--navy) }
+  .idx{ color:var(--steel) }
+  .card h3{ font-size:clamp(20px,2.1vw,26px) }
+  .card p{ font-size:15.5px }
+  .card .tags{ margin-top:auto; padding-top:12px }
+  .go{
+    font-size:10.5px; color:var(--steel); text-decoration:none;
+    padding-top:14px; border-top:1px solid var(--rule); transition:color .2s ease;
+  }
+
+  /* servicios */
+  .svc{ grid-template-columns:repeat(2,1fr) }
+  .svc > div{ padding:clamp(28px,3.4vw,44px); display:flex; flex-direction:column }
+  .svc h3{ font-size:clamp(22px,2.4vw,31px); margin:10px 0 14px }
+  .svc-p{ font-size:16px }
+  .svc .marks{ margin:22px 0 0 }
+  .svc .go{ margin-top:auto; padding-top:22px; display:inline-block; width:fit-content; border-top:0 }
+  .svc .go:hover{ color:var(--navy) }
+
+  /* nosotros */
+  .about{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(28px,5vw,72px); align-items:start }
+  .about h2{ font-size:clamp(30px,4vw,50px); margin-top:18px }
+  .who{ margin-top:26px }
+  .about-cta{ margin-top:28px }
+  .mt{ margin-top:16px }
+  .figs{ grid-template-columns:1fr 1fr; margin-top:28px }
+  .figs > div{ padding:22px }
+
+  @media (max-width:1000px){
+    .hero-grid, .about{ grid-template-columns:1fr }
+    .cards{ grid-template-columns:repeat(2,1fr) }
+    .card, .card--wide{ grid-column:span 1 }
+    .svc{ grid-template-columns:1fr }
+  }
+  @media (max-width:600px){
+    .cards{ grid-template-columns:1fr }
+    .figs{ grid-template-columns:1fr }
+  }
+</style>

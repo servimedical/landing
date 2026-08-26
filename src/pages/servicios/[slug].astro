@@ -1,0 +1,65 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import Vecinos from '../../components/Vecinos.astro';
+import CtaContacto from '../../components/CtaContacto.astro';
+import { servicios } from '../../data/catalogo.ts';
+
+export function getStaticPaths() {
+  return servicios.map((s, i) => ({
+    params: { slug: s.slug },
+    props: { s, anterior: servicios[i - 1], siguiente: servicios[i + 1] },
+  }));
+}
+
+const { s, anterior, siguiente } = Astro.props;
+---
+<Base titulo={`${s.nombre} — Servimedical Group`} descripcion={s.resumen}>
+  <PageHead
+    eyebrow="Línea 2 · Servicios"
+    idx={s.idx}
+    titulo={s.nombre}
+    intro={s.intro}
+    meta={s.entrega}
+  />
+
+  <section>
+    <div class="wrap two">
+      <div>
+        <p class="mono eyebrow">Alcance</p>
+        <h2>Qué cubre el servicio.</h2>
+        <ul class="marks alcance">{s.puntos.map((p) => (<li>{p}</li>))}</ul>
+      </div>
+      <div class="side">
+        <p class="mono eyebrow">Cómo empieza</p>
+        <ol class="pasos">
+          <li><span class="mono n num">01</span><div><b>Nos escribe</b><p class="muted">Marca, modelo y falla — o planos y número de salas.</p></div></li>
+          <li><span class="mono n num">02</span><div><b>Diagnóstico o estudio</b><p class="muted">Visita técnica o revisión documental, según el caso.</p></div></li>
+          <li><span class="mono n num">03</span><div><b>Propuesta</b><p class="muted">Alcance, tiempos y valor, por escrito y sin sorpresas.</p></div></li>
+          <li><span class="mono n num">04</span><div><b>Ejecución</b><p class="muted">Con informe técnico y hoja de vida actualizada del equipo.</p></div></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <Vecinos
+    anterior={anterior && { href: `/servicios/${anterior.slug}/`, label: anterior.nombre }}
+    siguiente={siguiente && { href: `/servicios/${siguiente.slug}/`, label: siguiente.nombre }}
+  />
+
+  <CtaContacto titulo={`Hablemos de ${s.corto.toLowerCase()}.`} />
+</Base>
+
+<style>
+  h2{ font-size:clamp(26px,3.2vw,40px); margin-top:18px }
+  .alcance{ margin-top:26px; max-width:46ch }
+  .side{ border-left:2px solid var(--signal); padding-left:clamp(20px,2.5vw,32px) }
+  .pasos{ margin-top:26px; counter-reset:p }
+  .pasos li{ display:grid; grid-template-columns:44px 1fr; gap:16px; padding:16px 0; border-top:1px solid var(--rule) }
+  .pasos .n{ font-size:11px; color:var(--signal); padding-top:3px }
+  .pasos b{ font-weight:600; font-size:15.5px }
+  .pasos p{ font-size:14.5px; margin-top:4px }
+  @media (max-width:900px){
+    .side{ border-left:0; border-top:2px solid var(--signal); padding-left:0; padding-top:26px }
+  }
+</style>

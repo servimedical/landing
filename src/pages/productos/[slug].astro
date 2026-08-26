@@ -1,0 +1,120 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import Vecinos from '../../components/Vecinos.astro';
+import CtaContacto from '../../components/CtaContacto.astro';
+import { productos, ciclo } from '../../data/catalogo.ts';
+
+export function getStaticPaths() {
+  return productos.map((c, i) => ({
+    params: { slug: c.slug },
+    props: { c, anterior: productos[i - 1], siguiente: productos[i + 1] },
+  }));
+}
+
+const { c, anterior, siguiente } = Astro.props;
+const meta: [string, string][] = [
+  ['Categoría', c.idx],
+  ['Familias', String(c.familias.length)],
+  ['Marcas', c.marcas.length ? c.marcas.join(' · ') : 'Solución integrada'],
+  ['En el ciclo', `${c.estaciones.length} de 6 estaciones`],
+];
+---
+<Base
+  titulo={`${c.nombre} — Servimedical Group`}
+  descripcion={c.resumen}
+>
+  <PageHead eyebrow={`Línea 1 · Productos`} idx={c.idx} titulo={c.nombre} intro={c.intro} meta={meta} />
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="mono eyebrow">Qué incluye</p>
+        <h2>{c.familias.length} familias dentro de esta categoría.</h2>
+      </div>
+
+      <div class="fam hair">
+        {c.familias.map((f, i) => (
+          <article>
+            <p class="mono f-idx num">{c.idx}.{i + 1}</p>
+            <h3>{f.nombre}</h3>
+            <p class="muted f-desc">{f.desc}</p>
+            {f.specs && (
+              <dl class="specs">
+                {f.specs.map(([k, v]) => (<div><dt>{k}</dt><dd>{v}</dd></div>))}
+              </dl>
+            )}
+            {f.marcas && f.marcas.length > 0 && (
+              <div class="tags f-tags">{f.marcas.map((m) => (<span class="tag">{m}</span>))}</div>
+            )}
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="field-paper">
+    <div class="wrap est">
+      <div>
+        <p class="mono eyebrow">Dónde entra</p>
+        <h2>Esta categoría interviene en {c.estaciones.length} de las seis estaciones.</h2>
+        <p class="muted est-p">
+          El ciclo es una cadena: si una estación falla, las anteriores se pierden.
+          Por eso cotizamos mirando el proceso completo y no una referencia suelta.
+        </p>
+        <a class="btn btn--ghost est-cta" href="/#ciclo">Ver el ciclo completo</a>
+      </div>
+      <ul class="est-list hair">
+        {ciclo.map((e, i) => (
+          <li class={c.estaciones.includes(i + 1) ? 'on' : ''}>
+            <span class="mono n num">{e.n}</span>
+            <span class="nm">{e.nombre}</span>
+            <span class="mono st">{c.estaciones.includes(i + 1) ? 'Cubierta' : '—'}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <Vecinos
+    anterior={anterior && { href: `/productos/${anterior.slug}/`, label: anterior.nombre }}
+    siguiente={siguiente && { href: `/productos/${siguiente.slug}/`, label: siguiente.nombre }}
+  />
+
+  <CtaContacto
+    titulo={`¿Cotizamos ${c.nombre.toLowerCase()}?`}
+    texto="Envíenos el requerimiento o la referencia que está buscando. Si no sabe cuál necesita, con el tipo de material y el volumen por turno se lo definimos."
+  />
+</Base>
+
+<style>
+  .fam{ grid-template-columns:repeat(2,1fr) }
+  .fam article{ padding:clamp(26px,3vw,40px); display:flex; flex-direction:column }
+  .f-idx{ font-size:11px; color:var(--steel) }
+  .fam h3{ font-size:clamp(20px,2.2vw,26px); margin:10px 0 12px }
+  .f-desc{ font-size:15.5px; max-width:48ch }
+  .fam .specs{ margin-top:22px }
+  .f-tags{ margin-top:20px }
+
+  .est{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(28px,5vw,72px); align-items:start }
+  .est h2{ font-size:clamp(26px,3.2vw,38px); margin-top:18px }
+  .est-p{ margin-top:18px; max-width:46ch }
+  .est-cta{ margin-top:26px }
+  .est-list{ grid-template-columns:1fr }
+  .est-list li{
+    display:grid; grid-template-columns:44px 1fr auto; gap:16px;
+    align-items:baseline; padding:15px 20px;
+  }
+  .est-list .n{ font-size:11px; color:var(--steel) }
+  .est-list .nm{ font-size:15.5px; color:var(--steel) }
+  .est-list .st{ font-size:10px; color:var(--mist) }
+  .est-list li.on .nm{ color:var(--navy) }
+  .est-list li.on .n{ color:var(--navy) }
+  .est-list li.on .st{ color:var(--navy) }
+  .est-list li.on{ border-left:3px solid var(--signal) }
+
+  @media (max-width:900px){
+    .fam{ grid-template-columns:1fr }
+    .est{ grid-template-columns:1fr }
+  }
+</style>

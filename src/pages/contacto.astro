@@ -1,0 +1,98 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { contacto } from '../data/site.ts';
+import { productos, servicios } from '../data/catalogo.ts';
+---
+<Base
+  titulo="Contacto — Servimedical Group"
+  descripcion="Solicite cotización de equipos, consumibles, repuestos, trazabilidad o servicio técnico. Bogotá: +57 (601) 211 4014 · WhatsApp +57 319 206 0943."
+>
+  <PageHead
+    eyebrow="Contacto"
+    titulo="Cuéntenos qué necesita esterilizar."
+    intro="Con el tipo de material, el volumen por turno y el espacio disponible le proponemos el equipo y le enviamos cotización. Si ya sabe la referencia, mejor: escríbala directamente."
+    meta={[
+      ['Fijo', contacto.fijo.label],
+      ['WhatsApp', contacto.whatsapp.label],
+      ['Comercial', contacto.comercial.label],
+      ['Sede', contacto.sede.label],
+    ]}
+  />
+
+  <section>
+    <div class="wrap two">
+      <div>
+        <p class="mono eyebrow">Canales</p>
+        <h2>Escoja el que le quede más cómodo.</h2>
+        <div class="canales hair">
+          <a href={contacto.whatsapp.href} rel="noopener">
+            <span class="mono k">WhatsApp · respuesta más rápida</span>
+            <span class="v">{contacto.whatsapp.label}</span>
+          </a>
+          <a href={contacto.fijo.href}>
+            <span class="mono k">Línea fija · Bogotá</span>
+            <span class="v">{contacto.fijo.label}</span>
+          </a>
+          <a href={contacto.comercial.href}>
+            <span class="mono k">Cotizaciones y pedidos</span>
+            <span class="v">{contacto.comercial.label}</span>
+          </a>
+          <a href={contacto.general.href}>
+            <span class="mono k">Información general</span>
+            <span class="v">{contacto.general.label}</span>
+          </a>
+          <div>
+            <span class="mono k">Sala de ventas y taller</span>
+            <span class="v">{contacto.sede.label}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="side">
+        <p class="mono eyebrow">Para cotizar más rápido</p>
+        <p class="muted intro">Si nos manda esto de entrada, evitamos dos correos de ida y vuelta:</p>
+        <ul class="marks datos">
+          <li>Qué material se procesa (instrumental, óptica, textil, endoscopios)</li>
+          <li>Volumen por turno o número de salas quirúrgicas</li>
+          <li>Método actual: vapor, plasma H₂O₂ o ninguno</li>
+          <li>Espacio disponible y acometidas (agua, vapor, eléctrico)</li>
+          <li>Si es reposición: marca, modelo y año del equipo actual</li>
+          <li>Si es servicio técnico: marca, modelo y descripción de la falla</li>
+        </ul>
+
+        <p class="mono eyebrow sobre">Sobre qué línea</p>
+        <div class="tags">
+          {productos.map((c) => (<a class="tag" href={`/productos/${c.slug}/`}>{c.nombre}</a>))}
+          {servicios.map((s) => (<a class="tag" href={`/servicios/${s.slug}/`}>{s.corto}</a>))}
+        </div>
+
+        <a class="btn wa" href={contacto.whatsapp.href} rel="noopener">
+          <span class="dot"></span>Escribir por WhatsApp
+        </a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  h2{ font-size:clamp(26px,3.4vw,40px); margin-top:18px }
+  .canales{ grid-template-columns:1fr; margin-top:28px }
+  .canales a, .canales div{
+    display:flex; flex-direction:column; gap:7px; padding:18px 22px;
+    text-decoration:none; transition:background .2s ease;
+  }
+  .canales a:hover{ background:var(--paper) }
+  .canales .k{ font-size:10px; color:var(--steel) }
+  .canales .v{ font-size:17px; font-weight:500 }
+  .side{ border-left:2px solid var(--signal); padding-left:clamp(20px,2.5vw,32px) }
+  .side .intro{ margin-top:16px; max-width:44ch }
+  .datos{ margin-top:20px; max-width:46ch }
+  .sobre{ margin-top:34px; margin-bottom:14px }
+  .tags a.tag{ text-decoration:none; transition:border-color .2s ease, color .2s ease }
+  .tags a.tag:hover{ border-color:var(--signal); color:var(--navy) }
+  .wa{ margin-top:32px }
+  @media (max-width:900px){
+    .side{ border-left:0; border-top:2px solid var(--signal); padding-left:0; padding-top:28px }
+  }
+</style>

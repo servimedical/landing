@@ -1,0 +1,158 @@
+/* ============================================================
+   SERVIMEDICAL GROUP — Sistema de diseño "Instrumento"
+   Todo lo visual nace de aquí. Cambiar un token cambia el sitio.
+   ============================================================ */
+
+:root{
+  /* --- color --- */
+  --navy:        #26416B;   /* institucional, texto y campos oscuros */
+  --navy-deep:   #1B3050;   /* pie de página, hover de campos */
+  --steel:       #395A85;   /* texto secundario */
+  --blue:        #446791;   /* trazos y detalles */
+  --mist:        #DBDBDB;   /* trazo inerte */
+  --paper:       #F2F5F8;   /* fondo de sección alterna */
+  --white:       #fff;
+  --signal:      #89D800;   /* acento único. Marca estado, nunca decora. */
+  --signal-dark: #7CC400;
+
+  --rule:   rgba(38,65,107,.15);   /* hairline sobre claro */
+  --rule-d: rgba(255,255,255,.16); /* hairline sobre navy */
+  --ink-d:  rgba(255,255,255,.66); /* texto secundario sobre navy */
+
+  /* --- métrica --- */
+  --maxw: 1260px;
+  --pad: clamp(20px, 5vw, 64px);
+  --gap: clamp(28px, 4.5vw, 64px);
+  --sec: clamp(64px, 8vw, 116px);
+  --atom: 7px;                      /* el cuadrado de señal */
+
+  /* --- tipografía --- */
+  --display: "Archivo", system-ui, sans-serif;
+  --body: "IBM Plex Sans", system-ui, sans-serif;
+  --meta: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+/* ---------- base ---------- */
+*{ box-sizing:border-box }
+html{ scroll-behavior:smooth; scroll-padding-top:88px; -webkit-text-size-adjust:100% }
+body{
+  margin:0; background:var(--white); color:var(--navy);
+  font-family:var(--body); font-size:17px; line-height:1.6;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  overflow-x:hidden;
+}
+h1,h2,h3,h4{
+  font-family:var(--display); font-variation-settings:'wdth' 112;
+  font-weight:700; line-height:1.03; letter-spacing:-.02em;
+  margin:0; text-wrap:balance;
+}
+p{ margin:0 }
+img,svg{ max-width:100% }
+a{ color:inherit }
+ul{ list-style:none; margin:0; padding:0 }
+:focus-visible{ outline:2px solid var(--signal); outline-offset:3px }
+::selection{ background:var(--signal); color:var(--navy-deep) }
+
+/* ---------- primitivas ---------- */
+.wrap{ max-width:var(--maxw); margin-inline:auto; padding-inline:var(--pad) }
+.mono{
+  font-family:var(--meta); font-size:12px; font-weight:500;
+  letter-spacing:.14em; text-transform:uppercase;
+}
+.eyebrow{ display:flex; align-items:center; gap:10px; color:var(--steel) }
+.eyebrow::before{ content:""; width:var(--atom); height:var(--atom); background:var(--signal); flex:none }
+.num{ font-variant-numeric:tabular-nums }
+
+section{ padding-block:var(--sec) }
+.field-paper{ background:var(--paper) }
+.field-navy{ background:var(--navy); color:#fff }
+.field-navy h1,.field-navy h2,.field-navy h3,.field-navy h4{ color:#fff }
+.field-navy .eyebrow,.field-navy .sec-head p{ color:var(--ink-d) }
+
+/* encabezado de sección */
+.sec-head{ max-width:62ch; margin-bottom:clamp(36px,5vw,58px) }
+.sec-head h2{ font-size:clamp(30px,4vw,50px); margin-top:18px }
+.sec-head p{ color:var(--steel); margin-top:18px; max-width:56ch }
+.sec-head .lede{ font-size:clamp(17px,1.4vw,19px) }
+
+/* rejilla de hairlines: los bloques se separan con 1px real, sin sombras */
+.hair{ display:grid; gap:1px; background:var(--rule); border:1px solid var(--rule) }
+.hair > *{ background:var(--white) }
+.field-navy .hair{ background:var(--rule-d); border-color:var(--rule-d) }
+.field-navy .hair > *{ background:var(--navy) }
+
+/* botones */
+.btn{
+  display:inline-flex; align-items:center; gap:9px;
+  background:var(--navy); color:#fff; text-decoration:none;
+  padding:13px 22px; font-size:14.5px; font-weight:500;
+  border:1px solid var(--navy); cursor:pointer;
+  transition:background .18s ease, transform .18s ease, border-color .18s ease;
+}
+.btn:hover{ background:var(--navy-deep); border-color:var(--navy-deep); transform:translateY(-1px) }
+.btn .dot{ width:var(--atom); height:var(--atom); background:var(--signal); flex:none }
+.btn--ghost{ background:transparent; color:var(--navy) }
+.btn--ghost:hover{ background:var(--paper); color:var(--navy) }
+.btn--signal{ background:var(--signal); border-color:var(--signal); color:var(--navy-deep); font-weight:600 }
+.btn--signal:hover{ background:var(--signal-dark); border-color:var(--signal-dark) }
+.btn--signal .dot{ background:var(--navy-deep) }
+.field-navy .btn--ghost{ color:#fff; border-color:var(--rule-d) }
+.field-navy .btn--ghost:hover{ background:rgba(255,255,255,.07) }
+
+/* etiquetas */
+.tag{
+  font-family:var(--meta); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase;
+  border:1px solid var(--rule); padding:6px 10px; color:var(--steel);
+  display:inline-block; white-space:nowrap;
+}
+.tag--hi{ border-color:var(--signal); background:rgba(137,216,0,.14); color:var(--navy) }
+.field-navy .tag{ border-color:var(--rule-d); color:var(--ink-d) }
+.tags{ display:flex; flex-wrap:wrap; gap:7px }
+
+/* lista con marcador de señal */
+.marks li{
+  padding:11px 0; border-top:1px solid var(--rule);
+  font-size:15.5px; display:flex; gap:12px; align-items:baseline;
+}
+.marks li::before{ content:""; width:6px; height:6px; background:var(--signal); flex:none; translate:0 -1px }
+.field-navy .marks li{ border-color:var(--rule-d) }
+
+/* ficha técnica: filas clave/valor en hairline */
+.specs{ border-top:1px solid var(--rule) }
+.specs div{
+  display:grid; grid-template-columns:minmax(120px,.42fr) 1fr; gap:18px;
+  padding:12px 0; border-bottom:1px solid var(--rule); align-items:baseline;
+}
+.specs dt{ font-family:var(--meta); font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--steel) }
+.specs dd{ margin:0; font-size:15.5px; font-variant-numeric:tabular-nums }
+.field-navy .specs, .field-navy .specs div{ border-color:var(--rule-d) }
+
+/* cifras */
+.figure-v{ font-family:var(--display); font-variation-settings:'wdth' 100; font-weight:700; font-size:clamp(26px,3.2vw,38px); line-height:1 }
+.figure-k{ color:var(--steel); margin-top:8px }
+.field-navy .figure-k{ color:var(--ink-d) }
+
+/* Aparición al hacer scroll. Se activa sólo con la clase .js que pone el
+   script en línea del <head>: sin JavaScript el contenido queda visible. */
+.js .reveal{ opacity:0; transform:translateY(10px); transition:opacity .6s ease, transform .6s ease }
+.js .reveal.in{ opacity:1; transform:none }
+
+/* ---------- utilidades ---------- */
+.stack{ display:grid; gap:var(--gap) }
+.two{ display:grid; grid-template-columns:1fr 1fr; gap:var(--gap) }
+.muted{ color:var(--steel) }
+.field-navy .muted{ color:var(--ink-d) }
+.skip{
+  position:absolute; left:-9999px; top:0; background:var(--navy); color:#fff;
+  padding:12px 18px; z-index:200; text-decoration:none;
+}
+.skip:focus{ left:12px; top:12px }
+
+@media (max-width:900px){
+  .two{ grid-template-columns:1fr }
+}
+@media (prefers-reduced-motion:reduce){
+  *{ animation:none !important; transition:none !important }
+  html{ scroll-behavior:auto }
+  .js .reveal{ opacity:1; transform:none }
+}

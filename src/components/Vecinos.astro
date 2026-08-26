@@ -1,0 +1,26 @@
+---
+interface Props { anterior?: { href: string; label: string }; siguiente?: { href: string; label: string } }
+const { anterior, siguiente } = Astro.props;
+---
+{(anterior || siguiente) && (
+  <nav class="vecinos" aria-label="Otras categorías">
+    <div class="wrap row">
+      {anterior
+        ? <a href={anterior.href} class="v v--prev"><span class="mono k">← Anterior</span><span class="t">{anterior.label}</span></a>
+        : <span></span>}
+      {siguiente
+        ? <a href={siguiente.href} class="v v--next"><span class="mono k">Siguiente →</span><span class="t">{siguiente.label}</span></a>
+        : <span></span>}
+    </div>
+  </nav>
+)}
+
+<style>
+  .vecinos{ border-top:1px solid var(--rule) }
+  .row{ display:flex; justify-content:space-between; gap:24px; padding-block:26px }
+  .v{ display:flex; flex-direction:column; gap:6px; text-decoration:none; max-width:40ch }
+  .v--next{ text-align:right; align-items:flex-end }
+  .k{ font-size:10.5px; color:var(--steel) }
+  .t{ font-family:var(--display); font-variation-settings:'wdth' 110; font-weight:700; font-size:clamp(17px,2vw,22px) }
+  .v:hover .t{ color:var(--steel) }
+</style>
