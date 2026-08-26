@@ -3,8 +3,10 @@ import type { CategoriaProducto } from './tipos.ts';
 export type FichaCategoria = {
   slug: CategoriaProducto | 'repuestos';
   titulo: string;
-  /** Dos frases. */
+  /** Dos frases, para el encabezado del índice. */
   intro: string;
+  /** Una línea, para el panel desplegable del menú. */
+  panel: string;
   /** Dato que falta y que cambia el argumento de toda la categoría. */
   porConfirmar?: string;
   seo: { titulo: string; descripcion: string };
@@ -18,6 +20,7 @@ export const categorias: FichaCategoria[] = [
   {
     slug: 'esterilizacion',
     titulo: 'Equipos de esterilización',
+    panel: 'Vapor, plasma de peróxido y termodesinfección.',
     intro:
       'La elección de método define el resto de la central: qué se puede procesar, cuánto espacio ocupa y qué se compra todos los meses. Vapor para lo termorresistente, plasma de peróxido para lo que el vapor destruye, y termodesinfección para lo que entra sucio desde salas.',
     seo: {
@@ -29,6 +32,7 @@ export const categorias: FichaCategoria[] = [
   {
     slug: 'consumibles',
     titulo: 'Consumibles',
+    panel: 'Barrera estéril y evidencia del proceso, mes a mes.',
     intro:
       'Es el gasto que la central hace todos los meses y el que decide si un ciclo se puede liberar. Barrera estéril por un lado y evidencia del proceso por el otro: sin lo primero no hay paquete, y sin lo segundo no hay liberación de carga.',
     seo: {
@@ -40,6 +44,7 @@ export const categorias: FichaCategoria[] = [
   {
     slug: 'accesorios',
     titulo: 'Accesorios',
+    panel: 'Agua, aire y sellado: lo que hace válido el ciclo.',
     intro:
       'Buena parte de las fallas que atendemos no están en el esterilizador: están en el agua que lo alimenta, en el aire que lo acciona o en un sellado que nunca cerró bien. No son opcionales, son la condición para que el ciclo sea válido.',
     seo: {
@@ -51,6 +56,7 @@ export const categorias: FichaCategoria[] = [
   {
     slug: 'repuestos',
     titulo: 'Repuestos',
+    panel: 'Partes originales, con inventario local en Bogotá.',
     intro:
       'Partes originales de las marcas que representamos, con inventario local de lo que más se pide. Atendemos equipos dentro y fuera de garantía, y también de marcas que no vendimos.',
     seo: {
@@ -62,6 +68,7 @@ export const categorias: FichaCategoria[] = [
   {
     slug: 'mobiliario',
     titulo: 'Mobiliario en acero inoxidable',
+    panel: 'Acero AISI 304 para lavado, empaque y almacenamiento.',
     intro:
       'Acero AISI 304 para las estaciones donde el material se manipula y espera: lavado, empaque, almacenamiento y transporte. Se dimensiona sobre el plano de la central, porque un mueble que no corresponde al flujo obliga al personal a corregirlo todos los días.',
     porConfirmar:

@@ -1,6 +1,13 @@
 ---
 import { categoriasProducto } from '../content/navegacion.ts';
 import { anclaCiclo } from '../content/sitio.ts';
+import { categorias } from '../content/productos/index.ts';
+
+/* La estructura del menú sale de navegacion.ts; el texto, de la fuente de
+   contenido de producto. Duplicarlo dejaba el marcador a la vista del menú
+   en las 26 páginas del sitio. */
+const lineaDe = (url: string) =>
+  categorias.find((c) => `/productos/${c.slug}` === url)?.panel ?? '';
 
 interface Props { rutaActual: string }
 const { rutaActual } = Astro.props;
@@ -23,7 +30,7 @@ const activa = (url: string) => rutaActual === url || rutaActual.startsWith(url 
             activa(cat.url) ? 'border-signal' : 'border-transparent hover:border-rule',
           ]}
         >{cat.titulo}</a>
-        <p class="mt-2 text-[13px] leading-snug text-steel">{cat.descripcion}</p>
+        <p class="mt-2 text-[13px] leading-snug text-steel">{lineaDe(cat.url)}</p>
         {cat.hijos && (
           <ul class="mt-4 border-t border-rule">
             {cat.hijos.map((hijo) => (

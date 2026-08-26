@@ -15,15 +15,11 @@
 export type NodoNav = {
   titulo: string;
   url: string;
-  /** Una línea, para el panel de productos. */
-  descripcion?: string;
   hijos?: NodoNav[];
   /** Aparece en la barra principal. */
   enNavbar?: boolean;
   enFooter?: 'productos' | 'servicios' | 'empresa' | false;
 };
-
-const PENDIENTE = '{{ POR CONFIRMAR: descripción de una línea }}';
 
 export const navegacion: NodoNav[] = [
   { titulo: 'Inicio', url: '/', enNavbar: false, enFooter: false },
@@ -39,7 +35,6 @@ export const navegacion: NodoNav[] = [
       {
         titulo: 'Equipos de esterilización',
         url: '/productos/esterilizacion',
-        descripcion: PENDIENTE,
         enFooter: 'productos',
         hijos: [
           { titulo: 'Autoclaves de vapor', url: '/productos/esterilizacion/autoclaves-de-vapor' },
@@ -50,7 +45,6 @@ export const navegacion: NodoNav[] = [
       {
         titulo: 'Consumibles',
         url: '/productos/consumibles',
-        descripcion: PENDIENTE,
         enFooter: 'productos',
         hijos: [
           { titulo: 'Papel y empaque', url: '/productos/consumibles/papel-y-empaque' },
@@ -61,7 +55,6 @@ export const navegacion: NodoNav[] = [
       {
         titulo: 'Accesorios',
         url: '/productos/accesorios',
-        descripcion: PENDIENTE,
         enFooter: 'productos',
         hijos: [
           { titulo: 'Selladoras', url: '/productos/accesorios/selladoras' },
@@ -72,13 +65,11 @@ export const navegacion: NodoNav[] = [
       {
         titulo: 'Repuestos',
         url: '/productos/repuestos',
-        descripcion: PENDIENTE,
         enFooter: 'productos',
       },
       {
         titulo: 'Mobiliario en acero inoxidable',
         url: '/productos/mobiliario',
-        descripcion: PENDIENTE,
         enFooter: 'productos',
         hijos: [
           { titulo: 'Almacenamiento estéril', url: '/productos/mobiliario/almacenamiento-esteril' },

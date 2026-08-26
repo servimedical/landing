@@ -49,6 +49,33 @@ recorrer('(global) api/formulario.ts', {
   destinatarios: '{{ POR CONFIRMAR: dirección o direcciones que reciben cada formulario, y si repuestos y servicio técnico van a un destinatario distinto de comercial }}',
 });
 
+/* Barrido del código fuente: cualquier marcador que no viva en un módulo de
+   contenido —comentarios, plantillas, la función de formularios— también
+   tiene que aparecer en el inventario. */
+const { readdirSync, readFileSync, statSync } = await import('node:fs');
+const { join } = await import('node:path');
+
+const recorrerDir = (d) => readdirSync(d).flatMap((f) => {
+  const p = join(d, f);
+  return statSync(p).isDirectory() ? recorrerDir(p) : [p];
+});
+
+const yaVisto = new Set(
+  [...comercial.values(), ...juridico.values()].flat().map(([, t]) => t)
+);
+
+for (const dir of ['src', 'api']) {
+  for (const archivo of recorrerDir(dir)) {
+    if (!/\.(astro|ts|tsx|mjs|css)$/.test(archivo)) continue;
+    for (const m of readFileSync(archivo, 'utf8').matchAll(RE)) {
+      const texto = m[2].trim() || '(sin detalle)';
+      if (yaVisto.has(texto)) continue;
+      yaVisto.add(texto);
+      anota(null, `(código) ${archivo}`, 'fuente', m[1], texto);
+    }
+  }
+}
+
 const imprimir = (titulo, grupos) => {
   const total = [...grupos.values()].reduce((n, l) => n + l.length, 0);
   console.log(`\n${'═'.repeat(72)}\n${titulo} — ${total} en ${grupos.size} páginas\n${'═'.repeat(72)}`);
