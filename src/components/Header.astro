@@ -164,10 +164,18 @@ const on = (href: string) => href === '/' ? path === '/' : path.startsWith(href)
 <script>
   const b = document.querySelector<HTMLButtonElement>('.burger');
   const m = document.getElementById('menu-movil');
-  b?.addEventListener('click', () => {
-    const open = b.getAttribute('aria-expanded') === 'true';
-    b.setAttribute('aria-expanded', String(!open));
-    b.setAttribute('aria-label', open ? 'Abrir menú' : 'Cerrar menú');
-    if (m) m.hidden = open;
-  });
+
+  const set = (open: boolean) => {
+    if (!b) return;
+    b.setAttribute('aria-expanded', String(open));
+    b.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+    if (m) m.hidden = !open;
+  };
+
+  b?.addEventListener('click', () => set(b.getAttribute('aria-expanded') !== 'true'));
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') set(false); });
+
+  // al pasar a ancho de escritorio el menú móvil se oculta: si no, queda abierto sobre la página
+  const ancho = window.matchMedia('(min-width: 1041px)');
+  ancho.addEventListener('change', (e) => { if (e.matches) set(false); });
 </script>
