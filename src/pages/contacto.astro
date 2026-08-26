@@ -1,8 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
 import PageHead from '../components/PageHead.astro';
+import FormularioCotizacion from '../components/FormularioCotizacion.astro';
 import { contacto } from '../data/site.ts';
-import { productos, servicios } from '../data/catalogo.ts';
 ---
 <Base
   titulo="Contacto — Servimedical Group"
@@ -47,30 +47,16 @@ import { productos, servicios } from '../data/catalogo.ts';
             <span class="v">{contacto.sede.label}</span>
           </div>
         </div>
+
+        <p class="mono eyebrow horario">Antes de escribir</p>
+        <p class="muted tip">
+          Lo que más acelera una cotización es saber qué material se procesa y
+          cuánto. Con eso definimos el equipo; sin eso, la conversación empieza
+          por preguntas que el formulario de al lado ya hace.
+        </p>
       </div>
 
-      <div class="side">
-        <p class="mono eyebrow">Para cotizar más rápido</p>
-        <p class="muted intro">Si nos manda esto de entrada, evitamos dos correos de ida y vuelta:</p>
-        <ul class="marks datos">
-          <li>Qué material se procesa (instrumental, óptica, textil, endoscopios)</li>
-          <li>Volumen por turno o número de salas quirúrgicas</li>
-          <li>Método actual: vapor, plasma H₂O₂ o ninguno</li>
-          <li>Espacio disponible y acometidas (agua, vapor, eléctrico)</li>
-          <li>Si es reposición: marca, modelo y año del equipo actual</li>
-          <li>Si es servicio técnico: marca, modelo y descripción de la falla</li>
-        </ul>
-
-        <p class="mono eyebrow sobre">Sobre qué línea</p>
-        <div class="tags">
-          {productos.map((c) => (<a class="tag" href={`/productos/${c.slug}/`}>{c.nombre}</a>))}
-          {servicios.map((s) => (<a class="tag" href={`/servicios/${s.slug}/`}>{s.corto}</a>))}
-        </div>
-
-        <a class="btn wa" href={contacto.whatsapp.href} rel="noopener">
-          <span class="dot"></span>Escribir por WhatsApp
-        </a>
-      </div>
+      <FormularioCotizacion />
     </div>
   </section>
 </Base>
@@ -85,14 +71,10 @@ import { productos, servicios } from '../data/catalogo.ts';
   .canales a:hover{ background:var(--paper) }
   .canales .k{ font-size:10px; color:var(--steel) }
   .canales .v{ font-size:17px; font-weight:500 }
-  .side{ border-left:2px solid var(--signal); padding-left:clamp(20px,2.5vw,32px) }
-  .side .intro{ margin-top:16px; max-width:44ch }
-  .datos{ margin-top:20px; max-width:46ch }
-  .sobre{ margin-top:34px; margin-bottom:14px }
-  .tags a.tag{ text-decoration:none; transition:border-color .2s ease, color .2s ease }
-  .tags a.tag:hover{ border-color:var(--signal); color:var(--navy) }
-  .wa{ margin-top:32px }
-  @media (max-width:900px){
-    .side{ border-left:0; border-top:2px solid var(--signal); padding-left:0; padding-top:28px }
+  .horario{ margin-top:36px }
+  .tip{ margin-top:14px; max-width:44ch; font-size:15.5px }
+  @media (max-width:520px){
+    .canales a, .canales div{ gap:6px }
+    .canales .v{ font-size:15px }
   }
 </style>

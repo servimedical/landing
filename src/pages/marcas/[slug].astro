@@ -1,0 +1,132 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHead from '../../components/PageHead.astro';
+import Vecinos from '../../components/Vecinos.astro';
+import CtaContacto from '../../components/CtaContacto.astro';
+import { marcas } from '../../data/site.ts';
+import { ciclo, porMarca, estacionesDeMarca } from '../../data/catalogo.ts';
+
+export function getStaticPaths() {
+  return marcas.map((m, i) => ({
+    params: { slug: m.slug },
+    props: { m, anterior: marcas[i - 1], siguiente: marcas[i + 1] },
+  }));
+}
+
+const { m, anterior, siguiente } = Astro.props;
+const donde = porMarca(m.nombre);
+const estaciones = estacionesDeMarca(m.nombre);
+const nFamilias = donde.reduce((n, d) => n + d.familias.length, 0);
+
+const meta: [string, string][] = [
+  ['Rol en la central', m.rol],
+  ['Categorías', String(donde.length)],
+  ['En el ciclo', `${estaciones.length} de 6 estaciones`],
+  ...(m.origen ? ([['Origen', m.origen]] as [string, string][]) : []),
+  ...(m.desde ? ([['Representación', `desde ${m.desde}`]] as [string, string][]) : []),
+  ['Servicio técnico', 'Propio, en Colombia'],
+];
+---
+<Base
+  titulo={`${m.nombre} en Colombia — ${m.rol} | Servimedical Group`}
+  descripcion={`Representamos ${m.nombre} en Colombia: ${m.rol.toLowerCase()}. Importación directa, repuesto original y servicio técnico propio desde Bogotá.`}
+>
+  <PageHead eyebrow="Marca representada" titulo={m.nombre} intro={m.intro} meta={meta} />
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="mono eyebrow">Qué cubre</p>
+        <h2>
+          {nFamilias > 0
+            ? `${nFamilias} ${nFamilias === 1 ? 'familia' : 'familias'} de producto en ${donde.length} ${donde.length === 1 ? 'categoría' : 'categorías'}.`
+            : `Presente en ${donde.length} ${donde.length === 1 ? 'categoría' : 'categorías'} del catálogo.`}
+        </h2>
+      </div>
+
+      <ul class="donde hair">
+        {donde.map(({ categoria, familias }) => (
+          <li>
+            <a href={`/productos/${categoria.slug}/`}>
+              <span class="mono i num">{categoria.idx}</span>
+              <span class="b">
+                <span class="t">{categoria.nombre}</span>
+                {familias.length > 0 && (
+                  <span class="fams">{familias.map((f) => f.nombre).join(' · ')}</span>
+                )}
+              </span>
+              <span class="mono go">Ver categoría</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="field-paper">
+    <div class="wrap est">
+      <div>
+        <p class="mono eyebrow">Dónde entra</p>
+        <h2>{m.nombre} interviene en {estaciones.length} de las seis estaciones.</h2>
+        <p class="muted est-p">
+          Representar una marca sin sostenerla no sirve de nada. De {m.nombre} mantenemos
+          repuesto original, técnicos entrenados para atenderla y el consumible que necesita
+          para operar dentro de norma.
+        </p>
+        <a class="btn btn--ghost est-cta" href="/servicios/servicio-tecnico/">Ver el servicio técnico</a>
+      </div>
+      <ul class="est-list hair">
+        {ciclo.map((e, i) => (
+          <li class={estaciones.includes(i + 1) ? 'on' : ''}>
+            <span class="mono n num">{e.n}</span>
+            <span class="nm">{e.nombre}</span>
+            <span class="mono st">{estaciones.includes(i + 1) ? 'Cubierta' : '—'}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <Vecinos
+    anterior={anterior && { href: `/marcas/${anterior.slug}/`, label: anterior.nombre }}
+    siguiente={siguiente && { href: `/marcas/${siguiente.slug}/`, label: siguiente.nombre }}
+  />
+
+  <CtaContacto
+    titulo={`¿Cotizamos ${m.nombre}?`}
+    texto="Díganos la referencia que busca. Si no la tiene, con el tipo de material y el volumen por turno le proponemos el equipo o el consumible que corresponde."
+  />
+</Base>
+
+<style>
+  .donde{ grid-template-columns:1fr }
+  .donde a{
+    display:grid; grid-template-columns:60px 1fr auto; gap:clamp(14px,2.5vw,30px);
+    padding:clamp(20px,2.4vw,28px); text-decoration:none; align-items:baseline;
+    transition:background .2s ease;
+  }
+  .donde a:hover{ background:#fbfcfe }
+  .donde a:hover .go{ color:var(--navy) }
+  .donde .i{ font-size:11px; color:var(--steel) }
+  .t{ font-family:var(--display); font-variation-settings:'wdth' 110; font-weight:700; font-size:clamp(18px,2.1vw,24px); display:block }
+  .fams{ display:block; color:var(--steel); font-size:15px; margin-top:8px; max-width:56ch }
+  .go{ font-size:10.5px; color:var(--steel); white-space:nowrap; transition:color .2s ease }
+
+  .est{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(28px,5vw,72px); align-items:start }
+  .est h2{ font-size:clamp(24px,3vw,36px); margin-top:18px }
+  .est-p{ margin-top:18px; max-width:46ch }
+  .est-cta{ margin-top:26px }
+  .est-list{ grid-template-columns:1fr }
+  .est-list li{ display:grid; grid-template-columns:44px 1fr auto; gap:16px; align-items:baseline; padding:15px 20px }
+  .est-list .n{ font-size:11px; color:var(--steel) }
+  .est-list .nm{ font-size:15.5px; color:var(--steel) }
+  .est-list .st{ font-size:10px; color:var(--mist) }
+  .est-list li.on .nm, .est-list li.on .n, .est-list li.on .st{ color:var(--navy) }
+  .est-list li.on{ border-left:3px solid var(--signal) }
+
+  @media (max-width:860px){
+    .donde a{ grid-template-columns:44px 1fr }
+    .donde .go{ display:none }
+    .est{ grid-template-columns:1fr }
+  }
+</style>

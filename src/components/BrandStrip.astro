@@ -6,7 +6,7 @@ import { marcas } from '../data/site.ts';
     <span class="mono lbl">Marcas que representamos</span>
     <ul>
       {marcas.map((m) => (
-        <li class="b" title={m.rol}>{m.nombre}</li>
+        <li><a class="b" href={`/marcas/${m.slug}/`} title={m.rol}>{m.nombre}</a></li>
       ))}
     </ul>
   </div>
@@ -19,6 +19,9 @@ import { marcas } from '../data/site.ts';
   ul{ display:flex; align-items:center; gap:clamp(18px,3.2vw,44px); flex-wrap:wrap; margin-left:auto }
   .b{
     font-family:var(--display); font-variation-settings:'wdth' 105; font-weight:700;
-    font-size:clamp(14px,1.4vw,18px); color:rgba(255,255,255,.92); cursor:default;
+    font-size:clamp(14px,1.4vw,18px); color:rgba(255,255,255,.92);
+    text-decoration:none; padding-bottom:3px;
+    border-bottom:2px solid transparent; transition:border-color .2s ease;
   }
+  .b:hover{ border-color:var(--signal) }
 </style>

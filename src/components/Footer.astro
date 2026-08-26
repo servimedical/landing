@@ -2,6 +2,7 @@
 import Logo from './Logo.astro';
 import { contacto, site } from '../data/site.ts';
 import { productos, servicios } from '../data/catalogo.ts';
+import { marcas } from '../data/site.ts';
 const year = new Date().getFullYear();
 ---
 <footer class="foot">
@@ -29,6 +30,12 @@ const year = new Date().getFullYear();
             <li><a href={`/servicios/${s.slug}/`}>{s.nombre}</a></li>
           ))}
           <li><a href="/#ciclo">El ciclo completo</a></li>
+        </ul>
+        <h5 class="mono mt">Marcas</h5>
+        <ul>
+          {marcas.map((m) => (
+            <li><a href={`/marcas/${m.slug}/`}>{m.nombre}</a></li>
+          ))}
         </ul>
       </div>
 
@@ -64,6 +71,7 @@ const year = new Date().getFullYear();
     font-family:var(--meta); font-size:11px; letter-spacing:.14em; text-transform:uppercase;
     color:rgba(255,255,255,.45); margin:0 0 14px; font-weight:500;
   }
+  h5.mt{ margin-top:26px }
   li{ padding:5px 0; font-size:14.5px }
   a{ text-decoration:none; transition:color .18s ease }
   a:hover{ color:var(--signal) }

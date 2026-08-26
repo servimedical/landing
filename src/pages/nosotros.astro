@@ -4,6 +4,10 @@ import PageHead from '../components/PageHead.astro';
 import BrandStrip from '../components/BrandStrip.astro';
 import CtaContacto from '../components/CtaContacto.astro';
 import { marcas, sectores } from '../data/site.ts';
+import { ciclo } from '../data/catalogo.ts';
+
+const nMarcas = marcas.length;
+const nEst = ciclo.length;
 ---
 <Base
   titulo="Nosotros — Servimedical Group"
@@ -16,7 +20,7 @@ import { marcas, sectores } from '../data/site.ts';
     meta={[
       ['Sede', 'Bogotá, Colombia'],
       ['Cobertura', 'Nacional'],
-      ['Marcas representadas', '6'],
+      ['Marcas representadas', String(nMarcas)],
       ['Líneas de negocio', 'Productos y servicios'],
     ]}
   />
@@ -57,9 +61,12 @@ import { marcas, sectores } from '../data/site.ts';
       <ul class="marcas hair">
         {marcas.map((m, i) => (
           <li>
-            <span class="mono n num">{String(i + 1).padStart(2, '0')}</span>
-            <span class="nm">{m.nombre}</span>
-            <span class="rol muted">{m.rol}</span>
+            <a href={`/marcas/${m.slug}/`}>
+              <span class="mono n num">{String(i + 1).padStart(2, '0')}</span>
+              <span class="nm">{m.nombre}</span>
+              <span class="rol muted">{m.rol}</span>
+              <span class="mono go">Ver marca</span>
+            </a>
           </li>
         ))}
       </ul>
@@ -74,8 +81,8 @@ import { marcas, sectores } from '../data/site.ts';
         <div class="tags who">{sectores.map((s) => (<span class="tag">{s}</span>))}</div>
       </div>
       <div class="figs hair">
-        <div><p class="figure-v num">6</p><p class="figure-k mono">Marcas representadas</p></div>
-        <div><p class="figure-v num">6 / 6</p><p class="figure-k mono">Estaciones del ciclo cubiertas</p></div>
+        <div><p class="figure-v num">{nMarcas}</p><p class="figure-k mono">Marcas representadas</p></div>
+        <div><p class="figure-v num">{nEst} / {nEst}</p><p class="figure-k mono">Estaciones del ciclo cubiertas</p></div>
         <div><p class="figure-v">Nacional</p><p class="figure-k mono">Cobertura de servicio técnico</p></div>
         <div><p class="figure-v">Bogotá</p><p class="figure-k mono">Sala de ventas y taller</p></div>
       </div>
@@ -90,7 +97,14 @@ import { marcas, sectores } from '../data/site.ts';
   h2{ font-size:clamp(26px,3.4vw,42px); margin-top:18px }
   .mt{ margin-top:16px }
   .marcas{ grid-template-columns:1fr }
-  .marcas li{ display:grid; grid-template-columns:56px 1fr 1.2fr; gap:20px; align-items:baseline; padding:18px 22px }
+  .marcas a{
+    display:grid; grid-template-columns:56px 1fr 1.2fr auto; gap:20px;
+    align-items:baseline; padding:18px 22px; text-decoration:none;
+    transition:background .2s ease;
+  }
+  .marcas a:hover{ background:#fff }
+  .marcas a:hover .go{ color:var(--navy) }
+  .marcas .go{ font-size:10.5px; color:var(--steel); white-space:nowrap; transition:color .2s ease }
   .marcas .n{ font-size:11px; color:var(--steel) }
   .marcas .nm{ font-family:var(--display); font-variation-settings:'wdth' 108; font-weight:700; font-size:clamp(18px,2vw,23px) }
   .marcas .rol{ font-size:15px }
@@ -98,7 +112,8 @@ import { marcas, sectores } from '../data/site.ts';
   .figs{ grid-template-columns:1fr 1fr }
   .figs > div{ padding:24px }
   @media (max-width:700px){
-    .marcas li{ grid-template-columns:40px 1fr; gap:10px }
+    .marcas a{ grid-template-columns:40px 1fr; gap:10px }
+    .marcas .go{ display:none }
     .marcas .rol{ grid-column:2 }
     .figs{ grid-template-columns:1fr }
   }

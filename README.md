@@ -4,9 +4,9 @@ Sitio estático de **Servimedical Group SAS** (Bogotá, Colombia): equipamiento
 hospitalario y centrales de esterilización.
 
 Construido con [Astro](https://astro.build) sin framework de UI: HTML y CSS
-propios, cero JavaScript de terceros. Las tres piezas gráficas del sitio —la
-carta de ciclo, el anillo de seis estaciones y la etiqueta de trazabilidad—
-son SVG hechos a mano, no imágenes.
+propios, cero JavaScript de terceros, fuentes autoalojadas. Las tres piezas
+gráficas del sitio —la carta de ciclo, el anillo de seis estaciones y la
+etiqueta de trazabilidad— son SVG hechos a mano, no imágenes.
 
 ---
 
@@ -23,81 +23,125 @@ nvm use
 ```bash
 npm install       # instalar dependencias
 npm run dev       # servidor local en http://localhost:4321
-npm run build     # verifica tipos y genera dist/
+npm run build     # genera dist/  (es lo que corre Vercel)
+npm run check     # verificación de tipos
+npm run verify    # check + build, antes de hacer push
 npm run preview   # sirve dist/ tal como quedará en producción
+npm run og        # regenera public/og.png
 ```
+
+`build` no incluye `check` a propósito: un aviso de tipos no debe tumbar un
+deploy de producción. Para eso está `verify`, que es lo que conviene correr
+antes de subir cambios.
 
 ---
 
 ## Estructura
 
 ```
+scripts/og.mjs        ← generador de la tarjeta para compartir
+public/
+├─ fonts/             ← Archivo + IBM Plex (subconjunto latino, OFL)
+├─ img/productos/     ← fotos de las familias de producto
+└─ og.png             ← generado, no editar a mano
 src/
 ├─ data/
-│  ├─ site.ts        ← contacto, menú, marcas, sectores
-│  └─ catalogo.ts    ← LÍNEAS DE NEGOCIO (fuente única de verdad)
-├─ styles/
-│  └─ global.css     ← tokens de color, tipografía y primitivas
-├─ components/       ← Header, Footer, y las piezas gráficas propias
+│  ├─ site.ts         ← contacto, menú, MARCAS, sectores
+│  └─ catalogo.ts     ← LÍNEAS DE NEGOCIO (fuente única de verdad)
+├─ styles/global.css  ← tokens, tipografía y primitivas
+├─ components/        ← Header, Footer, formulario y piezas gráficas
 ├─ layouts/Base.astro
 └─ pages/
-   ├─ index.astro
-   ├─ nosotros.astro
-   ├─ contacto.astro
-   ├─ 404.astro
-   ├─ productos/index.astro   ·  productos/[slug].astro
-   └─ servicios/index.astro   ·  servicios/[slug].astro
+   ├─ index · nosotros · contacto · 404
+   ├─ productos/index  ·  productos/[slug]
+   ├─ servicios/index  ·  servicios/[slug]
+   └─ marcas/[slug]
 ```
 
 ### Dónde se edita el contenido
 
-Casi todo el texto del sitio vive en **`src/data/catalogo.ts`**. Ese archivo
-alimenta a la vez el menú, la home, las páginas de detalle, el pie de página y
-el sitemap. Agregar una categoría de producto ahí crea su página, su entrada en
-el menú y su enlace en el pie **sin tocar ninguna plantilla**.
+Casi todo el texto vive en **`src/data/catalogo.ts`** y **`src/data/site.ts`**.
+Alimentan a la vez el menú, la home, las páginas de detalle, el pie y el
+sitemap. Las cifras que muestra el sitio («6 marcas», «5 categorías», «6 / 6
+estaciones») **se calculan desde esos datos**: no hay que actualizarlas a mano.
 
-- `productos[]` → las cinco categorías de la Línea 1
-- `servicios[]` → los dos servicios de la Línea 2
+- `productos[]` → las categorías de la Línea 1 → crean `/productos/<slug>/`
+- `servicios[]` → los servicios de la Línea 2 → crean `/servicios/<slug>/`
+- `marcas[]` → cada marca crea su `/marcas/<slug>/`, su fila en Nosotros, su
+  lugar en la cinta y en el pie
 - `ciclo[]` → las seis estaciones del anillo interactivo
 
-Los datos de contacto y las marcas representadas están en `src/data/site.ts`.
+La relación marca ↔ producto **no se escribe dos veces**: vive en el campo
+`marcas` de cada familia, y las páginas de marca la consultan con
+`porMarca()` y `estacionesDeMarca()`.
+
+### Fotos de producto
+
+Cada familia acepta `imagen` e `imagenAlt`. Si no tiene foto, la ficha se
+muestra sólo con texto y no se rompe nada — se pueden ir llenando de a poco.
+Formato y convención de nombres en `public/img/productos/README.md`.
 
 ### Dónde se edita el diseño
 
-`src/styles/global.css`. Los tokens del bloque `:root` gobiernan todo el sitio:
-cambiar `--navy` o `--signal` ahí cambia el color en todas las páginas.
+`src/styles/global.css`. Los tokens del bloque `:root` gobiernan todo el sitio.
 
-| Token       | Valor     | Uso                                    |
-|-------------|-----------|----------------------------------------|
-| `--navy`    | `#26416B` | Color institucional, texto, campos      |
+| Token         | Valor     | Uso                                   |
+|---------------|-----------|---------------------------------------|
+| `--navy`      | `#26416B` | Color institucional, texto, campos     |
 | `--navy-deep` | `#1B3050` | Pie de página, estados hover           |
-| `--steel`   | `#395A85` | Texto secundario                        |
-| `--blue`    | `#446791` | Trazos y detalles                       |
-| `--mist`    | `#DBDBDB` | Trazo inerte                            |
-| `--paper`   | `#F2F5F8` | Fondo de sección alterna                |
-| `--signal`  | `#89D800` | Acento único: marca estado, no decora   |
+| `--steel`     | `#395A85` | Texto secundario                       |
+| `--blue`      | `#446791` | Trazos y detalles                      |
+| `--mist`      | `#DBDBDB` | Trazo inerte                           |
+| `--paper`     | `#F2F5F8` | Fondo de sección alterna               |
+| `--signal`    | `#89D800` | Acento único: marca estado, no decora  |
 
-Tipografías: **Archivo** (títulos, eje de ancho variable), **IBM Plex Sans**
-(texto) e **IBM Plex Mono** (metadatos e índices). Se cargan desde Google Fonts.
+Tipografías: **Archivo** (títulos), **IBM Plex Sans** (texto) e **IBM Plex
+Mono** (metadatos). Se sirven desde `/fonts/`, no desde Google Fonts.
+Procedencia y licencia en `public/fonts/LICENSE.txt`.
+
+---
+
+## Formulario de cotización
+
+`/contacto/` arma la solicitud y la entrega por WhatsApp —el canal real de
+este negocio— con el correo como alternativa. **No hay servidor detrás:** los
+datos no salen del navegador hasta que la persona pulsa el botón, y no se
+envían a ningún tercero.
+
+Si más adelante quieren que la solicitud quede registrada (CRM, hoja de
+cálculo o correo automático), hay que añadir una función serverless en
+`api/` y las credenciales del proveedor de correo. El componente
+`FormularioCotizacion.astro` ya construye el objeto de datos.
 
 ---
 
 ## Deploy en Vercel
 
-El proyecto está listo para Vercel sin configuración adicional.
-
 1. Subir el repositorio a GitHub.
-2. En Vercel: **Add New → Project → Import** el repositorio.
-3. Vercel detecta Astro solo. `vercel.json` ya fija el build, el directorio de
-   salida, las cabeceras de seguridad y el caché de los assets.
-4. Al conectar el dominio, actualizar `site` en `astro.config.mjs` si cambia —
-   de ahí salen la URL canónica y el `sitemap.xml`.
+2. En Vercel: **Add New → Project → Import**.
+3. `vercel.json` fija build, salida, barra final, cabeceras de seguridad y
+   caché inmutable de `_astro/` y `fonts/`.
+4. Al conectar el dominio, revisar `site` en `astro.config.mjs`: de ahí salen
+   la URL canónica, el `og:url` y el `sitemap.xml`.
+
+**Analítica.** El sitio carga Vercel Web Analytics sólo en producción. Hay que
+activarla una vez en el panel del proyecto (*Analytics → Enable*); mientras no
+se active, el script simplemente no registra nada.
+
+**Previews.** Los despliegues de preview salen con `noindex` y sin analítica,
+para que no compitan en Google con el dominio real.
 
 ---
 
-## Notas
+## Pendiente de decisión del cliente
 
-- `.claude/launch.json` apunta a una ruta absoluta de Node para el servidor de
-  desarrollo local. No afecta el build ni el deploy.
-- El sitio es 100 % estático: no hay backend, base de datos ni formularios que
-  guarden datos. El contacto se resuelve por WhatsApp, teléfono y correo.
+- **Celitron y Easy Medical** aparecen en el sitio en producción y no están
+  aquí. Agregarlas es añadir una entrada a `marcas[]` en `src/data/site.ts`:
+  la página, el menú y las cifras se actualizan solas.
+- **Trazabilidad** está como categoría 1.2 de Productos. Si se prefiere que
+  no sea categoría propia, se mueve como familia dentro de Equipos.
+- **Origen y año de representación** de cada marca: los campos `origen` y
+  `desde` existen en `src/data/site.ts` y están vacíos a propósito, para no
+  publicar datos de fábrica sin confirmar. Si tienen valor, se muestran solos.
+- **Cifras de credibilidad** (años de operación, equipos instalados, clientes
+  atendidos). Hoy la página de Nosotros sólo tiene cifras cualitativas.

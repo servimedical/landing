@@ -17,3 +17,7 @@ node_modules/
 npm-debug.log*
 .idea/
 .vscode/
+
+# config local del editor (rutas absolutas de esta máquina)
+.claude/
+scripts/.og.svg

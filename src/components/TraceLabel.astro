@@ -40,7 +40,7 @@ const campos: [string, string, string][] = [
           <div class="f" data-k={k}><p class="k">{rot}</p><p class="v">{val}</p></div>
         ))}
       </div>
-      <div class="codes">
+      <div class="codes" aria-hidden="true">
         <div class="barcode">{barras.map((w) => (<i style={`width:${w}px`}></i>))}</div>
         <div class="dm">{dm.map((on) => (<i class={on ? '' : 'off'}></i>))}</div>
       </div>

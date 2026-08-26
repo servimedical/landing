@@ -8,6 +8,10 @@ export type Familia = {
   desc: string;
   marcas?: string[];
   specs?: [string, string][];
+  /** Foto del equipo. Ruta bajo /img/productos/. Si falta, la ficha
+   *  se muestra sólo con texto — no se rompe nada. Ver README. */
+  imagen?: string;
+  imagenAlt?: string;
 };
 
 export type Categoria = {
@@ -405,3 +409,21 @@ export const ciclo: Estacion[] = [
     traza: 'Con un escaneo, el paquete queda unido al paciente. El ciclo cierra.',
   },
 ];
+
+
+/* ---------------- CONSULTAS ---------------- */
+
+/** Dónde aparece una marca dentro del catálogo. Alimenta /marcas/[slug]/
+ *  sin duplicar datos: la relación vive en las familias, no en la marca. */
+export function porMarca(nombre: string) {
+  return productos
+    .map((c) => ({ categoria: c, familias: c.familias.filter((f) => f.marcas?.includes(nombre)) }))
+    .filter((x) => x.familias.length > 0 || x.categoria.marcas.includes(nombre));
+}
+
+/** Estaciones del ciclo en las que interviene una marca. */
+export function estacionesDeMarca(nombre: string): number[] {
+  const set = new Set<number>();
+  for (const { categoria } of porMarca(nombre)) categoria.estaciones.forEach((e) => set.add(e));
+  return [...set].sort((a, b) => a - b);
+}

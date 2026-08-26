@@ -1,0 +1,156 @@
+---
+import { contacto } from '../data/site.ts';
+import { productos, servicios } from '../data/catalogo.ts';
+
+/* El sitio es estático y no hay servidor que reciba datos. El formulario
+   estructura la solicitud y la entrega por el canal que este negocio usa de
+   verdad: WhatsApp, con correo como alternativa. Nada se envía a terceros
+   ni sale del navegador hasta que la persona pulsa el botón. */
+const lineas = [
+  ...productos.map((c) => `${c.idx} · ${c.nombre}`),
+  ...servicios.map((s) => `${s.idx} · ${s.nombre}`),
+  'Todavía no lo sé',
+];
+---
+<form class="cot" id="cot" novalidate>
+  <p class="mono eyebrow">Solicitud de cotización</p>
+  <h2>Arme la solicitud aquí.</h2>
+  <p class="muted intro">
+    Rellene lo que sepa y el botón abre WhatsApp con el mensaje ya escrito.
+    Los campos marcados con <i class="req req--inline" aria-hidden="true"></i> son obligatorios.
+  </p>
+
+  <div class="campos">
+    <label class="campo">
+      <span class="mono k">Nombre y cargo <i class="req" aria-hidden="true"></i></span>
+      <input name="nombre" required autocomplete="name" placeholder="Ana Ruiz, jefe de central" />
+    </label>
+    <label class="campo">
+      <span class="mono k">Institución <i class="req" aria-hidden="true"></i></span>
+      <input name="institucion" required autocomplete="organization" placeholder="Clínica San Rafael" />
+    </label>
+    <label class="campo">
+      <span class="mono k">Ciudad</span>
+      <input name="ciudad" autocomplete="address-level2" placeholder="Bogotá" />
+    </label>
+    <label class="campo">
+      <span class="mono k">Teléfono o correo</span>
+      <input name="contacto" autocomplete="email" placeholder="ana@clinica.com" />
+    </label>
+    <label class="campo campo--full">
+      <span class="mono k">Línea de interés <i class="req" aria-hidden="true"></i></span>
+      <select name="linea" required>
+        <option value="">Seleccione una línea…</option>
+        {lineas.map((l) => (<option value={l}>{l}</option>))}
+      </select>
+    </label>
+    <label class="campo">
+      <span class="mono k">Qué material se procesa</span>
+      <input name="material" placeholder="Instrumental, óptica" />
+    </label>
+    <label class="campo">
+      <span class="mono k">Volumen por turno o n.º de salas</span>
+      <input name="volumen" placeholder="4 salas quirúrgicas" />
+    </label>
+    <label class="campo campo--full">
+      <span class="mono k">Detalle</span>
+      <textarea name="detalle" rows="4"
+        placeholder="Si es reposición: marca, modelo y año. Si es servicio técnico: marca, modelo y descripción de la falla."></textarea>
+    </label>
+  </div>
+
+  <p class="err mono" id="cot-err" hidden role="alert"></p>
+
+  <div class="acciones">
+    <button class="btn btn--signal" type="submit"><span class="dot"></span>Enviar por WhatsApp</button>
+    <button class="btn btn--ghost" type="button" id="cot-mail">Enviar por correo</button>
+  </div>
+  <p class="nota mono">
+    Se abre {contacto.whatsapp.label} con el mensaje redactado. Nada se guarda ni
+    se envía a terceros desde esta página.
+  </p>
+</form>
+
+<style>
+  .cot{ border-left:2px solid var(--signal); padding-left:clamp(20px,2.5vw,32px) }
+  h2{ font-size:clamp(24px,3vw,36px); margin-top:18px }
+  .intro{ margin-top:16px; max-width:48ch }
+  .intro b{ font-weight:600; color:var(--navy) }
+
+  .campos{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--rule); border:1px solid var(--rule); margin-top:30px }
+  .campo{ background:var(--white); padding:14px 16px 15px; display:block }
+  .campo--full{ grid-column:1 / -1 }
+  .k{ font-size:9.5px; color:var(--steel); display:block }
+  .req{
+    display:inline-block; width:5px; height:5px; background:var(--signal);
+    margin-left:5px; translate:0 -1px;
+  }
+  .req--inline{ margin-inline:2px }
+  input, select, textarea{
+    width:100%; margin-top:8px; border:0; padding:0; background:transparent;
+    font-family:var(--body); font-size:16px; color:var(--navy); line-height:1.45;
+  }
+  textarea{ resize:vertical }
+  input::placeholder, textarea::placeholder{ color:#9fb0c4 }
+  input:focus, select:focus, textarea:focus{ outline:0 }
+  .campo:focus-within{ background:#fbfdf6; box-shadow:inset 3px 0 0 var(--signal) }
+  .campo:has(:user-invalid){ box-shadow:inset 3px 0 0 #c0392b }
+  select{ appearance:none; cursor:pointer }
+
+  .err{ margin-top:16px; color:#c0392b; font-size:11px; letter-spacing:.08em }
+  .acciones{ display:flex; flex-wrap:wrap; gap:12px; margin-top:26px }
+  .nota{ margin-top:18px; font-size:10px; letter-spacing:.08em; color:var(--steel); max-width:52ch; line-height:1.8; text-transform:none }
+
+  @media (max-width:640px){ .campos{ grid-template-columns:1fr } }
+  @media (max-width:900px){
+    .cot{ border-left:0; border-top:2px solid var(--signal); padding-left:0; padding-top:28px }
+  }
+</style>
+
+<script>
+  const form = document.getElementById('cot') as HTMLFormElement | null;
+  const err = document.getElementById('cot-err');
+  const mail = document.getElementById('cot-mail');
+
+  if (form && err) {
+    const ROTULOS: Record<string, string> = {
+      nombre: 'Nombre', institucion: 'Institución', ciudad: 'Ciudad',
+      contacto: 'Contacto', linea: 'Línea', material: 'Material',
+      volumen: 'Volumen', detalle: 'Detalle',
+    };
+
+    const mensaje = () => {
+      const d = new FormData(form);
+      const filas = Object.entries(ROTULOS)
+        .map(([k, r]) => [r, String(d.get(k) ?? '').trim()] as const)
+        .filter(([, v]) => v !== '')
+        .map(([r, v]) => `${r}: ${v}`);
+      return `Solicitud de cotización — servimedicalgroup.com\n\n${filas.join('\n')}`;
+    };
+
+    const valida = () => {
+      if (form.checkValidity()) { err.hidden = true; return true; }
+      const faltan = [...form.elements]
+        .filter((e): e is HTMLInputElement => e instanceof HTMLInputElement || e instanceof HTMLSelectElement)
+        .filter((e) => !e.checkValidity())
+        .map((e) => ROTULOS[e.name] ?? e.name);
+      err.textContent = `Falta completar: ${faltan.join(', ')}.`;
+      err.hidden = false;
+      form.reportValidity();
+      return false;
+    };
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!valida()) return;
+      window.open(`https://wa.me/573192060943?text=${encodeURIComponent(mensaje())}`, '_blank', 'noopener');
+    });
+
+    mail?.addEventListener('click', () => {
+      if (!valida()) return;
+      const asunto = 'Solicitud de cotización — servimedicalgroup.com';
+      location.href =
+        `mailto:comercial@servimedicalgroup.com?subject=${encodeURIComponent(asunto)}&body=${encodeURIComponent(mensaje())}`;
+    });
+  }
+</script>

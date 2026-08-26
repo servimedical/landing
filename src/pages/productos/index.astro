@@ -4,6 +4,10 @@ import PageHead from '../../components/PageHead.astro';
 import CtaContacto from '../../components/CtaContacto.astro';
 import BrandStrip from '../../components/BrandStrip.astro';
 import { productos, ciclo } from '../../data/catalogo.ts';
+import { marcas } from '../../data/site.ts';
+
+const nCat = productos.length;
+const enLetras: Record<number, string> = { 3:'Tres', 4:'Cuatro', 5:'Cinco', 6:'Seis', 7:'Siete', 8:'Ocho' };
 ---
 <Base
   titulo="Productos — Servimedical Group"
@@ -13,10 +17,10 @@ import { productos, ciclo } from '../../data/catalogo.ts';
     eyebrow="Línea 1 · Productos"
     idx="1.0"
     titulo="Todo lo que una central consume."
-    intro="Cinco categorías que cubren el ciclo entero. La institución compra el autoclave una vez; el papel, el indicador y el repuesto los compra todos los meses. Trabajamos las dos cosas con el mismo proveedor para que el equipo nunca se detenga esperando un insumo."
+    intro={`${enLetras[nCat] ?? nCat} categorías que cubren el ciclo entero. La institución compra el autoclave una vez; el papel, el indicador y el repuesto los compra todos los meses. Trabajamos las dos cosas con el mismo proveedor para que el equipo nunca se detenga esperando un insumo.`}
     meta={[
-      ['Categorías', '5'],
-      ['Marcas representadas', '6'],
+      ['Categorías', String(nCat)],
+      ['Marcas representadas', String(marcas.length)],
       ['Existencias', 'Bogotá, despacho nacional'],
       ['Importación', 'Directa de fábrica'],
     ]}

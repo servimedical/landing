@@ -7,7 +7,13 @@ import CycleRing from '../components/CycleRing.astro';
 import TraceLabel from '../components/TraceLabel.astro';
 import CtaContacto from '../components/CtaContacto.astro';
 import { productos, servicios } from '../data/catalogo.ts';
-import { sectores } from '../data/site.ts';
+import { sectores, marcas } from '../data/site.ts';
+import { ciclo } from '../data/catalogo.ts';
+
+const nCat = productos.length;
+const nMarcas = marcas.length;
+const nEst = ciclo.length;
+const enLetras: Record<number, string> = { 3:'Tres', 4:'Cuatro', 5:'Cinco', 6:'Seis', 7:'Siete', 8:'Ocho' };
 ---
 <Base
   titulo="Servimedical Group — Centrales de esterilización en Colombia"
@@ -84,7 +90,7 @@ import { sectores } from '../data/site.ts';
       <SectionHead
         eyebrow="Línea 1 · Productos"
         titulo="Todo lo que una central consume."
-        texto="Cinco categorías, un solo proveedor: importación directa, existencias en Bogotá y despacho a todo el país."
+        texto={`${enLetras[nCat] ?? nCat} categorías, un solo proveedor: importación directa, existencias en Bogotá y despacho a todo el país.`}
       />
       <div class="cards hair">
         {productos.map((c) => (
@@ -149,10 +155,10 @@ import { sectores } from '../data/site.ts';
           consumible, el repuesto y el mantenimiento del mismo equipo que instalamos.
         </p>
         <div class="figs hair">
-          <div><p class="figure-v num">6</p><p class="figure-k mono">Marcas representadas</p></div>
+          <div><p class="figure-v num">{nMarcas}</p><p class="figure-k mono">Marcas representadas</p></div>
           <div><p class="figure-v">Nacional</p><p class="figure-k mono">Cobertura de servicio</p></div>
           <div><p class="figure-v">Bogotá</p><p class="figure-k mono">Sala de ventas y taller</p></div>
-          <div><p class="figure-v">6 / 6</p><p class="figure-k mono">Estaciones cubiertas</p></div>
+          <div><p class="figure-v num">{nEst} / {nEst}</p><p class="figure-k mono">Estaciones cubiertas</p></div>
         </div>
       </div>
     </div>
