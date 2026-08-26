@@ -1,0 +1,68 @@
+---
+/* Índices de las cuatro categorías con hijos. `/productos/repuestos` tiene
+   página propia y Astro le da prioridad sobre esta ruta dinámica. */
+import Base from '../../layouts/Base.astro';
+import Migas from '../../components/Migas.astro';
+import { categorias, porCategoria, urlProducto, type CategoriaProducto, type FichaCategoria } from '../../content/productos/index.ts';
+import { normalizar } from '../../content/navegacion.ts';
+
+export function getStaticPaths() {
+  return categorias
+    .filter((c) => c.slug !== 'repuestos')
+    .map((ficha) => ({ params: { categoria: ficha.slug }, props: { ficha } }));
+}
+
+interface Props { ficha: FichaCategoria }
+const { ficha } = Astro.props;
+const hijos = porCategoria(ficha.slug as CategoriaProducto);
+const rutaActual = normalizar(Astro.url.pathname);
+
+/* Marcas que componen la categoría, sin repetir y sin los marcadores. */
+const marcas = [...new Set(hijos.flatMap((p) => p.marcas ?? []))].filter((m) => !m.startsWith('{{'));
+---
+<Base titulo={ficha.seo.titulo} descripcion={ficha.seo.descripcion}>
+  <Migas rutaActual={rutaActual} />
+
+  <div class="contenedor py-12 lg:py-16">
+    <h1 class="max-w-[20ch] text-[clamp(30px,4vw,48px)]">{ficha.titulo}</h1>
+    <p class="mt-6 max-w-[62ch] text-[clamp(16px,1.3vw,18px)] text-steel">{ficha.intro}</p>
+    {ficha.porConfirmar && (
+      <p class="meta mt-6 inline-block border border-rule px-3 py-2 text-[10px] text-steel">
+        {ficha.porConfirmar}
+      </p>
+    )}
+  </div>
+
+  <section class="border-t border-rule">
+    <div class="contenedor py-12 lg:py-16">
+      <ul class="grid gap-px border border-rule bg-rule lg:grid-cols-3">
+        {hijos.map((p) => (
+          <li class="bg-white">
+            <a href={urlProducto(p)} class="group flex h-full flex-col p-6 lg:p-8">
+              <span class="meta text-[10.5px] text-steel">Estación 0{p.estacionPrimaria}</span>
+              <h2 class="mt-3 text-[clamp(19px,2vw,23px)]">{p.titulo}</h2>
+              <span class="mt-3 flex-1 text-[15px] leading-relaxed text-steel">{p.entradilla}</span>
+              <span class="meta mt-5 border-t border-rule pt-4 text-[10px] text-steel group-hover:text-navy">
+                Ver producto →
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      {marcas.length > 0 && (
+        <div class="mt-10 flex flex-wrap items-baseline gap-x-8 gap-y-3 border-t border-rule pt-6">
+          <span class="meta text-[10px] text-steel">Marcas de esta categoría</span>
+          {marcas.map((m) => (
+            <span class="font-display text-[17px] font-bold [font-variation-settings:'wdth'_105]">{m}</span>
+          ))}
+        </div>
+      )}
+
+      <p class="mt-8 max-w-[58ch] text-[15.5px] text-steel">
+        Cada uno de estos productos vive en una estación del proceso.
+        <a href="/#ciclo" class="text-navy underline decoration-rule underline-offset-4">Ver el ciclo completo</a>.
+      </p>
+    </div>
+  </section>
+</Base>

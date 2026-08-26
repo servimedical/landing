@@ -8,38 +8,63 @@
 import { estaciones } from '../../content/ciclo.ts';
 import { GEO } from './geometria.ts';
 
-interface Props { estacion: 1 | 2 | 3 | 4 | 5 | 6 }
-const { estacion } = Astro.props;
+interface Props {
+  estacion?: 1 | 2 | 3 | 4 | 5 | 6;
+  /** Transversal: todos los arcos encendidos al 40 %. Para lo que no vive en
+   *  una sola estación, como los repuestos. */
+  transversal?: boolean;
+  nota?: string;
+}
+const { estacion, transversal = false, nota } = Astro.props;
 
-const est = estaciones[estacion - 1]!;
-const n = String(est.numero).padStart(2, '0');
-const destino = `/#/ciclo/${n}`;
+const est = estacion ? estaciones[estacion - 1]! : null;
+const n = est ? String(est.numero).padStart(2, '0') : null;
+const destino = n ? `/#/ciclo/${n}` : '/#ciclo';
+const Marco = transversal ? 'div' : 'a';
 ---
-<a href={destino} class="group flex items-center gap-5 border border-rule p-5 transition-colors hover:bg-paper">
+<Marco
+  href={transversal ? undefined : destino}
+  class="group flex items-center gap-5 border border-rule p-5 transition-colors hover:bg-paper"
+>
   <svg viewBox="0 0 520 520" width="120" height="120" class="shrink-0" aria-hidden="true">
     {GEO.map((g, i) => (
       <path
         d={g.arco} fill="none" stroke-width="26"
-        stroke={i + 1 === estacion ? 'var(--color-signal)' : 'var(--color-mist)'}
+        stroke={transversal || i + 1 === estacion ? 'var(--color-signal)' : 'var(--color-mist)'}
+        opacity={transversal ? 0.4 : 1}
       />
     ))}
-    <text
-      x="260" y="260" text-anchor="middle" dominant-baseline="central"
-      font-family="var(--font-display)" font-size="118" font-weight="700"
-      fill="var(--color-navy)"
-    >{n}</text>
+    {n && (
+      <text
+        x="260" y="260" text-anchor="middle" dominant-baseline="central"
+        font-family="var(--font-display)" font-size="118" font-weight="700"
+        fill="var(--color-navy)"
+      >{n}</text>
+    )}
   </svg>
 
   <div>
-    <p class="meta text-steel">Estación {n} / 06</p>
-    <p class="mt-2 font-display text-[19px] leading-tight font-bold [font-variation-settings:'wdth'_110]">
-      {est.nombre}
-    </p>
-    <p class="mt-2 max-w-[38ch] text-[14.5px] text-steel">
-      Este producto vive en la estación {n} del ciclo.
-      <span class="whitespace-nowrap underline decoration-rule underline-offset-4 group-hover:text-navy">
-        Ver el ciclo completo
-      </span>
-    </p>
+    {est && n ? (
+      <>
+        <p class="meta text-steel">Estación {n} / 06</p>
+        <p class="mt-2 font-display text-[19px] leading-tight font-bold [font-variation-settings:'wdth'_110]">
+          {est.nombre}
+        </p>
+        <p class="mt-2 max-w-[38ch] text-[14.5px] text-steel">
+          Este producto vive en la estación {n} · {est.nombre}.
+          <span class="whitespace-nowrap underline decoration-rule underline-offset-4 group-hover:text-navy">
+            Ver el ciclo completo
+          </span>
+        </p>
+      </>
+    ) : (
+      <>
+        <p class="meta text-steel">Las seis estaciones</p>
+        <p class="mt-2 font-display text-[19px] leading-tight font-bold [font-variation-settings:'wdth'_110]">
+          Transversal al ciclo
+        </p>
+        <p class="mt-2 max-w-[42ch] text-[14.5px] text-steel">{nota}</p>
+      </>
+    )}
   </div>
-</a>
+</Marco>

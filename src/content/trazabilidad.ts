@@ -22,6 +22,8 @@ export const etiqueta = {
   pieDer: '250825A3-0412',
   apoyo:
     'Doble código: lectura automática para el flujo diario y lectura humana para cuando el escáner no está a la mano.',
+  /* Sin esto no se puede nombrar el producto en ninguna página que lo enlace. */
+  sistema: '{{ POR CONFIRMAR: marca y nombre comercial del sistema de trazabilidad }}',
 } as const;
 
 export const campos: CampoEtiqueta[] = [

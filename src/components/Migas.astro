@@ -20,7 +20,7 @@ const jsonld = {
 };
 ---
 <nav aria-label="Migas de pan" class="border-b border-rule">
-  <div class="contenedor py-3.5">
+  <div class="contenedor py-2.5">
     <ol class="meta flex flex-wrap items-center gap-x-2 gap-y-1 text-[11px] text-steel">
       {cadena.map((n, i) => {
         const ultimo = i === cadena.length - 1;
@@ -28,7 +28,7 @@ const jsonld = {
           <li class="flex items-center gap-2">
             {ultimo
               ? <span aria-current="page" class="text-navy">{n.titulo}</span>
-              : <a href={n.url} class="hover:text-navy">{n.titulo}</a>}
+              : <a href={n.url} class="inline-block py-[5px] hover:text-navy">{n.titulo}</a>}
             {!ultimo && <span aria-hidden="true" class="text-mist">/</span>}
           </li>
         );

@@ -1,0 +1,150 @@
+---
+/* Bloque 6. El sitio es estático y no hay servidor que reciba datos: el
+   formulario estructura la solicitud y la entrega por el canal que este
+   negocio usa de verdad. Nada sale del navegador hasta que se pulsa el botón.
+
+   El campo «Qué necesita» llega precargado con el producto de la página. */
+import { contacto } from '../../content/sitio.ts';
+
+interface Props { producto: string; id?: string }
+const { producto, id = 'cotizar' } = Astro.props;
+---
+<section id={id} class="field-navy border-t border-rule" aria-labelledby={`${id}-titulo`}>
+  <div class="contenedor py-14 lg:py-20">
+    <div class="grid gap-[clamp(28px,5vw,64px)] lg:grid-cols-[1fr_1.15fr]">
+      <div>
+        <p class="meta flex items-center gap-2.5 text-white/70">
+          <span aria-hidden="true" class="senal"></span>Cotización
+        </p>
+        <h2 id={`${id}-titulo`} class="mt-4 text-[clamp(24px,3vw,36px)] text-white">
+          Pida la cotización de {producto.toLowerCase()}.
+        </h2>
+        <p class="mt-5 max-w-[44ch] text-ink-dark">
+          Rellene lo que sepa. El botón abre WhatsApp con el mensaje ya redactado;
+          si prefiere correo, el segundo botón hace lo mismo.
+        </p>
+        <ul class="mt-8 border-t border-rule-dark">
+          <li class="border-b border-rule-dark py-3 text-[14.5px] text-ink-dark">
+            <a href={contacto.whatsapp.href} rel="noopener" class="hover:text-white">
+              WhatsApp {contacto.whatsapp.valor}
+            </a>
+          </li>
+          <li class="border-b border-rule-dark py-3 text-[14.5px] text-ink-dark">
+            <a href={contacto.fijo.href} class="hover:text-white">Fijo {contacto.fijo.valor}</a>
+          </li>
+          <li class="border-b border-rule-dark py-3 text-[14.5px] text-ink-dark">
+            <a href={contacto.comercial.href} class="hover:text-white">{contacto.comercial.valor}</a>
+          </li>
+        </ul>
+      </div>
+
+      <form class="cot" data-producto={producto} novalidate>
+        <div class="grid gap-px border border-rule-dark bg-rule-dark sm:grid-cols-2">
+          <label class="campo campo--full">
+            <span class="k">Qué necesita</span>
+            <input name="necesita" value={producto} readonly />
+          </label>
+          <label class="campo">
+            <span class="k">Nombre y cargo <i class="req" aria-hidden="true"></i></span>
+            <input name="nombre" required autocomplete="name" placeholder="Ana Ruiz, jefe de central" />
+          </label>
+          <label class="campo">
+            <span class="k">Institución <i class="req" aria-hidden="true"></i></span>
+            <input name="institucion" required autocomplete="organization" placeholder="Clínica San Rafael" />
+          </label>
+          <label class="campo">
+            <span class="k">Ciudad</span>
+            <input name="ciudad" autocomplete="address-level2" placeholder="Bogotá" />
+          </label>
+          <label class="campo">
+            <span class="k">Teléfono o correo</span>
+            <input name="contacto" autocomplete="email" placeholder="ana@clinica.com" />
+          </label>
+          <label class="campo campo--full">
+            <span class="k">Detalle</span>
+            <textarea name="detalle" rows="3"
+              placeholder="Cirugías por día, cargas por turno, espacio disponible o lo que ya tenga definido."></textarea>
+          </label>
+        </div>
+
+        <p class="err meta" hidden role="alert"></p>
+
+        <div class="mt-6 flex flex-wrap gap-3">
+          <button type="submit" class="inline-flex items-center gap-2.5 border border-signal bg-signal px-5 py-3.5 text-[14.5px] font-semibold text-navy-deep">
+            <span class="senal !bg-navy-deep" aria-hidden="true"></span>Enviar por WhatsApp
+          </button>
+          <button type="button" class="por-correo inline-flex items-center border border-rule-dark px-5 py-3.5 text-[14.5px] text-white hover:bg-white/10">
+            Enviar por correo
+          </button>
+        </div>
+        <p class="meta mt-5 max-w-[50ch] text-[10px] leading-relaxed text-white/70 normal-case tracking-[.06em]">
+          Nada se guarda ni se envía a terceros desde esta página.
+        </p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<style>
+  .campo { background: var(--color-navy); padding: 14px 16px 15px; display: block }
+  .campo--full { grid-column: 1 / -1 }
+  .k {
+    font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .14em;
+    text-transform: uppercase; color: rgba(255,255,255,.72); display: block;
+  }
+  .req { display: inline-block; width: 5px; height: 5px; background: var(--color-signal); margin-left: 5px }
+  input, textarea {
+    width: 100%; margin-top: 8px; border: 0; padding: 0; background: transparent;
+    font-family: var(--font-body); font-size: 16px; color: #fff; line-height: 1.45;
+  }
+  input[readonly] { color: rgba(255,255,255,.78) }
+  textarea { resize: vertical }
+  input::placeholder, textarea::placeholder { color: rgba(255,255,255,.5) }
+  input:focus, textarea:focus { outline: 0 }
+  .campo:focus-within { box-shadow: inset 3px 0 0 var(--color-signal) }
+  .err { margin-top: 16px; color: #ffb4a8; font-size: 11px }
+</style>
+
+<script>
+  const ROTULOS: Record<string, string> = {
+    necesita: 'Necesita', nombre: 'Nombre', institucion: 'Institución',
+    ciudad: 'Ciudad', contacto: 'Contacto', detalle: 'Detalle',
+  };
+
+  document.querySelectorAll<HTMLFormElement>('form.cot').forEach((form) => {
+    const err = form.querySelector<HTMLElement>('.err')!;
+
+    const mensaje = () => {
+      const d = new FormData(form);
+      const filas = Object.entries(ROTULOS)
+        .map(([k, r]) => [r, String(d.get(k) ?? '').trim()] as const)
+        .filter(([, v]) => v !== '')
+        .map(([r, v]) => `${r}: ${v}`);
+      return `Solicitud de cotización — servimedicalgroup.com\n\n${filas.join('\n')}`;
+    };
+
+    const valida = () => {
+      if (form.checkValidity()) { err.hidden = true; return true; }
+      const faltan = [...form.elements]
+        .filter((e): e is HTMLInputElement => e instanceof HTMLInputElement)
+        .filter((e) => !e.checkValidity())
+        .map((e) => ROTULOS[e.name] ?? e.name);
+      err.textContent = `Falta completar: ${faltan.join(', ')}.`;
+      err.hidden = false;
+      form.reportValidity();
+      return false;
+    };
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (valida()) window.open(`https://wa.me/573192060943?text=${encodeURIComponent(mensaje())}`, '_blank', 'noopener');
+    });
+
+    form.querySelector('.por-correo')?.addEventListener('click', () => {
+      if (!valida()) return;
+      location.href = `mailto:comercial@servimedicalgroup.com` +
+        `?subject=${encodeURIComponent('Solicitud de cotización — ' + (form.dataset.producto ?? ''))}` +
+        `&body=${encodeURIComponent(mensaje())}`;
+    });
+  });
+</script>
