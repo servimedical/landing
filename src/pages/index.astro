@@ -36,17 +36,21 @@ import { marcas } from '../content/sitio.ts';
       la empuje fuera de la vista. */}
   <div class="flex min-h-[calc(100svh-var(--spacing-header))] flex-col">
   <!-- 1 · Hero -->
-  <div class="contenedor grid flex-1 items-center gap-5 py-6 lg:grid-cols-[1.03fr_.97fr] lg:gap-[clamp(32px,5vw,72px)] lg:py-12">
+  <div class="contenedor grid flex-1 items-center gap-5 py-6 lg:grid-cols-[1.12fr_.88fr] lg:gap-[clamp(32px,5vw,72px)] lg:py-12">
     <div>
       <p class="meta flex items-center gap-2.5 text-steel">
         <span aria-hidden="true" class="senal"></span>Central de esterilización · Colombia
       </p>
-      <h1 class="mt-4 max-w-[15ch] text-[clamp(30px,4.6vw,58px)] lg:mt-5">
-        El ciclo completo<span class="block text-steel">con un solo responsable.</span>
+      {/* Única línea del sitio con tuteo. Decisión del cliente; el resto
+          mantiene el trato de usted (ver src/content/VOZ.md). */}
+      {/* Tamaño fijado para que cada mitad del titular quepa en una línea:
+          «Tu aliado en todo el» / «proceso de esterilización». */}
+      <h1 class="mt-4 max-w-[26ch] text-[clamp(28px,3.4vw,44px)] lg:mt-5">
+        Tu aliado en todo el{' '}<span class="block text-steel">proceso de esterilización</span>
       </h1>
-      <p class="mt-5 max-w-[52ch] text-[15px] leading-relaxed text-steel lg:mt-6 lg:text-[clamp(16px,1.3vw,18.5px)]">
-        Un paquete estéril pasa por seis estaciones antes de llegar al quirófano. Ponemos el
-        equipo, el insumo, el repuesto y la trazabilidad de cada una, y respondemos cuando algo falla.
+      <p class="mt-5 max-w-[48ch] text-[15px] leading-relaxed text-steel lg:mt-6 lg:text-[clamp(16px,1.3vw,18.5px)]">
+        Seis estaciones separan el material sucio del quirófano. Ponemos el equipo, el insumo
+        y el repuesto de cada una, con servicio técnico propio.
       </p>
       <div class="mt-6 flex flex-wrap gap-3 lg:mt-8">
         <a href="/contacto" class="inline-flex items-center gap-2.5 border border-navy bg-navy px-5 py-3.5 text-[14.5px] font-medium text-white hover:bg-navy-deep">
@@ -103,9 +107,7 @@ import { marcas } from '../content/sitio.ts';
           Seis estaciones y un hilo que las cose.
         </h2>
         <p class="mt-5 text-[17px] text-steel">
-          El material sucio entra por un extremo y sale estéril por el otro. El flujo es
-          unidireccional y no admite retrocesos: lo que una estación no resuelve, la siguiente
-          no corrige.
+          El flujo es unidireccional. Lo que una estación no resuelve, la siguiente no corrige.
         </p>
       </div>
       <Rueda />

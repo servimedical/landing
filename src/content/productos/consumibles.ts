@@ -6,7 +6,7 @@ export const consumibles: Producto[] = [
     categoria: 'consumibles',
     titulo: 'Papel grado médico y empaque',
     entradilla:
-      'El empaque no envuelve el set: es la barrera estéril. Es lo que sostiene la esterilidad desde que la carga sale del equipo hasta que alguien abre el paquete en sala, y si cede en el almacenamiento o en el transporte el ciclo entero se pierde sin que nadie lo note.',
+      'El empaque no envuelve el set: es la barrera estéril. Sostiene la esterilidad hasta que alguien abre el paquete en sala.',
 
     procesa: [
       'Rollo mixto y bolsas autosellantes',
@@ -30,17 +30,17 @@ export const consumibles: Producto[] = [
       {
         titulo: 'Selladoras térmicas',
         url: '/productos/accesorios/selladoras',
-        porQue: 'El rollo mixto no sirve de nada sin un sellado con parámetros controlados. El material y el equipo que lo cierra son una sola decisión.',
+        porQue: 'El material y el equipo que lo cierra son una sola decisión.',
       },
       {
         titulo: 'Indicadores químicos',
         url: '/productos/consumibles/indicadores-quimicos',
-        porQue: 'La cinta indicadora dice que el paquete pasó por el equipo. Para saber qué ocurrió dentro hace falta un indicador interno.',
+        porQue: 'La cinta dice que el paquete pasó por el equipo. Lo de adentro lo dice el indicador interno.',
       },
       {
         titulo: 'Mesas de inspección y empaque',
         url: '/productos/mobiliario/mesas-y-mesones',
-        porQue: 'El empaque se conforma en un puesto de trabajo. La superficie y la altura deciden cuántos paquetes salen por turno y en qué estado.',
+        porQue: 'La superficie y la altura deciden cuántos paquetes salen por turno y en qué estado.',
       },
     ],
 
@@ -63,7 +63,7 @@ export const consumibles: Producto[] = [
     categoria: 'consumibles',
     titulo: 'Indicadores químicos',
     entradilla:
-      'Un indicador externo dice que el paquete pasó por el equipo. Uno interno dice que el agente llegó al centro del paquete, que es una afirmación distinta y más difícil, y la central necesita las dos para poder liberar una carga.',
+      'Un indicador externo dice que el paquete pasó por el equipo. Uno interno, que el agente llegó al centro. La central necesita los dos.',
 
     procesa: [
       'Control externo de proceso',
@@ -87,17 +87,17 @@ export const consumibles: Producto[] = [
       {
         titulo: 'Papel grado médico y empaque',
         url: '/productos/consumibles/papel-y-empaque',
-        porQue: 'El indicador interno va dentro del paquete y el externo va sobre la barrera. El consumo de los dos se mueve al mismo ritmo.',
+        porQue: 'Uno va dentro del paquete y otro sobre la barrera. El consumo se mueve al mismo ritmo.',
       },
       {
         titulo: 'Indicadores biológicos',
         url: '/productos/consumibles/indicadores-biologicos',
-        porQue: 'El químico es lectura inmediata pero es indicio. El biológico es la prueba. El protocolo se sostiene sobre los dos, no sobre uno.',
+        porQue: 'El químico es lectura inmediata, pero indicio. El biológico es la prueba.',
       },
       {
         titulo: 'Software de trazabilidad',
         url: '/trazabilidad/software',
-        porQue: 'El resultado del indicador tiene que quedar atado a la carga que liberó. Anotado en un cuaderno, no sirve el día del recall.',
+        porQue: 'El resultado tiene que quedar atado a la carga. En un cuaderno no sirve el día del recall.',
       },
     ],
 
@@ -120,7 +120,7 @@ export const consumibles: Producto[] = [
     categoria: 'consumibles',
     titulo: 'Indicadores biológicos',
     entradilla:
-      'Es la única evidencia de que el proceso mató la carga microbiana; todo lo demás es indicio. Cuando el comité de infecciones pregunta por una carga de hace seis meses, lo que respalda la respuesta es este registro y no la impresión del equipo.',
+      'Es la única evidencia de que el proceso mató la carga microbiana. Todo lo demás es indicio.',
 
     procesa: [
       'Control biológico de carga',
@@ -143,17 +143,17 @@ export const consumibles: Producto[] = [
       {
         titulo: 'Indicadores químicos',
         url: '/productos/consumibles/indicadores-quimicos',
-        porQue: 'El biológico se lee en horas y el químico en el momento. La carga se libera con los dos, cada uno respondiendo lo que el otro no puede.',
+        porQue: 'El biológico se lee en horas; el químico, en el momento. La carga se libera con los dos.',
       },
       {
         titulo: 'Autoclaves de vapor',
         url: '/productos/esterilizacion/autoclaves-de-vapor',
-        porQue: 'El control biológico también verifica el equipo, no solo la carga. Un resultado no conforme es un dato de mantenimiento, no solo de proceso.',
+        porQue: 'Verifica el equipo, no solo la carga. Un resultado no conforme es un dato de mantenimiento.',
       },
       {
         titulo: 'Software de trazabilidad',
         url: '/trazabilidad/software',
-        porQue: 'Un biológico positivo obliga a saber qué paquetes salieron de esa carga. Sin registro, se recoge el inventario completo y se reprocesa a ciegas.',
+        porQue: 'Un positivo obliga a saber qué paquetes salieron de esa carga. Sin registro, se recoge todo.',
       },
     ],
 

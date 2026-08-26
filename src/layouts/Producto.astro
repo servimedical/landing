@@ -14,6 +14,7 @@ import type { Producto } from '../content/productos/index.ts';
 interface Props { producto: Producto }
 const { producto: p } = Astro.props;
 const rutaActual = normalizar(Astro.url.pathname);
+const marcasVisibles = (p.marcas ?? []).filter((m) => !m.startsWith('{{'));
 
 const jsonld = {
   '@context': 'https://schema.org',
@@ -22,8 +23,8 @@ const jsonld = {
   description: p.seo.descripcion,
   url: new URL(rutaActual, sitio.dominio).href,
   category: p.categoria,
-  ...(p.marcas && !p.marcas[0]!.startsWith('{{')
-    ? { brand: p.marcas.map((m) => ({ '@type': 'Brand', name: m })) }
+  ...(marcasVisibles.length
+    ? { brand: marcasVisibles.map((m) => ({ '@type': 'Brand', name: m })) }
     : {}),
   seller: { '@type': 'Organization', '@id': `${sitio.dominio}/#organizacion` },
 };
@@ -34,8 +35,10 @@ const jsonld = {
   <div class="contenedor py-12 lg:py-16">
     <h1 class="max-w-[20ch] text-[clamp(30px,4vw,48px)]">{p.titulo}</h1>
     <p class="mt-6 max-w-[62ch] text-[clamp(16px,1.3vw,18px)] text-steel">{p.entradilla}</p>
-    {p.marcas && p.marcas.length > 0 && (
-      <p class="meta mt-6 text-[10.5px] text-steel">{p.marcas.join(' · ')}</p>
+    {/* Sólo se muestran las marcas confirmadas: un marcador nunca va a la
+        vista del visitante. Las pendientes salen en `npm run marcadores`. */}
+    {marcasVisibles.length > 0 && (
+      <p class="meta mt-6 text-[10.5px] text-steel">{marcasVisibles.join(' · ')}</p>
     )}
   </div>
 

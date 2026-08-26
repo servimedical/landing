@@ -10,11 +10,9 @@ import { software } from '../../content/institucional.ts';
 >
   <p class="mt-6 max-w-[64ch] text-[clamp(16px,1.3vw,18px)] text-steel">{software.bajada}</p>
 
-  <div class="mt-8 max-w-[64ch] border border-rule p-5">
-    <p class="meta text-[10px] text-steel">Dato pendiente de fábrica</p>
-    <p class="meta mt-3 text-[10.5px] leading-relaxed text-navy normal-case tracking-[.08em]">{software.pendiente}</p>
-    <p class="mt-4 text-[14.5px] leading-relaxed text-steel">{software.nota}</p>
-  </div>
+  {/* El detalle de marca, modalidad y requisitos está en software.pendiente
+      y se publica cuando fábrica lo confirme. */}
+  <p class="mt-6 max-w-[58ch] text-[15px] text-steel">{software.nota}</p>
 </Pagina>
 
 <section class="border-t border-rule" aria-labelledby="modulos">

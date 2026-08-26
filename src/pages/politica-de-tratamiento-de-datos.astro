@@ -20,9 +20,18 @@ const rutaActual = normalizar(Astro.url.pathname);
       Ley 1581 de 2012 y al Decreto 1377 de 2013. Esta página explica qué datos se recogen,
       para qué, durante cuánto tiempo y cómo ejercer los derechos que la ley reconoce.
     </p>
-    <p class="meta mt-6 inline-block border border-rule px-3 py-2 text-[10px] text-steel">
-      Vigencia: {VIGENCIA}
-    </p>
+    {/* La fecha de vigencia y el canal del titular están en src/content/legal.ts
+        con su marcador; aquí se anuncia el estado del documento en vez de
+        mostrar el marcador crudo. VIGENCIA: {VIGENCIA} */}
+    <div class="mt-8 max-w-[62ch] border border-rule p-5">
+      <p class="meta text-[10px] text-steel">Documento en revisión</p>
+      <p class="mt-3 text-[15px] leading-relaxed text-steel">
+        Esta política está redactada y pendiente de validación jurídica. La fecha de entrada
+        en vigencia y el canal de atención al titular se publican al aprobarse. Mientras tanto,
+        las solicitudes sobre datos personales se atienden en
+        <a href="mailto:comercial@servimedicalgroup.com" class="text-navy underline decoration-rule underline-offset-4">comercial@servimedicalgroup.com</a>.
+      </p>
+    </div>
   </div>
 
   <section class="border-t border-rule">

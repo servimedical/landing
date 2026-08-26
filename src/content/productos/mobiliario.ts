@@ -10,7 +10,7 @@ export const mobiliario: Producto[] = [
     categoria: 'mobiliario',
     titulo: 'Almacenamiento estéril',
     entradilla:
-      'Es la estación donde más se pierde material ya procesado, y la pérdida no se ve: se reprocesa material vigente y se despacha material vencido, sin que ninguna de las dos cosas aparezca en un informe. El mobiliario correcto protege la barrera estéril hasta que el paquete se abre en sala.',
+      'Es donde más se pierde material ya procesado, y la pérdida no se ve: se reprocesa lo vigente y se despacha lo vencido. El mobiliario protege la barrera hasta que el paquete se abre en sala.',
 
     procesa: [
       'Almacenamiento de paquetes procesados hasta su despacho',
@@ -43,17 +43,17 @@ export const mobiliario: Producto[] = [
       {
         titulo: 'Papel grado médico y empaque',
         url: '/productos/consumibles/papel-y-empaque',
-        porQue: 'La estantería protege la barrera, no la reemplaza. Un empaque que no resiste el manipuleo repetido falla igual en el mejor armario.',
+        porQue: 'La estantería protege la barrera, no la reemplaza. Un empaque frágil falla en el mejor armario.',
       },
       {
         titulo: 'Carros de transporte',
         url: '/productos/mobiliario/carros-de-transporte',
-        porQue: 'El paquete sale de la estantería hacia sala. Si el último tramo va descubierto, se pierde en la puerta lo que se cuidó durante días.',
+        porQue: 'Si el último tramo va descubierto, se pierde en la puerta lo que se cuidó durante días.',
       },
       {
         titulo: 'Software de trazabilidad',
         url: '/trazabilidad/software',
-        porQue: 'La rotación por vencimiento no se sostiene a ojo. La alerta de caducidad y la ubicación salen del mismo rótulo del paquete.',
+        porQue: 'La rotación por vencimiento no se sostiene a ojo. Sale del mismo rótulo del paquete.',
       },
     ],
 
@@ -77,7 +77,7 @@ export const mobiliario: Producto[] = [
     categoria: 'mobiliario',
     titulo: 'Carros de transporte',
     entradilla:
-      'El carro de sucio y el de estéril nunca son el mismo. Diferenciarlos es parte del flujo unidireccional y no una preferencia de la central: en el momento en que un carro hace los dos recorridos, la barrera que se construyó en seis estaciones deja de significar algo.',
+      'El carro de sucio y el de estéril nunca son el mismo. En cuanto uno hace los dos recorridos, la barrera que se construyó en seis estaciones deja de significar algo.',
 
     procesa: [
       'Transporte de material sucio desde salas hacia la central',
@@ -109,12 +109,12 @@ export const mobiliario: Producto[] = [
       {
         titulo: 'Almacenamiento estéril',
         url: '/productos/mobiliario/almacenamiento-esteril',
-        porQue: 'El carro carga desde la estantería. Las dimensiones de uno condicionan las del otro y conviene decidirlas en el mismo plano.',
+        porQue: 'Las dimensiones de uno condicionan las del otro. Conviene decidirlas en el mismo plano.',
       },
       {
         titulo: 'Mesas y mesones',
         url: '/productos/mobiliario/mesas-y-mesones',
-        porQue: 'El carro de sucio descarga en el mesón de lavado. Si las alturas no coinciden, el material se manipula de más justo donde no debe.',
+        porQue: 'Si las alturas no coinciden, el material se manipula de más justo donde no debe.',
       },
     ],
 
@@ -137,7 +137,7 @@ export const mobiliario: Producto[] = [
     categoria: 'mobiliario',
     titulo: 'Mesas y mesones',
     entradilla:
-      'Superficie continua y soldadura pulida, sin uniones que retengan residuo. Es donde el operario pasa el turno completo revisando pieza por pieza, y la altura de trabajo decide cuántos paquetes salen bien conformados al final de la jornada.',
+      'Superficie continua y soldadura pulida, sin uniones que retengan residuo. La altura de trabajo decide cuántos paquetes salen bien conformados al final del turno.',
 
     procesa: [
       'Mesas de inspección y empaque',
@@ -168,17 +168,17 @@ export const mobiliario: Producto[] = [
       {
         titulo: 'Selladoras térmicas',
         url: '/productos/accesorios/selladoras',
-        porQue: 'La selladora ocupa un tramo fijo de la mesa. Si no se contempla al dimensionar, el puesto de empaque queda corto desde el primer día.',
+        porQue: 'Ocupa un tramo fijo de la mesa. Si no se contempla, el puesto queda corto desde el primer día.',
       },
       {
         titulo: 'Tratamiento y filtración de agua',
         url: '/productos/accesorios/tratamiento-de-agua',
-        porQue: 'El mesón de lavado se alimenta del agua de la institución. El enjuague final con agua fuera de especificación mancha lo que se acaba de lavar.',
+        porQue: 'El enjuague final con agua fuera de especificación mancha lo que se acaba de lavar.',
       },
       {
         titulo: 'Carros de transporte',
         url: '/productos/mobiliario/carros-de-transporte',
-        porQue: 'El material llega y sale de la mesa en carro. Las alturas se deciden juntas para no manipular el material más de lo necesario.',
+        porQue: 'Las alturas se deciden juntas para no manipular el material más de lo necesario.',
       },
     ],
 

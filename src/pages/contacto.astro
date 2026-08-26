@@ -3,7 +3,7 @@ import Base from '../layouts/Base.astro';
 import Migas from '../components/Migas.astro';
 import Formulario from '../components/formulario/Formulario.astro';
 import { contactoPagina } from '../content/institucional.ts';
-import { canalesContacto, sitio } from '../content/sitio.ts';
+import { canalesContacto } from '../content/sitio.ts';
 import { normalizar } from '../content/navegacion.ts';
 
 const rutaActual = normalizar(Astro.url.pathname);
@@ -56,10 +56,6 @@ const rutaActual = normalizar(Astro.url.pathname);
             </dd>
           </div>
         ))}
-        <div class="bg-white p-6">
-          <dt class="meta text-[10px] text-steel">Horario de atención</dt>
-          <dd class="meta mt-2 text-[10px] leading-relaxed text-steel normal-case tracking-[.08em]">{sitio.horario}</dd>
-        </div>
       </dl>
     </div>
   </section>

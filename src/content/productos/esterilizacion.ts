@@ -6,7 +6,7 @@ export const esterilizacion: Producto[] = [
     categoria: 'esterilizacion',
     titulo: 'Autoclaves de vapor',
     entradilla:
-      'Vapor saturado con prevacío fraccionado para todo el material termorresistente y empacado. Es el equipo que decide cuántas cargas salen por turno, y por lo tanto cuánto instrumental tiene que estar duplicado para que la programación quirúrgica no dependa de un solo ciclo.',
+      'Vapor saturado con prevacío fraccionado para todo el material termorresistente y empacado. Decide cuántas cargas salen por turno y, con eso, cuánto instrumental hay que tener duplicado.',
 
     procesa: [
       'Instrumental quirúrgico de acero inoxidable',
@@ -44,32 +44,32 @@ export const esterilizacion: Producto[] = [
       {
         titulo: 'Tratamiento y filtración de agua',
         url: '/productos/accesorios/tratamiento-de-agua',
-        porQue: 'El agua fuera de especificación incrusta la cámara y el generador de vapor. Es la causa de desgaste que menos se vigila y la que más caro sale.',
+        porQue: 'El agua fuera de especificación incrusta la cámara y el generador. Es el desgaste que menos se vigila.',
       },
       {
         titulo: 'Compresores de aire',
         url: '/productos/accesorios/compresores',
-        porQue: 'Las puertas y las válvulas neumáticas se accionan con aire comprimido. Sin aire en especificación, el equipo no abre y la central se detiene.',
+        porQue: 'Puertas y válvulas se accionan con aire. Sin aire en especificación, el equipo no abre.',
       },
       {
         titulo: 'Papel grado médico y empaque',
         url: '/productos/consumibles/papel-y-empaque',
-        porQue: 'El vapor solo esteriliza lo que atraviesa. El empaque tiene que dejar pasar el agente y sostener la barrera hasta que el set se abra en sala.',
+        porQue: 'El vapor solo esteriliza lo que atraviesa. El empaque deja pasar el agente y sostiene la barrera hasta sala.',
       },
       {
         titulo: 'Indicadores químicos',
         url: '/productos/consumibles/indicadores-quimicos',
-        porQue: 'El registro impreso dice qué hizo el equipo. El indicador interno dice qué pasó dentro del paquete, que no es lo mismo.',
+        porQue: 'El registro impreso dice qué hizo el equipo. El indicador interno, qué pasó dentro del paquete.',
       },
       {
         titulo: 'Indicadores biológicos',
         url: '/productos/consumibles/indicadores-biologicos',
-        porQue: 'Es la única evidencia de letalidad. Sin control biológico según protocolo no hay liberación de carga que sostenga una auditoría.',
+        porQue: 'Es la única evidencia de letalidad. Sin él no hay liberación que sostenga una auditoría.',
       },
       {
         titulo: 'Repuestos originales',
         url: '/productos/repuestos',
-        porQue: 'La empaquetadura de puerta y las válvulas son partes de desgaste. Tenerlas en inventario convierte una parada de días en una de horas.',
+        porQue: 'Empaquetadura y válvulas son partes de desgaste. En inventario, una parada de días es de horas.',
       },
     ],
 
@@ -95,7 +95,7 @@ export const esterilizacion: Producto[] = [
     categoria: 'esterilizacion',
     titulo: 'Esterilización por plasma de peróxido',
     entradilla:
-      'Baja temperatura para el material que el vapor destruye: óptica, motores, cables y polímeros. Su valor no está en el ciclo sino en la rotación, porque devuelve a sala el instrumental caro el mismo día en vez de obligar a comprar un segundo juego.',
+      'Baja temperatura para lo que el vapor destruye: óptica, motores, cables y polímeros. Su valor está en la rotación: devuelve el instrumental caro a sala el mismo día.',
 
     procesa: [
       'Óptica rígida y flexible',
@@ -129,17 +129,17 @@ export const esterilizacion: Producto[] = [
       {
         titulo: 'Empaque compatible con peróxido',
         url: '/productos/consumibles/papel-y-empaque',
-        porQue: 'El empaque de celulosa no sirve aquí: absorbe el agente y aborta el ciclo. Esta línea necesita su propio material de barrera.',
+        porQue: 'La celulosa absorbe el agente y aborta el ciclo. Esta línea necesita su propia barrera.',
       },
       {
         titulo: 'Indicadores químicos',
         url: '/productos/consumibles/indicadores-quimicos',
-        porQue: 'El peróxido tiene sus propios indicadores. Los de vapor no viran con este agente y no sirven como control.',
+        porQue: 'Los indicadores de vapor no viran con peróxido. No sirven como control aquí.',
       },
       {
         titulo: 'Repuestos originales',
         url: '/productos/repuestos',
-        porQue: 'Es un equipo de electrónica sensible. El repuesto original con canal directo de fábrica evita paradas largas por una parte menor.',
+        porQue: 'Electrónica sensible: el canal directo de fábrica evita paradas largas por una parte menor.',
       },
     ],
 
@@ -163,7 +163,7 @@ export const esterilizacion: Producto[] = [
     categoria: 'esterilizacion',
     titulo: 'Termodesinfectoras',
     entradilla:
-      'Lavado y desinfección térmica bajo proceso validado, antes de que alguien vuelva a manipular el material sin barrera. Ningún método de esterilización corrige lo que el lavado no removió, y por eso esta es la estación que decide si el resto del ciclo tiene sentido.',
+      'Lavado y desinfección térmica bajo proceso validado. Ningún método de esterilización corrige lo que el lavado no removió.',
 
     procesa: [
       'Endoscopios flexibles',
@@ -186,22 +186,22 @@ export const esterilizacion: Producto[] = [
       {
         titulo: 'Tratamiento y filtración de agua',
         url: '/productos/accesorios/tratamiento-de-agua',
-        porQue: 'El agua es el insumo principal del proceso. La que no cumple especificación mancha el instrumental y deja depósitos en los lúmenes que después nadie ve.',
+        porQue: 'El agua fuera de especificación mancha el instrumental y deja depósitos en los lúmenes.',
       },
       {
         titulo: 'Mesones de lavado',
         url: '/productos/mobiliario/mesas-y-mesones',
-        porQue: 'El equipo necesita un puesto de prelavado y escurrido antes de la carga. Sin él, el material entra con residuo y el ciclo no lo corrige.',
+        porQue: 'Sin puesto de prelavado y escurrido, el material entra con residuo y el ciclo no lo corrige.',
       },
       {
         titulo: 'Carros de transporte',
         url: '/productos/mobiliario/carros-de-transporte',
-        porQue: 'El material sucio llega desde salas y no puede compartir carro con el estéril. La separación es parte del flujo unidireccional.',
+        porQue: 'El material sucio no puede compartir carro con el estéril. Es parte del flujo unidireccional.',
       },
       {
         titulo: 'Repuestos originales',
         url: '/productos/repuestos',
-        porQue: 'Bombas, válvulas y sensores son partes de desgaste en un equipo que trabaja con agua todo el día.',
+        porQue: 'Bombas, válvulas y sensores se desgastan en un equipo que trabaja con agua todo el día.',
       },
     ],
 

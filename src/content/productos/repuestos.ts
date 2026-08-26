@@ -4,6 +4,9 @@
 
 export type GrupoPartes = { titulo: string; descripcion: string; partes: string[] };
 
+/* {{ POR CONFIRMAR: qué partes concretas entran en el inventario local y
+   cuáles se traen por pedido }} — el listado no se publica hasta tenerlo. */
+
 export const repuestos = {
   titulo: 'Repuestos',
   entradilla:
@@ -50,7 +53,7 @@ export const repuestos = {
       'Se define contra la rutina de mantenimiento del equipo, no contra una fecha genérica',
       'Las partes de mayor rotación quedan en inventario en Bogotá',
       'El resto se trae por canal directo de fábrica',
-      '{{ POR CONFIRMAR: qué partes concretas entran en el inventario local y cuáles se traen por pedido }}',
+      'El listado concreto se define contra el parque de equipos de la central',
     ],
   },
 

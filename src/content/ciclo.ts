@@ -41,9 +41,9 @@ export const estaciones: Estacion[] = [
     nombre: 'Recepción y lavado',
     rotulo: 'LAVADO',
     descripcion:
-      'El instrumental llega contaminado desde salas. Se recibe, se descontamina, se lava y se seca bajo proceso validado, antes de que alguien vuelva a manipularlo sin barrera.',
+      'El instrumental llega contaminado desde salas. Se descontamina, se lava y se seca bajo proceso validado.',
     dolor:
-      'Un lavado deficiente arrastra materia orgánica a todo lo que sigue. Ningún método de esterilización corrige lo que el lavado no removió.',
+      'Ningún método de esterilización corrige lo que el lavado no removió.',
     items: [
       { nombre: 'Termodesinfectoras de endoscopios', categoria: 'Equipos',    url: '/productos/esterilizacion/termodesinfectoras' },
       { nombre: 'Mesones de lavado con poza',        categoria: 'Mobiliario', url: '/productos/mobiliario/mesas-y-mesones' },
@@ -58,9 +58,9 @@ export const estaciones: Estacion[] = [
     nombre: 'Inspección y empaque',
     rotulo: 'EMPAQUE',
     descripcion:
-      'Se revisa pieza por pieza, se verifica funcionalidad, se conforma el set y se empaca. Un sellado sin control de parámetros invalida todo lo que viene después.',
+      'Se revisa pieza por pieza, se verifica funcionalidad, se conforma el set y se empaca.',
     dolor:
-      'El empaque es la barrera estéril. Si se abre en el almacenamiento o en el transporte, el ciclo entero se pierde sin que nadie lo note.',
+      'El empaque es la barrera. Si cede en almacenamiento o transporte, el ciclo se pierde sin que nadie lo note.',
     items: [
       { nombre: 'Selladoras térmicas de rollo mixto', categoria: 'Accesorios',   url: '/productos/accesorios/selladoras' },
       { nombre: 'Papel grado médico y rollo mixto',   categoria: 'Consumibles',  url: '/productos/consumibles/papel-y-empaque' },
@@ -75,16 +75,16 @@ export const estaciones: Estacion[] = [
     nombre: 'Esterilización',
     rotulo: 'ESTERILIZA',
     descripcion:
-      'Vapor con prevacío fraccionado para material termorresistente y empacado; plasma de peróxido para el termosensible. La elección de método define el resto de la central.',
+      'Vapor con prevacío fraccionado para lo termorresistente y empacado; plasma de peróxido para lo termosensible.',
     dolor:
-      'Un equipo mal dimensionado obliga a ciclos extra por turno, y cada ciclo extra es tiempo de sala esperando instrumental.',
+      'Un equipo mal dimensionado obliga a ciclos extra. Cada ciclo extra es una sala esperando instrumental.',
     items: [
       { nombre: 'Autoclaves de vapor',                   categoria: 'Equipos',    url: '/productos/esterilizacion/autoclaves-de-vapor' },
       { nombre: 'Esterilización por plasma de peróxido', categoria: 'Equipos',    url: '/productos/esterilizacion/plasma-de-peroxido' },
       { nombre: 'Carros de carga y descarga',            categoria: 'Mobiliario', url: '/productos/mobiliario/carros-de-transporte' },
       { nombre: 'Sellos, válvulas y partes de cámara',   categoria: 'Repuestos',  url: '/productos/repuestos' },
     ],
-    trazabilidad: 'Al conformar la carga se lee el rótulo: el paquete queda atado a un ciclo, un equipo y un turno.',
+    trazabilidad: 'Se lee el rótulo al conformar la carga: el paquete queda atado a un ciclo, un equipo y un turno.',
   },
   {
     numero: 4,
@@ -92,16 +92,16 @@ export const estaciones: Estacion[] = [
     nombre: 'Control y liberación',
     rotulo: 'LIBERACIÓN',
     descripcion:
-      'Una carga que no se puede demostrar no se puede liberar. Se verifica el registro físico del ciclo, el indicador químico interno y el resultado biológico según protocolo.',
+      'Se verifica el registro físico del ciclo, el indicador químico interno y el resultado biológico según protocolo.',
     dolor:
-      'Cuando la evidencia vive en un cuaderno, la auditoría y el recall dependen de la memoria del turno que estuvo esa mañana.',
+      'La evidencia vive en un cuaderno. El recall depende de la memoria del turno de esa mañana.',
     items: [
       { nombre: 'Indicadores químicos y Bowie-Dick',    categoria: 'Consumibles',  url: '/productos/consumibles/indicadores-quimicos' },
       { nombre: 'Indicadores biológicos e incubación',  categoria: 'Consumibles',  url: '/productos/consumibles/indicadores-biologicos' },
       { nombre: 'Registro impreso de ciclo',            categoria: 'Equipos',      url: '/productos/esterilizacion/autoclaves-de-vapor' },
       { nombre: 'Liberación documentada de carga',      categoria: 'Trazabilidad', url: '/trazabilidad/software' },
     ],
-    trazabilidad: 'El sistema no deja liberar una carga sin parámetros conformes, y guarda quién liberó y con qué evidencia.',
+    trazabilidad: 'Sin parámetros conformes el sistema no deja liberar, y guarda quién lo hizo.',
   },
   {
     numero: 5,
@@ -109,16 +109,16 @@ export const estaciones: Estacion[] = [
     nombre: 'Almacenamiento estéril',
     rotulo: 'ALMACÉN',
     descripcion:
-      'El paquete espera. Lo que destruye la barrera aquí es la humedad, el contacto con piso o muro, el manipuleo repetido y la rotación que nadie controla.',
+      'El paquete espera. Lo que rompe la barrera aquí es la humedad, el contacto con piso o muro y el manipuleo.',
     dolor:
-      'Es la estación donde más se pierde material ya procesado, y la pérdida no se ve: se reprocesa material vigente y se despacha material vencido.',
+      'Es donde más se pierde material ya procesado, y la pérdida no se ve.',
     items: [
       { nombre: 'Estantería y armarios en acero AISI 304', categoria: 'Mobiliario',   url: '/productos/mobiliario/almacenamiento-esteril' },
       { nombre: 'Bolsas y barrera estéril de reserva',     categoria: 'Consumibles',  url: '/productos/consumibles/papel-y-empaque' },
       { nombre: 'Aire comprimido y servicios de planta',   categoria: 'Accesorios',   url: '/productos/accesorios/compresores' },
       { nombre: 'Control de vencimientos y rotación',      categoria: 'Trazabilidad', url: '/trazabilidad/software' },
     ],
-    trazabilidad: 'Ubicación, rotación por vencimiento y alerta de caducidad salen del mismo rótulo.',
+    trazabilidad: 'Ubicación, rotación y alerta de vencimiento salen del mismo rótulo.',
   },
   {
     numero: 6,
@@ -126,9 +126,9 @@ export const estaciones: Estacion[] = [
     nombre: 'Entrega y uso',
     rotulo: 'ENTREGA',
     descripcion:
-      'El set se despacha y se abre en sala. Ese es el momento que hay que poder reconstruir seis meses después si el comité de infecciones lo pide.',
+      'El set se abre en sala. Es el momento que hay que poder reconstruir seis meses después.',
     dolor:
-      'Sin vínculo entre paquete y procedimiento, un indicador biológico positivo obliga a recoger el inventario completo y a reprocesar a ciegas.',
+      'Sin vínculo entre paquete y procedimiento, un biológico positivo obliga a recoger todo el inventario.',
     items: [
       { nombre: 'Carros cerrados de distribución',   categoria: 'Mobiliario',   url: '/productos/mobiliario/carros-de-transporte' },
       { nombre: 'Vinculación paquete–procedimiento', categoria: 'Trazabilidad', url: '/trazabilidad' },
@@ -145,9 +145,9 @@ export type Reposo = { titulo: string; descripcion: string; nucleo: string };
 export const reposo: Reposo = {
   titulo: 'Seis estaciones, un proveedor',
   descripcion:
-    'El material sucio entra por un extremo y sale estéril por el otro. El flujo es unidireccional y no admite retrocesos: lo que una estación no resuelve, la siguiente no corrige.',
+    'El material sucio entra por un extremo y sale estéril por el otro. El flujo es unidireccional.',
   nucleo:
-    'La trazabilidad no es una séptima estación: es el hilo que las cose todas, y por eso ocupa el núcleo.',
+    'La trazabilidad no es una séptima estación: es el hilo que las cose todas.',
 };
 
 /** Busca por número (1–6) o por slug. Devuelve null si no existe. */

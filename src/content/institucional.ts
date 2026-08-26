@@ -14,25 +14,25 @@ export const home = {
     {
       etiqueta: 'Línea 1',
       titulo: 'Productos',
-      texto: 'Equipos, consumibles, accesorios, repuestos y mobiliario en acero. El autoclave se compra una vez; el papel, el indicador y el repuesto se compran todos los meses.',
+      texto: 'Equipos, consumibles, accesorios, repuestos y mobiliario en acero. El autoclave se compra una vez; el consumible, todos los meses.',
       url: '/productos',
     },
     {
       etiqueta: 'Línea 2',
       titulo: 'Servicios',
-      texto: 'Servicio técnico con técnicos propios entrenados por fábrica, y asesoría de diseño para centrales en obra nueva, ampliación o remodelación.',
+      texto: 'Instalación, calificación y mantenimiento con técnicos propios. Y el estudio de la central antes de que se funda la primera placa.',
       url: '/servicios',
     },
   ],
   trazabilidad: {
     titulo: 'Trazabilidad de paquete, del empaque al paciente',
-    texto: 'Cuando una carga sale no conforme, la diferencia entre responder en minutos y recoger el inventario completo está en si el paquete tiene historia.',
+    texto: 'Ante una carga no conforme, la diferencia entre responder en minutos y recoger todo el inventario es si el paquete tiene historia.',
     url: '/trazabilidad',
     boton: 'Ver cómo funciona',
   },
   cierre: {
     titulo: 'Cuéntenos qué necesita esterilizar.',
-    texto: 'Con el material que procesa, el volumen por turno y el espacio disponible proponemos el equipo y enviamos cotización formal.',
+    texto: 'Con el material que procesa y el volumen por turno proponemos el equipo y enviamos cotización formal.',
     url: '/contacto',
     boton: 'Solicitar cotización',
   },
@@ -43,36 +43,36 @@ export const home = {
 export const nosotros = {
   titulo: 'Especialistas en el proceso, no solo en el equipo.',
   bajada:
-    'Servimedical Group SAS importa y comercializa equipamiento hospitalario en Colombia, con especialidad en esterilización y desinfección de alto nivel. Trabajamos con quien opera la central todos los días: enfermería de CEyE, ingeniería biomédica, infecciones y compras.',
+    'Importamos y comercializamos equipamiento hospitalario en Colombia, con especialidad en esterilización. Hablamos con quien opera la central todos los días: CEyE, biomédica, infecciones y compras.',
 
   distinto: {
     titulo: 'Qué hacemos distinto.',
     parrafos: [
-      'Una central no falla por el esterilizador. Falla por el agua que le llega, por el aire comprimido que mueve sus válvulas, por el empaque que se abrió en el almacenamiento o por el repuesto que tardó seis semanas en llegar del exterior.',
-      'Por eso no vendemos equipos sueltos: representamos la línea completa que sostiene el proceso, mantenemos inventario local de consumibles y repuestos de alta rotación, y respondemos con técnicos propios entrenados por fábrica.',
+      'Una central no falla por el esterilizador. Falla por el agua que le llega, por el aire que mueve sus válvulas, por el empaque que cedió en el almacenamiento o por el repuesto que tardó seis semanas.',
+      'No vendemos equipos sueltos. Representamos la línea completa, mantenemos inventario local de lo que más rota y respondemos con técnicos propios.',
     ],
   },
 
   exigencias: {
     titulo: 'Qué le exigimos a una marca antes de representarla.',
     bajada:
-      'Es la pregunta que hace el comprador institucional y que casi nadie responde por escrito: ¿y quién me responde en tres años?',
+      'La pregunta del comprador institucional que casi nadie responde por escrito: ¿quién me responde en tres años?',
     pasos: [
       {
         titulo: 'Documentación técnica completa',
-        texto: 'Manuales de servicio, despieces y parámetros de fábrica disponibles para nuestro taller, no solo el manual de usuario.',
+        texto: 'Manuales de servicio, despieces y parámetros de fábrica para nuestro taller. No solo el manual de usuario.',
       },
       {
         titulo: 'Registro sanitario viable',
-        texto: 'Que el equipo pueda obtener y sostener registro INVIMA vigente para su comercialización en Colombia.',
+        texto: 'Que el equipo pueda obtener y sostener registro INVIMA vigente en Colombia.',
       },
       {
         titulo: 'Cadena de repuestos',
-        texto: 'Disponibilidad garantizada de partes críticas y tiempos de reposición que una institución pueda tolerar.',
+        texto: 'Partes críticas disponibles, con tiempos de reposición que una institución pueda tolerar.',
       },
       {
         titulo: 'Entrenamiento de fábrica',
-        texto: 'Formación certificada para nuestros técnicos y actualización cuando el fabricante cambia de plataforma.',
+        texto: 'Formación certificada para nuestros técnicos, y actualización cuando cambia la plataforma.',
       },
     ],
   },
@@ -100,7 +100,7 @@ export const nosotros = {
 
   cta: {
     titulo: '¿Está evaluando proveedores para su central?',
-    texto: 'Agende una visita técnica. Vamos, miramos la operación y le decimos qué cambiaríamos, con o sin compra de por medio.',
+    texto: 'Agende una visita técnica. Miramos la operación y le decimos qué cambiaríamos, con o sin compra de por medio.',
   },
 } as const;
 
@@ -109,17 +109,17 @@ export const nosotros = {
 export const servicios = {
   titulo: 'Antes de comprar el equipo y mucho después.',
   bajada:
-    'El equipo es una parte del problema. El resto es cómo está diseñada la central y quién responde cuando un ciclo falla un martes a las 6 de la mañana con la programación quirúrgica ya montada.',
+    'El equipo es una parte del problema. El resto es cómo está diseñada la central y quién responde cuando un ciclo falla un martes a las 6 de la mañana.',
 
   tecnico: {
     idx: '2.1',
     titulo: 'Servicio técnico especializado',
     intro:
-      'Técnicos propios entrenados por fábrica, con acceso a documentación de servicio y repuestos originales. Se atienden las marcas representadas y equipos de terceros.',
+      'Técnicos propios entrenados por fábrica, con documentación de servicio y repuesto original. Atendemos marcas representadas y equipos de terceros.',
     grupos: [
       {
         titulo: 'Instalación y puesta en marcha',
-        angulo: 'No se instala un esterilizador sobre una acometida que no lo sostiene. La verificación previa evita la mitad de los problemas del primer año.',
+        angulo: 'No se instala un esterilizador sobre una acometida que no lo sostiene.',
         puntos: [
           'Verificación previa de acometidas eléctrica, hidráulica y de vapor',
           'Instalación, nivelación y conexión a servicios',
@@ -130,7 +130,7 @@ export const servicios = {
       },
       {
         titulo: 'Mantenimiento y respuesta',
-        angulo: 'La hoja de vida del equipo es exigible en auditoría. Un mantenimiento sin informe no existe para el auditor.',
+        angulo: 'Un mantenimiento sin informe no existe para el auditor.',
         puntos: [
           'Preventivo con rutina y protocolo por equipo',
           'Correctivo con repuesto original',
@@ -146,7 +146,7 @@ export const servicios = {
     idx: '2.2',
     titulo: 'Asesoría y diseño de centrales de esterilización',
     intro: 'Estudio técnico previo a la obra o a la remodelación.',
-    angulo: 'Corregir un flujo mal planteado en planos cuesta una reunión; corregirlo construido cuesta la obra otra vez.',
+    angulo: 'Corregir un flujo en planos cuesta una reunión. Corregirlo construido cuesta la obra otra vez.',
     grupos: [
       {
         titulo: 'Qué entregamos',
@@ -175,10 +175,10 @@ export const servicios = {
 
   cta: {
     titulo: '¿Equipo detenido o proyecto en planos?',
-    texto: 'Son dos urgencias distintas y dos conversaciones distintas. Escoja la que le corresponde.',
+    texto: 'Dos urgencias distintas, dos conversaciones distintas.',
     rutas: [
-      { titulo: 'Tengo un equipo detenido', texto: 'Marca, modelo y descripción de la falla. Si el equipo está parado, llame también al fijo.', ancla: '#servicio-tecnico' },
-      { titulo: 'Tengo un proyecto en planos', texto: 'Planos, número de salas y programa quirúrgico previsto. Empezamos por una visita técnica.', ancla: '#cotizacion' },
+      { titulo: 'Tengo un equipo detenido', texto: 'Marca, modelo y falla. Si está parado, llame también al fijo.', ancla: '#servicio-tecnico' },
+      { titulo: 'Tengo un proyecto en planos', texto: 'Planos y número de salas. Empezamos por una visita técnica.', ancla: '#cotizacion' },
     ],
   },
 } as const;
@@ -188,26 +188,26 @@ export const servicios = {
 export const trazabilidad = {
   titulo: 'Cada paquete cuenta dónde estuvo.',
   bajada:
-    'Si una carga sale no conforme, la pregunta del comité de infecciones es una sola: qué paquetes salieron de ahí y a qué pacientes llegaron. Con trazabilidad se responde en minutos; sin ella, se recoge el inventario completo y se reprocesa a ciegas.',
+    'Ante una carga no conforme, el comité de infecciones pregunta una sola cosa: qué paquetes salieron de ahí y a qué pacientes llegaron. Con trazabilidad se responde en minutos.',
 
   resuelve: {
     titulo: 'Qué resuelve.',
     items: [
       {
         titulo: 'Recall dirigido',
-        texto: 'Ante una carga no conforme o un indicador biológico positivo, el listado de paquetes afectados y su destino sale del sistema, no de la libreta del turno.',
+        texto: 'El listado de paquetes afectados y su destino sale del sistema, no de la libreta del turno.',
       },
       {
         titulo: 'Liberación con criterio',
-        texto: 'La carga no se despacha sin registro de parámetros y resultado de indicadores. Queda quién liberó y con qué evidencia.',
+        texto: 'Sin parámetros conformes no hay despacho. Queda quién liberó y con qué evidencia.',
       },
       {
         titulo: 'Vencimientos bajo control',
-        texto: 'Alerta por rotación y por fecha, para dejar de reprocesar material vigente y de despachar material vencido.',
+        texto: 'Alerta por rotación y por fecha. Se deja de reprocesar material vigente y de despachar vencido.',
       },
       {
         titulo: 'Productividad medible',
-        texto: 'Cargas por equipo y por turno, tiempos de ciclo, reprocesos y consumo real de insumo por paquete.',
+        texto: 'Cargas por equipo y turno, tiempos de ciclo, reprocesos y consumo por paquete.',
       },
     ],
   },
@@ -215,25 +215,25 @@ export const trazabilidad = {
   sistema: {
     titulo: 'El sistema.',
     componentes: [
-      { titulo: 'Etiquetas y rótulos', texto: 'Adhesivos que resisten el ciclo sin perder legibilidad, con doble código para lectura automática y humana.' },
-      { titulo: 'Impresora de central', texto: 'Impresión en el punto de empaque: un paquete, un rótulo, sin transcripción a mano.' },
-      { titulo: 'Software y lectores', texto: 'Registro en cada estación del ciclo, liberación de carga, control de vencimientos y reportes.', url: '/trazabilidad/software' },
+      { titulo: 'Etiquetas y rótulos', texto: 'Resisten el ciclo sin perder legibilidad, con doble código para lectura automática y humana.' },
+      { titulo: 'Impresora de central', texto: 'Un paquete, un rótulo, en el punto de empaque. Sin transcripción a mano.' },
+      { titulo: 'Software y lectores', texto: 'Registro por estación, liberación de carga, control de vencimientos y reportes.', url: '/trazabilidad/software' },
     ],
   },
 
   implementacion: {
     titulo: 'Cómo se implementa.',
     etapas: [
-      { titulo: 'Levantamiento del flujo', texto: 'Se recorre la central tal como opera hoy, no como debería operar.' },
-      { titulo: 'Configuración', texto: 'Sets, equipos, operarios y vencimientos quedan cargados con los datos reales de la institución.' },
-      { titulo: 'Entrenamiento del turno', texto: 'Se entrena a quien va a leer el rótulo todos los días, no solo a la coordinación.' },
-      { titulo: 'Marcha asistida', texto: 'Acompañamiento en los primeros ciclos, cuando aparecen los casos que el levantamiento no previó.' },
+      { titulo: 'Levantamiento del flujo', texto: 'Se recorre la central como opera hoy, no como debería operar.' },
+      { titulo: 'Configuración', texto: 'Sets, equipos, operarios y vencimientos con los datos reales de la institución.' },
+      { titulo: 'Entrenamiento del turno', texto: 'A quien lee el rótulo todos los días, no solo a la coordinación.' },
+      { titulo: 'Marcha asistida', texto: 'Los primeros ciclos, cuando aparecen los casos que el levantamiento no previó.' },
     ],
   },
 
   cta: {
     titulo: 'Pida una demostración con sus propios sets.',
-    texto: 'Presencial o remota. Se hace con el listado de sets de su central, no con datos de ejemplo: es la única forma de ver si el sistema encaja con su operación.',
+    texto: 'Presencial o remota, con el listado de sets de su central y no con datos de ejemplo.',
   },
 } as const;
 
@@ -242,28 +242,28 @@ export const trazabilidad = {
 export const software = {
   titulo: 'Software de trazabilidad',
   bajada:
-    'Esta página está dirigida a quien evalúa: coordinación de la central junto a sistemas o biomédica. Describe lo que el sistema tiene que ser capaz de hacer, estación por estación.',
+    'Para quien evalúa: coordinación de la central junto a sistemas o biomédica. Qué tiene que ser capaz de hacer el sistema, estación por estación.',
 
   pendiente:
     '{{ POR CONFIRMAR: marca y nombre comercial del sistema, modalidad on-premise o nube, requisitos de servidor, navegador y red, y política de respaldo }}',
 
   nota:
-    'Mientras ese dato no esté confirmado, esta página describe capacidades funcionales y no especificaciones de producto. No hay nombre, versión ni pantallas porque no se inventan.',
+    'Aquí se describen capacidades funcionales, no especificaciones de producto.',
 
   modulos: {
     titulo: 'Módulos funcionales.',
     items: [
-      { titulo: 'Registro de carga', texto: 'Conformación de la carga por lectura de rótulo: qué paquetes entran, en qué equipo, en qué ciclo y con qué operario.' },
-      { titulo: 'Liberación', texto: 'La carga no se libera sin parámetros conformes y resultado de indicadores. Queda registrado quién liberó y con qué evidencia.' },
-      { titulo: 'Almacenamiento y despacho', texto: 'Ubicación del paquete, rotación por vencimiento y registro de la entrega al servicio que lo solicita.' },
-      { titulo: 'Recall', texto: 'A partir de una carga o de un equipo, el listado de paquetes afectados con su ubicación o su destino.' },
-      { titulo: 'Reportes de gestión', texto: 'Cargas por equipo y por turno, reprocesos, tiempos de ciclo y consumo de insumo por paquete.' },
+      { titulo: 'Registro de carga', texto: 'Qué paquetes entran, en qué equipo, en qué ciclo y con qué operario.' },
+      { titulo: 'Liberación', texto: 'Sin parámetros conformes no hay liberación. Queda quién liberó y con qué evidencia.' },
+      { titulo: 'Almacenamiento y despacho', texto: 'Ubicación, rotación por vencimiento y registro de la entrega.' },
+      { titulo: 'Recall', texto: 'Desde una carga o un equipo, los paquetes afectados con su destino.' },
+      { titulo: 'Reportes de gestión', texto: 'Cargas por equipo y turno, reprocesos, tiempos de ciclo y consumo por paquete.' },
     ],
   },
 
   perfiles: {
     titulo: 'Perfiles y permisos.',
-    texto: 'Los permisos se asignan por rol y no por persona, de modo que un cambio de turno no obligue a reconfigurar el sistema.',
+    texto: 'Por rol y no por persona: un cambio de turno no obliga a reconfigurar el sistema.',
     items: [
       'Operario de empaque: conforma paquetes e imprime rótulos',
       'Operario de esterilización: conforma cargas y cierra ciclos',
@@ -276,21 +276,21 @@ export const software = {
   evidencia: {
     titulo: 'Trazabilidad de la evidencia.',
     puntos: [
-      'Cada evento queda con fecha, hora, equipo y usuario que lo registró',
-      'Los registros de liberación no se editan: se corrigen con un nuevo asiento que deja constancia',
-      'La consulta histórica de un paquete reconstruye su recorrido completo',
-      'Los reportes se exportan para adjuntarlos a un expediente de auditoría',
+      'Cada evento queda con fecha, hora, equipo y usuario',
+      'La liberación no se edita: se corrige con un asiento nuevo',
+      'La consulta de un paquete reconstruye su recorrido completo',
+      'Los reportes se exportan para el expediente de auditoría',
     ],
   },
 
   requisitos: {
     titulo: 'Requisitos e integración.',
-    texto: 'La instalación se define contra la infraestructura que ya tiene la institución, en conjunto con su área de sistemas. Lo que sí es independiente de la modalidad:',
+    texto: 'La instalación se define con el área de sistemas de la institución. Independiente de la modalidad:',
     puntos: [
-      'Puestos de lectura en empaque, carga, liberación, almacenamiento y despacho',
+      'Puestos de lectura en las cinco estaciones que registran',
       'Impresora de rótulos en el punto de empaque',
-      'Continuidad de operación cuando la red falla, con sincronización posterior',
-      'Respaldo de la información y procedimiento de restauración documentado',
+      'Operación continua si la red falla, con sincronización posterior',
+      'Respaldo y procedimiento de restauración documentado',
     ],
   },
 } as const;
@@ -300,10 +300,10 @@ export const software = {
 export const contactoPagina = {
   titulo: 'Cuéntenos qué necesita esterilizar.',
   bajada:
-    'Con el tipo de material, el volumen por turno y el espacio disponible proponemos el equipo y enviamos cotización formal. Si ya tiene pliego o lista de necesidades, trabajamos sobre eso.',
+    'Con el material que procesa y el volumen por turno proponemos el equipo y enviamos cotización formal. Si ya tiene pliego, trabajamos sobre eso.',
   rutas: [
-    { titulo: 'Cotización', texto: 'Equipos, consumibles, accesorios o mobiliario. Formulario general.', ancla: '#cotizacion' },
-    { titulo: 'Servicio técnico', texto: 'Marca, modelo y descripción de la falla. Si el equipo está detenido, llame también al fijo.', ancla: '#servicio-tecnico' },
-    { titulo: 'Licitaciones', texto: 'Envíe el pliego a comercial@servimedicalgroup.com y lo revisamos contra el alcance que podemos cubrir.', ancla: null },
+    { titulo: 'Cotización', texto: 'Equipos, consumibles, accesorios o mobiliario.', ancla: '#cotizacion' },
+    { titulo: 'Servicio técnico', texto: 'Marca, modelo y falla. Si el equipo está detenido, llame también al fijo.', ancla: '#servicio-tecnico' },
+    { titulo: 'Licitaciones', texto: 'Envíe el pliego a comercial@servimedicalgroup.com y lo revisamos contra lo que podemos cubrir.', ancla: null },
   ],
 } as const;

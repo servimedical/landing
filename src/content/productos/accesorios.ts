@@ -6,7 +6,7 @@ export const accesorios: Producto[] = [
     categoria: 'accesorios',
     titulo: 'Selladoras térmicas',
     entradilla:
-      'El sellado es un proceso validable, no un gesto mecánico. Si no se controlan temperatura, presión y velocidad, la barrera estéril no está garantizada aunque el paquete se vea perfectamente cerrado, y eso solo se descubre cuando ya se abrió en sala.',
+      'El sellado es un proceso validable, no un gesto mecánico. Sin control de temperatura, presión y velocidad, la barrera no está garantizada aunque el paquete se vea cerrado.',
 
     procesa: [
       'Sellado térmico de rollo mixto',
@@ -28,17 +28,17 @@ export const accesorios: Producto[] = [
       {
         titulo: 'Papel grado médico y empaque',
         url: '/productos/consumibles/papel-y-empaque',
-        porQue: 'La selladora y el material son una sola decisión: el ancho de rollo y el tipo de barrera condicionan el equipo, y al revés.',
+        porQue: 'El ancho de rollo y el tipo de barrera condicionan el equipo, y al revés.',
       },
       {
         titulo: 'Mesas de inspección y empaque',
         url: '/productos/mobiliario/mesas-y-mesones',
-        porQue: 'La selladora vive sobre una mesa de empaque. La altura y el largo de la superficie deciden si el operario trabaja cómodo un turno entero.',
+        porQue: 'La altura y el largo de la mesa deciden si el operario trabaja cómodo un turno entero.',
       },
       {
         titulo: 'Repuestos originales',
         url: '/productos/repuestos',
-        porQue: 'La resistencia y las bandas de arrastre son partes de desgaste. Una selladora parada frena toda la estación de empaque.',
+        porQue: 'Resistencia y bandas se desgastan. Una selladora parada frena toda la estación de empaque.',
       },
     ],
 
@@ -61,7 +61,7 @@ export const accesorios: Producto[] = [
     categoria: 'accesorios',
     titulo: 'Compresores de aire',
     entradilla:
-      'Aire comprimido para el accionamiento neumático de los esterilizadores y los servicios de la central. Es infraestructura invisible hasta el día que falla: cuando el aire sale de especificación la puerta del autoclave no abre, y el problema no parece del compresor.',
+      'Aire comprimido para el accionamiento neumático de la central. Cuando sale de especificación, la puerta del autoclave no abre y el problema no parece del compresor.',
 
     procesa: [
       'Aire comprimido para accionamiento neumático de esterilizadores',
@@ -84,17 +84,17 @@ export const accesorios: Producto[] = [
       {
         titulo: 'Autoclaves de vapor',
         url: '/productos/esterilizacion/autoclaves-de-vapor',
-        porQue: 'El compresor se dimensiona contra el equipo que va a accionar. Es el fabricante del autoclave el que fija la calidad de aire, no el revés.',
+        porQue: 'La calidad de aire la fija el fabricante del autoclave, no el revés.',
       },
       {
         titulo: 'Tratamiento y filtración de agua',
         url: '/productos/accesorios/tratamiento-de-agua',
-        porQue: 'Agua y aire son las dos acometidas que condicionan la validez del ciclo. Se revisan juntas antes de instalar cualquier equipo.',
+        porQue: 'Agua y aire condicionan la validez del ciclo. Se revisan juntas antes de instalar.',
       },
       {
         titulo: 'Repuestos originales',
         url: '/productos/repuestos',
-        porQue: 'Filtros y elementos de secado son consumo de rutina. Dejarlos vencer traslada el problema al esterilizador, donde cuesta más.',
+        porQue: 'Filtros y secado son consumo de rutina. Vencidos, el problema pasa al esterilizador.',
       },
     ],
 
@@ -117,7 +117,7 @@ export const accesorios: Producto[] = [
     categoria: 'accesorios',
     titulo: 'Tratamiento y filtración de agua',
     entradilla:
-      'Es la variable que más acorta la vida útil de una cámara y de un generador de vapor. La incrustación no se ve hasta que el equipo falla, y para entonces el daño ya está hecho y no se corrige con mantenimiento.',
+      'Es la variable que más acorta la vida de una cámara y un generador. La incrustación no se ve hasta que el equipo falla.',
 
     procesa: [
       'Agua de alimentación de esterilizadores',
@@ -141,17 +141,17 @@ export const accesorios: Producto[] = [
       {
         titulo: 'Autoclaves de vapor',
         url: '/productos/esterilizacion/autoclaves-de-vapor',
-        porQue: 'El tren de tratamiento se diseña contra la exigencia del equipo que alimenta. Es el autoclave el que fija la especificación.',
+        porQue: 'El tren se diseña contra la exigencia del equipo. El autoclave fija la especificación.',
       },
       {
         titulo: 'Termodesinfectoras',
         url: '/productos/esterilizacion/termodesinfectoras',
-        porQue: 'El lavado consume mucha más agua que la esterilización, y el manchado del instrumental casi siempre viene del enjuague final.',
+        porQue: 'El lavado consume mucha más agua, y el manchado casi siempre viene del enjuague final.',
       },
       {
         titulo: 'Repuestos originales',
         url: '/productos/repuestos',
-        porQue: 'Cartuchos, membranas y resinas son consumo periódico. Un tren de tratamiento sin reposición deja de tratar y nadie se entera.',
+        porQue: 'Cartuchos, membranas y resinas son consumo periódico. Sin reposición, deja de tratar.',
       },
     ],
 

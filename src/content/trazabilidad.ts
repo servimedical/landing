@@ -21,7 +21,7 @@ export const etiqueta = {
   pieIzq: 'SVMG · TRAZABILIDAD',
   pieDer: '250825A3-0412',
   apoyo:
-    'Doble código: lectura automática para el flujo diario y lectura humana para cuando el escáner no está a la mano.',
+    'Doble código: lectura automática para el flujo diario, y humana para cuando el escáner no está a la mano.',
   /* Sin esto no se puede nombrar el producto en ninguna página que lo enlace. */
   sistema: '{{ POR CONFIRMAR: marca y nombre comercial del sistema de trazabilidad }}',
 } as const;
@@ -44,16 +44,16 @@ export type Evento = {
 };
 
 export const lineaDeVida: Evento[] = [
-  { hora: '07:12', evento: 'Empaque y sellado',                  subtexto: 'Se conforma el set, se sella y se imprime el rótulo con operario responsable', estacion: 2, clave: 'operario' },
+  { hora: '07:12', evento: 'Empaque y sellado',                  subtexto: 'Se conforma el set, se sella y se imprime el rótulo con su operario', estacion: 2, clave: 'operario' },
   { hora: '08:04', evento: 'Conformación de la carga 0412',      subtexto: 'El paquete queda asociado a la carga, al equipo y al turno',                    estacion: 3, clave: 'carga' },
   { hora: '08:38', evento: 'Fin de ciclo',                       subtexto: 'Parámetros registrados: 134 °C · 2.1 bar · 4 min de exposición',               estacion: 3, clave: 'metodo' },
   { hora: '09:05', evento: 'Liberación de carga',                subtexto: 'Indicador químico interno e indicador biológico conformes',                     estacion: 4, clave: 'carga' },
-  { hora: '09:20', evento: 'Ingreso a almacenamiento estéril',   subtexto: 'Ubicación asignada y fecha de vencimiento en control de rotación',             estacion: 5, clave: 'vence' },
+  { hora: '09:20', evento: 'Ingreso a almacenamiento estéril',   subtexto: 'Ubicación asignada y vencimiento en control de rotación',             estacion: 5, clave: 'vence' },
   { hora: '11:47', evento: 'Entrega a quirófano 3',              subtexto: 'Queda vinculado al procedimiento y al paciente',                                estacion: 6, clave: 'lote' },
 ];
 
 export const cierre =
-  'Seis registros, ningún cuaderno. La misma información que hoy se anota a mano queda capturada en el punto donde ocurre.';
+  'Seis registros, ningún cuaderno. Lo que hoy se anota a mano queda capturado donde ocurre.';
 
 /* --------------------------------------------------------------------------
    CÓDIGOS

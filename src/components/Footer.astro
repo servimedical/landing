@@ -47,7 +47,6 @@ const anio = new Date().getFullYear();
                 : <span>{c.valor}</span>}
             </li>
           ))}
-          <li class="py-1 text-[14.5px]">{sitio.horario}</li>
         </ul>
       </div>
     </div>
@@ -60,9 +59,7 @@ const anio = new Date().getFullYear();
       <span class="ml-auto">{sitio.ciudad} · {sitio.pais}</span>
     </div>
 
-    <!--
-      El sitio anterior enlazaba redes de otra marca. No se arrastran:
-      {{ POR CONFIRMAR: redes sociales propias de SVMG }}
-    -->
+    {/* El sitio anterior enlazaba redes de otra marca. No se arrastran.
+        {{ POR CONFIRMAR: redes sociales propias de SVMG }} */}
   </div>
 </footer>

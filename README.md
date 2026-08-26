@@ -13,6 +13,12 @@ npm run marcadores   # qué falta, separado por comercial y jurídico
 > accesible y autorización expresa; lo segundo ya está implementado, lo
 > primero necesita que alguien de la empresa valide el texto.
 
+## Copy
+
+`src/content/VOZ.md` manda sobre cualquier texto del sitio: reglas, longitudes
+máximas por elemento, vocabulario y la lista de lo que no se inventa nunca.
+Léala antes de escribir una línea nueva.
+
 ## Formularios
 
 Tres formularios —cotización, repuestos y servicio técnico— comparten

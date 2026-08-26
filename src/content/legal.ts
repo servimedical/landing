@@ -15,9 +15,10 @@
 
 export const VIGENCIA = '{{ POR CONFIRMAR: fecha de entrada en vigencia }}';
 
-/** Correo por el que se atienden consultas, reclamos y revocatorias. */
-export const CANAL_TITULAR =
-  '{{ POR CONFIRMAR: correo del responsable del tratamiento de datos y procedimiento interno de atención a solicitudes }}';
+/** Correo por el que se atienden consultas, reclamos y revocatorias.
+ *  {{ POR CONFIRMAR: correo del responsable del tratamiento de datos y
+ *  procedimiento interno de atención a solicitudes }} */
+export const CANAL_TITULAR = 'comercial@servimedicalgroup.com';
 
 export type Seccion = { titulo: string; parrafos?: string[]; lista?: string[] };
 
@@ -74,7 +75,10 @@ export const politica: Seccion[] = [
   {
     titulo: 'Cómo ejercer estos derechos',
     parrafos: [
-      `El titular puede ejercer cualquiera de estos derechos escribiendo a ${CANAL_TITULAR}, indicando su nombre, el dato de contacto que utilizó al escribir al sitio y la solicitud concreta.`,
+      /* {{ POR CONFIRMAR: correo del responsable del tratamiento de datos y
+         procedimiento interno de atención a solicitudes }} — mientras tanto se
+         publica el correo comercial, que es el canal que hoy existe. */
+      'El titular puede ejercer cualquiera de estos derechos escribiendo a comercial@servimedicalgroup.com, indicando su nombre, el dato de contacto que utilizó al escribir al sitio y la solicitud concreta.',
       'Las consultas se atienden en los términos que fija la ley. Si la solicitud resulta incompleta, se pedirá al titular la información que falte antes de continuar.',
     ],
   },

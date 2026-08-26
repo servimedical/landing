@@ -5,12 +5,15 @@ export const sitio = {
   nombre: 'Servimedical Group',
   razon: 'Servimedical Group SAS',
   dominio: 'https://www.servimedicalgroup.com',
-  descripcion: '{{ POR CONFIRMAR: descripción global del sitio }}',
+  descripcion:
+    'Equipos, consumibles, accesorios, repuestos y trazabilidad para centrales de esterilización, con servicio técnico propio. Bogotá, cobertura nacional.',
   ciudad: 'Bogotá',
   pais: 'Colombia',
   idioma: 'es-CO',
   /** Una línea bajo la marca, en el pie. */
-  lineaMarca: '{{ POR CONFIRMAR: línea descriptiva de la marca }}',
+  lineaMarca: 'Equipamiento hospitalario y centrales de esterilización.',
+  /* No se muestra en ninguna página mientras no esté confirmado: un
+     marcador nunca va a la vista del visitante (ver VOZ.md). */
   horario: '{{ POR CONFIRMAR: horario de atención }}',
 } as const;
 
