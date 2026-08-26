@@ -49,7 +49,7 @@ import { estaciones, reposo } from '../../content/ciclo.ts';
       return destino ? destino.getBoundingClientRect().top + window.scrollY : null;
     };
 
-    var ir = function (comportamiento) {
+    var ir = function (comportamiento: ScrollBehavior) {
       var y = objetivo();
       if (y === null) return;
       window.scrollTo({ top: y, behavior: comportamiento });

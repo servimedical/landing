@@ -1,0 +1,169 @@
+---
+/* CARTA DE CICLO — el registro gráfico que imprime un autoclave al terminar.
+   Es el documento que la central archiva como evidencia de que la carga fue
+   procesada. Los dientes de sierra del arranque son los pulsos del prevacío
+   fraccionado: esa forma es lo que hace reconocible el gráfico, y por eso no
+   se suaviza. */
+const CURVA =
+  'M46,212 L74,168 L92,196 L118,150 L136,182 L162,128 L182,160 ' +
+  'L206,74 L228,40 L340,40 L360,96 L392,150 L440,182 L510,196';
+---
+<figure class="carta border border-rule bg-paper p-[22px] m-0">
+  <figcaption class="flex items-baseline justify-between gap-3 border-b border-rule pb-3">
+    <span class="meta text-[10px] text-steel">VAPOR 134 °C · PREVACÍO FRACCIONADO</span>
+    <span class="meta flex shrink-0 items-center gap-2 text-[10px] text-navy">
+      <span class="piloto senal" aria-hidden="true"></span>
+      <span id="carta-estado">Ciclo en curso</span>
+    </span>
+  </figcaption>
+
+  <svg
+    viewBox="0 0 520 262" class="mt-3.5 block h-auto w-full" role="img"
+    aria-label="Registro gráfico de un ciclo de esterilización por vapor: prevacío fraccionado, exposición a 134 grados centígrados durante 4 minutos y fase de secado."
+  >
+    <line x1="46" y1="40"  x2="510" y2="40"  stroke="var(--color-mist)" stroke-width="1" />
+    <line x1="46" y1="100" x2="510" y2="100" stroke="var(--color-mist)" stroke-width="1" />
+    <line x1="46" y1="160" x2="510" y2="160" stroke="var(--color-mist)" stroke-width="1" />
+    <line x1="46" y1="212" x2="510" y2="212" stroke="var(--color-mist)" stroke-width="1" />
+
+    <text x="6"  y="44"  class="eje">134 °C</text>
+    <text x="6"  y="104" class="eje">100 °C</text>
+    <text x="14" y="164" class="eje">60 °C</text>
+    <text x="14" y="216" class="eje">20 °C</text>
+
+    <rect x="228" y="34" width="112" height="178" fill="rgba(137,216,0,.13)" />
+
+    <text x="66"  y="242" class="fase">PREVACÍO</text>
+    <text x="236" y="242" class="fase">EXPOSICIÓN 4:00</text>
+    <text x="382" y="242" class="fase">SECADO</text>
+
+    <path
+      id="carta-curva" d={CURVA} fill="none"
+      stroke="var(--color-signal)" stroke-width="2.5" stroke-linecap="square"
+    />
+    <circle id="carta-punto" r="4.5" cx="46" cy="212" fill="var(--color-navy)" />
+  </svg>
+
+  <div class="mt-4 grid grid-cols-3 border-t border-rule" aria-live="off">
+    <div class="pt-3.5">
+      <p class="lectura" id="carta-temp">20 °C</p>
+      <p class="meta mt-1.5 text-[10px] text-steel">Temperatura cámara</p>
+    </div>
+    <div class="border-l border-rule pt-3.5 pl-4">
+      <p class="lectura" id="carta-bar">0.0 bar</p>
+      <p class="meta mt-1.5 text-[10px] text-steel">Presión</p>
+    </div>
+    <div class="border-l border-rule pt-3.5 pl-4">
+      <p class="lectura" id="carta-tiempo">00:00</p>
+      <p class="meta mt-1.5 text-[10px] text-steel">Tiempo de ciclo</p>
+    </div>
+  </div>
+</figure>
+
+<style>
+  .eje  { font-family: var(--font-mono); font-size: 9.5px; fill: var(--color-steel); letter-spacing: .1em; }
+  .fase { font-family: var(--font-mono); font-size: 9.5px; fill: var(--color-navy);  letter-spacing: .1em; }
+
+  .lectura {
+    font-family: var(--font-display);
+    font-variation-settings: 'wdth' 100;
+    font-weight: 700;
+    font-size: 26px;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Único movimiento permanente de la pieza, y sólo porque replica el piloto
+     de un equipo. */
+  .piloto { animation: piloto 2.2s infinite; }
+  @keyframes piloto { 0%, 100% { opacity: 1 } 50% { opacity: .22 } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .piloto { animation: none }
+  }
+
+  @media (max-width: 560px) {
+    .carta > div:last-child { grid-template-columns: 1fr }
+    .carta > div:last-child > div + div {
+      border-left: 0;
+      border-top: 1px solid var(--color-rule);
+      padding-left: 0;
+    }
+  }
+</style>
+
+<script>
+  const curva = document.getElementById('carta-curva') as SVGPathElement | null;
+  const punto = document.getElementById('carta-punto');
+  const temp = document.getElementById('carta-temp');
+  const bar = document.getElementById('carta-bar');
+  const tiempo = document.getElementById('carta-tiempo');
+  const estado = document.getElementById('carta-estado');
+
+  if (curva && punto && temp && bar && tiempo && estado) {
+    const largo = curva.getTotalLength();
+    const reducido = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* Las tres lecturas se derivan de la posición real del punto sobre la
+       curva, no de un temporizador aparte: por eso concuerdan siempre. */
+    const aTemperatura = (y: number) => 20 + (212 - y) * (114 / 172);
+    /* Debajo de 100 °C marca 0.0 bar, que es lo correcto: hasta ahí no hay
+       vapor saturado bajo presión. */
+    const aPresion = (t: number) => Math.max(0, (t - 100) * (2.1 / 34));
+
+    const situar = (p: number) => {
+      const pt = curva.getPointAtLength(largo * p);
+      const t = aTemperatura(pt.y);
+      punto.setAttribute('cx', String(pt.x));
+      punto.setAttribute('cy', String(pt.y));
+      temp.textContent = `${t.toFixed(0)} °C`;
+      bar.textContent = `${aPresion(t).toFixed(1)} bar`;
+      const segundos = Math.round(p * 34 * 60);
+      tiempo.textContent =
+        `${String(Math.floor(segundos / 60)).padStart(2, '0')}:${String(segundos % 60).padStart(2, '0')}`;
+    };
+
+    const cerrar = () => {
+      temp.textContent = '134 °C';
+      bar.textContent = '2.1 bar';
+      tiempo.textContent = '34:00';
+      estado.textContent = 'Carga liberada';
+    };
+
+    curva.style.strokeDasharray = String(largo);
+
+    if (reducido) {
+      curva.style.strokeDashoffset = '0';
+      situar(1);
+      cerrar();
+    } else {
+      curva.style.strokeDashoffset = String(largo);
+      const DURACION = 3800;
+      let inicio: number | null = null;
+
+      const cuadro = (ahora: number) => {
+        if (inicio === null) inicio = ahora;
+        const p = Math.min(1, (ahora - inicio) / DURACION);
+        // easeInOutQuad
+        const e = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+        curva.style.strokeDashoffset = String(largo * (1 - e));
+        situar(e);
+        if (p < 1) requestAnimationFrame(cuadro);
+        else cerrar();
+      };
+
+      // Se dispara al 30 % de visibilidad y una sola vez por carga de página.
+      const svg = curva.closest('svg');
+      if (svg) {
+        const io = new IntersectionObserver((entradas) => {
+          for (const e of entradas) {
+            if (!e.isIntersecting) continue;
+            io.disconnect();
+            requestAnimationFrame(cuadro);
+          }
+        }, { threshold: 0.3 });
+        io.observe(svg);
+      }
+    }
+  }
+</script>

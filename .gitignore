@@ -21,3 +21,9 @@ npm-debug.log*
 # config local del editor (rutas absolutas de esta máquina)
 .claude/
 scripts/.og.svg
+
+# duplicados de Finder del intento previo en Next.js (25-08).
+# Están en el disco, no en el repo. Se pueden borrar sin perder nada:
+# quedaron registrados en el commit cfd902a.
+src 2/
+public 2/

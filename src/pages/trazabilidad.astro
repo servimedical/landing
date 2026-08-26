@@ -1,0 +1,47 @@
+---
+/* Página propia de /trazabilidad. Sustituye a la provisional de
+   [...ruta].astro: Astro da prioridad a la ruta estática.
+   Sólo se integra la pieza de la etiqueta; el resto del contenido sigue
+   pendiente. */
+import Pagina from '../layouts/Pagina.astro';
+import EtiquetaTrazabilidad from '../components/trazabilidad/EtiquetaTrazabilidad.astro';
+import { rutaActiva, normalizar } from '../content/navegacion.ts';
+import { sitio } from '../content/sitio.ts';
+
+const nodo = rutaActiva(normalizar(Astro.url.pathname))[0]!;
+---
+<Pagina
+  titulo={`${nodo.titulo} — ${sitio.nombre} · {{ POR CONFIRMAR }}`}
+  descripcion={`{{ POR CONFIRMAR: descripción de ${nodo.titulo} }}`}
+  encabezado={nodo.titulo}
+>
+  <p class="meta mt-8 inline-block border border-rule px-4 py-3 text-steel">
+    {'{{ CONTENIDO PENDIENTE — paso 4 }}'}
+  </p>
+
+  <section class="mt-12 border-t border-rule pt-12 lg:mt-16 lg:pt-16" aria-labelledby="etiqueta-titulo">
+    <div class="mb-8 max-w-[58ch] lg:mb-12">
+      <p class="meta flex items-center gap-2.5 text-steel">
+        <span aria-hidden="true" class="senal"></span>
+        Un paquete, un rótulo
+      </p>
+      <h2 id="etiqueta-titulo" class="mt-4 text-[clamp(24px,3vw,36px)]">
+        Cada paquete cuenta dónde estuvo.
+      </h2>
+    </div>
+
+    <EtiquetaTrazabilidad />
+  </section>
+
+  {nodo.hijos && (
+    <nav aria-label={`Dentro de ${nodo.titulo}`} class="mt-12 max-w-xl border-t border-rule">
+      <ul>
+        {nodo.hijos.map((hijo) => (
+          <li class="border-b border-rule">
+            <a href={hijo.url} class="block py-3.5 text-[16px] hover:text-steel">{hijo.titulo}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )}
+</Pagina>
