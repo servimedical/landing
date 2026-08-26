@@ -2,6 +2,8 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
+import preact from '@astrojs/preact';
+import { validarCiclo } from './integraciones/validar-ciclo.mjs';
 
 export default defineConfig({
   site: 'https://www.servimedicalgroup.com',
@@ -22,6 +24,8 @@ export default defineConfig({
   devToolbar: { enabled: false },
 
   integrations: [
+    preact(),
+    validarCiclo(),
     sitemap({ filter: (p) => !p.includes('/404') && !p.includes('/productos/trazabilidad') }),
   ],
 

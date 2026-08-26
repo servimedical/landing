@@ -138,3 +138,76 @@
     top: 12px;
   }
 }
+
+/* ============================================================================
+   RUEDA DEL CICLO
+   Las clases repetidas de la isla viven aquí y no dentro del .tsx: mantiene
+   el paquete de JavaScript por debajo del presupuesto de 14 KB.
+   ========================================================================== */
+
+/** Cuadrado de 7 px en verde señal. El verde marca estado, nunca decora. */
+@utility senal {
+  display: block;
+  flex: none;
+  width: 7px;
+  height: 7px;
+  background: var(--color-signal);
+}
+
+/** Los paneles se apilan en la misma celda: el contenedor mide siempre lo que
+    el más alto y la página no salta al cambiar de estación. CLS = 0. */
+@utility ciclo-panel {
+  grid-column-start: 1;
+  grid-row-start: 1;
+  transition: opacity 150ms ease;
+}
+
+/** Fila de ítem: enlace de ancho completo dentro del panel. */
+@utility ciclo-fila {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 0.5rem;
+  transition: background-color 150ms ease;
+
+  &:hover { background: var(--color-paper); }
+  &:hover .ciclo-flecha { opacity: 1; }
+}
+
+@utility ciclo-flecha {
+  width: 0.5rem;
+  color: var(--color-steel);
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+/** Riel con snap: sangra hasta el borde y deja asomar la tarjeta siguiente. */
+@utility ciclo-riel {
+  display: flex;
+  gap: 1px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  margin-inline: calc(-1 * clamp(20px, 5vw, 64px));
+  padding-inline: clamp(20px, 5vw, 64px);
+  scroll-padding-inline: clamp(20px, 5vw, 64px);
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar { display: none; }
+}
+
+@utility ciclo-tarjeta {
+  flex: none;
+  width: 86%;
+  max-width: 420px;
+  scroll-snap-align: center;
+  border: 1px solid var(--color-rule);
+  background: var(--color-white);
+  padding: 1.5rem;
+}
+
+@utility ciclo-bloque-dolor {
+  margin-top: 1.25rem;
+  border-top: 1px dashed var(--color-rule);
+  padding-top: 1rem;
+}

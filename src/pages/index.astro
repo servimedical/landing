@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import { inicio, enNavbar } from '../content/navegacion.ts';
 import { sitio } from '../content/sitio.ts';
+import Rueda from '../components/ciclo/Rueda.astro';
 ---
 <Base
   titulo={`${sitio.nombre} — {{ POR CONFIRMAR: título de la home }}`}
@@ -25,13 +26,18 @@ import { sitio } from '../content/sitio.ts';
     </nav>
   </div>
 
-  <!-- Destino del ancla del panel de productos. La rueda del ciclo llega en el paso 2. -->
-  <section id="ciclo" class="border-t border-rule bg-paper">
-    <div class="contenedor py-12 lg:py-16">
-      <h2 class="text-[clamp(24px,3vw,34px)]">El ciclo de esterilización</h2>
-      <p class="meta mt-6 inline-block border border-rule bg-white px-4 py-3 text-steel">
-        {'{{ CONTENIDO PENDIENTE — paso 2 }}'}
-      </p>
+  <section id="ciclo" class="border-t border-rule bg-paper" aria-labelledby="ciclo-titulo">
+    <div class="contenedor py-14 lg:py-20">
+      <div class="mb-10 max-w-[62ch] lg:mb-14">
+        <p class="meta flex items-center gap-2.5 text-steel">
+          <span aria-hidden="true" class="senal"></span>
+          Cómo trabajamos
+        </p>
+        <h2 id="ciclo-titulo" class="mt-4 text-[clamp(28px,3.6vw,44px)]">
+          Seis estaciones y un hilo que las cose.
+        </h2>
+      </div>
+      <Rueda />
     </div>
   </section>
 </Base>
