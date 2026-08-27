@@ -1,15 +1,13 @@
 # build
-# Sin barra final: ahora son enlaces a las carpetas .nosync y un patrón con
-# barra no casa con un enlace simbólico.
-dist
-.astro
-.vercel
+dist/
+.astro/
+.vercel/
 
 # dependencias
-node_modules
+node_modules/
 
-# Carpetas excluidas de la sincronización de iCloud. macOS ignora todo lo que
-# termine en .nosync, y así .git deja de corromperse mientras se sincroniza.
+# Red de seguridad: si el proyecto vuelve a vivir en una carpeta sincronizada
+# con iCloud, la salida se aparta con el sufijo que macOS ignora.
 *.nosync
 
 # entorno
