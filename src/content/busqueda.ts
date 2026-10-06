@@ -1,9 +1,9 @@
-/* Índice de búsqueda. Se arma en compilación desde el contenido que ya
-   existe, así que no puede desincronizarse del sitio. */
+/* Índice de búsqueda. Se arma en compilación desde los mismos datos que
+   publican las páginas, así que no puede desincronizarse del sitio. */
 
 import { navegacion } from './navegacion.ts';
-import { marcas, urlLinea, marcaDe, rolVisible } from './marcas.ts';
-import { productos, buscarPorSlug } from './productos/index.ts';
+import { marcas } from '../datos/marcas.ts';
+import { lineas, lineasDe, urlLinea } from '../datos/lineas.ts';
 
 export type Entrada = {
   titulo: string;
@@ -13,7 +13,7 @@ export type Entrada = {
   terminos: string;
 };
 
-const primeraFrase = (t: string) => (t.split('. ')[0] ?? t).replace(/\.$/, '') + '.';
+const nombreMarca = (slug: string) => marcas.find((m) => m.slug === slug)!.nombre;
 
 export const indice: Entrada[] = [
   // Páginas
@@ -25,28 +25,26 @@ export const indice: Entrada[] = [
       grupo: 'Sitio',
       pista:
         n.url === '/servicios' ? 'Servicio técnico y diseño de centrales'
-        : n.url === '/marcas' ? 'Las siete marcas que representamos'
+        : n.url === '/marcas' ? 'Las marcas que representamos'
         : 'Cotización, servicio técnico, repuestos y licitaciones',
       terminos: '',
     })),
 
   // Marcas
-  ...marcas.map((m) => ({
+  ...[...marcas].sort((a, b) => a.orden - b.orden).map((m) => ({
     titulo: m.nombre,
     url: `/marcas/${m.slug}`,
     grupo: 'Marca',
-    pista: rolVisible(m),
-    terminos: m.lineas.map((s) => buscarPorSlug(s)?.titulo ?? '').join(' '),
+    pista: m.descriptor,
+    terminos: lineasDe(m.slug).map((l) => l.nombre).join(' '),
   })),
 
-  // Líneas de producto
-  ...productos
-    .filter((p) => marcaDe(p.slug))
-    .map((p) => ({
-      titulo: p.titulo,
-      url: urlLinea(p.slug),
-      grupo: marcaDe(p.slug)!.nombre,
-      pista: primeraFrase(p.entradilla),
-      terminos: p.procesa.join(' '),
-    })),
+  // Líneas
+  ...lineas.map((l) => ({
+    titulo: `${l.nombre} ${nombreMarca(l.marca)}`,
+    url: urlLinea(l),
+    grupo: nombreMarca(l.marca),
+    pista: l.metodo,
+    terminos: [l.uso, ...(l.compatible ?? []), ...(l.dondeSeUsa ?? [])].join(' '),
+  })),
 ];

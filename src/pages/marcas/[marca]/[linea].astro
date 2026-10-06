@@ -1,17 +1,281 @@
 ---
-import ProductoLayout from '../../../layouts/Producto.astro';
-import { marcas } from '../../../content/marcas.ts';
-import { buscarPorSlug, type Producto } from '../../../content/productos/index.ts';
+import { getCollection } from 'astro:content';
+import Base from '../../../layouts/Base.astro';
+import Migas from '../../../components/Migas.astro';
+import BrandLogo from '../../../components/marca/BrandLogo.astro';
+import Formulario from '../../../components/formulario/Formulario.astro';
+import { marcaPorSlug } from '../../../datos/marcas.ts';
+import { resolverLinea, urlLinea } from '../../../datos/lineas.ts';
+import { normalizar } from '../../../content/navegacion.ts';
+import { sitio } from '../../../content/sitio.ts';
 
-export function getStaticPaths() {
-  return marcas.flatMap((m) =>
-    m.lineas
-      .map((slug) => ({ m, p: buscarPorSlug(slug) }))
-      .filter((x): x is { m: typeof m; p: Producto } => Boolean(x.p))
-      .map(({ m, p }) => ({ params: { marca: m.slug, linea: p.slug }, props: { marca: m, producto: p } }))
-  );
+export async function getStaticPaths() {
+  const lineas = await getCollection('lineas');
+  return lineas.map((e) => ({
+    params: { marca: e.data.marca, linea: e.data.slug },
+    props: { l: e.data },
+  }));
 }
 
-const { marca, producto } = Astro.props;
+const { l } = Astro.props;
+const m = marcaPorSlug(l.marca)!;
+const rutaActual = normalizar(Astro.url.pathname);
+
+const esEquipo = l.tipo === 'equipo';
+const titular = `${l.nombre} ${m.nombre}`;
+const cotizar = `Cotizar ${l.nombre.toLowerCase()} ${m.nombre}`;
+
+/* «Completa el ciclo»: la referencia se resuelve prefiriendo la misma marca,
+   para no mandar al visitante a otro fabricante sin motivo. El esquema ya
+   garantizó que no hay dos tarjetas al mismo destino. */
+const relacionadas = l.relacionadas
+  .map((r) => ({ ...r, destino: resolverLinea(r.linea, l.marca) }))
+  .filter((r) => r.destino);
+
+const alternativa = l.alternativa ? resolverLinea(l.alternativa.linea, l.marca) : undefined;
+
+const jsonld: Record<string, unknown>[] = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: titular,
+    description: l.seo.descripcion,
+    category: l.uso,
+    brand: { '@type': 'Brand', name: m.nombre },
+    url: new URL(rutaActual, sitio.dominio).href,
+  },
+];
+if (l.faq?.length)
+  jsonld.push({
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: l.faq.map((f) => ({
+      '@type': 'Question',
+      name: f.p,
+      acceptedAnswer: { '@type': 'Answer', text: f.r },
+    })),
+  });
 ---
-<ProductoLayout marca={marca} producto={producto} />
+<Base titulo={l.seo.titulo} descripcion={l.seo.descripcion}>
+  <Migas rutaActual={rutaActual} />
+
+  {/* 1 · Hero */}
+  <div class="contenedor grid gap-x-[clamp(32px,5vw,72px)] gap-y-10 py-12 lg:grid-cols-[1.05fr_.95fr] lg:py-16">
+    <div>
+      <a href={`/marcas/${m.slug}`} class="inline-block" aria-label={`Ver la marca ${m.nombre}`}>
+        <BrandLogo marca={m} alto="34px" />
+      </a>
+      <h1 class="mt-5 max-w-[20ch] text-[clamp(28px,3.6vw,44px)]">{titular}</h1>
+      <p class="mt-5 max-w-[52ch] text-[clamp(16px,1.3vw,18px)] leading-relaxed text-steel">{l.lead}</p>
+
+      <div class="mt-8 flex flex-wrap gap-3">
+        <a href="#cotizar" class="inline-flex items-center gap-2.5 border border-navy bg-navy px-5 py-3.5 text-[14.5px] font-medium text-white hover:bg-navy-deep">
+          <span aria-hidden="true" class="senal"></span>{cotizar}
+        </a>
+      </div>
+    </div>
+
+    {/* Franja de specs: lo duro, antes que la prosa. */}
+    <dl class="self-start border border-rule">
+      {l.specsClave.map((s, i) => (
+        <div class:list={['flex flex-col gap-1 p-5 sm:flex-row sm:items-baseline sm:gap-5', i > 0 && 'border-t border-rule']}>
+          <dt class="meta w-[142px] shrink-0 text-[10px] text-steel">{s.label}</dt>
+          <dd class="text-[15.5px] leading-snug">{s.valor}</dd>
+        </div>
+      ))}
+    </dl>
+  </div>
+
+  {/* 2 · Modelos */}
+  {l.modelos && (
+    <section class="border-t border-rule" aria-labelledby="modelos">
+      <div class="contenedor py-12 lg:py-16">
+        <h2 id="modelos" class="text-[clamp(22px,2.6vw,30px)]">{esEquipo ? 'Modelos' : 'Presentaciones'}</h2>
+        <div class="mt-8 overflow-x-auto border border-rule">
+          <table class="w-full min-w-[640px] border-collapse text-[15px]">
+            <thead>
+              <tr>{l.modelos.encabezados.map((h) => (
+                <th scope="col" class="meta border-b border-rule bg-paper px-5 py-3 text-left text-[10px] text-steel">{h}</th>
+              ))}</tr>
+            </thead>
+            <tbody>
+              {l.modelos.filas.map((fila) => (
+                <tr class="border-b border-rule last:border-b-0">
+                  {fila.map((c) => (<td class="px-5 py-3.5">{c}</td>))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  )}
+
+  {/* 3 · Qué procesa y qué no · Dónde se usa */}
+  <section class="field-paper border-t border-rule" aria-labelledby="alcance">
+    <div class="contenedor py-12 lg:py-16">
+      <h2 id="alcance" class="text-[clamp(22px,2.6vw,30px)]">
+        {esEquipo ? 'Qué procesa y qué no' : 'Dónde se usa'}
+      </h2>
+
+      {esEquipo ? (
+        <div class="rejilla mt-8 lg:grid-cols-2">
+          <div class="border-b border-r border-rule bg-white p-6 lg:p-8">
+            <p class="meta text-[10px] text-steel">Compatible</p>
+            <ul class="mt-5 border-t border-rule">
+              {l.compatible!.map((x) => (
+                <li class="flex items-start gap-3 border-b border-rule py-3 text-[15px]">
+                  <span aria-hidden="true" class="senal mt-2"></span>{x}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="border-b border-r border-rule bg-white p-6 lg:p-8">
+            <p class="meta text-[10px] text-steel">No compatible</p>
+            <ul class="mt-5 border-t border-rule">
+              {(l.noCompatible ?? []).map((x) => (
+                <li class="flex items-start gap-3 border-b border-rule py-3 text-[15px]">
+                  <span aria-hidden="true" class="mt-2 block h-[7px] w-[7px] shrink-0 bg-mist"></span>{x}
+                </li>
+              ))}
+            </ul>
+            {l.alternativa && alternativa && (
+              <p class="mt-5 max-w-[46ch] text-[15px] leading-relaxed text-steel">
+                {l.alternativa.nota}{' '}
+                <a href={urlLinea(alternativa)} class="text-navy underline decoration-navy/35 underline-offset-[3px] hover:text-steel">
+                  {l.alternativa.titulo} →
+                </a>
+              </p>
+            )}
+          </div>
+        </div>
+      ) : (
+        <ul class="rejilla mt-8 sm:grid-cols-2 lg:grid-cols-3">
+          {l.dondeSeUsa!.map((x) => (
+            <li class="border-b border-r border-rule bg-white p-6 text-[15.5px] leading-relaxed">{x}</li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </section>
+
+  {/* 4 · Ciclos y validación */}
+  {l.normasProceso?.length ? (
+    <section class="border-t border-rule" aria-labelledby="normas">
+      <div class="contenedor py-12 lg:py-16">
+        <h2 id="normas" class="text-[clamp(22px,2.6vw,30px)]">Normas de referencia</h2>
+        <dl class="mt-8 max-w-[76ch] border-t border-rule">
+          {l.normasProceso.map((n) => (
+            <div class="flex flex-col gap-1.5 border-b border-rule py-4 sm:flex-row sm:gap-8">
+              <dt class="meta w-[180px] shrink-0 pt-[3px] text-[10px] text-navy">{n.norma}</dt>
+              <dd class="text-[15.5px] leading-relaxed text-steel">{n.que}</dd>
+            </div>
+          ))}
+        </dl>
+        {l.certificaciones?.length ? (
+          <ul class="mt-6 max-w-[76ch]">
+            {l.certificaciones.map((c) => (
+              <li class="text-[15px] text-steel">{c.dato} <span class="meta text-[10px]">· {c.fuente}</span></li>
+            ))}
+          </ul>
+        ) : null}
+      </div>
+    </section>
+  ) : null}
+
+  {/* 5 · Requisitos de instalación */}
+  {esEquipo && l.instalacion?.length ? (
+    <section class="border-t border-rule" aria-labelledby="instalacion">
+      <div class="contenedor py-12 lg:py-16">
+        <h2 id="instalacion" class="text-[clamp(22px,2.6vw,30px)]">Requisitos de instalación</h2>
+        <p class="mt-4 max-w-[58ch] text-steel">
+          Se verifican antes de despachar el equipo. Los valores exactos los fija el fabricante en la ficha del modelo.
+        </p>
+        <dl class="rejilla mt-8 sm:grid-cols-2 lg:grid-cols-3">
+          {l.instalacion.map((r) => (
+            <div class="border-b border-r border-rule p-6">
+              <dt class="meta text-[10px] text-steel">{r.label}</dt>
+              <dd class="mt-2.5 text-[15.5px] leading-relaxed">{r.valor}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+  ) : null}
+
+  {/* 6 · Qué preguntamos antes de cotizar */}
+  <section class="border-t border-rule" aria-labelledby="cotizacion">
+    <div class="contenedor py-12 lg:py-16">
+      <h2 id="cotizacion" class="text-[clamp(22px,2.6vw,30px)]">Qué preguntamos antes de cotizar</h2>
+      <ol class="mt-8 max-w-[70ch] border-t border-rule">
+        {l.preguntasCotizacion.map((q, i) => (
+          <li class="flex items-baseline gap-5 border-b border-rule py-3.5">
+            <span class="meta w-6 shrink-0 text-[10px] text-steel">{String(i + 1).padStart(2, '0')}</span>
+            <span class="text-[15.5px]">{q}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  {/* 7 · Completa el ciclo */}
+  {relacionadas.length > 0 && (
+    <section class="field-paper border-t border-rule" aria-labelledby="completa">
+      <div class="contenedor py-12 lg:py-16">
+        <h2 id="completa" class="text-[clamp(22px,2.6vw,30px)]">Completa el ciclo</h2>
+        <ul class="rejilla mt-8 sm:grid-cols-2 lg:grid-cols-3">
+          {relacionadas.map((r) => (
+            <li class="border-b border-r border-rule bg-white">
+              <a href={urlLinea(r.destino!)} class="group flex h-full flex-col p-6 transition-colors hover:bg-paper">
+                <span class="meta text-[10px] text-steel">{marcaPorSlug(r.destino!.marca)!.nombre}</span>
+                <span class="mt-3 font-display text-[clamp(16px,1.7vw,19px)] leading-tight font-bold [font-variation-settings:'wdth'_110]">
+                  {r.destino!.nombre}
+                </span>
+                <span class="mt-3 flex-1 text-[14.5px] leading-relaxed text-steel">{r.porque}</span>
+                <span class="meta mt-6 border-t border-rule pt-4 text-[10px] text-steel group-hover:text-navy">Ver línea →</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  {/* 8 · Servicio */}
+  <section class="border-t border-rule" aria-labelledby="servicio">
+    <div class="contenedor py-12 lg:py-16">
+      <h2 id="servicio" class="text-[clamp(22px,2.6vw,30px)]">Servicio</h2>
+      <ul class="mt-8 max-w-[62ch] border-t border-rule">
+        {l.servicio.map((x) => (
+          <li class="flex items-start gap-3 border-b border-rule py-3.5 text-[15.5px]">
+            <span aria-hidden="true" class="senal mt-2"></span>{x}
+          </li>
+        ))}
+      </ul>
+      <a href="/servicios" class="meta mt-6 inline-block text-[10px] text-steel hover:text-navy">Ver los servicios →</a>
+    </div>
+  </section>
+
+  {/* 9 · Preguntas frecuentes */}
+  {l.faq?.length ? (
+    <section class="border-t border-rule" aria-labelledby="faq">
+      <div class="contenedor py-12 lg:py-16">
+        <h2 id="faq" class="text-[clamp(22px,2.6vw,30px)]">Preguntas frecuentes</h2>
+        <dl class="mt-8 max-w-[76ch] border-t border-rule">
+          {l.faq.map((f) => (
+            <div class="border-b border-rule py-5">
+              <dt class="text-[17px] font-medium">{f.p}</dt>
+              <dd class="mt-2.5 max-w-[64ch] text-[15.5px] leading-relaxed text-steel">{f.r}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+  ) : null}
+
+  {/* 10 · CTA final */}
+  <Formulario fijo={`${l.nombre} — ${m.nombre}`} titulo={cotizar} />
+
+  {jsonld.map((j) => (<script type="application/ld+json" set:html={JSON.stringify(j)} is:inline />))}
+</Base>

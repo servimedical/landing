@@ -99,7 +99,7 @@ const horarioVisible = !sitio.horario.startsWith('{{');
                       type={c.tipo === 'correo' ? 'email' : c.tipo === 'telefono' ? 'tel' : 'text'}
                       value={c.fijo ? fijo : undefined}
                       readonly={(c.fijo && !!fijo) || undefined}
-                      placeholder={c.fijo && !fijo ? 'Autoclave, papel grado médico, repuesto…' : c.marcador}
+                      placeholder={c.fijo && !fijo ? 'Autoclave, papel grado esterilización, repuesto…' : c.marcador}
                       autocomplete={c.autocomplete}
                       aria-describedby={desc} required={c.requerido} />
                   )}

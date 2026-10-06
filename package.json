@@ -13,7 +13,8 @@
     "verify": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "marcadores": "node herramientas/marcadores.mjs"
+    "marcadores": "node herramientas/marcadores.mjs",
+    "redirecciones": "node herramientas/redirecciones.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
@@ -24,6 +25,7 @@
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.2.7",
     "tailwindcss": "^4.3.3",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "zod": "^4.4.3"
   }
 }

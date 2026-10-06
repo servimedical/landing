@@ -1,16 +1,20 @@
 ---
+import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Migas from '../../components/Migas.astro';
-import Logotipo from '../../components/marca/Logotipo.astro';
+import BrandLogo from '../../components/marca/BrandLogo.astro';
 import Formulario from '../../components/formulario/Formulario.astro';
-import { marcas, rolVisible } from '../../content/marcas.ts';
+import { lineasDe, urlLinea } from '../../datos/lineas.ts';
 import { normalizar } from '../../content/navegacion.ts';
 
 const rutaActual = normalizar(Astro.url.pathname);
+const marcas = (await getCollection('marcas'))
+  .sort((a, b) => a.data.orden - b.data.orden)
+  .map((e) => ({ m: e.data, lineas: lineasDe(e.data.slug) }));
 ---
 <Base
-  titulo="Marcas que representamos — Servimedical Group"
-  descripcion="Tuttnauer, Sanqiang, 2i, Easymedical, Arkarmak, Celitron y la línea propia Servimedical. Importación directa, repuesto original y servicio técnico propio desde Bogotá."
+  titulo="Marcas que representamos | Servimedical"
+  descripcion="Tuttnauer, Sanqiang, 2i, Akarmak, Celitron y la línea propia Servimedical. Importación directa, repuesto original y servicio técnico propio desde Bogotá."
 >
   <Migas rutaActual={rutaActual} />
 
@@ -25,22 +29,30 @@ const rutaActual = normalizar(Astro.url.pathname);
   <section class="border-t border-rule">
     <div class="contenedor py-12 lg:py-16">
       <ul class="rejilla sm:grid-cols-2 lg:grid-cols-3">
-        {marcas.map((m) => (
-          <li class="border-b border-r border-rule">
-            <a href={`/marcas/${m.slug}`} class="group flex h-full flex-col p-6 transition-colors hover:bg-paper lg:p-8">
-              <span class="flex h-8 items-center"><Logotipo marca={m} /></span>
-              <span class="mt-4 text-[14.5px] text-steel">{rolVisible(m)}</span>
-              {m.lineas.length > 0 && (
-                <span class="meta mt-5 block text-[10px] text-steel">
-                  {m.lineas.length} {m.lineas.length === 1 ? 'línea' : 'líneas'}
-                </span>
-              )}
-              <span class="mt-auto pt-6">
-                <span class="meta block border-t border-rule pt-4 text-[10px] text-steel group-hover:text-navy">
-                  Ver la marca →
-                </span>
-              </span>
+        {marcas.map(({ m, lineas }) => (
+          <li class="flex flex-col border-b border-r border-rule p-6 lg:p-7">
+            <a href={`/marcas/${m.slug}`} class="group">
+              <BrandLogo marca={m} alto="44px" />
+              <span class="meta mt-5 block text-[10px] text-steel">{m.descriptor}</span>
             </a>
+
+            {lineas.length > 0 && (
+              <ul class="mt-5 flex flex-wrap gap-2">
+                {lineas.map((l) => (
+                  <li>
+                    <a href={urlLinea(l)} class="inline-block border border-rule px-2.5 py-1.5 text-[13px] text-steel transition-colors hover:border-navy/35 hover:text-navy">
+                      {l.nombre}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            <div class="mt-auto pt-7">
+              <a href={`/marcas/${m.slug}`} class="meta block border-t border-rule pt-4 text-[10px] text-steel hover:text-navy">
+                Ver marca →
+              </a>
+            </div>
           </li>
         ))}
       </ul>

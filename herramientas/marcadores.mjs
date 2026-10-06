@@ -4,8 +4,8 @@
  *
  *   node herramientas/marcadores.mjs        ·  npm run marcadores
  */
-const { productos } = await import('../src/content/productos/index.ts');
-const { marcas, urlLinea, urlMarca } = await import('../src/content/marcas.ts');
+const { lineas, urlLinea, urlMarca } = await import('../src/datos/lineas.ts');
+const { marcas } = await import('../src/datos/marcas.ts');
 const { sitio } = await import('../src/content/sitio.ts');
 const inst = await import('../src/content/institucional.ts');
 const legal = await import('../src/content/legal.ts');
@@ -31,8 +31,8 @@ const recorrer = (pagina, obj, prefijo = '') => {
     for (const [k, v] of Object.entries(obj)) recorrer(pagina, v, prefijo ? `${prefijo}.${k}` : k);
 };
 
-for (const p of productos) recorrer(urlLinea(p.slug), p);
-for (const m of marcas) recorrer(urlMarca(m), m);
+for (const l of lineas) recorrer(urlLinea(l), l);
+for (const m of marcas) recorrer(urlMarca(m.slug), m);
 recorrer('/servicios', inst.servicios);
 recorrer('/contacto', inst.contactoPagina);
 recorrer('/politica-de-tratamiento-de-datos', { VIGENCIA: legal.VIGENCIA, CANAL_TITULAR: legal.CANAL_TITULAR });

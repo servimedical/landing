@@ -70,7 +70,7 @@ const marcado = (url: string) => cadena.includes(url);
                           marcado(cat.url) && 'border-l-2 border-signal pl-3',
                         ]}
                       >{cat.titulo}</a>
-                      {cat.hijos && (
+                      {cat.hijos?.length ? (
                         <button
                           type="button"
                           class="acordeon flex w-12 items-center justify-center text-steel"
@@ -82,9 +82,9 @@ const marcado = (url: string) => cadena.includes(url);
                             <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" />
                           </svg>
                         </button>
-                      )}
+                      ) : null}
                     </div>
-                    {cat.hijos && (
+                    {cat.hijos?.length ? (
                       <ul id={`acordeon-${cat.url.split('/').pop()}`} class="border-t border-rule pl-3" hidden>
                         {cat.hijos.map((hijo: (typeof nodosMarcas)[number], j: number) => (
                           <li class={j > 0 ? 'border-t border-rule' : ''}>
@@ -99,7 +99,7 @@ const marcado = (url: string) => cadena.includes(url);
                           </li>
                         ))}
                       </ul>
-                    )}
+                    ) : null}
                   </li>
                 ))}
               </ul>

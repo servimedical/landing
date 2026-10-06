@@ -1,0 +1,78 @@
+---
+/* Logotipo de fabricante en caja de proporción fija.
+
+   Un logo horizontal y uno cuadrado no pesan igual a la misma altura, así que
+   la caja es 3:2 con `object-contain` y relleno uniforme: lo que varía es el
+   logo dentro de la caja, no la caja. `escala` corrige el peso óptico de un
+   archivo suelto sin tocar la rejilla.
+
+   Si el archivo no está, cae a la marca tipográfica —nunca a un ícono genérico
+   ni a un rectángulo vacío—. No se dibuja el logotipo de un fabricante: o es
+   el suyo, o no es. */
+import { existsSync } from 'node:fs';
+import type { Marca } from '../../datos/tipos.ts';
+
+interface Props {
+  marca: Pick<Marca, 'nombre' | 'logo'>;
+  /** Alto de la caja. El ancho sale de la proporción 3:2. */
+  alto?: string;
+  class?: string;
+}
+const { marca, alto = '48px', class: clase } = Astro.props;
+
+const hayArchivo = existsSync(new URL(`../../../public${marca.logo.src}`, import.meta.url));
+const escala = marca.logo.escala ?? 1;
+---
+<span
+  class:list={['svmg-logo', clase]}
+  style={`--alto:${alto};--escala:${escala}`}
+  data-tipografico={!hayArchivo || undefined}
+>
+  {hayArchivo
+    ? <img src={marca.logo.src} alt={marca.logo.alt} loading="lazy" decoding="async" />
+    : <span class="nombre">{marca.nombre}</span>}
+</span>
+
+<style>
+  .svmg-logo {
+    /* `inline-grid`, no `grid`: en el caso tipográfico la caja ajusta al
+       texto y el nombre queda alineado con el titular, no centrado. */
+    display: inline-grid;
+    place-items: center;
+    block-size: var(--alto);
+    inline-size: calc(var(--alto) * 1.5); /* caja 3:2 */
+    padding: calc(var(--alto) * 0.08);
+    overflow: hidden;
+  }
+
+  .svmg-logo img {
+    max-block-size: 100%;
+    max-inline-size: 100%;
+    object-fit: contain;
+    scale: var(--escala);
+    /* Gris por defecto, color al pasar o al enfocar. Donde no hay puntero
+       —táctil— el logo va siempre a color. */
+    transition: filter 160ms ease, opacity 160ms ease;
+  }
+
+  @media (hover: hover) {
+    .svmg-logo img { filter: grayscale(1); opacity: 0.7; }
+    :where(a, button):hover .svmg-logo img,
+    :where(a, button):focus-visible .svmg-logo img {
+      filter: none;
+      opacity: 1;
+    }
+  }
+
+  /* Marca tipográfica: mismo tamaño de caja, sin recorte. */
+  .svmg-logo[data-tipografico] { inline-size: max-content; padding-inline: 0; }
+  .svmg-logo .nombre {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-variation-settings: 'wdth' 108;
+    font-size: calc(var(--alto) * 0.44);
+    line-height: 1;
+    letter-spacing: -0.01em;
+    white-space: nowrap;
+  }
+</style>

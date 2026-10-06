@@ -2,8 +2,8 @@
 import Base from '../layouts/Base.astro';
 import CartaCiclo from '../components/hero/CartaCiclo.astro';
 import { home } from '../content/institucional.ts';
-import { marcas, rolVisible } from '../content/marcas.ts';
-import Logotipo from '../components/marca/Logotipo.astro';
+import { marcas } from '../datos/marcas.ts';
+import BrandLogo from '../components/marca/BrandLogo.astro';
 ---
 <Base
   titulo="Servimedical Group — Centrales de esterilización en Colombia"
@@ -50,13 +50,10 @@ import Logotipo from '../components/marca/Logotipo.astro';
                  mt-4 flex items-center gap-x-[clamp(22px,3.4vw,52px)]
                  px-[clamp(20px,5vw,64px)] lg:mx-0 lg:justify-between lg:px-0 lg:[--sangria:0px]"
         >
-          {marcas.map((m) => (
+          {[...marcas].sort((a, b) => a.orden - b.orden).map((m) => (
             <li class="shrink-0">
-              <a
-                href={`/marcas/${m.slug}`} title={rolVisible(m)}
-                class="flex h-8 items-center text-navy/85 transition-colors hover:text-navy"
-              >
-                <Logotipo marca={m} />
+              <a href={`/marcas/${m.slug}`} title={m.descriptor} class="block">
+                <BrandLogo marca={m} alto="34px" />
               </a>
             </li>
           ))}

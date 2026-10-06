@@ -1,0 +1,40 @@
+---
+/* Dónde entra una marca en la central.
+
+   El ciclo de la central es una secuencia, no una lista: se dibuja en línea y
+   se resaltan las etapas que esta marca cubre. En móvil se desliza. */
+import { ETAPAS, type EtapaCiclo } from '../../datos/tipos.ts';
+
+interface Props {
+  activas: EtapaCiclo[];
+  /** Nombre de la marca, para el texto accesible. */
+  marca: string;
+}
+const { activas, marca } = Astro.props;
+const cubre = ETAPAS.filter((e) => activas.includes(e.id)).map((e) => e.titulo);
+---
+<div>
+  <p class="sr-only">
+    {marca} cubre {cubre.length === 1 ? 'la etapa de' : 'las etapas de'} {cubre.join(', ')}.
+  </p>
+
+  <ol
+    class="deslizable [--sangria:clamp(20px,5vw,64px)] -mx-[clamp(20px,5vw,64px)]
+           flex items-stretch px-[clamp(20px,5vw,64px)] lg:mx-0 lg:px-0 lg:[--sangria:0px]"
+    aria-hidden="true"
+  >
+    {ETAPAS.map((e, i) => {
+      const activa = activas.includes(e.id);
+      return (
+        <li class:list={['relative flex min-w-[132px] flex-1 shrink-0 flex-col justify-between border-t-2 pt-4 pb-5 pr-6', activa ? 'border-signal' : 'border-rule']}>
+          <span class:list={['meta text-[10px]', activa ? 'text-navy' : 'text-steel']}>
+            {String(i + 1).padStart(2, '0')}
+          </span>
+          <span class:list={['mt-3 max-w-[14ch] text-[14.5px] leading-snug', activa ? 'font-medium text-navy' : 'text-steel']}>
+            {e.titulo}
+          </span>
+        </li>
+      );
+    })}
+  </ol>
+</div>

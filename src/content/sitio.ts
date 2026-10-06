@@ -31,6 +31,6 @@ export const canalesContacto = [
 
 
 /** Único CTA persistente del sitio. */
-export const cta = { texto: 'Solicitar cotización', url: '/contacto' } as const;
+export const cta = { texto: 'Hablar con un especialista', url: '/contacto' } as const;
 
 export const anclaCiclo = '/#ciclo';

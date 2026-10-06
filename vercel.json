@@ -5,19 +5,108 @@
   "outputDirectory": "dist",
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/marcas/tuttnauer/autoclaves-de-vapor",
+      "destination": "/marcas/tuttnauer/vapor",
+      "statusCode": 301
+    },
+    {
+      "source": "/marcas/tuttnauer/plasma-de-peroxido",
+      "destination": "/marcas/tuttnauer/plasma",
+      "statusCode": 301
+    },
+    {
+      "source": "/marcas/tuttnauer/esterilizacion-por-plasma",
+      "destination": "/marcas/tuttnauer/plasma",
+      "statusCode": 301
+    },
+    {
+      "source": "/marcas/servimedical/papel-y-empaque",
+      "destination": "/marcas/servimedical/papel-y-tyvek",
+      "statusCode": 301
+    },
+    {
+      "source": "/marcas/servimedical/repuestos-originales",
+      "destination": "/marcas/servimedical/repuestos",
+      "statusCode": 301
+    },
+    {
+      "source": "/marcas/servimedical/mesas-y-mesones",
+      "destination": "/marcas/servimedical/mobiliario-acero-inoxidable",
+      "statusCode": 301
+    },
+    {
+      "source": "/marcas/servimedical/carros-de-transporte",
+      "destination": "/marcas/servimedical/mobiliario-acero-inoxidable",
+      "statusCode": 301
+    },
+    {
+      "source": "/marcas/servimedical/almacenamiento-esteril",
+      "destination": "/marcas/servimedical/mobiliario-acero-inoxidable",
+      "statusCode": 301
+    },
+    {
+      "source": "/marcas/servimedical/compresores",
+      "destination": "/marcas/servimedical",
+      "statusCode": 301
+    },
+    {
+      "source": "/marcas/servimedical/tratamiento-de-agua",
+      "destination": "/marcas/servimedical",
+      "statusCode": 301
+    },
+    {
+      "source": "/marcas/arkarmak",
+      "destination": "/marcas/akarmak",
+      "statusCode": 301
+    },
+    {
+      "source": "/marcas/arkarmak/:resto*",
+      "destination": "/marcas/akarmak",
+      "statusCode": 301
+    },
+    {
+      "source": "/marcas/easymedical",
+      "destination": "/marcas",
+      "statusCode": 301
+    },
+    {
+      "source": "/marcas/easymedical/:resto*",
+      "destination": "/marcas",
+      "statusCode": 301
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" }
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
       ]
     },
     {
       "source": "/_astro/(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     }
   ]
 }

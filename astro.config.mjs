@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 import { validarEnlaces } from './integraciones/validar-ciclo.mjs';
+import { validarRedirecciones } from './integraciones/redirecciones.mjs';
 
 export default defineConfig({
   site: 'https://www.servimedicalgroup.com',
@@ -18,6 +19,7 @@ export default defineConfig({
 
   integrations: [
     validarEnlaces(),
+    validarRedirecciones(),
     sitemap({ filter: (p) => !p.includes('/404') }),
   ],
 

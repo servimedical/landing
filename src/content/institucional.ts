@@ -14,7 +14,7 @@ export const home = {
     {
       etiqueta: 'Catálogo',
       titulo: 'Marcas',
-      texto: 'Siete marcas representadas. Equipos, consumibles, mobiliario y repuestos: el autoclave se compra una vez, el consumible todos los meses.',
+      texto: 'Equipos, consumibles, mobiliario y repuestos de las marcas que representamos: el autoclave se compra una vez, el consumible todos los meses.',
       url: '/marcas',
     },
     {
@@ -25,10 +25,10 @@ export const home = {
     },
   ],
   cierre: {
-    titulo: 'Cuéntenos qué necesita esterilizar.',
-    texto: 'Con el material que procesa y el volumen por turno proponemos el equipo y enviamos cotización formal.',
+    titulo: 'Hable con un especialista en esterilización',
+    texto: 'Dimensionamos el equipo con su volumen de carga, su flujo y la infraestructura de la central.',
     url: '/contacto',
-    boton: 'Solicitar cotización',
+    boton: 'Hablar con un especialista',
   },
 } as const;
 
@@ -104,9 +104,9 @@ export const servicios = {
 /* ---------------------------------------------------------------- CONTACTO */
 
 export const contactoPagina = {
-  titulo: 'Cuéntenos qué necesita esterilizar.',
+  titulo: 'Hable con un especialista en esterilización',
   bajada:
-    'Con el material que procesa y el volumen por turno proponemos el equipo y enviamos cotización formal. Si ya tiene pliego, trabajamos sobre eso.',
+    'Dimensionamos el equipo con su volumen de carga, su flujo y la infraestructura de la central. Si ya tiene pliego, trabajamos sobre eso.',
   rutas: [
     { titulo: 'Cotización', texto: 'Equipos, consumibles, accesorios o mobiliario.', ancla: '#cotizacion' },
     { titulo: 'Servicio técnico', texto: 'Marca, modelo y falla. Si el equipo está detenido, llame también al fijo.', ancla: '#cotizar' },

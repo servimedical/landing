@@ -87,9 +87,9 @@ export const TIPOS_SOLICITUD = [
    propios de repuesto y de servicio técnico aparecen sólo si aplican. */
 export const FORMULARIO: Formulario = {
   id: 'solicitud',
-  titulo: 'Solicitar cotización o servicio',
+  titulo: 'Hable con un especialista en esterilización',
   intro:
-    'Escriba lo que sepa y un especialista le responde. Si el equipo está detenido, llame también al fijo.',
+    'Dimensionamos el equipo con su volumen de carga, su flujo y la infraestructura de la central. Si el equipo está detenido, llame también al fijo.',
   finalidad: 'Atender su solicitud y mantener la comunicación relacionada con ella.',
   acuse: 'Su solicitud quedó registrada. El equipo comercial responde al correo que indicó.',
   campos: [

@@ -2,6 +2,9 @@
  * Contrasta cada enlace del contenido contra el árbol de rutas y detiene la
  * construcción si alguno no existe. Un enlace muerto dentro del catálogo
  * manda al visitante a un 404 justo cuando iba a comprar.
+ *
+ * Lo que valida el esquema de `src/content.config.ts` —formas, longitudes,
+ * referencias de línea, máximos— no se repite aquí. Esto mira sólo URLs.
  */
 export function validarEnlaces() {
   return {
@@ -9,42 +12,52 @@ export function validarEnlaces() {
     hooks: {
       'astro:config:done': async ({ logger }) => {
         const { todosLosNodos, normalizar } = await import('../src/content/navegacion.ts');
-        const { productos } = await import('../src/content/productos/index.ts');
-        const { marcas } = await import('../src/content/marcas.ts');
+        const { lineas, resolverLinea, urlLinea } = await import('../src/datos/lineas.ts');
+        const { marcas } = await import('../src/datos/marcas.ts');
+        const { home, servicios, contactoPagina } = await import('../src/content/institucional.ts');
 
         const rutas = new Set(todosLosNodos().map((n) => normalizar(n.url)));
         const fallos = [];
         let total = 0;
 
-        const valida = (url) => url.startsWith('/#') || rutas.has(normalizar(url));
         const revisar = (url, donde) => {
           total++;
-          if (!valida(url)) fallos.push(`  ${donde}\n    apunta a ${url}, que no existe en el árbol de rutas`);
+          if (!(url.startsWith('/#') || rutas.has(normalizar(url))))
+            fallos.push(`  ${donde}\n    apunta a ${url}, que no existe en el árbol de rutas`);
         };
 
-        const { urlLinea } = await import('../src/content/marcas.ts');
-        const destino = (n) => (n.linea ? urlLinea(n.linea) : n.url);
-
-        for (const p of productos) {
-          for (const n of p.necesita) revisar(destino(n), `producto ${p.slug} · bloque «qué más necesita» → «${n.titulo}»`);
-          if (p.alternativa) revisar(destino(p.alternativa), `producto ${p.slug} · alternativa → «${p.alternativa.titulo}»`);
+        /* Venta cruzada y alternativa de cada línea. */
+        for (const l of lineas) {
+          for (const r of l.relacionadas) {
+            const destino = resolverLinea(r.linea, l.marca);
+            if (!destino) { total++; fallos.push(`  ${l.marca}/${l.slug} · «completa el ciclo»\n    «${r.linea}» no es una línea del catálogo`); continue; }
+            revisar(urlLinea(destino), `${l.marca}/${l.slug} · «completa el ciclo» → «${destino.nombre}»`);
+          }
+          if (l.alternativa) {
+            const destino = resolverLinea(l.alternativa.linea, l.marca);
+            if (!destino) { total++; fallos.push(`  ${l.marca}/${l.slug} · alternativa\n    «${l.alternativa.linea}» no existe`); continue; }
+            revisar(urlLinea(destino), `${l.marca}/${l.slug} · alternativa → «${l.alternativa.titulo}»`);
+          }
         }
 
-        /* Toda línea declarada en una marca tiene que existir como producto. */
-        const slugs = new Set(productos.map((p) => p.slug));
-        for (const m of marcas)
-          for (const l of m.lineas) {
-            total++;
-            if (!slugs.has(l)) fallos.push(`  marca ${m.slug}\n    declara la línea «${l}», que no existe en el catálogo`);
-          }
+        /* Catálogos y documentos de marca, cuando los haya. */
+        for (const m of marcas) {
+          if (m.catalogo) revisar(m.catalogo, `marca ${m.slug} · catálogo`);
+          for (const d of m.documentos ?? []) revisar(d.url, `marca ${m.slug} · documento «${d.titulo}»`);
+        }
 
-        if (fallos.length) {
+        /* Enlaces del contenido institucional. */
+        for (const l of home.lineas) revisar(l.url, `home · tarjeta «${l.titulo}»`);
+        revisar(home.cierre.url, 'home · cierre');
+        for (const r of contactoPagina.rutas ?? []) if (r.ancla?.startsWith('/')) revisar(r.ancla, 'contacto');
+        void servicios;
+
+        if (fallos.length)
           throw new Error(
             `\n\n${fallos.length} de ${total} enlaces de contenido apuntan a rutas inexistentes.\n\n` +
             fallos.join('\n\n') +
-            `\n\nCorrija la url en src/content/ o añada la ruta en src/content/marcas.ts.\n`
+            `\n\nCorrija la url en src/datos/ o añada la ruta correspondiente.\n`
           );
-        }
 
         logger.info(`contenido: ${total} enlaces validados contra el árbol de rutas ✓`);
       },

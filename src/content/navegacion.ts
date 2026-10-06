@@ -2,29 +2,34 @@
    FUENTE ÚNICA DE NAVEGACIÓN
 
    El catálogo se organiza por marca: /marcas/<marca>/<linea>. El árbol se
-   deriva de src/content/marcas.ts, así que añadir una marca o una línea allí
-   la publica en el menú, el pie, las migas, el buscador y el sitemap.
+   deriva de src/datos, así que añadir una marca o una línea allí la publica
+   en el menú, el pie, las migas, el buscador y el sitemap.
+
+   Se leen los módulos de datos, no las colecciones: la navegación tiene que
+   resolverse de forma síncrona. Las colecciones los validan con zod sobre
+   estos mismos arreglos, así que no hay dos verdades.
    ========================================================================== */
 
-import { marcas } from './marcas.ts';
-import { buscarPorSlug } from './productos/index.ts';
+import { marcas } from '../datos/marcas.ts';
+import { lineasDe, urlLinea, urlMarca } from '../datos/lineas.ts';
+import type { Marca } from '../datos/tipos.ts';
 
 export type NodoNav = {
   titulo: string;
   url: string;
+  /** Una línea bajo el nombre, en el panel del menú. */
+  descriptor?: string;
   hijos?: NodoNav[];
   enNavbar?: boolean;
   enFooter?: 'marcas' | 'empresa' | false;
 };
 
-const nodoMarca = (m: (typeof marcas)[number]): NodoNav => ({
+const nodoMarca = (m: Marca): NodoNav => ({
   titulo: m.nombre,
-  url: `/marcas/${m.slug}`,
+  url: urlMarca(m.slug),
+  descriptor: m.descriptor,
   enFooter: 'marcas',
-  hijos: m.lineas.map((slug) => ({
-    titulo: buscarPorSlug(slug)?.titulo ?? slug,
-    url: `/marcas/${m.slug}/${slug}`,
-  })),
+  hijos: lineasDe(m.slug).map((l) => ({ titulo: l.nombre, url: urlLinea(l) })),
 });
 
 export const navegacion: NodoNav[] = [
@@ -35,7 +40,7 @@ export const navegacion: NodoNav[] = [
     url: '/marcas',
     enNavbar: true,
     enFooter: false,
-    hijos: marcas.map(nodoMarca),
+    hijos: [...marcas].sort((a, b) => a.orden - b.orden).map(nodoMarca),
   },
 
   { titulo: 'Servicios', url: '/servicios', enNavbar: true, enFooter: 'empresa' },
@@ -90,7 +95,7 @@ export const politicaDatos: NodoNav =
 
 export const enNavbar: NodoNav[] = navegacion.filter((n) => n.enNavbar);
 
-/** Las siete marcas como nodos, para el panel del menú y el pie. */
+/** Las marcas como nodos, para el panel del menú y el pie. */
 export const nodosMarcas: NodoNav[] =
   navegacion.find((n) => n.url === '/marcas')?.hijos ?? [];
 
