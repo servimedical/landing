@@ -16,7 +16,11 @@ export type Estacion = 1 | 2 | 3 | 4 | 5 | 6;
 
 export type Necesidad = {
   titulo: string;
-  url: string;
+  /** Slug de otra línea del catálogo. La URL la resuelve la marca que la
+   *  vende, así que un cambio de estructura no rompe el bloque. */
+  linea?: string;
+  /** Destino fuera del catálogo, p. ej. /servicios. */
+  url?: string;
   /** El porqué explícito. Es lo que separa la venta cruzada real de un
    *  carrusel de «también le puede interesar». */
   porQue: string;
@@ -34,7 +38,7 @@ export type Producto = {
   /** Bloque 1. Qué NO va aquí: en esterilización es la mitad de la decisión. */
   noProcesa?: string[];
   /** A dónde remitir lo que no procesa. */
-  alternativa?: { titulo: string; url: string; nota: string };
+  alternativa?: { titulo: string; linea?: string; url?: string; nota: string };
 
   /** Bloque 2. Las preguntas que se hacen antes de cotizar. */
   dimensionamiento: string[];

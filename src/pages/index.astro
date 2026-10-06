@@ -1,9 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
 import CartaCiclo from '../components/hero/CartaCiclo.astro';
-import Proceso from '../components/proceso/Proceso.astro';
 import { home } from '../content/institucional.ts';
-import { marcas } from '../content/sitio.ts';
+import { marcas, rolVisible } from '../content/marcas.ts';
+import Logotipo from '../components/marca/Logotipo.astro';
 ---
 <Base
   titulo="Servimedical Group — Centrales de esterilización en Colombia"
@@ -20,59 +20,50 @@ import { marcas } from '../content/sitio.ts';
           Tu aliado en todo el{' '}<span class="block text-steel">proceso de esterilización</span>
         </h1>
         <p class="mt-5 max-w-[48ch] text-[15px] leading-relaxed text-steel lg:mt-6 lg:text-[clamp(16px,1.3vw,18.5px)]">
-          Seis estaciones separan el material sucio del quirófano. Ponemos el equipo, el insumo
-          y el repuesto de cada una, con servicio técnico propio.
+          Equipos, consumibles, mobiliario y repuestos para central de esterilización.
+          Importación directa, inventario en Bogotá y servicio técnico propio.
         </p>
         <div class="mt-6 flex flex-wrap gap-3 lg:mt-8">
           <a href="/contacto" class="inline-flex items-center gap-2.5 border border-navy bg-navy px-5 py-3.5 text-[14.5px] font-medium text-white hover:bg-navy-deep">
             <span aria-hidden="true" class="senal"></span>Solicitar cotización
           </a>
-          <a href="#proceso" class="inline-flex items-center border border-rule px-5 py-3.5 text-[14.5px] hover:bg-paper">
-            Ver el proceso
+          <a href="/marcas" class="inline-flex items-center border border-rule px-5 py-3.5 text-[14.5px] hover:bg-paper">
+            Ver las marcas
           </a>
         </div>
       </div>
       <CartaCiclo />
     </div>
 
-    <section class="field-navy border-t border-rule" aria-labelledby="marcas-h">
-      <div class="contenedor flex flex-wrap items-center gap-x-[clamp(18px,3vw,44px)] gap-y-3 py-3 lg:py-6">
-        <div class="flex w-full items-baseline justify-between gap-4 lg:w-auto">
-          <h2 id="marcas-h" class="meta shrink-0 text-[10px] text-white/70">Marcas que representamos</h2>
-          <p id="marcas-pista" class="meta shrink-0 text-[10px] text-white/70 transition-opacity" hidden>
+    <section class="border-t border-rule bg-paper" aria-labelledby="marcas-h">
+      <div class="contenedor py-5 lg:py-6">
+        <div class="flex flex-wrap items-baseline justify-between gap-4">
+          <h2 id="marcas-h" class="meta text-[10px] text-steel">Marcas que representamos</h2>
+          <p id="marcas-pista" class="meta text-[10px] text-steel transition-opacity" hidden>
             Deslice <span aria-hidden="true">→</span>
           </p>
         </div>
+
         <ul
           id="marcas-pista-track"
           class="deslizable [--sangria:clamp(20px,5vw,64px)] -mx-[clamp(20px,5vw,64px)]
-                 flex min-w-0 basis-full items-center gap-x-[clamp(18px,3.2vw,44px)]
-                 px-[clamp(20px,5vw,64px)]
-                 lg:mx-0 lg:flex-1 lg:basis-auto lg:justify-end lg:px-0 lg:[--sangria:0px]"
+                 mt-4 flex items-center gap-x-[clamp(22px,3.4vw,52px)]
+                 px-[clamp(20px,5vw,64px)] lg:mx-0 lg:justify-between lg:px-0 lg:[--sangria:0px]"
         >
           {marcas.map((m) => (
-            <li class="shrink-0 font-display text-[clamp(14px,1.4vw,18px)] font-bold text-white/92 [font-variation-settings:'wdth'_105]">
-              {m.nombre}
+            <li class="shrink-0">
+              <a
+                href={`/marcas/${m.slug}`} title={rolVisible(m)}
+                class="flex h-8 items-center text-navy/85 transition-colors hover:text-navy"
+              >
+                <Logotipo marca={m} />
+              </a>
             </li>
           ))}
         </ul>
       </div>
     </section>
   </div>
-
-  <!-- Cómo trabajamos -->
-  <section id="proceso" class="field-paper border-t border-rule" aria-labelledby="proceso-h">
-    <div class="contenedor py-14 lg:py-20">
-      <div class="mb-10 max-w-[60ch]">
-        <p class="meta text-steel">Cómo trabajamos</p>
-        <h2 id="proceso-h" class="mt-4 text-[clamp(26px,3.2vw,38px)]">Seis estaciones, un proveedor</h2>
-        <p class="mt-4 text-[17px] text-steel">
-          El flujo va en un solo sentido. Lo que una estación no resuelve, la siguiente no corrige.
-        </p>
-      </div>
-      <Proceso />
-    </div>
-  </section>
 
   <!-- Líneas de negocio -->
   <section class="border-t border-rule" aria-labelledby="lineas">

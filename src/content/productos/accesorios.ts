@@ -27,17 +27,17 @@ export const accesorios: Producto[] = [
     necesita: [
       {
         titulo: 'Papel grado médico y empaque',
-        url: '/productos/consumibles/papel-y-empaque',
+        linea: 'papel-y-empaque',
         porQue: 'El ancho de rollo y el tipo de barrera condicionan el equipo, y al revés.',
       },
       {
         titulo: 'Mesas de inspección y empaque',
-        url: '/productos/mobiliario/mesas-y-mesones',
+        linea: 'mesas-y-mesones',
         porQue: 'La altura y el largo de la mesa deciden si el operario trabaja cómodo un turno entero.',
       },
       {
         titulo: 'Repuestos originales',
-        url: '/productos/repuestos',
+        linea: 'repuestos',
         porQue: 'Resistencia y bandas se desgastan. Una selladora parada frena toda la estación de empaque.',
       },
     ],
@@ -50,7 +50,7 @@ export const accesorios: Producto[] = [
 
     marcas: ['Easyseal'],
     seo: {
-      titulo: 'Selladoras térmicas para empaque grado médico — Servimedical Group',
+      titulo: 'Selladoras térmicas para empaque grado médico',
       descripcion:
         'Selladoras térmicas con control de parámetros para rollo mixto y bolsas grado médico. Instalación, ajuste, mantenimiento y repuestos originales con servicio técnico propio en Colombia.',
     },
@@ -83,17 +83,17 @@ export const accesorios: Producto[] = [
     necesita: [
       {
         titulo: 'Autoclaves de vapor',
-        url: '/productos/esterilizacion/autoclaves-de-vapor',
+        linea: 'autoclaves-de-vapor',
         porQue: 'La calidad de aire la fija el fabricante del autoclave, no el revés.',
       },
       {
         titulo: 'Tratamiento y filtración de agua',
-        url: '/productos/accesorios/tratamiento-de-agua',
+        linea: 'tratamiento-de-agua',
         porQue: 'Agua y aire condicionan la validez del ciclo. Se revisan juntas antes de instalar.',
       },
       {
         titulo: 'Repuestos originales',
-        url: '/productos/repuestos',
+        linea: 'repuestos',
         porQue: 'Filtros y secado son consumo de rutina. Vencidos, el problema pasa al esterilizador.',
       },
     ],
@@ -106,7 +106,7 @@ export const accesorios: Producto[] = [
 
     marcas: ['Hong Run'],
     seo: {
-      titulo: 'Compresores de aire para central de esterilización — Servimedical Group',
+      titulo: 'Compresores de aire para central de esterilización',
       descripcion:
         'Aire comprimido para accionamiento neumático de esterilizadores y servicios de planta. Dimensionamiento contra el equipo a alimentar, instalación y mantenimiento preventivo en Colombia.',
     },
@@ -140,17 +140,17 @@ export const accesorios: Producto[] = [
     necesita: [
       {
         titulo: 'Autoclaves de vapor',
-        url: '/productos/esterilizacion/autoclaves-de-vapor',
+        linea: 'autoclaves-de-vapor',
         porQue: 'El tren se diseña contra la exigencia del equipo. El autoclave fija la especificación.',
       },
       {
         titulo: 'Termodesinfectoras',
-        url: '/productos/esterilizacion/termodesinfectoras',
+        linea: 'termodesinfectoras',
         porQue: 'El lavado consume mucha más agua, y el manchado casi siempre viene del enjuague final.',
       },
       {
         titulo: 'Repuestos originales',
-        url: '/productos/repuestos',
+        linea: 'repuestos',
         porQue: 'Cartuchos, membranas y resinas son consumo periódico. Sin reposición, deja de tratar.',
       },
     ],
@@ -163,7 +163,7 @@ export const accesorios: Producto[] = [
 
     marcas: ['{{ POR CONFIRMAR: marcas de tratamiento de agua que representa SVMG }}'],
     seo: {
-      titulo: 'Tratamiento y filtración de agua para esterilizadores — Servimedical Group',
+      titulo: 'Tratamiento y filtración de agua para esterilizadores',
       descripcion:
         'Tratamiento de agua de alimentación para autoclaves, generadores de vapor y lavadoras. Análisis del agua, propuesta de tren de tratamiento e instalación con servicio técnico en Colombia.',
     },

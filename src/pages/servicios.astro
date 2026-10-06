@@ -9,7 +9,7 @@ const rutaActual = normalizar(Astro.url.pathname);
 const bloques = [servicios.tecnico, servicios.asesoria];
 ---
 <Base
-  titulo="Servicio técnico y diseño de centrales de esterilización — Servimedical Group"
+  titulo="Servicio técnico y diseño de centrales — Servimedical Group"
   descripcion="Instalación, calificación y mantenimiento con técnicos propios entrenados por fábrica, y asesoría de diseño de centrales de esterilización para obra nueva, ampliación o remodelación."
 >
   <Migas rutaActual={rutaActual} />
@@ -76,7 +76,4 @@ const bloques = [servicios.tecnico, servicios.asesoria];
       </div>
     </div>
   </section>
-
-  <Formulario tipo="servicio-tecnico" />
-  <Formulario tipo="cotizacion" fijo="Asesoría y diseño de central" titulo="Cuéntenos del proyecto." />
 </Base>

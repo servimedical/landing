@@ -3,10 +3,8 @@ import Logo from './Logo.astro';
 import { columnaFooter, inicio, politicaDatos } from '../content/navegacion.ts';
 import { sitio, canalesContacto } from '../content/sitio.ts';
 
-const productos = columnaFooter('productos');
-/* Servicios junto a Nosotros, según el mapa del pie. Trazabilidad entra aquí
-   por ser pilar propio y no una categoría de producto. */
-const compania = [...columnaFooter('servicios'), ...columnaFooter('empresa')];
+const columnaMarcas = columnaFooter('marcas');
+const compania = columnaFooter('empresa');
 const anio = new Date().getFullYear();
 ---
 <footer class="bg-navy-deep text-ink-dark">
@@ -19,17 +17,17 @@ const anio = new Date().getFullYear();
         <p class="mt-4 max-w-[34ch] text-[14.5px] leading-relaxed">{sitio.lineaMarca}</p>
       </div>
 
-      <nav aria-label="Productos">
-        <h2 class="meta mb-3.5 text-white/70">Productos</h2>
+      <nav aria-label="Marcas">
+        <h2 class="meta mb-3.5 text-white/70">Marcas</h2>
         <ul>
-          {productos.map((n) => (
+          {columnaMarcas.map((n) => (
             <li class="py-1"><a href={n.url} class="text-[14.5px] hover:text-white">{n.titulo}</a></li>
           ))}
         </ul>
       </nav>
 
-      <nav aria-label="Servicios y compañía">
-        <h2 class="meta mb-3.5 text-white/70">Servicios y compañía</h2>
+      <nav aria-label="Compañía">
+        <h2 class="meta mb-3.5 text-white/70">Compañía</h2>
         <ul>
           {compania.map((n) => (
             <li class="py-1"><a href={n.url} class="text-[14.5px] hover:text-white">{n.titulo}</a></li>

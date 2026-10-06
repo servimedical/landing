@@ -4,9 +4,9 @@
  *
  *   node herramientas/marcadores.mjs        ·  npm run marcadores
  */
-const { productos, categorias, repuestos, urlProducto } = await import('../src/content/productos/index.ts');
+const { productos } = await import('../src/content/productos/index.ts');
+const { marcas, urlLinea, urlMarca } = await import('../src/content/marcas.ts');
 const { sitio } = await import('../src/content/sitio.ts');
-const { etiqueta } = await import('../src/content/trazabilidad.ts');
 const inst = await import('../src/content/institucional.ts');
 const legal = await import('../src/content/legal.ts');
 
@@ -31,14 +31,9 @@ const recorrer = (pagina, obj, prefijo = '') => {
     for (const [k, v] of Object.entries(obj)) recorrer(pagina, v, prefijo ? `${prefijo}.${k}` : k);
 };
 
-for (const p of productos) recorrer(urlProducto(p), p);
-recorrer('/productos/repuestos', repuestos);
-for (const c of categorias) recorrer(`/productos/${c.slug}`, c);
-recorrer('/trazabilidad', etiqueta);
-recorrer('/nosotros', inst.nosotros);
+for (const p of productos) recorrer(urlLinea(p.slug), p);
+for (const m of marcas) recorrer(urlMarca(m), m);
 recorrer('/servicios', inst.servicios);
-recorrer('/trazabilidad', inst.trazabilidad);
-recorrer('/trazabilidad/software', inst.software);
 recorrer('/contacto', inst.contactoPagina);
 recorrer('/politica-de-tratamiento-de-datos', { VIGENCIA: legal.VIGENCIA, CANAL_TITULAR: legal.CANAL_TITULAR });
 recorrer('(global) src/content/sitio.ts', sitio);
@@ -46,7 +41,7 @@ recorrer('(global) src/components/Footer.astro', {
   redes: '{{ POR CONFIRMAR: redes sociales propias de SVMG }}',
 });
 recorrer('(global) api/formulario.ts', {
-  destinatarios: '{{ POR CONFIRMAR: dirección o direcciones que reciben cada formulario, y si repuestos y servicio técnico van a un destinatario distinto de comercial }}',
+  destinatarios: '{{ POR CONFIRMAR: dirección interna que recibe el formulario, y si repuestos y servicio técnico van a un destinatario distinto de comercial }}',
 });
 
 /* Barrido del código fuente: cualquier marcador que no viva en un módulo de

@@ -1,0 +1,77 @@
+---
+import Base from '../../layouts/Base.astro';
+import Migas from '../../components/Migas.astro';
+import Logotipo from '../../components/marca/Logotipo.astro';
+import Formulario from '../../components/formulario/Formulario.astro';
+import { marcas, rolVisible, type Marca } from '../../content/marcas.ts';
+import { buscarPorSlug } from '../../content/productos/index.ts';
+import { normalizar } from '../../content/navegacion.ts';
+import { sitio } from '../../content/sitio.ts';
+
+export function getStaticPaths() {
+  return marcas.map((m) => ({ params: { marca: m.slug }, props: { m } }));
+}
+
+const { m } = Astro.props as { m: Marca };
+const rutaActual = normalizar(Astro.url.pathname);
+const lineas = m.lineas.map((s) => buscarPorSlug(s)!).filter(Boolean);
+
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'Brand',
+  name: m.nombre,
+  description: m.seo.descripcion,
+  url: new URL(rutaActual, sitio.dominio).href,
+};
+---
+<Base titulo={m.seo.titulo} descripcion={m.seo.descripcion}>
+  <Migas rutaActual={rutaActual} />
+
+  <div class="contenedor py-12 lg:py-16">
+    <div class="flex h-9 items-center"><Logotipo marca={m} class="!text-[clamp(22px,2.4vw,30px)]" /></div>
+    <h1 class="mt-5 max-w-[22ch] text-[clamp(26px,3.4vw,40px)]">{rolVisible(m)}</h1>
+    <p class="mt-5 max-w-[58ch] text-[clamp(16px,1.3vw,18px)] text-steel">{m.intro}</p>
+    {m.porConfirmar && (
+      <p class="meta mt-6 inline-block border border-rule px-3 py-2 text-[10px] text-steel">
+        Catálogo en ampliación
+      </p>
+    )}
+  </div>
+
+  <section class="border-t border-rule" aria-labelledby="lineas">
+    <div class="contenedor py-12 lg:py-16">
+      <h2 id="lineas" class="text-[clamp(22px,2.6vw,30px)]">
+        {lineas.length > 0 ? 'Qué vendemos de esta marca' : 'Catálogo en preparación'}
+      </h2>
+
+      {lineas.length > 0 ? (
+        <ul class="mt-8 grid gap-px border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-3">
+          {lineas.map((p) => (
+            <li class="bg-white">
+              <a href={`/marcas/${m.slug}/${p.slug}`} class="group flex h-full flex-col p-6 transition-colors hover:bg-paper">
+                <span class="font-display text-[clamp(17px,1.9vw,21px)] leading-tight font-bold [font-variation-settings:'wdth'_110]">
+                  {p.titulo}
+                </span>
+                <span class="mt-3 flex-1 text-[14.5px] leading-relaxed text-steel">
+                  {(p.entradilla.split('. ')[0] ?? p.entradilla).replace(/\.$/, '')}.
+                </span>
+                <span class="meta mt-5 border-t border-rule pt-4 text-[10px] text-steel group-hover:text-navy">
+                  Ver línea →
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="mt-5 max-w-[54ch] text-[16px] text-steel">
+          Representamos esta marca en Colombia. Si busca una referencia concreta, escríbanos y
+          le confirmamos disponibilidad y tiempo de importación.
+        </p>
+      )}
+    </div>
+  </section>
+
+  <Formulario fijo={m.nombre} titulo={`Cotice ${m.nombre}`} />
+
+  <script type="application/ld+json" set:html={JSON.stringify(jsonld)} is:inline />
+</Base>

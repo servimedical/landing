@@ -11,9 +11,8 @@
    ========================================================================== */
 
 import {
-  FORMULARIOS, validar, hayErrores,
+  FORMULARIO, validar, hayErrores,
   CAMPO_TRAMPA, MINIMO_SEGUNDOS, VERSION_AUTORIZACION, TEXTO_AUTORIZACION,
-  type Formulario,
 } from '../src/lib/formularios.ts';
 
 type Peticion = { method?: string; body?: unknown; headers: Record<string, string | string[] | undefined> };
@@ -29,11 +28,11 @@ const INTERNO = process.env.CORREO_INTERNO ?? 'comercial@servimedicalgroup.com';
    repuestos y servicio técnico van a un destinatario distinto de comercial }}
    Mientras tanto, todo llega a comercial y se puede desviar por variable de
    entorno sin tocar el código: CORREO_REPUESTOS y CORREO_SERVICIO. */
-const DESTINO: Record<Formulario['id'], string> = {
-  cotizacion: INTERNO,
-  repuestos: process.env.CORREO_REPUESTOS ?? INTERNO,
-  'servicio-tecnico': process.env.CORREO_SERVICIO ?? INTERNO,
-};
+/* El tipo de solicitud decide el destinatario sin cambiar el formulario. */
+const destinoDe = (tipo: string) =>
+  /repuesto/i.test(tipo) ? process.env.CORREO_REPUESTOS ?? INTERNO
+  : /servicio|detenido/i.test(tipo) ? process.env.CORREO_SERVICIO ?? INTERNO
+  : INTERNO;
 
 const enBogota = (d: Date) =>
   new Intl.DateTimeFormat('es-CO', {
@@ -65,8 +64,7 @@ export default async function handler(req: Peticion, res: Respuesta) {
   if (req.method !== 'POST') return res.status(405).json({ ok: false, motivo: 'metodo' });
 
   const cuerpo = (typeof req.body === 'string' ? JSON.parse(req.body) : req.body) as Record<string, unknown>;
-  const form = FORMULARIOS[cuerpo?.formulario as Formulario['id']];
-  if (!form) return res.status(400).json({ ok: false, motivo: 'formulario-desconocido' });
+  const form = FORMULARIO;
 
   /* Antispam. Se responde 200 a propósito: al robot no se le informa. */
   const trampa = String(cuerpo[CAMPO_TRAMPA] ?? '').trim();
@@ -118,7 +116,11 @@ export default async function handler(req: Peticion, res: Respuesta) {
     `https://www.servimedicalgroup.com/politica-de-tratamiento-de-datos\n`;
 
   try {
-    await enviar(DESTINO[form.id], `[${form.id}] ${datos.institucion ?? 'Solicitud'} — servimedicalgroup.com`, interno);
+    await enviar(
+      destinoDe(datos.tipo ?? ''),
+      `[${datos.tipo || 'solicitud'}] ${datos.institucion ?? ''} — servimedicalgroup.com`,
+      interno
+    );
     if (datos.correo) {
       await enviar(datos.correo, `Recibimos su ${form.titulo.toLowerCase()} — Servimedical Group`, acuse);
     }

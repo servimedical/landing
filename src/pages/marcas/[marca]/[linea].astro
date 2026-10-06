@@ -1,0 +1,17 @@
+---
+import ProductoLayout from '../../../layouts/Producto.astro';
+import { marcas } from '../../../content/marcas.ts';
+import { buscarPorSlug, type Producto } from '../../../content/productos/index.ts';
+
+export function getStaticPaths() {
+  return marcas.flatMap((m) =>
+    m.lineas
+      .map((slug) => ({ m, p: buscarPorSlug(slug) }))
+      .filter((x): x is { m: typeof m; p: Producto } => Boolean(x.p))
+      .map(({ m, p }) => ({ params: { marca: m.slug, linea: p.slug }, props: { marca: m, producto: p } }))
+  );
+}
+
+const { marca, producto } = Astro.props;
+---
+<ProductoLayout marca={marca} producto={producto} />

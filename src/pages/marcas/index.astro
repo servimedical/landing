@@ -1,0 +1,52 @@
+---
+import Base from '../../layouts/Base.astro';
+import Migas from '../../components/Migas.astro';
+import Logotipo from '../../components/marca/Logotipo.astro';
+import Formulario from '../../components/formulario/Formulario.astro';
+import { marcas, rolVisible } from '../../content/marcas.ts';
+import { buscarPorSlug } from '../../content/productos/index.ts';
+import { normalizar } from '../../content/navegacion.ts';
+
+const rutaActual = normalizar(Astro.url.pathname);
+---
+<Base
+  titulo="Marcas que representamos — Servimedical Group"
+  descripcion="Tuttnauer, Sanqiang, 2i, Easymedical, Arkarmak, Celitron y la línea propia Servimedical. Importación directa, repuesto original y servicio técnico propio desde Bogotá."
+>
+  <Migas rutaActual={rutaActual} />
+
+  <div class="contenedor py-12 lg:py-16">
+    <h1 class="max-w-[18ch] text-[clamp(30px,4vw,48px)]">Marcas que representamos</h1>
+    <p class="mt-6 max-w-[58ch] text-[clamp(16px,1.3vw,18px)] text-steel">
+      Importación directa de fábrica. De cada marca sostenemos aquí el servicio técnico y el
+      repuesto original, que es lo que decide si una institución vuelve a comprar.
+    </p>
+  </div>
+
+  <section class="border-t border-rule">
+    <div class="contenedor py-12 lg:py-16">
+      <ul class="grid gap-px border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-3">
+        {marcas.map((m, i) => (
+          <li class:list={['bg-white', i === marcas.length - 1 && 'sm:col-span-2 lg:col-span-1']}>
+            <a href={`/marcas/${m.slug}`} class="group flex h-full flex-col p-6 transition-colors hover:bg-paper lg:p-8">
+              <span class="flex h-8 items-center"><Logotipo marca={m} /></span>
+              <span class="mt-4 text-[14.5px] text-steel">{rolVisible(m)}</span>
+              {m.lineas.length > 0 && (
+                <span class="meta mt-5 block text-[10px] text-steel">
+                  {m.lineas.length} {m.lineas.length === 1 ? 'línea' : 'líneas'}
+                </span>
+              )}
+              <span class="mt-auto pt-6">
+                <span class="meta block border-t border-rule pt-4 text-[10px] text-steel group-hover:text-navy">
+                  Ver la marca →
+                </span>
+              </span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <Formulario fijo="Consulta general" titulo="¿No sabe por dónde empezar?" />
+</Base>

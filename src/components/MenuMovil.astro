@@ -1,5 +1,5 @@
 ---
-import { enNavbar, categoriasProducto, rutaActiva, normalizar } from '../content/navegacion.ts';
+import { enNavbar, nodosMarcas, rutaActiva, normalizar } from '../content/navegacion.ts';
 import { cta } from '../content/sitio.ts';
 import Buscador from './Buscador.astro';
 
@@ -34,7 +34,7 @@ const marcado = (url: string) => cadena.includes(url);
     <ul>
       {enNavbar.map((nodo) => (
         <li class="border-b border-rule">
-          {nodo.url === '/productos' ? (
+          {nodo.url === '/marcas' ? (
             <>
               <div class="flex items-stretch">
                 <a
@@ -49,8 +49,8 @@ const marcado = (url: string) => cadena.includes(url);
                   type="button"
                   class="acordeon flex w-12 items-center justify-center text-steel"
                   aria-expanded="false"
-                  aria-controls="acordeon-productos"
-                  aria-label="Desplegar las categorías de productos"
+                  aria-controls="acordeon-marcas"
+                  aria-label="Desplegar las marcas"
                 >
                   <svg viewBox="0 0 10 6" class="chevron h-[7px] w-[12px] transition-transform" aria-hidden="true">
                     <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" />
@@ -58,8 +58,8 @@ const marcado = (url: string) => cadena.includes(url);
                 </button>
               </div>
 
-              <ul id="acordeon-productos" class="border-t border-rule pl-3" hidden>
-                {categoriasProducto.map((cat, i) => (
+              <ul id="acordeon-marcas" class="border-t border-rule pl-3" hidden>
+                {nodosMarcas.map((cat: (typeof nodosMarcas)[number], i: number) => (
                   <li class={i > 0 ? 'border-t border-rule' : ''}>
                     <div class="flex items-stretch">
                       <a
@@ -86,7 +86,7 @@ const marcado = (url: string) => cadena.includes(url);
                     </div>
                     {cat.hijos && (
                       <ul id={`acordeon-${cat.url.split('/').pop()}`} class="border-t border-rule pl-3" hidden>
-                        {cat.hijos.map((hijo, j) => (
+                        {cat.hijos.map((hijo: (typeof nodosMarcas)[number], j: number) => (
                           <li class={j > 0 ? 'border-t border-rule' : ''}>
                             <a
                               href={hijo.url}

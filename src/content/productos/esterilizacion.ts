@@ -23,7 +23,7 @@ export const esterilizacion: Producto[] = [
     ],
     alternativa: {
       titulo: 'Esterilización por plasma de peróxido',
-      url: '/productos/esterilizacion/plasma-de-peroxido',
+      linea: 'plasma-de-peroxido',
       nota: 'Todo lo termosensible va por baja temperatura. Forzarlo en vapor daña el material y no lo esteriliza.',
     },
 
@@ -43,32 +43,32 @@ export const esterilizacion: Producto[] = [
     necesita: [
       {
         titulo: 'Tratamiento y filtración de agua',
-        url: '/productos/accesorios/tratamiento-de-agua',
+        linea: 'tratamiento-de-agua',
         porQue: 'El agua fuera de especificación incrusta la cámara y el generador. Es el desgaste que menos se vigila.',
       },
       {
         titulo: 'Compresores de aire',
-        url: '/productos/accesorios/compresores',
+        linea: 'compresores',
         porQue: 'Puertas y válvulas se accionan con aire. Sin aire en especificación, el equipo no abre.',
       },
       {
         titulo: 'Papel grado médico y empaque',
-        url: '/productos/consumibles/papel-y-empaque',
+        linea: 'papel-y-empaque',
         porQue: 'El vapor solo esteriliza lo que atraviesa. El empaque deja pasar el agente y sostiene la barrera hasta sala.',
       },
       {
         titulo: 'Indicadores químicos',
-        url: '/productos/consumibles/indicadores-quimicos',
+        linea: 'indicadores-quimicos',
         porQue: 'El registro impreso dice qué hizo el equipo. El indicador interno, qué pasó dentro del paquete.',
       },
       {
         titulo: 'Indicadores biológicos',
-        url: '/productos/consumibles/indicadores-biologicos',
+        linea: 'indicadores-biologicos',
         porQue: 'Es la única evidencia de letalidad. Sin él no hay liberación que sostenga una auditoría.',
       },
       {
         titulo: 'Repuestos originales',
-        url: '/productos/repuestos',
+        linea: 'repuestos',
         porQue: 'Empaquetadura y válvulas son partes de desgaste. En inventario, una parada de días es de horas.',
       },
     ],
@@ -84,7 +84,7 @@ export const esterilizacion: Producto[] = [
 
     marcas: ['Tuttnauer', 'Sanqiang'],
     seo: {
-      titulo: 'Autoclaves de vapor para central de esterilización — Servimedical Group',
+      titulo: 'Autoclaves de vapor para central de esterilización',
       descripcion:
         'Autoclaves de vapor con prevacío fraccionado para instrumental, textil y material poroso empacado. Dimensionamiento por carga quirúrgica, instalación, calificación y servicio técnico propio en Colombia.',
     },
@@ -110,7 +110,7 @@ export const esterilizacion: Producto[] = [
     ],
     alternativa: {
       titulo: 'Autoclaves de vapor',
-      url: '/productos/esterilizacion/autoclaves-de-vapor',
+      linea: 'autoclaves-de-vapor',
       nota: 'La celulosa absorbe el peróxido y aborta el ciclo. Todo lo termorresistente y poroso va por vapor.',
     },
 
@@ -128,17 +128,17 @@ export const esterilizacion: Producto[] = [
     necesita: [
       {
         titulo: 'Empaque compatible con peróxido',
-        url: '/productos/consumibles/papel-y-empaque',
+        linea: 'papel-y-empaque',
         porQue: 'La celulosa absorbe el agente y aborta el ciclo. Esta línea necesita su propia barrera.',
       },
       {
         titulo: 'Indicadores químicos',
-        url: '/productos/consumibles/indicadores-quimicos',
+        linea: 'indicadores-quimicos',
         porQue: 'Los indicadores de vapor no viran con peróxido. No sirven como control aquí.',
       },
       {
         titulo: 'Repuestos originales',
-        url: '/productos/repuestos',
+        linea: 'repuestos',
         porQue: 'Electrónica sensible: el canal directo de fábrica evita paradas largas por una parte menor.',
       },
     ],
@@ -152,7 +152,7 @@ export const esterilizacion: Producto[] = [
 
     marcas: ['{{ POR CONFIRMAR: marcas de plasma de peróxido que representa SVMG }}'],
     seo: {
-      titulo: 'Esterilización por plasma de peróxido de hidrógeno — Servimedical Group',
+      titulo: 'Esterilización por plasma de peróxido de hidrógeno',
       descripcion:
         'Esterilización a baja temperatura para óptica, motores, cables y material termosensible. Dimensionamiento por volumen y rotación, instalación, calificación y servicio técnico propio en Colombia.',
     },
@@ -185,22 +185,22 @@ export const esterilizacion: Producto[] = [
     necesita: [
       {
         titulo: 'Tratamiento y filtración de agua',
-        url: '/productos/accesorios/tratamiento-de-agua',
+        linea: 'tratamiento-de-agua',
         porQue: 'El agua fuera de especificación mancha el instrumental y deja depósitos en los lúmenes.',
       },
       {
         titulo: 'Mesones de lavado',
-        url: '/productos/mobiliario/mesas-y-mesones',
+        linea: 'mesas-y-mesones',
         porQue: 'Sin puesto de prelavado y escurrido, el material entra con residuo y el ciclo no lo corrige.',
       },
       {
         titulo: 'Carros de transporte',
-        url: '/productos/mobiliario/carros-de-transporte',
+        linea: 'carros-de-transporte',
         porQue: 'El material sucio no puede compartir carro con el estéril. Es parte del flujo unidireccional.',
       },
       {
         titulo: 'Repuestos originales',
-        url: '/productos/repuestos',
+        linea: 'repuestos',
         porQue: 'Bombas, válvulas y sensores se desgastan en un equipo que trabaja con agua todo el día.',
       },
     ],
@@ -214,7 +214,7 @@ export const esterilizacion: Producto[] = [
 
     marcas: ['{{ POR CONFIRMAR: marcas de termodesinfectoras que representa SVMG }}'],
     seo: {
-      titulo: 'Termodesinfectoras para endoscopios y lúmenes — Servimedical Group',
+      titulo: 'Termodesinfectoras para endoscopios y lúmenes',
       descripcion:
         'Lavado y desinfección térmica validada para endoscopios flexibles e instrumental de lúmenes. Dimensionamiento por volumen de procedimientos, instalación, calificación y servicio técnico en Colombia.',
     },

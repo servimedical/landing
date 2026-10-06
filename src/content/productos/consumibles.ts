@@ -29,17 +29,17 @@ export const consumibles: Producto[] = [
     necesita: [
       {
         titulo: 'Selladoras térmicas',
-        url: '/productos/accesorios/selladoras',
+        linea: 'selladoras',
         porQue: 'El material y el equipo que lo cierra son una sola decisión.',
       },
       {
         titulo: 'Indicadores químicos',
-        url: '/productos/consumibles/indicadores-quimicos',
+        linea: 'indicadores-quimicos',
         porQue: 'La cinta dice que el paquete pasó por el equipo. Lo de adentro lo dice el indicador interno.',
       },
       {
         titulo: 'Mesas de inspección y empaque',
-        url: '/productos/mobiliario/mesas-y-mesones',
+        linea: 'mesas-y-mesones',
         porQue: 'La superficie y la altura deciden cuántos paquetes salen por turno y en qué estado.',
       },
     ],
@@ -52,7 +52,7 @@ export const consumibles: Producto[] = [
 
     marcas: ['Anhui'],
     seo: {
-      titulo: 'Papel grado médico y empaque para barrera estéril — Servimedical Group',
+      titulo: 'Papel grado médico y empaque para barrera estéril',
       descripcion:
         'Rollo mixto, bolsas autosellantes, papel crepado y cintas indicadoras para central de esterilización. Abastecimiento programado contra consumo real, con despacho nacional desde Bogotá.',
     },
@@ -86,17 +86,17 @@ export const consumibles: Producto[] = [
     necesita: [
       {
         titulo: 'Papel grado médico y empaque',
-        url: '/productos/consumibles/papel-y-empaque',
+        linea: 'papel-y-empaque',
         porQue: 'Uno va dentro del paquete y otro sobre la barrera. El consumo se mueve al mismo ritmo.',
       },
       {
         titulo: 'Indicadores biológicos',
-        url: '/productos/consumibles/indicadores-biologicos',
+        linea: 'indicadores-biologicos',
         porQue: 'El químico es lectura inmediata, pero indicio. El biológico es la prueba.',
       },
       {
         titulo: 'Papel grado médico y empaque',
-        url: '/productos/consumibles/papel-y-empaque',
+        linea: 'papel-y-empaque',
         porQue: 'El paquete de prueba se arma con el mismo material que la carga que va a representar.',
       },
     ],
@@ -109,7 +109,7 @@ export const consumibles: Producto[] = [
 
     marcas: ['2i Health Care'],
     seo: {
-      titulo: 'Indicadores químicos y test de Bowie-Dick — Servimedical Group',
+      titulo: 'Indicadores químicos y test de Bowie-Dick',
       descripcion:
         'Indicadores químicos de proceso y de paquete, paquetes de prueba y test de Bowie-Dick diario para central de esterilización. Abastecimiento programado y despacho nacional desde Bogotá.',
     },
@@ -142,17 +142,17 @@ export const consumibles: Producto[] = [
     necesita: [
       {
         titulo: 'Indicadores químicos',
-        url: '/productos/consumibles/indicadores-quimicos',
+        linea: 'indicadores-quimicos',
         porQue: 'El biológico se lee en horas; el químico, en el momento. La carga se libera con los dos.',
       },
       {
         titulo: 'Autoclaves de vapor',
-        url: '/productos/esterilizacion/autoclaves-de-vapor',
+        linea: 'autoclaves-de-vapor',
         porQue: 'Verifica el equipo, no solo la carga. Un resultado no conforme es un dato de mantenimiento.',
       },
       {
         titulo: 'Repuestos originales',
-        url: '/productos/repuestos',
+        linea: 'repuestos',
         porQue: 'Un resultado no conforme repetido suele ser el equipo, no la carga. Ahí entra el repuesto.',
       },
     ],
@@ -165,7 +165,7 @@ export const consumibles: Producto[] = [
 
     marcas: ['{{ POR CONFIRMAR: marcas de indicadores biológicos e incubadoras que representa SVMG }}'],
     seo: {
-      titulo: 'Indicadores biológicos para liberación de carga — Servimedical Group',
+      titulo: 'Indicadores biológicos para liberación de carga',
       descripcion:
         'Control biológico de carga y verificación de equipo para central de esterilización, con incubación y lectura. Definición de frecuencia según protocolo y abastecimiento programado en Colombia.',
     },

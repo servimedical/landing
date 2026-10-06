@@ -27,7 +27,7 @@ export type Campo = {
 };
 
 export type Formulario = {
-  id: 'cotizacion' | 'repuestos' | 'servicio-tecnico';
+  id: 'solicitud';
   titulo: string;
   intro: string;
   /** Qué se hace con los datos. Va junto a la casilla de autorización. */
@@ -75,60 +75,37 @@ const CONTACTO_BASE: Campo[] = [
   { nombre: 'correo', rotulo: 'Correo', tipo: 'correo', requerido: true, marcador: 'ana@clinica.com', autocomplete: 'email' },
 ];
 
-export const FORMULARIOS: Record<Formulario['id'], Formulario> = {
-  cotizacion: {
-    id: 'cotizacion',
-    titulo: 'Solicitar cotización',
-    intro: 'Con el material que procesa y el volumen por turno proponemos el equipo y enviamos cotización formal.',
-    finalidad: 'Atender su solicitud de cotización y mantener la comunicación relacionada con ella.',
-    acuse: 'Su solicitud de cotización quedó registrada. El equipo comercial responde al correo que indicó.',
-    campos: [
-      { nombre: 'necesita', rotulo: 'Qué necesita', tipo: 'texto', requerido: true, fijo: true, ancho: true },
-      ...CONTACTO_BASE,
-      { nombre: 'volumen', rotulo: 'Volumen aproximado', tipo: 'texto', marcador: '4 salas quirúrgicas, 2 turnos' },
-      { nombre: 'detalle', rotulo: 'Detalle', tipo: 'area', ancho: true, marcador: 'Material que procesa, espacio disponible, o el pliego si ya lo tiene.' },
-    ],
-  },
+export const TIPOS_SOLICITUD = [
+  'Cotización',
+  'Servicio técnico o equipo detenido',
+  'Repuesto',
+  'Licitación o pliego',
+] as const;
 
-  repuestos: {
-    id: 'repuestos',
-    titulo: 'Pedir un repuesto',
-    intro: 'La placa del equipo trae marca, modelo y número de serie. Con esos tres datos se identifica la parte sin ir a la sede.',
-    finalidad: 'Atender su solicitud de repuesto y mantener la comunicación relacionada con ella.',
-    acuse: 'Su pedido de repuesto quedó registrado. Si tiene fotografía de la parte o de la placa, respóndanos al correo de acuse y adjúntela.',
-    campos: [
-      { nombre: 'necesita', rotulo: 'Qué necesita', tipo: 'texto', requerido: true, fijo: true, ancho: true },
-      { nombre: 'marca', rotulo: 'Marca del equipo', tipo: 'texto', requerido: true, marcador: 'Tuttnauer' },
-      { nombre: 'modelo', rotulo: 'Modelo', tipo: 'texto', requerido: true, marcador: 'El que figura en la placa' },
-      { nombre: 'serie', rotulo: 'Número de serie', tipo: 'texto', marcador: 'El que figura en la placa' },
-      { nombre: 'urgencia', rotulo: 'Urgencia', tipo: 'seleccion', opciones: ['Equipo detenido', 'Falla intermitente', 'Reposición programada'] },
-      { nombre: 'parte', rotulo: 'Descripción de la parte', tipo: 'area', requerido: true, ancho: true, marcador: 'Empaquetadura de puerta, válvula solenoide de entrada de vapor, sensor de cámara…' },
-      { nombre: 'institucion', rotulo: 'Institución', tipo: 'texto', requerido: true, autocomplete: 'organization' },
-      { nombre: 'nombre', rotulo: 'Nombre y cargo', tipo: 'texto', requerido: true, autocomplete: 'name' },
-      { nombre: 'telefono', rotulo: 'Teléfono o WhatsApp', tipo: 'telefono', autocomplete: 'tel' },
-      { nombre: 'correo', rotulo: 'Correo', tipo: 'correo', requerido: true, autocomplete: 'email' },
-      { nombre: 'foto', rotulo: 'Fotografía', tipo: 'texto', ancho: true, ayuda: 'Opcional. Adjúntela respondiendo al correo de acuse o envíela por WhatsApp.', marcador: 'La enviaré por WhatsApp' },
-    ],
-  },
-
-  'servicio-tecnico': {
-    id: 'servicio-tecnico',
-    titulo: 'Solicitar servicio técnico',
-    intro: 'Para un equipo detenido, el teléfono directo acorta la respuesta. Deje el número al que se puede llamar sin pasar por conmutador.',
-    finalidad: 'Atender su solicitud de servicio técnico y mantener la comunicación relacionada con ella.',
-    acuse: 'Su solicitud de servicio técnico quedó registrada. Si el equipo está detenido, llame también al fijo o escriba por WhatsApp.',
-    campos: [
-      { nombre: 'institucion', rotulo: 'Institución', tipo: 'texto', requerido: true, marcador: 'Clínica San Rafael', autocomplete: 'organization' },
-      { nombre: 'ciudad', rotulo: 'Ciudad', tipo: 'texto', marcador: 'Bogotá', autocomplete: 'address-level2' },
-      { nombre: 'equipo', rotulo: 'Equipo y marca', tipo: 'texto', requerido: true, marcador: 'Autoclave Tuttnauer' },
-      { nombre: 'desde', rotulo: 'Desde cuándo', tipo: 'texto', marcador: 'Desde el martes' },
-      { nombre: 'falla', rotulo: 'Descripción de la falla', tipo: 'area', requerido: true, ancho: true, marcador: 'Qué hace el equipo, qué mensaje muestra y en qué fase del ciclo se detiene.' },
-      { nombre: 'nombre', rotulo: 'Nombre y cargo', tipo: 'texto', requerido: true, autocomplete: 'name' },
-      { nombre: 'telefono', rotulo: 'Teléfono directo', tipo: 'telefono', requerido: true, marcador: '300 000 0000', autocomplete: 'tel' },
-      { nombre: 'correo', rotulo: 'Correo', tipo: 'correo', requerido: true, autocomplete: 'email' },
-    ],
-  },
+/* Un solo formulario para todo. Antes había tres y la persona tenía que
+   adivinar cuál le tocaba; ahora escoge el tipo de solicitud y los campos
+   propios de repuesto y de servicio técnico aparecen sólo si aplican. */
+export const FORMULARIO: Formulario = {
+  id: 'solicitud',
+  titulo: 'Solicitar cotización o servicio',
+  intro:
+    'Un solo formulario para cotizar, pedir un repuesto o reportar un equipo detenido. Rellene lo que sepa.',
+  finalidad: 'Atender su solicitud y mantener la comunicación relacionada con ella.',
+  acuse: 'Su solicitud quedó registrada. El equipo comercial responde al correo que indicó.',
+  campos: [
+    { nombre: 'tipo', rotulo: 'Tipo de solicitud', tipo: 'seleccion', requerido: true, opciones: [...TIPOS_SOLICITUD] },
+    { nombre: 'necesita', rotulo: 'Sobre qué', tipo: 'texto', requerido: true, fijo: true },
+    ...CONTACTO_BASE,
+    { nombre: 'equipo', rotulo: 'Equipo, marca y modelo', tipo: 'texto', ancho: true,
+      ayuda: 'Para servicio técnico o repuesto. La placa del equipo trae marca, modelo y serie.',
+      marcador: 'Autoclave Tuttnauer, modelo de la placa' },
+    { nombre: 'detalle', rotulo: 'Detalle', tipo: 'area', ancho: true,
+      marcador: 'Qué procesa y cuánto, o qué hace el equipo y desde cuándo.' },
+  ],
 };
+
+/** Compatibilidad: el sitio usa un solo formulario. */
+export const FORMULARIOS = { solicitud: FORMULARIO } as const;
 
 /* ---------------------------------------------------------------------------
    VALIDACIÓN

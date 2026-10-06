@@ -1,6 +1,6 @@
 ---
 import { enNavbar, rutaActiva, normalizar } from '../content/navegacion.ts';
-import PanelProductos from './PanelProductos.astro';
+import PanelMarcas from './PanelProductos.astro';
 
 interface Props { rutaActual: string }
 const { rutaActual } = Astro.props;
@@ -13,9 +13,9 @@ const exacta = normalizar(rutaActual);
     {enNavbar.map((nodo) => {
       const enCadena = cadena.includes(nodo.url);
       const esExacta = normalizar(nodo.url) === exacta;
-      const tienePanel = nodo.url === '/productos';
+      const tienePanel = nodo.url === '/marcas';
       return (
-        <li class:list={['h-(--spacing-header) flex items-center', tienePanel && 'grupo-productos']}>
+        <li class:list={['h-(--spacing-header) flex items-center', tienePanel && 'grupo-marcas']}>
           <a
             href={nodo.url}
             aria-current={esExacta ? 'page' : undefined}
@@ -30,8 +30,8 @@ const exacta = normalizar(rutaActual);
               type="button"
               class="disparador ml-1.5 flex h-6 w-6 items-center justify-center text-steel"
               aria-expanded="false"
-              aria-controls="panel-productos"
-              aria-label="Abrir el menú de productos"
+              aria-controls="panel-marcas"
+              aria-label="Abrir el menú de marcas"
             >
               <svg viewBox="0 0 10 6" class="chevron h-[6px] w-[10px] transition-transform" aria-hidden="true">
                 <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" />
@@ -44,16 +44,16 @@ const exacta = normalizar(rutaActual);
   </ul>
 </nav>
 
-<PanelProductos rutaActual={rutaActual} />
+<PanelMarcas rutaActual={rutaActual} />
 
 <style>
   .disparador[aria-expanded='true'] .chevron { transform: rotate(180deg); }
 </style>
 
 <script>
-  const grupo = document.querySelector<HTMLElement>('.grupo-productos');
+  const grupo = document.querySelector<HTMLElement>('.grupo-marcas');
   const disparador = document.querySelector<HTMLButtonElement>('.disparador');
-  const panel = document.getElementById('panel-productos');
+  const panel = document.getElementById('panel-marcas');
   const finoOApuntador = window.matchMedia('(hover: hover) and (pointer: fine)');
 
   if (grupo && disparador && panel) {
@@ -62,7 +62,7 @@ const exacta = normalizar(rutaActual);
     const abrir = (v: boolean) => {
       window.clearTimeout(cerrarDiferido);
       disparador.setAttribute('aria-expanded', String(v));
-      disparador.setAttribute('aria-label', v ? 'Cerrar el menú de productos' : 'Abrir el menú de productos');
+      disparador.setAttribute('aria-label', v ? 'Cerrar el menú de marcas' : 'Abrir el menú de marcas');
       if (v) {
         panel.hidden = false;
         // el atributo hidden debe caer antes de que corra la transición

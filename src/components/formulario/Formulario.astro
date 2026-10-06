@@ -5,18 +5,17 @@
 
    La casilla de autorización no viene marcada y sin ella no se envía:
    Ley 1581 de 2012 y Decreto 1377 de 2013. */
-import { FORMULARIOS, TEXTO_AUTORIZACION, URL_POLITICA, CAMPO_TRAMPA, type Formulario } from '../../lib/formularios.ts';
+import { FORMULARIO, TEXTO_AUTORIZACION, URL_POLITICA, CAMPO_TRAMPA } from '../../lib/formularios.ts';
 import { contacto } from '../../content/sitio.ts';
 
 interface Props {
-  tipo: Formulario['id'];
-  /** Valor del campo fijo «Qué necesita». */
+  /** Valor del campo fijo «Sobre qué». */
   fijo?: string;
   id?: string;
   titulo?: string;
 }
-const { tipo, fijo, id = tipo, titulo } = Astro.props;
-const form = FORMULARIOS[tipo];
+const { fijo, id = 'cotizar', titulo } = Astro.props;
+const form = FORMULARIO;
 ---
 <section id={id} class="field-paper border-t border-rule" aria-labelledby={`${id}-t`}>
   <div class="contenedor py-14 lg:py-20">
@@ -39,7 +38,7 @@ const form = FORMULARIOS[tipo];
       </div>
 
       <div>
-        <form class="svmg-form" data-tipo={tipo} novalidate>
+        <form class="svmg-form" novalidate>
           <div class="grid gap-px border border-rule bg-rule sm:grid-cols-2">
             {form.campos.map((c) => {
               const idc = `${id}-${c.nombre}`;
@@ -160,7 +159,7 @@ const form = FORMULARIOS[tipo];
 </style>
 
 <script>
-  import { FORMULARIOS, validar, hayErrores, CAMPO_TRAMPA } from '../../lib/formularios.ts';
+  import { FORMULARIO, validar, hayErrores, CAMPO_TRAMPA } from '../../lib/formularios.ts';
 
   const emitir = (nombre: string, detalle: Record<string, unknown>) => {
     document.dispatchEvent(new CustomEvent(`svmg:${nombre}`, { detail: detalle }));
@@ -168,8 +167,8 @@ const form = FORMULARIOS[tipo];
   };
 
   document.querySelectorAll<HTMLFormElement>('form.svmg-form').forEach((form) => {
-    const tipo = form.dataset.tipo as keyof typeof FORMULARIOS;
-    const def = FORMULARIOS[tipo];
+    const def = FORMULARIO;
+    const tipo = def.id;
     const seccion = form.closest('section')!;
     const acuse = seccion.querySelector<HTMLElement>('.acuse')!;
     const boton = form.querySelector<HTMLButtonElement>('.enviar')!;

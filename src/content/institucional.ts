@@ -12,14 +12,14 @@ export const home = {
   ],
   lineas: [
     {
-      etiqueta: 'Línea 1',
-      titulo: 'Productos',
-      texto: 'Equipos, consumibles, accesorios, repuestos y mobiliario en acero. El autoclave se compra una vez; el consumible, todos los meses.',
-      url: '/productos',
+      etiqueta: 'Catálogo',
+      titulo: 'Marcas',
+      texto: 'Siete marcas representadas. Equipos, consumibles, mobiliario y repuestos: el autoclave se compra una vez, el consumible todos los meses.',
+      url: '/marcas',
     },
     {
-      etiqueta: 'Línea 2',
-      titulo: 'Servicios',
+      etiqueta: 'Servicios',
+      titulo: 'Servicio técnico',
       texto: 'Instalación, calificación y mantenimiento con técnicos propios. Y el estudio de la central antes de que se funda la primera placa.',
       url: '/servicios',
     },
@@ -29,72 +29,6 @@ export const home = {
     texto: 'Con el material que procesa y el volumen por turno proponemos el equipo y enviamos cotización formal.',
     url: '/contacto',
     boton: 'Solicitar cotización',
-  },
-} as const;
-
-/* ---------------------------------------------------------------- NOSOTROS */
-
-export const nosotros = {
-  titulo: 'Especialistas en el proceso, no solo en el equipo.',
-  bajada:
-    'Importamos y comercializamos equipamiento hospitalario en Colombia, con especialidad en esterilización. Hablamos con quien opera la central todos los días: CEyE, biomédica, infecciones y compras.',
-
-  distinto: {
-    titulo: 'Qué hacemos distinto.',
-    parrafos: [
-      'Una central no falla por el esterilizador. Falla por el agua que le llega, por el aire que mueve sus válvulas, por el empaque que cedió en el almacenamiento o por el repuesto que tardó seis semanas.',
-      'No vendemos equipos sueltos. Representamos la línea completa, mantenemos inventario local de lo que más rota y respondemos con técnicos propios.',
-    ],
-  },
-
-  exigencias: {
-    titulo: 'Qué le exigimos a una marca antes de representarla.',
-    bajada:
-      'La pregunta del comprador institucional que casi nadie responde por escrito: ¿quién me responde en tres años?',
-    pasos: [
-      {
-        titulo: 'Documentación técnica completa',
-        texto: 'Manuales de servicio, despieces y parámetros de fábrica para nuestro taller. No solo el manual de usuario.',
-      },
-      {
-        titulo: 'Registro sanitario viable',
-        texto: 'Que el equipo pueda obtener y sostener registro INVIMA vigente en Colombia.',
-      },
-      {
-        titulo: 'Cadena de repuestos',
-        texto: 'Partes críticas disponibles, con tiempos de reposición que una institución pueda tolerar.',
-      },
-      {
-        titulo: 'Entrenamiento de fábrica',
-        texto: 'Formación certificada para nuestros técnicos, y actualización cuando cambia la plataforma.',
-      },
-    ],
-  },
-
-  marcas: {
-    titulo: 'Las marcas y su lugar en el proceso.',
-    items: [
-      { nombre: 'Tuttnauer', papel: 'Esterilización', estacion: 3 },
-      { nombre: 'Sanqiang', papel: 'Esterilización', estacion: 3 },
-      { nombre: 'Easyseal', papel: 'Empaque', estacion: 2 },
-      { nombre: 'Anhui', papel: 'Barrera estéril', estacion: 2 },
-      { nombre: '2i Health Care', papel: 'Control', estacion: 4 },
-      { nombre: 'Hong Run', papel: 'Planta', estacion: 3 },
-      { nombre: 'Mobiliario en acero inoxidable', papel: 'Almacenamiento', estacion: 5 },
-    ],
-  },
-
-  cifras: [
-    { valor: '6', clave: 'Marcas representadas' },
-    { valor: 'Nacional', clave: 'Cobertura de servicio' },
-    { valor: 'Bogotá', clave: 'Sala de ventas y taller' },
-    { valor: 'INVIMA', clave: 'Equipos con registro sanitario' },
-  ],
-  cifrasPendientes: '{{ POR CONFIRMAR: años de operación, número de instalaciones, número de clientes }}',
-
-  cta: {
-    titulo: '¿Está evaluando proveedores para su central?',
-    texto: 'Agende una visita técnica. Miramos la operación y le decimos qué cambiaríamos, con o sin compra de por medio.',
   },
 } as const;
 
@@ -171,7 +105,7 @@ export const servicios = {
     titulo: '¿Equipo detenido o proyecto en planos?',
     texto: 'Dos urgencias distintas, dos conversaciones distintas.',
     rutas: [
-      { titulo: 'Tengo un equipo detenido', texto: 'Marca, modelo y falla. Si está parado, llame también al fijo.', ancla: '#servicio-tecnico' },
+      { titulo: 'Tengo un equipo detenido', texto: 'Marca, modelo y falla. Si está parado, llame también al fijo.', ancla: '#cotizar' },
       { titulo: 'Tengo un proyecto en planos', texto: 'Planos y número de salas. Empezamos por una visita técnica.', ancla: '#cotizacion' },
     ],
   },
@@ -185,7 +119,7 @@ export const contactoPagina = {
     'Con el material que procesa y el volumen por turno proponemos el equipo y enviamos cotización formal. Si ya tiene pliego, trabajamos sobre eso.',
   rutas: [
     { titulo: 'Cotización', texto: 'Equipos, consumibles, accesorios o mobiliario.', ancla: '#cotizacion' },
-    { titulo: 'Servicio técnico', texto: 'Marca, modelo y falla. Si el equipo está detenido, llame también al fijo.', ancla: '#servicio-tecnico' },
+    { titulo: 'Servicio técnico', texto: 'Marca, modelo y falla. Si el equipo está detenido, llame también al fijo.', ancla: '#cotizar' },
     { titulo: 'Licitaciones', texto: 'Envíe el pliego a comercial@servimedicalgroup.com y lo revisamos contra lo que podemos cubrir.', ancla: null },
   ],
 } as const;

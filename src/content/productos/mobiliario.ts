@@ -23,7 +23,7 @@ export const mobiliario: Producto[] = [
     ],
     alternativa: {
       titulo: 'Carros de transporte',
-      url: '/productos/mobiliario/carros-de-transporte',
+      linea: 'carros-de-transporte',
       nota: 'Lo que está en tránsito va en carro cerrado y diferenciado por flujo, no en la estantería de estéril.',
     },
 
@@ -42,17 +42,17 @@ export const mobiliario: Producto[] = [
     necesita: [
       {
         titulo: 'Papel grado médico y empaque',
-        url: '/productos/consumibles/papel-y-empaque',
+        linea: 'papel-y-empaque',
         porQue: 'La estantería protege la barrera, no la reemplaza. Un empaque frágil falla en el mejor armario.',
       },
       {
         titulo: 'Carros de transporte',
-        url: '/productos/mobiliario/carros-de-transporte',
+        linea: 'carros-de-transporte',
         porQue: 'Si el último tramo va descubierto, se pierde en la puerta lo que se cuidó durante días.',
       },
       {
         titulo: 'Mesas y mesones',
-        url: '/productos/mobiliario/mesas-y-mesones',
+        linea: 'mesas-y-mesones',
         porQue: 'El paquete se conforma en la mesa y se guarda en la estantería. Se dimensionan juntas.',
       },
     ],
@@ -66,7 +66,7 @@ export const mobiliario: Producto[] = [
 
     marcas: ['{{ POR CONFIRMAR: marca o taller que fabrica el mobiliario en acero AISI 304 }}'],
     seo: {
-      titulo: 'Estantería y armarios para almacenamiento estéril — Servimedical Group',
+      titulo: 'Estantería y armarios para almacenamiento estéril',
       descripcion:
         'Mobiliario en acero AISI 304 para almacenamiento de material estéril, con levantamiento en sitio y propuesta de distribución según el plano de la central. Bogotá, cobertura nacional.',
     },
@@ -108,12 +108,12 @@ export const mobiliario: Producto[] = [
     necesita: [
       {
         titulo: 'Almacenamiento estéril',
-        url: '/productos/mobiliario/almacenamiento-esteril',
+        linea: 'almacenamiento-esteril',
         porQue: 'Las dimensiones de uno condicionan las del otro. Conviene decidirlas en el mismo plano.',
       },
       {
         titulo: 'Mesas y mesones',
-        url: '/productos/mobiliario/mesas-y-mesones',
+        linea: 'mesas-y-mesones',
         porQue: 'Si las alturas no coinciden, el material se manipula de más justo donde no debe.',
       },
     ],
@@ -126,7 +126,7 @@ export const mobiliario: Producto[] = [
 
     marcas: ['{{ POR CONFIRMAR: marca o taller que fabrica el mobiliario en acero AISI 304 }}'],
     seo: {
-      titulo: 'Carros de transporte para central de esterilización — Servimedical Group',
+      titulo: 'Carros de transporte para central de esterilización',
       descripcion:
         'Carros cerrados diferenciados por flujo para material sucio y estéril, y carros de carga de autoclave. Levantamiento del recorrido y fabricación según el plano de la central.',
     },
@@ -148,7 +148,7 @@ export const mobiliario: Producto[] = [
     ],
     alternativa: {
       titulo: 'Termodesinfectoras',
-      url: '/productos/esterilizacion/termodesinfectoras',
+      linea: 'termodesinfectoras',
       nota: 'Cuando el volumen de lúmenes y endoscopios crece, el lavado manual deja de sostener el proceso y hay que automatizarlo.',
     },
 
@@ -167,17 +167,17 @@ export const mobiliario: Producto[] = [
     necesita: [
       {
         titulo: 'Selladoras térmicas',
-        url: '/productos/accesorios/selladoras',
+        linea: 'selladoras',
         porQue: 'Ocupa un tramo fijo de la mesa. Si no se contempla, el puesto queda corto desde el primer día.',
       },
       {
         titulo: 'Tratamiento y filtración de agua',
-        url: '/productos/accesorios/tratamiento-de-agua',
+        linea: 'tratamiento-de-agua',
         porQue: 'El enjuague final con agua fuera de especificación mancha lo que se acaba de lavar.',
       },
       {
         titulo: 'Carros de transporte',
-        url: '/productos/mobiliario/carros-de-transporte',
+        linea: 'carros-de-transporte',
         porQue: 'Las alturas se deciden juntas para no manipular el material más de lo necesario.',
       },
     ],
@@ -191,7 +191,7 @@ export const mobiliario: Producto[] = [
 
     marcas: ['{{ POR CONFIRMAR: marca o taller que fabrica el mobiliario en acero AISI 304 }}'],
     seo: {
-      titulo: 'Mesas de empaque y mesones de lavado en acero — Servimedical Group',
+      titulo: 'Mesas de empaque y mesones de lavado en acero',
       descripcion:
         'Mesas de inspección y empaque y mesones de lavado con poza en acero AISI 304, con superficie continua y soldadura pulida. Levantamiento en sitio y fabricación según plano.',
     },
