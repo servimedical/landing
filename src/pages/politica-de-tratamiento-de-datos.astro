@@ -2,7 +2,7 @@
 /* {{ REQUIERE REVISIÓN JURÍDICA }} — ver src/content/legal.ts */
 import Base from '../layouts/Base.astro';
 import Migas from '../components/Migas.astro';
-import { politica, VIGENCIA } from '../content/legal.ts';
+import { politica } from '../content/legal.ts';
 import { normalizar, politicaDatos } from '../content/navegacion.ts';
 
 const rutaActual = normalizar(Astro.url.pathname);
@@ -22,7 +22,7 @@ const rutaActual = normalizar(Astro.url.pathname);
     </p>
     {/* La fecha de vigencia y el canal del titular están en src/content/legal.ts
         con su marcador; aquí se anuncia el estado del documento en vez de
-        mostrar el marcador crudo. VIGENCIA: {VIGENCIA} */}
+        mostrar el marcador crudo.*/}
     <div class="mt-8 max-w-[62ch] border border-rule p-5">
       <p class="meta text-[10px] text-steel">Documento en revisión</p>
       <p class="mt-3 text-[15px] leading-relaxed text-steel">

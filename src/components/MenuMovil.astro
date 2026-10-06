@@ -1,6 +1,7 @@
 ---
 import { enNavbar, categoriasProducto, rutaActiva, normalizar } from '../content/navegacion.ts';
 import { cta } from '../content/sitio.ts';
+import Buscador from './Buscador.astro';
 
 interface Props { rutaActual: string }
 const { rutaActual } = Astro.props;
@@ -27,7 +28,9 @@ const marcado = (url: string) => cadena.includes(url);
          border-t border-rule bg-white lg:hidden"
   hidden
 >
-  <nav aria-label="Menú principal" class="contenedor pb-40 pt-2">
+  <div class="contenedor pt-4"><Buscador id="q-movil" /></div>
+
+  <nav aria-label="Menú principal" class="contenedor pb-40 pt-4">
     <ul>
       {enNavbar.map((nodo) => (
         <li class="border-b border-rule">

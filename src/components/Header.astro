@@ -2,6 +2,7 @@
 import Logo from './Logo.astro';
 import NavEscritorio from './NavEscritorio.astro';
 import MenuMovil from './MenuMovil.astro';
+import Buscador from './Buscador.astro';
 import { inicio } from '../content/navegacion.ts';
 import { cta, sitio } from '../content/sitio.ts';
 
@@ -18,17 +19,20 @@ const { rutaActual } = Astro.props;
 <header class="sticky top-0 z-50 border-b border-rule">
   <div class="absolute inset-0 -z-10 bg-white/93 backdrop-blur-[12px]" aria-hidden="true"></div>
 
-  <div class="contenedor flex h-(--spacing-header) items-center gap-7">
+  <div class="contenedor flex h-(--spacing-header) items-center gap-4 xl:gap-6">
     <a href={inicio.url} class="mr-auto" aria-label={`${sitio.nombre} — ir al inicio`}>
       <Logo />
     </a>
 
     <NavEscritorio rutaActual={rutaActual} />
 
+    <div class="hidden w-[132px] shrink-0 lg:block xl:w-[190px]"><Buscador /></div>
+
     <a
       href={cta.url}
-      class="hidden items-center gap-2.5 border border-navy bg-navy px-5 py-3 text-[14.5px]
-             font-medium text-white transition-colors hover:bg-navy-deep hover:border-navy-deep lg:inline-flex"
+      class="hidden shrink-0 items-center gap-2.5 whitespace-nowrap border border-navy bg-navy px-4 py-3
+             text-[14px] font-medium text-white transition-colors hover:bg-navy-deep hover:border-navy-deep
+             lg:inline-flex xl:px-5 xl:text-[14.5px]"
     >
       <span class="block h-[7px] w-[7px] bg-signal" aria-hidden="true"></span>{cta.texto}
     </a>

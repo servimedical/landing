@@ -1,18 +1,126 @@
 ---
 import Base from '../layouts/Base.astro';
 import CartaCiclo from '../components/hero/CartaCiclo.astro';
-import Rueda from '../components/ciclo/Rueda.astro';
+import Proceso from '../components/proceso/Proceso.astro';
 import { home } from '../content/institucional.ts';
 import { marcas } from '../content/sitio.ts';
 ---
+<Base
+  titulo="Servimedical Group — Centrales de esterilización en Colombia"
+  descripcion="Equipos de esterilización, consumibles, accesorios, repuestos y mobiliario en acero, con servicio técnico propio. Importación directa desde Bogotá, cobertura nacional."
+>
+  {/* Hero y franja de marcas ocupan juntos la primera pantalla. */}
+  <div class="flex min-h-[calc(100svh-var(--spacing-header))] flex-col">
+    <div class="contenedor grid flex-1 items-center gap-8 py-6 lg:grid-cols-[1.12fr_.88fr] lg:gap-[clamp(32px,5vw,72px)] lg:py-12">
+      <div>
+        <p class="meta text-steel">Central de esterilización · Colombia</p>
+        {/* Única línea del sitio con tuteo. Decisión del cliente; el resto
+            mantiene el trato de usted (ver src/content/VOZ.md). */}
+        <h1 class="mt-4 max-w-[26ch] text-[clamp(28px,3.4vw,44px)] lg:mt-5">
+          Tu aliado en todo el{' '}<span class="block text-steel">proceso de esterilización</span>
+        </h1>
+        <p class="mt-5 max-w-[48ch] text-[15px] leading-relaxed text-steel lg:mt-6 lg:text-[clamp(16px,1.3vw,18.5px)]">
+          Seis estaciones separan el material sucio del quirófano. Ponemos el equipo, el insumo
+          y el repuesto de cada una, con servicio técnico propio.
+        </p>
+        <div class="mt-6 flex flex-wrap gap-3 lg:mt-8">
+          <a href="/contacto" class="inline-flex items-center gap-2.5 border border-navy bg-navy px-5 py-3.5 text-[14.5px] font-medium text-white hover:bg-navy-deep">
+            <span aria-hidden="true" class="senal"></span>Solicitar cotización
+          </a>
+          <a href="#proceso" class="inline-flex items-center border border-rule px-5 py-3.5 text-[14.5px] hover:bg-paper">
+            Ver el proceso
+          </a>
+        </div>
+      </div>
+      <CartaCiclo />
+    </div>
+
+    <section class="field-navy border-t border-rule" aria-labelledby="marcas-h">
+      <div class="contenedor flex flex-wrap items-center gap-x-[clamp(18px,3vw,44px)] gap-y-3 py-3 lg:py-6">
+        <div class="flex w-full items-baseline justify-between gap-4 lg:w-auto">
+          <h2 id="marcas-h" class="meta shrink-0 text-[10px] text-white/70">Marcas que representamos</h2>
+          <p id="marcas-pista" class="meta shrink-0 text-[10px] text-white/70 transition-opacity" hidden>
+            Deslice <span aria-hidden="true">→</span>
+          </p>
+        </div>
+        <ul
+          id="marcas-pista-track"
+          class="deslizable [--sangria:clamp(20px,5vw,64px)] -mx-[clamp(20px,5vw,64px)]
+                 flex min-w-0 basis-full items-center gap-x-[clamp(18px,3.2vw,44px)]
+                 px-[clamp(20px,5vw,64px)]
+                 lg:mx-0 lg:flex-1 lg:basis-auto lg:justify-end lg:px-0 lg:[--sangria:0px]"
+        >
+          {marcas.map((m) => (
+            <li class="shrink-0 font-display text-[clamp(14px,1.4vw,18px)] font-bold text-white/92 [font-variation-settings:'wdth'_105]">
+              {m.nombre}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  </div>
+
+  <!-- Cómo trabajamos -->
+  <section id="proceso" class="field-paper border-t border-rule" aria-labelledby="proceso-h">
+    <div class="contenedor py-14 lg:py-20">
+      <div class="mb-10 max-w-[60ch]">
+        <p class="meta text-steel">Cómo trabajamos</p>
+        <h2 id="proceso-h" class="mt-4 text-[clamp(26px,3.2vw,38px)]">Seis estaciones, un proveedor</h2>
+        <p class="mt-4 text-[17px] text-steel">
+          El flujo va en un solo sentido. Lo que una estación no resuelve, la siguiente no corrige.
+        </p>
+      </div>
+      <Proceso />
+    </div>
+  </section>
+
+  <!-- Líneas de negocio -->
+  <section class="border-t border-rule" aria-labelledby="lineas">
+    <div class="contenedor py-14 lg:py-20">
+      <h2 id="lineas" class="sr-only">Líneas de negocio</h2>
+      <div class="grid gap-px border border-rule bg-rule lg:grid-cols-2">
+        {home.lineas.map((l) => (
+          <a href={l.url} class="group flex flex-col bg-white p-8 transition-colors hover:bg-paper lg:p-12">
+            <span class="meta text-[10.5px] text-steel">{l.etiqueta}</span>
+            <span class="mt-4 font-display text-[clamp(24px,2.8vw,34px)] leading-tight font-bold [font-variation-settings:'wdth'_112]">
+              {l.titulo}
+            </span>
+            <span class="mt-4 max-w-[44ch] flex-1 text-[16px] leading-relaxed text-steel">{l.texto}</span>
+            <span class="meta mt-8 border-t border-rule pt-5 text-[10px] text-steel group-hover:text-navy">Ver la línea →</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- A quién servimos -->
+  <div class="border-t border-rule">
+    <div class="contenedor flex flex-wrap items-baseline gap-x-8 gap-y-3 py-7">
+      <span class="meta text-[10px] text-steel">A quién servimos</span>
+      <ul class="flex flex-wrap gap-x-6 gap-y-2">
+        {home.sectores.map((s) => (<li class="text-[15px] text-steel">{s}</li>))}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Cierre -->
+  <section class="field-paper border-t border-rule" aria-labelledby="cierre">
+    <div class="contenedor flex flex-wrap items-end justify-between gap-8 py-14 lg:py-20">
+      <div>
+        <h2 id="cierre" class="max-w-[18ch] text-[clamp(24px,3vw,36px)]">{home.cierre.titulo}</h2>
+        <p class="mt-4 max-w-[52ch] text-[17px] text-steel">{home.cierre.texto}</p>
+      </div>
+      <a href={home.cierre.url} class="inline-flex items-center gap-2.5 border border-navy bg-navy px-5 py-3.5 text-[14.5px] font-medium text-white hover:bg-navy-deep">
+        <span aria-hidden="true" class="senal"></span>{home.cierre.boton}
+      </a>
+    </div>
+  </section>
+</Base>
 
 <script>
-  /* Pista de deslizamiento: aparece sólo cuando la franja desborda, y se
-     apaga al llegar al final. No se anuncia al lector de pantalla porque no
-     hay nada que deslizar con teclado: la lista se recorre con Tab. */
+  /* Pista de deslizamiento: aparece sólo cuando la franja desborda. */
   const track = document.getElementById('marcas-pista-track');
   const pista = document.getElementById('marcas-pista');
-
   if (track && pista) {
     const revisar = () => {
       const desborda = track.scrollWidth - track.clientWidth > 8;
@@ -26,151 +134,3 @@ import { marcas } from '../content/sitio.ts';
     if (document.fonts) document.fonts.ready.then(revisar);
   }
 </script>
-<Base
-  titulo="Servimedical Group — Centrales de esterilización en Colombia"
-  descripcion="Equipos de esterilización, consumibles, accesorios, repuestos, mobiliario en acero y trazabilidad de paquete, con servicio técnico propio. Importación directa desde Bogotá, cobertura nacional."
->
-  {/* Hero y franja de marcas ocupan juntos la primera pantalla: la franja
-      queda justo en el borde de lo que se ve al entrar, en móvil y en
-      escritorio. Se usa svh y no dvh para que la barra del navegador móvil no
-      la empuje fuera de la vista. */}
-  <div class="flex min-h-[calc(100svh-var(--spacing-header))] flex-col">
-  <!-- 1 · Hero -->
-  <div class="contenedor grid flex-1 items-center gap-5 py-6 lg:grid-cols-[1.12fr_.88fr] lg:gap-[clamp(32px,5vw,72px)] lg:py-12">
-    <div>
-      <p class="meta flex items-center gap-2.5 text-steel">
-        <span aria-hidden="true" class="senal"></span>Central de esterilización · Colombia
-      </p>
-      {/* Única línea del sitio con tuteo. Decisión del cliente; el resto
-          mantiene el trato de usted (ver src/content/VOZ.md). */}
-      {/* Tamaño fijado para que cada mitad del titular quepa en una línea:
-          «Tu aliado en todo el» / «proceso de esterilización». */}
-      <h1 class="mt-4 max-w-[26ch] text-[clamp(28px,3.4vw,44px)] lg:mt-5">
-        Tu aliado en todo el{' '}<span class="block text-steel">proceso de esterilización</span>
-      </h1>
-      <p class="mt-5 max-w-[48ch] text-[15px] leading-relaxed text-steel lg:mt-6 lg:text-[clamp(16px,1.3vw,18.5px)]">
-        Seis estaciones separan el material sucio del quirófano. Ponemos el equipo, el insumo
-        y el repuesto de cada una, con servicio técnico propio.
-      </p>
-      <div class="mt-6 flex flex-wrap gap-3 lg:mt-8">
-        <a href="/contacto" class="inline-flex items-center gap-2.5 border border-navy bg-navy px-5 py-3.5 text-[14.5px] font-medium text-white hover:bg-navy-deep">
-          <span aria-hidden="true" class="senal"></span>Solicitar cotización
-        </a>
-        <a href="#ciclo" class="inline-flex items-center border border-rule px-5 py-3.5 text-[14.5px] hover:bg-paper">
-          Recorrer el ciclo
-        </a>
-      </div>
-    </div>
-    <CartaCiclo />
-  </div>
-
-  <!-- 2 · Franja de marcas · cierra la primera pantalla -->
-  <section class="field-navy border-t border-rule" aria-labelledby="marcas-h">
-    <div class="contenedor flex flex-wrap items-center gap-x-[clamp(18px,3vw,44px)] gap-y-3 py-3 lg:py-6">
-      {/* Rótulo y pista comparten línea; por debajo de 1000 px ocupan la suya
-          y la franja pasa a la siguiente, sangrada hasta el borde. */}
-      <div class="flex w-full items-baseline justify-between gap-4 lg:w-auto">
-        <h2 id="marcas-h" class="meta shrink-0 text-[10px] text-white/70">Marcas que representamos</h2>
-
-        {/* La pista se revela sólo si el contenido no cabe: si no hay nada que
-            deslizar, la indicación sobra y estorba. */}
-        <p id="marcas-pista" class="meta shrink-0 text-[10px] text-white/70 transition-opacity" hidden>
-          Deslice <span aria-hidden="true">→</span>
-        </p>
-      </div>
-
-      <ul
-        id="marcas-pista-track"
-        class="deslizable [--sangria:clamp(20px,5vw,64px)] -mx-[clamp(20px,5vw,64px)]
-               flex min-w-0 basis-full items-center gap-x-[clamp(18px,3.2vw,44px)]
-               px-[clamp(20px,5vw,64px)]
-               lg:mx-0 lg:flex-1 lg:basis-auto lg:justify-end lg:px-0 lg:[--sangria:0px]"
-      >
-        {marcas.map((m) => (
-          <li class="shrink-0 font-display text-[clamp(14px,1.4vw,18px)] font-bold text-white/92 [font-variation-settings:'wdth'_105]">
-            {m.nombre}
-          </li>
-        ))}
-      </ul>
-    </div>
-  </section>
-  </div>
-
-  <!-- 2 · La rueda del ciclo -->
-  <section id="ciclo" class="field-paper border-t border-rule" aria-labelledby="ciclo-titulo">
-    <div class="contenedor py-14 lg:py-20">
-      <div class="mb-10 max-w-[62ch] lg:mb-14">
-        <p class="meta flex items-center gap-2.5 text-steel">
-          <span aria-hidden="true" class="senal"></span>Cómo trabajamos
-        </p>
-        <h2 id="ciclo-titulo" class="mt-4 text-[clamp(28px,3.6vw,44px)]">
-          Seis estaciones y un hilo que las cose.
-        </h2>
-        <p class="mt-5 text-[17px] text-steel">
-          El flujo es unidireccional. Lo que una estación no resuelve, la siguiente no corrige.
-        </p>
-      </div>
-      <Rueda />
-    </div>
-  </section>
-
-  <!-- 3 · Líneas de negocio -->
-  <section class="border-t border-rule" aria-labelledby="lineas">
-    <div class="contenedor py-14 lg:py-20">
-      <h2 id="lineas" class="sr-only">Líneas de negocio</h2>
-      <div class="grid gap-px border border-rule bg-rule lg:grid-cols-2">
-        {home.lineas.map((l) => (
-          <a href={l.url} class="group flex flex-col bg-white p-8 transition-colors hover:bg-paper lg:p-12">
-            <span class="meta text-[10.5px] text-steel">{l.etiqueta}</span>
-            <span class="mt-4 font-display text-[clamp(26px,3.2vw,38px)] leading-tight font-bold [font-variation-settings:'wdth'_112]">
-              {l.titulo}
-            </span>
-            <span class="mt-4 max-w-[44ch] flex-1 text-[16px] leading-relaxed text-steel">{l.texto}</span>
-            <span class="meta mt-8 border-t border-rule pt-5 text-[10px] text-steel group-hover:text-navy">Ver la línea →</span>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- 4 · A quién servimos -->
-  <div class="border-t border-rule">
-    <div class="contenedor flex flex-wrap items-baseline gap-x-8 gap-y-3 py-7">
-      <span class="meta text-[10px] text-steel">A quién servimos</span>
-      <ul class="flex flex-wrap gap-x-6 gap-y-2">
-        {home.sectores.map((s) => (<li class="text-[15px] text-steel">{s}</li>))}
-      </ul>
-    </div>
-  </div>
-
-  <!-- 5 · Puente a trazabilidad -->
-  <section class="field-navy border-t border-rule" aria-labelledby="puente">
-    <div class="contenedor flex flex-wrap items-end justify-between gap-8 py-14 lg:py-16">
-      <div>
-        <p class="meta flex items-center gap-2.5 text-white/70">
-          <span aria-hidden="true" class="senal"></span>Trazabilidad
-        </p>
-        <h2 id="puente" class="mt-4 max-w-[20ch] text-[clamp(24px,3.2vw,38px)] text-white">
-          {home.trazabilidad.titulo}
-        </h2>
-        <p class="mt-4 max-w-[54ch] text-ink-dark">{home.trazabilidad.texto}</p>
-      </div>
-      <a href={home.trazabilidad.url} class="inline-flex items-center gap-2.5 border border-signal bg-signal px-5 py-3.5 text-[14.5px] font-semibold text-navy-deep hover:bg-[#7cc400]">
-        <span aria-hidden="true" class="senal !bg-navy-deep"></span>{home.trazabilidad.boton}
-      </a>
-    </div>
-  </section>
-
-  <!-- 6 · CTA de cierre -->
-  <section class="border-t border-rule" aria-labelledby="cierre">
-    <div class="contenedor flex flex-wrap items-end justify-between gap-8 py-14 lg:py-20">
-      <div>
-        <h2 id="cierre" class="max-w-[18ch] text-[clamp(26px,3.4vw,40px)]">{home.cierre.titulo}</h2>
-        <p class="mt-5 max-w-[52ch] text-[17px] text-steel">{home.cierre.texto}</p>
-      </div>
-      <a href={home.cierre.url} class="inline-flex items-center gap-2.5 border border-navy bg-navy px-5 py-3.5 text-[14.5px] font-medium text-white hover:bg-navy-deep">
-        <span aria-hidden="true" class="senal"></span>{home.cierre.boton}
-      </a>
-    </div>
-  </section>
-</Base>

@@ -95,9 +95,9 @@ export const consumibles: Producto[] = [
         porQue: 'El químico es lectura inmediata, pero indicio. El biológico es la prueba.',
       },
       {
-        titulo: 'Software de trazabilidad',
-        url: '/trazabilidad/software',
-        porQue: 'El resultado tiene que quedar atado a la carga. En un cuaderno no sirve el día del recall.',
+        titulo: 'Papel grado médico y empaque',
+        url: '/productos/consumibles/papel-y-empaque',
+        porQue: 'El paquete de prueba se arma con el mismo material que la carga que va a representar.',
       },
     ],
 
@@ -151,9 +151,9 @@ export const consumibles: Producto[] = [
         porQue: 'Verifica el equipo, no solo la carga. Un resultado no conforme es un dato de mantenimiento.',
       },
       {
-        titulo: 'Software de trazabilidad',
-        url: '/trazabilidad/software',
-        porQue: 'Un positivo obliga a saber qué paquetes salieron de esa carga. Sin registro, se recoge todo.',
+        titulo: 'Repuestos originales',
+        url: '/productos/repuestos',
+        porQue: 'Un resultado no conforme repetido suele ser el equipo, no la carga. Ahí entra el repuesto.',
       },
     ],
 

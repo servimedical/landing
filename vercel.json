@@ -5,9 +5,6 @@
   "outputDirectory": "dist",
   "cleanUrls": true,
   "trailingSlash": false,
-  "redirects": [
-    { "source": "/productos/trazabilidad", "destination": "/trazabilidad", "permanent": true }
-  ],
   "headers": [
     {
       "source": "/(.*)",

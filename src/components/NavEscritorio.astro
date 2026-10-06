@@ -9,7 +9,7 @@ const cadena = rutaActiva(rutaActual).map((n) => n.url);
 const exacta = normalizar(rutaActual);
 ---
 <nav aria-label="Principal" class="hidden lg:block">
-  <ul class="flex items-center gap-7">
+  <ul class="flex items-center gap-5 xl:gap-7">
     {enNavbar.map((nodo) => {
       const enCadena = cadena.includes(nodo.url);
       const esExacta = normalizar(nodo.url) === exacta;

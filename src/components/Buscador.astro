@@ -1,0 +1,122 @@
+---
+/* Buscador del sitio. El índice se sirve dentro del HTML y el filtrado es
+   local: sin peticiones, sin servicio externo y sin esperar a nada. */
+import { indice } from '../content/busqueda.ts';
+
+/* El componente aparece dos veces —cabecera y menú móvil—, así que los
+   identificadores son únicos por instancia: dos id iguales en el DOM rompen
+   las etiquetas y la relación aria. */
+interface Props { id?: string }
+const { id = 'q' } = Astro.props;
+---
+<div class="buscador relative">
+  <form role="search" class="flex items-center gap-2 border border-rule px-3 py-2 focus-within:border-navy">
+    <svg viewBox="0 0 16 16" class="h-3.5 w-3.5 shrink-0 text-steel" aria-hidden="true">
+      <circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.6" />
+      <path d="M10.8 10.8 L14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+    </svg>
+    <label for={id} class="sr-only">Buscar en el sitio</label>
+    <input
+      id={id} type="search" autocomplete="off" placeholder="Buscar"
+      class="w-full min-w-0 border-0 bg-transparent p-0 text-[14px] text-navy outline-none placeholder:text-steel"
+      aria-describedby={`${id}-ayuda`} aria-expanded="false" aria-controls={`${id}-resultados`}
+    />
+  </form>
+  <p id={`${id}-ayuda`} class="sr-only">Los resultados aparecen debajo a medida que escribe.</p>
+
+  <div
+    id={`${id}-resultados`}
+    class="absolute right-0 top-[calc(100%+8px)] z-50 max-h-[62vh] w-[min(26rem,calc(100vw-2.5rem))]
+           overflow-y-auto border border-rule bg-white"
+    hidden
+  >
+    <p class="meta border-b border-rule px-4 py-2.5 text-[10px] text-steel" data-conteo aria-live="polite"></p>
+    <ul data-lista></ul>
+  </div>
+</div>
+
+{/* El índice se sirve una sola vez aunque haya dos buscadores. */}
+{id === 'q' && <script type="application/json" data-indice set:html={JSON.stringify(indice)} is:inline />}
+
+<script>
+  type Entrada = { titulo: string; url: string; grupo: string; pista: string; terminos: string };
+
+  const crudo = document.querySelector<HTMLElement>('script[data-indice]')?.textContent;
+  if (crudo) {
+    const indice: Entrada[] = JSON.parse(crudo);
+
+    /* Sin tildes y en minúsculas: quien busca «esterilizacion» tiene que
+       encontrar «esterilización». */
+    const plano = (t: string) =>
+      t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+
+    const campos = indice.map((e) => plano(`${e.titulo} ${e.grupo} ${e.pista} ${e.terminos}`));
+
+    document.querySelectorAll<HTMLElement>('.buscador').forEach((caja) => {
+      const input = caja.querySelector<HTMLInputElement>('input[type="search"]')!;
+      const panel = caja.querySelector<HTMLElement>('[id$="-resultados"]')!;
+      const lista = panel.querySelector<HTMLElement>('[data-lista]')!;
+      const conteo = panel.querySelector<HTMLElement>('[data-conteo]')!;
+
+      const cerrar = () => {
+        panel.hidden = true;
+        input.setAttribute('aria-expanded', 'false');
+      };
+
+      const buscar = () => {
+        const q = plano(input.value.trim());
+        if (q.length < 2) return cerrar();
+
+        const palabras = q.split(/\s+/);
+        const hallados = indice
+          .map((e, i) => ({ e, i }))
+          .filter(({ i }) => palabras.every((p) => campos[i]!.includes(p)))
+          /* El título pesa más que el cuerpo: lo que se llama así va primero. */
+          .sort((a, b) => Number(plano(b.e.titulo).includes(palabras[0]!)) - Number(plano(a.e.titulo).includes(palabras[0]!)))
+          .slice(0, 8);
+
+        conteo.textContent = hallados.length
+          ? `${hallados.length} resultado${hallados.length > 1 ? 's' : ''}`
+          : 'Sin resultados';
+
+        lista.replaceChildren(
+          ...hallados.map(({ e }) => {
+            const li = document.createElement('li');
+            li.className = 'border-b border-rule last:border-b-0';
+            const a = document.createElement('a');
+            a.href = e.url;
+            a.className = 'block px-4 py-3 hover:bg-paper';
+            a.innerHTML =
+              `<span class="block text-[15px]">${e.titulo}</span>` +
+              `<span class="mt-1 block text-[13px] text-steel">${e.pista}</span>` +
+              `<span class="meta mt-1.5 block text-[9.5px] text-steel">${e.grupo}</span>`;
+            li.append(a);
+            return li;
+          })
+        );
+
+        panel.hidden = false;
+        input.setAttribute('aria-expanded', 'true');
+      };
+
+      input.addEventListener('input', buscar);
+      input.addEventListener('focus', buscar);
+
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') { cerrar(); input.blur(); }
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          panel.querySelector<HTMLAnchorElement>('a')?.click();
+        }
+        if (e.key === 'ArrowDown') { e.preventDefault(); panel.querySelector<HTMLAnchorElement>('a')?.focus(); }
+      });
+
+      document.addEventListener('pointerdown', (e) => {
+        if (!caja.contains(e.target as Node)) cerrar();
+      });
+      document.addEventListener('focusin', (e) => {
+        if (!caja.contains(e.target as Node)) cerrar();
+      });
+    });
+  }
+</script>

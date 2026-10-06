@@ -4,9 +4,8 @@
    se conviertan en trece variaciones del mismo texto vacío. */
 import Base from './Base.astro';
 import Migas from '../components/Migas.astro';
-import MiniRueda from '../components/ciclo/MiniRueda.astro';
+import Estacion from '../components/proceso/Estacion.astro';
 import Formulario from '../components/formulario/Formulario.astro';
-import { estaciones } from '../content/ciclo.ts';
 import { normalizar } from '../content/navegacion.ts';
 import { sitio } from '../content/sitio.ts';
 import type { Producto } from '../content/productos/index.ts';
@@ -45,12 +44,9 @@ const jsonld = {
   <!-- 1 · Para qué material sirve -->
   <section class="border-t border-rule" aria-labelledby="b1">
     <div class="contenedor py-12 lg:py-16">
-      <p class="meta text-steel">01 · Para qué material sirve</p>
-      <h2 id="b1" class="mt-4 max-w-[24ch] text-[clamp(24px,3vw,34px)]">
-        Qué se procesa aquí y qué no.
-      </h2>
+      <h2 id="b1" class="max-w-[24ch] text-[clamp(22px,2.6vw,30px)]">Qué procesa y qué no</h2>
 
-      <div class="mt-9 grid gap-px border border-rule bg-rule lg:grid-cols-2">
+      <div class="mt-8 grid gap-px border border-rule bg-rule lg:grid-cols-2">
         <div class="bg-white p-6 lg:p-8">
           <p class="meta text-steel">Procesa</p>
           <ul class="mt-4">
@@ -84,10 +80,10 @@ const jsonld = {
             </>
           ) : (
             <>
-              <p class="meta text-steel">Dónde encaja</p>
+              <p class="meta text-steel">Cómo se escoge</p>
               <p class="mt-4 max-w-[38ch] border-t border-rule pt-4 text-[15.5px] text-steel">
-                Esta línea no excluye material por su naturaleza: se define por el volumen
-                y el flujo de la central. Es lo que se resuelve en el bloque siguiente.
+                No se descarta material: se escoge por volumen y por flujo. Eso se resuelve
+                en el bloque siguiente.
               </p>
             </>
           )}
@@ -99,12 +95,9 @@ const jsonld = {
   <!-- 2 · Cómo se dimensiona -->
   <section class="field-paper border-t border-rule" aria-labelledby="b2">
     <div class="contenedor py-12 lg:py-16">
-      <p class="meta text-steel">02 · Cómo se dimensiona</p>
-      <h2 id="b2" class="mt-4 max-w-[26ch] text-[clamp(24px,3vw,34px)]">
-        Lo que preguntamos antes de cotizar.
-      </h2>
+      <h2 id="b2" class="max-w-[26ch] text-[clamp(22px,2.6vw,30px)]">Qué preguntamos antes de cotizar</h2>
 
-      <ol class="mt-9 max-w-[70ch] border-t border-rule">
+      <ol class="mt-8 max-w-[70ch] border-t border-rule">
         {p.dimensionamiento.map((q, i) => (
           <li class="grid grid-cols-[44px_1fr] items-baseline gap-4 border-b border-rule py-4">
             <span class="meta text-[11px] text-steel">{String(i + 1).padStart(2, '0')}</span>
@@ -119,44 +112,22 @@ const jsonld = {
     </div>
   </section>
 
-  <!-- 3 · En qué estación del ciclo vive -->
+  <!-- 3 · Dónde entra en el proceso -->
   <section class="border-t border-rule" aria-labelledby="b3">
     <div class="contenedor py-12 lg:py-16">
-      <p class="meta text-steel">03 · En qué estación del ciclo vive</p>
-      <h2 id="b3" class="mt-4 max-w-[26ch] text-[clamp(24px,3vw,34px)]">
-        Dónde entra dentro del proceso.
-      </h2>
-
-      <div class="mt-9 max-w-[560px]">
-        <MiniRueda estacion={p.estacionPrimaria} />
+      <h2 id="b3" class="max-w-[26ch] text-[clamp(22px,2.6vw,30px)]">Dónde entra en el proceso</h2>
+      <div class="mt-8">
+        <Estacion numero={p.estacionPrimaria} secundarias={p.estacionesSecundarias} />
       </div>
-
-      {p.estacionesSecundarias && p.estacionesSecundarias.length > 0 && (
-        <div class="mt-6">
-          <p class="meta text-steel">También interviene en</p>
-          <ul class="mt-3 flex flex-wrap gap-x-6 gap-y-2">
-            {p.estacionesSecundarias.map((n) => (
-              <li>
-                <a href={`/#/ciclo/0${n}`} class="meta text-[10.5px] text-steel underline decoration-rule underline-offset-4 hover:text-navy">
-                  Estación 0{n} · {estaciones[n - 1]!.nombre}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
     </div>
   </section>
 
   <!-- 4 · Qué necesita para operar -->
   <section class="field-paper border-t border-rule" aria-labelledby="b4">
     <div class="contenedor py-12 lg:py-16">
-      <p class="meta text-steel">04 · Qué necesita para operar</p>
-      <h2 id="b4" class="mt-4 max-w-[26ch] text-[clamp(24px,3vw,34px)]">
-        Lo que tiene que estar resuelto alrededor.
-      </h2>
+      <h2 id="b4" class="max-w-[26ch] text-[clamp(22px,2.6vw,30px)]">Qué más necesita para operar</h2>
 
-      <div class="mt-9 grid gap-px border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-3">
+      <div class="mt-8 grid gap-px border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-3">
         {p.necesita.map((n) => (
           <a href={n.url} class="group flex flex-col bg-white p-6 transition-colors hover:bg-white/60">
             <span class="font-display text-[18px] leading-tight font-bold [font-variation-settings:'wdth'_110]">
@@ -175,12 +146,9 @@ const jsonld = {
   <!-- 5 · Qué servicio lo acompaña -->
   <section class="border-t border-rule" aria-labelledby="b5">
     <div class="contenedor py-12 lg:py-16">
-      <p class="meta text-steel">05 · Qué servicio lo acompaña</p>
-      <h2 id="b5" class="mt-4 max-w-[26ch] text-[clamp(24px,3vw,34px)]">
-        Quién responde después de la entrega.
-      </h2>
+      <h2 id="b5" class="max-w-[26ch] text-[clamp(22px,2.6vw,30px)]">Servicio que lo acompaña</h2>
 
-      <ul class="mt-9 max-w-[62ch] border-t border-rule">
+      <ul class="mt-8 max-w-[62ch] border-t border-rule">
         {p.servicio.map((s) => (
           <li class="flex items-start gap-3 border-b border-rule py-3.5 text-[15.5px]">
             <span aria-hidden="true" class="senal mt-2"></span>{s}

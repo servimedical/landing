@@ -2,7 +2,6 @@
 import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
-import preact from '@astrojs/preact';
 import { validarEnlaces } from './integraciones/validar-ciclo.mjs';
 
 export default defineConfig({
@@ -14,19 +13,12 @@ export default defineConfig({
   build: { format: 'file' },
   trailingSlash: 'never',
 
-  /* El 301 real lo hace Vercel (vercel.json). Esta entrada existe para que
-     la redirección también funcione en `dev` y en `preview`. */
-  redirects: {
-    '/productos/trazabilidad': '/trazabilidad',
-  },
-
   compressHTML: true,
   devToolbar: { enabled: false },
 
   integrations: [
-    preact(),
     validarEnlaces(),
-    sitemap({ filter: (p) => !p.includes('/404') && !p.includes('/productos/trazabilidad') }),
+    sitemap({ filter: (p) => !p.includes('/404') }),
   ],
 
   vite: { plugins: [tailwindcss()] },

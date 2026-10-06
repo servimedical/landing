@@ -18,34 +18,29 @@ interface Props {
 const { tipo, fijo, id = tipo, titulo } = Astro.props;
 const form = FORMULARIOS[tipo];
 ---
-<section id={id} class="field-navy border-t border-rule" aria-labelledby={`${id}-t`}>
+<section id={id} class="field-paper border-t border-rule" aria-labelledby={`${id}-t`}>
   <div class="contenedor py-14 lg:py-20">
     <div class="grid gap-[clamp(28px,5vw,64px)] lg:grid-cols-[1fr_1.2fr]">
       <div>
-        <p class="meta flex items-center gap-2.5 text-white/70">
-          <span aria-hidden="true" class="senal"></span>{form.titulo}
-        </p>
-        <h2 id={`${id}-t`} class="mt-4 text-[clamp(24px,3vw,36px)] text-white">
-          {titulo ?? form.titulo}
-        </h2>
-        <p class="mt-5 max-w-[44ch] text-ink-dark">{form.intro}</p>
+        <h2 id={`${id}-t`} class="text-[clamp(22px,2.6vw,32px)]">{titulo ?? form.titulo}</h2>
+        <p class="mt-4 max-w-[44ch] text-steel">{form.intro}</p>
 
-        <ul class="mt-8 border-t border-rule-dark">
-          <li class="border-b border-rule-dark py-3 text-[14.5px] text-ink-dark">
-            <a href={contacto.whatsapp.href} rel="noopener" data-wa class="hover:text-white">WhatsApp {contacto.whatsapp.valor}</a>
+        <ul class="mt-8 border-t border-rule">
+          <li class="border-b border-rule py-3 text-[14.5px] text-steel">
+            <a href={contacto.whatsapp.href} rel="noopener" data-wa class="hover:text-navy">WhatsApp {contacto.whatsapp.valor}</a>
           </li>
-          <li class="border-b border-rule-dark py-3 text-[14.5px] text-ink-dark">
-            <a href={contacto.fijo.href} class="hover:text-white">Fijo {contacto.fijo.valor}</a>
+          <li class="border-b border-rule py-3 text-[14.5px] text-steel">
+            <a href={contacto.fijo.href} class="hover:text-navy">Fijo {contacto.fijo.valor}</a>
           </li>
-          <li class="border-b border-rule-dark py-3 text-[14.5px] text-ink-dark">
-            <a href={contacto.comercial.href} class="hover:text-white">{contacto.comercial.valor}</a>
+          <li class="border-b border-rule py-3 text-[14.5px] text-steel">
+            <a href={contacto.comercial.href} class="hover:text-navy">{contacto.comercial.valor}</a>
           </li>
         </ul>
       </div>
 
       <div>
         <form class="svmg-form" data-tipo={tipo} novalidate>
-          <div class="grid gap-px border border-rule-dark bg-rule-dark sm:grid-cols-2">
+          <div class="grid gap-px border border-rule bg-rule sm:grid-cols-2">
             {form.campos.map((c) => {
               const idc = `${id}-${c.nombre}`;
               const desc = [c.ayuda ? `${idc}-ayuda` : null, `${idc}-error`].filter(Boolean).join(' ');
@@ -87,18 +82,17 @@ const form = FORMULARIOS[tipo];
           </div>
 
           <!-- Habeas data -->
-          <div class="mt-6 border border-rule-dark p-5">
-            <p class="meta text-[10px] text-white/70">Finalidad del tratamiento</p>
-            <p class="mt-2 text-[14.5px] text-ink-dark">{form.finalidad}</p>
+          <div class="mt-6 border border-rule p-5">
+            <p class="meta text-[10px] text-steel">Finalidad del tratamiento</p>
+            <p class="mt-2 text-[14.5px] text-steel">{form.finalidad}</p>
 
             <div class="mt-4 flex items-start gap-3">
               <input id={`${id}-autorizacion`} name="autorizacion" type="checkbox"
                 class="casilla" required aria-describedby={`${id}-autorizacion-error`} />
-              <label for={`${id}-autorizacion`} class="text-[14.5px] leading-relaxed text-white">
+              <label for={`${id}-autorizacion`} class="text-[14.5px] leading-relaxed">
                 {TEXTO_AUTORIZACION}{' '}
-                <a href={URL_POLITICA} class="underline decoration-white/40 underline-offset-4 hover:decoration-white">
-                  Ver la política de tratamiento de datos
-                </a>.
+                <a href={URL_POLITICA} class="underline decoration-rule underline-offset-4 hover:decoration-navy">
+                  Ver la política de tratamiento de datos</a>.
               </label>
             </div>
             <p id={`${id}-autorizacion-error`} class="error" data-error="autorizacion" hidden></p>
@@ -107,18 +101,20 @@ const form = FORMULARIOS[tipo];
           <p class="error error--global" data-error-global hidden role="alert"></p>
 
           <div class="mt-6 flex flex-wrap gap-3">
-            <button type="submit" class="enviar inline-flex items-center gap-2.5 border border-signal bg-signal px-5 py-3.5 text-[14.5px] font-semibold text-navy-deep disabled:opacity-60">
-              <span class="senal !bg-navy-deep" aria-hidden="true"></span>
+            <button type="submit" class="enviar inline-flex items-center gap-2.5 border border-navy bg-navy px-5 py-3.5 text-[14.5px] font-medium text-white hover:bg-navy-deep disabled:opacity-60">
+              <span class="senal" aria-hidden="true"></span>
               <span data-etiqueta>Enviar solicitud</span>
             </button>
           </div>
         </form>
 
         <!-- Acuse: reemplaza el formulario, no lleva a otra página. -->
-        <div class="acuse border border-signal p-6 lg:p-8" role="status" hidden>
-          <p class="meta text-[10px] text-signal">Solicitud enviada</p>
-          <p class="mt-3 max-w-[46ch] text-[17px] text-white" data-acuse></p>
-          <dl class="mt-6 border-t border-rule-dark" data-resumen></dl>
+        <div class="acuse border border-navy bg-white p-6 lg:p-8" role="status" hidden>
+          <p class="meta flex items-center gap-2.5 text-[10px] text-steel">
+            <span aria-hidden="true" class="senal"></span>Solicitud enviada
+          </p>
+          <p class="mt-3 max-w-[46ch] text-[17px]" data-acuse></p>
+          <dl class="mt-6 border-t border-rule" data-resumen></dl>
         </div>
       </div>
     </div>
@@ -126,26 +122,25 @@ const form = FORMULARIOS[tipo];
 </section>
 
 <style>
-  .campo { background: var(--color-navy); padding: 14px 16px 15px; display: block }
+  .campo { background: var(--color-white); padding: 14px 16px 15px; display: block }
   .campo--full { grid-column: 1 / -1 }
   .campo:focus-within { box-shadow: inset 3px 0 0 var(--color-signal) }
-  .campo:has([aria-invalid='true']) { box-shadow: inset 3px 0 0 #ff8f7a }
+  .campo:has([aria-invalid='true']) { box-shadow: inset 3px 0 0 #b3261e }
 
   .k {
     font-family: var(--font-mono); font-size: 9.5px; letter-spacing: .14em;
-    text-transform: uppercase; color: rgba(255,255,255,.72); display: block;
+    text-transform: uppercase; color: var(--color-steel); display: block;
   }
   .req { display: inline-block; width: 5px; height: 5px; background: var(--color-signal); margin-left: 5px }
 
   input:not(.casilla), textarea, select {
     width: 100%; margin-top: 8px; border: 0; padding: 0; background: transparent;
-    font-family: var(--font-body); font-size: 16px; color: #fff; line-height: 1.45;
+    font-family: var(--font-body); font-size: 16px; color: var(--color-navy); line-height: 1.45;
   }
   select { appearance: none; cursor: pointer }
-  select option { color: var(--color-navy) }
-  input[readonly] { color: rgba(255,255,255,.78) }
+  input[readonly] { color: var(--color-steel) }
   textarea { resize: vertical }
-  input::placeholder, textarea::placeholder { color: rgba(255,255,255,.5) }
+  input::placeholder, textarea::placeholder { color: #9fb0c4 }
   input:not(.casilla):focus, textarea:focus, select:focus { outline: 0 }
 
   .casilla {
@@ -153,8 +148,8 @@ const form = FORMULARIOS[tipo];
     accent-color: var(--color-signal); cursor: pointer;
   }
 
-  .ayuda { margin-top: 6px; font-size: 12.5px; color: rgba(255,255,255,.55) }
-  .error { margin-top: 6px; font-size: 13px; color: #ff8f7a }
+  .ayuda { margin-top: 6px; font-size: 12.5px; color: var(--color-steel) }
+  .error { margin-top: 6px; font-size: 13px; color: #b3261e }
   .error--global { margin-top: 20px; font-size: 14.5px }
 
   /* Fuera de pantalla, no display:none: algunos robots ignoran lo oculto. */
@@ -262,9 +257,9 @@ const form = FORMULARIOS[tipo];
           acuse.querySelector('[data-acuse]')!.textContent = def.acuse;
           acuse.querySelector('[data-resumen]')!.innerHTML = def.campos
             .filter((c) => d[c.nombre]?.trim())
-            .map((c) => `<div class="flex justify-between gap-4 border-b border-rule-dark py-2.5">` +
-              `<dt class="meta text-[10px] text-white/70">${c.rotulo}</dt>` +
-              `<dd class="max-w-[26ch] text-right text-[14.5px] text-white">${d[c.nombre]!.trim().replace(/</g, '&lt;')}</dd></div>`)
+            .map((c) => `<div class="flex justify-between gap-4 border-b border-rule py-2.5">` +
+              `<dt class="meta text-[10px] text-steel">${c.rotulo}</dt>` +
+              `<dd class="max-w-[26ch] text-right text-[14.5px]">${d[c.nombre]!.trim().replace(/</g, '&lt;')}</dd></div>`)
             .join('');
           form.hidden = true;
           acuse.hidden = false;

@@ -46,8 +46,8 @@ const rutaActual = normalizar(Astro.url.pathname);
       <h2 id="datos" class="mt-4 max-w-[24ch] text-[clamp(24px,3vw,34px)]">Dónde estamos y por dónde llamar.</h2>
 
       <dl class="mt-9 grid gap-px border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-3">
-        {canalesContacto.map((c) => (
-          <div class="bg-white p-6">
+        {canalesContacto.map((c, i) => (
+          <div class:list={['bg-white p-6', i === canalesContacto.length - 1 && 'sm:col-span-2']}>
             <dt class="meta text-[10px] text-steel">{c.rotulo}</dt>
             <dd class="mt-2 text-[16.5px]">
               {c.href

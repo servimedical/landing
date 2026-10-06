@@ -12,7 +12,7 @@
 
 export type Categoria =
   | 'Equipos' | 'Consumibles' | 'Accesorios'
-  | 'Repuestos' | 'Mobiliario' | 'Trazabilidad';
+  | 'Repuestos' | 'Mobiliario';
 
 export type ItemEstacion = {
   nombre: string;
@@ -24,14 +24,12 @@ export type Estacion = {
   numero: 1 | 2 | 3 | 4 | 5 | 6;
   slug: string;
   nombre: string;
-  /** Máx. 11 caracteres: va dentro de la rueda. */
+  /** Rótulo corto, para listados compactos. */
   rotulo: string;
   descripcion: string;
   /** Qué falla ahí cuando falla. Es el gancho comercial de la estación. */
   dolor: string;
   items: ItemEstacion[];
-  /** Qué registra el sistema en este punto. */
-  trazabilidad: string;
 };
 
 export const estaciones: Estacion[] = [
@@ -50,7 +48,6 @@ export const estaciones: Estacion[] = [
       { nombre: 'Tratamiento y filtración de agua',  categoria: 'Accesorios', url: '/productos/accesorios/tratamiento-de-agua' },
       { nombre: 'Carros cerrados de material sucio', categoria: 'Mobiliario', url: '/productos/mobiliario/carros-de-transporte' },
     ],
-    trazabilidad: 'Se registra la recepción del set, el turno y el responsable del lavado.',
   },
   {
     numero: 2,
@@ -65,9 +62,8 @@ export const estaciones: Estacion[] = [
       { nombre: 'Selladoras térmicas de rollo mixto', categoria: 'Accesorios',   url: '/productos/accesorios/selladoras' },
       { nombre: 'Papel grado médico y rollo mixto',   categoria: 'Consumibles',  url: '/productos/consumibles/papel-y-empaque' },
       { nombre: 'Mesas de inspección y empaque',      categoria: 'Mobiliario',   url: '/productos/mobiliario/mesas-y-mesones' },
-      { nombre: 'Etiquetas e impresora de central',   categoria: 'Trazabilidad', url: '/trazabilidad' },
+      { nombre: 'Cintas indicadoras de proceso',      categoria: 'Consumibles', url: '/productos/consumibles/papel-y-empaque' },
     ],
-    trazabilidad: 'Aquí nace el rótulo: el paquete adquiere identidad, operario y fecha de vencimiento.',
   },
   {
     numero: 3,
@@ -84,7 +80,6 @@ export const estaciones: Estacion[] = [
       { nombre: 'Carros de carga y descarga',            categoria: 'Mobiliario', url: '/productos/mobiliario/carros-de-transporte' },
       { nombre: 'Sellos, válvulas y partes de cámara',   categoria: 'Repuestos',  url: '/productos/repuestos' },
     ],
-    trazabilidad: 'Se lee el rótulo al conformar la carga: el paquete queda atado a un ciclo, un equipo y un turno.',
   },
   {
     numero: 4,
@@ -99,9 +94,8 @@ export const estaciones: Estacion[] = [
       { nombre: 'Indicadores químicos y Bowie-Dick',    categoria: 'Consumibles',  url: '/productos/consumibles/indicadores-quimicos' },
       { nombre: 'Indicadores biológicos e incubación',  categoria: 'Consumibles',  url: '/productos/consumibles/indicadores-biologicos' },
       { nombre: 'Registro impreso de ciclo',            categoria: 'Equipos',      url: '/productos/esterilizacion/autoclaves-de-vapor' },
-      { nombre: 'Liberación documentada de carga',      categoria: 'Trazabilidad', url: '/trazabilidad/software' },
+      { nombre: 'Paquetes de prueba Bowie-Dick',        categoria: 'Consumibles', url: '/productos/consumibles/indicadores-quimicos' },
     ],
-    trazabilidad: 'Sin parámetros conformes el sistema no deja liberar, y guarda quién lo hizo.',
   },
   {
     numero: 5,
@@ -116,9 +110,8 @@ export const estaciones: Estacion[] = [
       { nombre: 'Estantería y armarios en acero AISI 304', categoria: 'Mobiliario',   url: '/productos/mobiliario/almacenamiento-esteril' },
       { nombre: 'Bolsas y barrera estéril de reserva',     categoria: 'Consumibles',  url: '/productos/consumibles/papel-y-empaque' },
       { nombre: 'Aire comprimido y servicios de planta',   categoria: 'Accesorios',   url: '/productos/accesorios/compresores' },
-      { nombre: 'Control de vencimientos y rotación',      categoria: 'Trazabilidad', url: '/trazabilidad/software' },
+      { nombre: 'Armarios cerrados de baja rotación',      categoria: 'Mobiliario',  url: '/productos/mobiliario/almacenamiento-esteril' },
     ],
-    trazabilidad: 'Ubicación, rotación y alerta de vencimiento salen del mismo rótulo.',
   },
   {
     numero: 6,
@@ -131,23 +124,20 @@ export const estaciones: Estacion[] = [
       'Sin vínculo entre paquete y procedimiento, un biológico positivo obliga a recoger todo el inventario.',
     items: [
       { nombre: 'Carros cerrados de distribución',   categoria: 'Mobiliario',   url: '/productos/mobiliario/carros-de-transporte' },
-      { nombre: 'Vinculación paquete–procedimiento', categoria: 'Trazabilidad', url: '/trazabilidad' },
-      { nombre: 'Reporte de recall dirigido',        categoria: 'Trazabilidad', url: '/trazabilidad/software' },
+      { nombre: 'Mesas de entrega y recepción',      categoria: 'Mobiliario', url: '/productos/mobiliario/mesas-y-mesones' },
+      { nombre: 'Barrera estéril de reserva',        categoria: 'Consumibles', url: '/productos/consumibles/papel-y-empaque' },
       { nombre: 'Repuestos y partes de desgaste',    categoria: 'Repuestos',    url: '/productos/repuestos' },
     ],
-    trazabilidad: 'Con una lectura, el paquete queda unido al procedimiento y al paciente. El ciclo cierra.',
   },
 ];
 
-/** Tesis del estado de reposo: se cuenta antes de que el visitante toque nada. */
-export type Reposo = { titulo: string; descripcion: string; nucleo: string };
+/** Tesis del bloque: encabeza el proceso en la home. */
+export type Reposo = { titulo: string; descripcion: string };
 
 export const reposo: Reposo = {
   titulo: 'Seis estaciones, un proveedor',
   descripcion:
     'El material sucio entra por un extremo y sale estéril por el otro. El flujo es unidireccional.',
-  nucleo:
-    'La trazabilidad no es una séptima estación: es el hilo que las cose todas.',
 };
 
 /** Busca por número (1–6) o por slug. Devuelve null si no existe. */

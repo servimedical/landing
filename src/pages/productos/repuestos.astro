@@ -4,7 +4,6 @@
    el equipo se detiene. */
 import Base from '../../layouts/Base.astro';
 import Migas from '../../components/Migas.astro';
-import MiniRueda from '../../components/ciclo/MiniRueda.astro';
 import Formulario from '../../components/formulario/Formulario.astro';
 import { repuestos } from '../../content/productos/index.ts';
 import { normalizar } from '../../content/navegacion.ts';
@@ -80,19 +79,16 @@ const jsonld = {
     </div>
   </section>
 
-  <!-- Mini-rueda transversal -->
   <section class="border-t border-rule" aria-labelledby="donde">
     <div class="contenedor py-12 lg:py-16">
-      <p class="meta text-steel">En qué estación del ciclo vive</p>
-      <h2 id="donde" class="mt-4 max-w-[26ch] text-[clamp(24px,3vw,34px)]">
-        En todas, que es el problema.
-      </h2>
-      <div class="mt-9 max-w-[560px]">
-        <MiniRueda
-          transversal
-          nota="Una parte de desgaste puede detener el lavado, el sellado, el ciclo o la impresión del registro. Por eso los repuestos no se piden por estación, sino por equipo."
-        />
-      </div>
+      <h2 id="donde" class="max-w-[30ch] text-[clamp(22px,2.6vw,30px)]">Un repuesto no vive en una sola estación</h2>
+      <p class="mt-4 max-w-[56ch] text-[16px] text-steel">
+        Una parte de desgaste puede detener el lavado, el sellado, el ciclo o la impresión del
+        registro. Por eso los repuestos se piden por equipo y no por estación.
+      </p>
+      <a href="/#proceso" class="meta mt-6 inline-block border-b border-rule pb-1 text-[10px] text-steel hover:text-navy">
+        Ver el proceso completo
+      </a>
     </div>
   </section>
 

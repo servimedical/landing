@@ -3,14 +3,11 @@
   "compilerOptions": {
     "strictNullChecks": true,
     "noUncheckedIndexedAccess": true,
-    "allowJs": true,
-    "jsx": "react-jsx",
-    "jsxImportSource": "preact"
+    "allowJs": true
   },
   "include": [
     ".astro/types.d.ts",
     "**/*.ts",
-    "**/*.tsx",
     "**/*.astro"
   ],
   "exclude": [

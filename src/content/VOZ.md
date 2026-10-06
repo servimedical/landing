@@ -81,7 +81,7 @@ Si algo no cabe, es que son dos ideas.
 
 **Se usa** — prevacío fraccionado · barrera estéril · liberación de carga ·
 indicador químico interno · material termosensible y termorresistente · flujo
-unidireccional · conformación de carga · reproceso · recall · rotación por
+unidireccional · conformación de carga · reproceso · rotación por
 vencimiento · acometidas · calificación de instalación y de operación.
 
 **No se usa** — soluciones integrales · aliado estratégico · excelencia ·

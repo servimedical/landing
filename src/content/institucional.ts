@@ -24,12 +24,6 @@ export const home = {
       url: '/servicios',
     },
   ],
-  trazabilidad: {
-    titulo: 'Trazabilidad de paquete, del empaque al paciente',
-    texto: 'Ante una carga no conforme, la diferencia entre responder en minutos y recoger todo el inventario es si el paquete tiene historia.',
-    url: '/trazabilidad',
-    boton: 'Ver cómo funciona',
-  },
   cierre: {
     titulo: 'Cuéntenos qué necesita esterilizar.',
     texto: 'Con el material que procesa y el volumen por turno proponemos el equipo y enviamos cotización formal.',
@@ -179,118 +173,6 @@ export const servicios = {
     rutas: [
       { titulo: 'Tengo un equipo detenido', texto: 'Marca, modelo y falla. Si está parado, llame también al fijo.', ancla: '#servicio-tecnico' },
       { titulo: 'Tengo un proyecto en planos', texto: 'Planos y número de salas. Empezamos por una visita técnica.', ancla: '#cotizacion' },
-    ],
-  },
-} as const;
-
-/* ------------------------------------------------------------ TRAZABILIDAD */
-
-export const trazabilidad = {
-  titulo: 'Cada paquete cuenta dónde estuvo.',
-  bajada:
-    'Ante una carga no conforme, el comité de infecciones pregunta una sola cosa: qué paquetes salieron de ahí y a qué pacientes llegaron. Con trazabilidad se responde en minutos.',
-
-  resuelve: {
-    titulo: 'Qué resuelve.',
-    items: [
-      {
-        titulo: 'Recall dirigido',
-        texto: 'El listado de paquetes afectados y su destino sale del sistema, no de la libreta del turno.',
-      },
-      {
-        titulo: 'Liberación con criterio',
-        texto: 'Sin parámetros conformes no hay despacho. Queda quién liberó y con qué evidencia.',
-      },
-      {
-        titulo: 'Vencimientos bajo control',
-        texto: 'Alerta por rotación y por fecha. Se deja de reprocesar material vigente y de despachar vencido.',
-      },
-      {
-        titulo: 'Productividad medible',
-        texto: 'Cargas por equipo y turno, tiempos de ciclo, reprocesos y consumo por paquete.',
-      },
-    ],
-  },
-
-  sistema: {
-    titulo: 'El sistema.',
-    componentes: [
-      { titulo: 'Etiquetas y rótulos', texto: 'Resisten el ciclo sin perder legibilidad, con doble código para lectura automática y humana.' },
-      { titulo: 'Impresora de central', texto: 'Un paquete, un rótulo, en el punto de empaque. Sin transcripción a mano.' },
-      { titulo: 'Software y lectores', texto: 'Registro por estación, liberación de carga, control de vencimientos y reportes.', url: '/trazabilidad/software' },
-    ],
-  },
-
-  implementacion: {
-    titulo: 'Cómo se implementa.',
-    etapas: [
-      { titulo: 'Levantamiento del flujo', texto: 'Se recorre la central como opera hoy, no como debería operar.' },
-      { titulo: 'Configuración', texto: 'Sets, equipos, operarios y vencimientos con los datos reales de la institución.' },
-      { titulo: 'Entrenamiento del turno', texto: 'A quien lee el rótulo todos los días, no solo a la coordinación.' },
-      { titulo: 'Marcha asistida', texto: 'Los primeros ciclos, cuando aparecen los casos que el levantamiento no previó.' },
-    ],
-  },
-
-  cta: {
-    titulo: 'Pida una demostración con sus propios sets.',
-    texto: 'Presencial o remota, con el listado de sets de su central y no con datos de ejemplo.',
-  },
-} as const;
-
-/* --------------------------------------------------- TRAZABILIDAD/SOFTWARE */
-
-export const software = {
-  titulo: 'Software de trazabilidad',
-  bajada:
-    'Para quien evalúa: coordinación de la central junto a sistemas o biomédica. Qué tiene que ser capaz de hacer el sistema, estación por estación.',
-
-  pendiente:
-    '{{ POR CONFIRMAR: marca y nombre comercial del sistema, modalidad on-premise o nube, requisitos de servidor, navegador y red, y política de respaldo }}',
-
-  nota:
-    'Aquí se describen capacidades funcionales, no especificaciones de producto.',
-
-  modulos: {
-    titulo: 'Módulos funcionales.',
-    items: [
-      { titulo: 'Registro de carga', texto: 'Qué paquetes entran, en qué equipo, en qué ciclo y con qué operario.' },
-      { titulo: 'Liberación', texto: 'Sin parámetros conformes no hay liberación. Queda quién liberó y con qué evidencia.' },
-      { titulo: 'Almacenamiento y despacho', texto: 'Ubicación, rotación por vencimiento y registro de la entrega.' },
-      { titulo: 'Recall', texto: 'Desde una carga o un equipo, los paquetes afectados con su destino.' },
-      { titulo: 'Reportes de gestión', texto: 'Cargas por equipo y turno, reprocesos, tiempos de ciclo y consumo por paquete.' },
-    ],
-  },
-
-  perfiles: {
-    titulo: 'Perfiles y permisos.',
-    texto: 'Por rol y no por persona: un cambio de turno no obliga a reconfigurar el sistema.',
-    items: [
-      'Operario de empaque: conforma paquetes e imprime rótulos',
-      'Operario de esterilización: conforma cargas y cierra ciclos',
-      'Responsable de liberación: libera o retiene la carga con su evidencia',
-      'Coordinación de la central: configura sets, vencimientos y consulta reportes',
-      'Auditoría: consulta sin modificar',
-    ],
-  },
-
-  evidencia: {
-    titulo: 'Trazabilidad de la evidencia.',
-    puntos: [
-      'Cada evento queda con fecha, hora, equipo y usuario',
-      'La liberación no se edita: se corrige con un asiento nuevo',
-      'La consulta de un paquete reconstruye su recorrido completo',
-      'Los reportes se exportan para el expediente de auditoría',
-    ],
-  },
-
-  requisitos: {
-    titulo: 'Requisitos e integración.',
-    texto: 'La instalación se define con el área de sistemas de la institución. Independiente de la modalidad:',
-    puntos: [
-      'Puestos de lectura en las cinco estaciones que registran',
-      'Impresora de rótulos en el punto de empaque',
-      'Operación continua si la red falla, con sincronización posterior',
-      'Respaldo y procedimiento de restauración documentado',
     ],
   },
 } as const;

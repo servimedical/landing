@@ -80,16 +80,6 @@ export const navegacion: NodoNav[] = [
     ],
   },
 
-  {
-    titulo: 'Trazabilidad',
-    url: '/trazabilidad',
-    enNavbar: true,
-    enFooter: 'servicios',
-    hijos: [
-      { titulo: 'Software de trazabilidad', url: '/trazabilidad/software' },
-    ],
-  },
-
   { titulo: 'Servicios', url: '/servicios', enNavbar: true, enFooter: 'servicios' },
 
   { titulo: 'Contacto', url: '/contacto', enNavbar: true, enFooter: false },

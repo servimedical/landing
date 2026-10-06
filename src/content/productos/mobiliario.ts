@@ -51,9 +51,9 @@ export const mobiliario: Producto[] = [
         porQue: 'Si el último tramo va descubierto, se pierde en la puerta lo que se cuidó durante días.',
       },
       {
-        titulo: 'Software de trazabilidad',
-        url: '/trazabilidad/software',
-        porQue: 'La rotación por vencimiento no se sostiene a ojo. Sale del mismo rótulo del paquete.',
+        titulo: 'Mesas y mesones',
+        url: '/productos/mobiliario/mesas-y-mesones',
+        porQue: 'El paquete se conforma en la mesa y se guarda en la estantería. Se dimensionan juntas.',
       },
     ],
 

@@ -5,12 +5,12 @@ import { sitio } from '../content/sitio.ts';
 
 /* Salidas de emergencia: productos, trazabilidad y contacto. */
 const salidas = navegacion.filter((n) =>
-  ['/productos', '/trazabilidad', '/contacto'].includes(n.url)
+  ['/productos', '/servicios', '/contacto'].includes(n.url)
 );
 ---
 <Base
   titulo={`Página no encontrada — ${sitio.nombre}`}
-  descripcion="La página que busca no existe o cambió de dirección. Vuelva al catálogo de productos, a trazabilidad o al contacto de Servimedical Group."
+  descripcion="La página que busca no existe o cambió de dirección. Vuelva al catálogo de productos, a servicios o al contacto de Servimedical Group."
 >
   <div class="contenedor py-16 lg:py-24">
     <p class="meta text-steel">Error 404</p>
