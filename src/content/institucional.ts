@@ -35,12 +35,9 @@ export const home = {
 /* --------------------------------------------------------------- SERVICIOS */
 
 export const servicios = {
-  titulo: 'Antes de comprar el equipo y mucho después.',
-  bajada:
-    'El equipo es una parte del problema. El resto es cómo está diseñada la central y quién responde cuando un ciclo falla un martes a las 6 de la mañana.',
-
   tecnico: {
-    idx: '2.1',
+    idx: 'servicio-tecnico',
+    etiqueta: 'Servicio técnico',
     titulo: 'Servicio técnico especializado',
     intro:
       'Técnicos propios entrenados por fábrica, con documentación de servicio y repuesto original. Atendemos marcas representadas y equipos de terceros.',
@@ -71,7 +68,8 @@ export const servicios = {
   },
 
   asesoria: {
-    idx: '2.2',
+    idx: 'asesoria',
+    etiqueta: 'Asesoría y diseño',
     titulo: 'Asesoría y diseño de centrales de esterilización',
     intro: 'Estudio técnico previo a la obra o a la remodelación.',
     angulo: 'Corregir un flujo en planos cuesta una reunión. Corregirlo construido cuesta la obra otra vez.',
@@ -101,14 +99,6 @@ export const servicios = {
     alcance: 'Aplica a obra nueva, ampliación y remodelación.',
   },
 
-  cta: {
-    titulo: '¿Equipo detenido o proyecto en planos?',
-    texto: 'Dos urgencias distintas, dos conversaciones distintas.',
-    rutas: [
-      { titulo: 'Tengo un equipo detenido', texto: 'Marca, modelo y falla. Si está parado, llame también al fijo.', ancla: '#cotizar' },
-      { titulo: 'Tengo un proyecto en planos', texto: 'Planos y número de salas. Empezamos por una visita técnica.', ancla: '#cotizacion' },
-    ],
-  },
 } as const;
 
 /* ---------------------------------------------------------------- CONTACTO */

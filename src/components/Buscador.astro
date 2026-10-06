@@ -19,7 +19,7 @@ const { id = 'q' } = Astro.props;
     <input
       id={id} type="search" autocomplete="off" placeholder="Buscar"
       class="w-full min-w-0 border-0 bg-transparent p-0 text-[14px] text-navy outline-none placeholder:text-steel"
-      aria-describedby={`${id}-ayuda`} aria-expanded="false" aria-controls={`${id}-resultados`}
+      aria-describedby={`${id}-ayuda`}
     />
   </form>
   <p id={`${id}-ayuda`} class="sr-only">Los resultados aparecen debajo a medida que escribe.</p>
@@ -60,7 +60,6 @@ const { id = 'q' } = Astro.props;
 
       const cerrar = () => {
         panel.hidden = true;
-        input.setAttribute('aria-expanded', 'false');
       };
 
       const buscar = () => {
@@ -96,7 +95,6 @@ const { id = 'q' } = Astro.props;
         );
 
         panel.hidden = false;
-        input.setAttribute('aria-expanded', 'true');
       };
 
       input.addEventListener('input', buscar);

@@ -38,7 +38,6 @@ export const esterilizacion: Producto[] = [
     cierreDimensionamiento:
       'Con estas respuestas proponemos el equipo. Sin ellas, cualquier cotización es un número suelto.',
 
-    estacionPrimaria: 3,
 
     necesita: [
       {
@@ -123,7 +122,6 @@ export const esterilizacion: Producto[] = [
     cierreDimensionamiento:
       'Con estas respuestas proponemos el equipo. Sin ellas, cualquier cotización es un número suelto.',
 
-    estacionPrimaria: 3,
 
     necesita: [
       {
@@ -180,7 +178,6 @@ export const esterilizacion: Producto[] = [
     cierreDimensionamiento:
       'Con estas respuestas proponemos el equipo. Sin ellas, cualquier cotización es un número suelto.',
 
-    estacionPrimaria: 1,
 
     necesita: [
       {

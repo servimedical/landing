@@ -183,7 +183,8 @@ const marcado = (url: string) => cadena.includes(url);
     });
 
     // Al pasar a ancho de escritorio el panel se cierra y se libera el scroll.
-    window.matchMedia('(min-width: 1000px)').addEventListener('change', (e) => {
+    // El umbral es el mismo `--breakpoint-lg` de global.css.
+    window.matchMedia('(min-width: 62.5rem)').addEventListener('change', (e) => {
       if (e.matches && abierto()) abrir(false);
     });
   }

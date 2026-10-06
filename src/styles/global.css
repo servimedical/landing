@@ -35,8 +35,19 @@
 
   /* El menú móvil manda por debajo de 1000 px, según el mapa de navegación.
      Se redefine `lg` en lugar de añadir un corte nuevo para que todo el
-     sitio use un único umbral de navegación. */
-  --breakpoint-lg: 1000px;
+     sitio use un único umbral de navegación.
+
+     Se vuelven a declarar TODOS los cortes, en orden ascendente y en la
+     misma unidad: Tailwind ordena los @media por valor, y al mezclar px con
+     rem dejaba el bloque de `lg` antes que el de `sm`, con lo que `sm:` le
+     ganaba a `lg:` en pantalla ancha —ninguna rejilla de tres columnas
+     llegaba a activarse—. El umbral de navegación en JS usa el mismo valor
+     (ver MenuMovil.astro). */
+  --breakpoint-sm:  40rem;
+  --breakpoint-md:  48rem;
+  --breakpoint-lg:  62.5rem; /* 1000 px · umbral de navegación */
+  --breakpoint-xl:  80rem;
+  --breakpoint-2xl: 96rem;
 
   /* Sin esquinas redondeadas y sin sombras en todo el sitio. */
   --radius-none: 0;
@@ -124,6 +135,15 @@
 }
 
 /** Campo claro: la sección alterna del ritmo vertical. */
+/* Rejilla de tarjetas con filete entre celdas. El borde lo lleva cada
+   tarjeta —derecho e inferior—, no el contenedor: así una última fila
+   incompleta no deja celdas grises colgando. */
+@utility rejilla {
+  display: grid;
+  border-top: 1px solid var(--color-rule);
+  border-left: 1px solid var(--color-rule);
+}
+
 @utility field-paper {
   background: var(--color-paper);
 }

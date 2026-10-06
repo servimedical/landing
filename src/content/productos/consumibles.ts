@@ -24,7 +24,6 @@ export const consumibles: Producto[] = [
     cierreDimensionamiento:
       'Con estas respuestas programamos el abastecimiento contra el consumo real. Sin ellas, la central termina comprando de urgencia al precio que aparezca.',
 
-    estacionPrimaria: 2,
 
     necesita: [
       {
@@ -81,7 +80,6 @@ export const consumibles: Producto[] = [
     cierreDimensionamiento:
       'Con estas respuestas armamos el esquema de monitoreo y su consumo mensual. Sin ellas, se compra indicador de más en una línea y falta en otra.',
 
-    estacionPrimaria: 4,
 
     necesita: [
       {
@@ -137,7 +135,6 @@ export const consumibles: Producto[] = [
     cierreDimensionamiento:
       'Con estas respuestas definimos la frecuencia y el consumo. Sin ellas, el control biológico termina siendo el insumo que se acaba justo el día que hay implantes.',
 
-    estacionPrimaria: 4,
 
     necesita: [
       {

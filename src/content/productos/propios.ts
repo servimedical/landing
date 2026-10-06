@@ -29,14 +29,13 @@ export const propios: Producto[] = [
 
     dimensionamiento: [
       'Marca, modelo y número de serie del equipo',
-      'Qué hace el equipo y en qué fase del ciclo se detiene',
+      'Qué hace el equipo y en qué momento se detiene',
       'Si el equipo está parado o la falla es intermitente',
       'Si se busca una reposición puntual o un plan programado',
     ],
     cierreDimensionamiento:
       'Con la placa del equipo identificamos la parte sin ir a la sede. Sin ella, el pedido se vuelve una adivinanza cara.',
 
-    estacionPrimaria: 3,
 
     necesita: [
       {

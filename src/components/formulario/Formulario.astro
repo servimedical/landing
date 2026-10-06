@@ -6,35 +6,71 @@
    La casilla de autorización no viene marcada y sin ella no se envía:
    Ley 1581 de 2012 y Decreto 1377 de 2013. */
 import { FORMULARIO, TEXTO_AUTORIZACION, URL_POLITICA, CAMPO_TRAMPA } from '../../lib/formularios.ts';
-import { contacto } from '../../content/sitio.ts';
+import { contacto, canalesContacto, sitio } from '../../content/sitio.ts';
 
 interface Props {
   /** Valor del campo fijo «Sobre qué». */
   fijo?: string;
   id?: string;
   titulo?: string;
+  /** 1 cuando el formulario es el contenido de la página (/contacto). */
+  nivel?: 1 | 2;
+  /** Muestra todos los canales con su rótulo, no sólo los tres de atajo. */
+  detallado?: boolean;
 }
-const { fijo, id = 'cotizar', titulo } = Astro.props;
+const { fijo, id = 'cotizar', titulo, nivel = 2, detallado = false } = Astro.props;
 const form = FORMULARIO;
+const Encabezado = nivel === 1 ? 'h1' : 'h2';
+const horarioVisible = !sitio.horario.startsWith('{{');
 ---
 <section id={id} class="field-paper border-t border-rule" aria-labelledby={`${id}-t`}>
   <div class="contenedor py-14 lg:py-20">
     <div class="grid gap-[clamp(28px,5vw,64px)] lg:grid-cols-[1fr_1.2fr]">
       <div>
-        <h2 id={`${id}-t`} class="text-[clamp(22px,2.6vw,32px)]">{titulo ?? form.titulo}</h2>
+        <Encabezado id={`${id}-t`} class:list={[nivel === 1 ? 'text-[clamp(28px,3.4vw,42px)]' : 'text-[clamp(22px,2.6vw,32px)]']}>
+          {titulo ?? form.titulo}
+        </Encabezado>
         <p class="mt-4 max-w-[44ch] text-steel">{form.intro}</p>
 
-        <ul class="mt-8 border-t border-rule">
-          <li class="border-b border-rule py-3 text-[14.5px] text-steel">
-            <a href={contacto.whatsapp.href} rel="noopener" data-wa class="hover:text-navy">WhatsApp {contacto.whatsapp.valor}</a>
-          </li>
-          <li class="border-b border-rule py-3 text-[14.5px] text-steel">
-            <a href={contacto.fijo.href} class="hover:text-navy">Fijo {contacto.fijo.valor}</a>
-          </li>
-          <li class="border-b border-rule py-3 text-[14.5px] text-steel">
-            <a href={contacto.comercial.href} class="hover:text-navy">{contacto.comercial.valor}</a>
-          </li>
-        </ul>
+        {detallado ? (
+          <dl class="mt-8 border-t border-rule">
+            {canalesContacto.map((c) => (
+              <div class="flex flex-col gap-y-1 border-b border-rule py-3.5 sm:flex-row sm:items-baseline sm:gap-x-5 sm:gap-y-0">
+                <dt class="meta w-[76px] shrink-0 text-[10px] text-steel">{c.rotulo}</dt>
+                <dd class="text-[15.5px]">
+                  {c.href
+                    ? <a href={c.href} rel={c.href.startsWith('http') ? 'noopener' : undefined} class="hover:text-steel">{c.valor}</a>
+                    : c.valor}
+                </dd>
+              </div>
+            ))}
+            {horarioVisible && (
+              <div class="flex flex-col gap-y-1 border-b border-rule py-3.5 sm:flex-row sm:items-baseline sm:gap-x-5 sm:gap-y-0">
+                <dt class="meta w-[76px] shrink-0 text-[10px] text-steel">Horario</dt>
+                <dd class="text-[15.5px]">{sitio.horario}</dd>
+              </div>
+            )}
+            <div class="flex flex-col gap-y-1 border-b border-rule py-3.5 sm:flex-row sm:items-baseline sm:gap-x-5 sm:gap-y-0">
+              <dt class="meta w-[76px] shrink-0 text-[10px] text-steel">Licitaciones</dt>
+              <dd class="max-w-[38ch] text-[15px] text-steel">
+                Envíe el pliego a <a href={contacto.comercial.href} class="text-navy underline decoration-navy/35 underline-offset-[3px] hover:text-steel">{contacto.comercial.valor}</a> y
+                lo revisamos contra lo que podemos cubrir.
+              </dd>
+            </div>
+          </dl>
+        ) : (
+          <ul class="mt-8 border-t border-rule">
+            <li class="border-b border-rule py-3 text-[14.5px] text-steel">
+              <a href={contacto.whatsapp.href} rel="noopener" data-wa class="hover:text-navy">WhatsApp {contacto.whatsapp.valor}</a>
+            </li>
+            <li class="border-b border-rule py-3 text-[14.5px] text-steel">
+              <a href={contacto.fijo.href} class="hover:text-navy">Fijo {contacto.fijo.valor}</a>
+            </li>
+            <li class="border-b border-rule py-3 text-[14.5px] text-steel">
+              <a href={contacto.comercial.href} class="hover:text-navy">{contacto.comercial.valor}</a>
+            </li>
+          </ul>
+        )}
       </div>
 
       <div>
@@ -61,9 +97,10 @@ const form = FORMULARIO;
                   ) : (
                     <input id={idc} name={c.nombre}
                       type={c.tipo === 'correo' ? 'email' : c.tipo === 'telefono' ? 'tel' : 'text'}
-                      value={c.fijo ? fijo ?? '' : undefined}
-                      readonly={c.fijo || undefined}
-                      placeholder={c.marcador} autocomplete={c.autocomplete}
+                      value={c.fijo ? fijo : undefined}
+                      readonly={(c.fijo && !!fijo) || undefined}
+                      placeholder={c.fijo && !fijo ? 'Autoclave, papel grado médico, repuesto…' : c.marcador}
+                      autocomplete={c.autocomplete}
                       aria-describedby={desc} required={c.requerido} />
                   )}
 

@@ -22,7 +22,6 @@ export const accesorios: Producto[] = [
     cierreDimensionamiento:
       'Con estas respuestas proponemos el equipo. Sin ellas, cualquier cotización es un número suelto.',
 
-    estacionPrimaria: 2,
 
     necesita: [
       {
@@ -38,7 +37,7 @@ export const accesorios: Producto[] = [
       {
         titulo: 'Repuestos originales',
         linea: 'repuestos',
-        porQue: 'Resistencia y bandas se desgastan. Una selladora parada frena toda la estación de empaque.',
+        porQue: 'Resistencia y bandas se desgastan. Una selladora parada frena todo el empaque.',
       },
     ],
 
@@ -77,8 +76,6 @@ export const accesorios: Producto[] = [
     cierreDimensionamiento:
       'Con estas respuestas proponemos el equipo. Sin ellas, cualquier cotización es un número suelto.',
 
-    estacionPrimaria: 3,
-    estacionesSecundarias: [5],
 
     necesita: [
       {
@@ -134,8 +131,6 @@ export const accesorios: Producto[] = [
     cierreDimensionamiento:
       'Con el análisis del agua proponemos el tren de tratamiento. Sin él, se instala un sistema que no corresponde al agua real de la institución.',
 
-    estacionPrimaria: 1,
-    estacionesSecundarias: [3],
 
     necesita: [
       {

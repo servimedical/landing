@@ -13,15 +13,15 @@ import Logotipo from '../components/marca/Logotipo.astro';
   <div class="flex min-h-[calc(100svh-var(--spacing-header))] flex-col">
     <div class="contenedor grid flex-1 items-center gap-8 py-6 lg:grid-cols-[1.12fr_.88fr] lg:gap-[clamp(32px,5vw,72px)] lg:py-12">
       <div>
-        <p class="meta text-steel">Central de esterilización · Colombia</p>
+        <p class="meta text-steel">Especialistas en esterilización · Latam</p>
         {/* Única línea del sitio con tuteo. Decisión del cliente; el resto
             mantiene el trato de usted (ver src/content/VOZ.md). */}
         <h1 class="mt-4 max-w-[26ch] text-[clamp(28px,3.4vw,44px)] lg:mt-5">
           Tu aliado en todo el{' '}<span class="block text-steel">proceso de esterilización</span>
         </h1>
         <p class="mt-5 max-w-[48ch] text-[15px] leading-relaxed text-steel lg:mt-6 lg:text-[clamp(16px,1.3vw,18.5px)]">
-          Equipos, consumibles, mobiliario y repuestos para central de esterilización.
-          Importación directa, inventario en Bogotá y servicio técnico propio.
+          Importamos y distribuimos equipos de esterilización y consumibles para
+          Latinoamérica, con servicio técnico 24/7.
         </p>
         <div class="mt-6 flex flex-wrap gap-3 lg:mt-8">
           <a href="/contacto" class="inline-flex items-center gap-2.5 border border-navy bg-navy px-5 py-3.5 text-[14.5px] font-medium text-white hover:bg-navy-deep">
@@ -84,10 +84,10 @@ import Logotipo from '../components/marca/Logotipo.astro';
     </div>
   </section>
 
-  <!-- A quién servimos -->
+  <!-- Nuestros clientes -->
   <div class="border-t border-rule">
     <div class="contenedor flex flex-wrap items-baseline gap-x-8 gap-y-3 py-7">
-      <span class="meta text-[10px] text-steel">A quién servimos</span>
+      <span class="meta text-[10px] text-steel">Nuestros clientes</span>
       <ul class="flex flex-wrap gap-x-6 gap-y-2">
         {home.sectores.map((s) => (<li class="text-[15px] text-steel">{s}</li>))}
       </ul>

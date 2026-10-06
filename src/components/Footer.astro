@@ -8,38 +8,39 @@ const compania = columnaFooter('empresa');
 const anio = new Date().getFullYear();
 ---
 <footer class="bg-navy-deep text-ink-dark">
-  <div class="contenedor pb-8 pt-14">
-    <div class="grid gap-8 border-b border-rule-dark pb-8 sm:grid-cols-2 lg:grid-cols-[1.5fr_1fr_1fr_1.2fr]">
+  <div class="contenedor pb-7 pt-10">
+    <div class="grid gap-x-10 gap-y-9 border-b border-rule-dark pb-8 lg:grid-cols-[1.1fr_1.5fr_1fr]">
+      {/* 1 · identidad y navegación de compañía */}
       <div>
-        <a href={inicio.url} aria-label={`${sitio.nombre} — ir al inicio`} class="text-white">
+        <a href={inicio.url} aria-label={`${sitio.razon} — ir al inicio`} class="text-white">
           <Logo sufijo="GROUP SAS" variante="oscuro" />
         </a>
-        <p class="mt-4 max-w-[34ch] text-[14.5px] leading-relaxed">{sitio.lineaMarca}</p>
+        <p class="mt-3 max-w-[30ch] text-[14px] leading-relaxed">{sitio.lineaMarca}</p>
+        <nav aria-label="Compañía" class="mt-5">
+          <ul class="flex flex-wrap gap-x-5 gap-y-1">
+            {compania.map((n) => (
+              <li><a href={n.url} class="text-[14px] hover:text-white">{n.titulo}</a></li>
+            ))}
+          </ul>
+        </nav>
       </div>
 
+      {/* 2 · las marcas, en dos filas para no estirar el pie */}
       <nav aria-label="Marcas">
-        <h2 class="meta mb-3.5 text-white/70">Marcas</h2>
-        <ul>
+        <h2 class="meta mb-3 text-white/70">Marcas</h2>
+        <ul class="grid grid-cols-2 gap-x-6 sm:grid-cols-3 lg:grid-cols-2">
           {columnaMarcas.map((n) => (
-            <li class="py-1"><a href={n.url} class="text-[14.5px] hover:text-white">{n.titulo}</a></li>
+            <li class="py-[3px]"><a href={n.url} class="text-[14px] hover:text-white">{n.titulo}</a></li>
           ))}
         </ul>
       </nav>
 
-      <nav aria-label="Compañía">
-        <h2 class="meta mb-3.5 text-white/70">Compañía</h2>
-        <ul>
-          {compania.map((n) => (
-            <li class="py-1"><a href={n.url} class="text-[14.5px] hover:text-white">{n.titulo}</a></li>
-          ))}
-        </ul>
-      </nav>
-
+      {/* 3 · contacto */}
       <div>
-        <h2 class="meta mb-3.5 text-white/70">Contacto</h2>
+        <h2 class="meta mb-3 text-white/70">Contacto</h2>
         <ul>
           {canalesContacto.map((c) => (
-            <li class="py-1 text-[14.5px]">
+            <li class="py-[3px] text-[14px]">
               {c.href
                 ? <a href={c.href} rel={c.href.startsWith('http') ? 'noopener' : undefined} class="hover:text-white">{c.valor}</a>
                 : <span>{c.valor}</span>}
@@ -49,7 +50,7 @@ const anio = new Date().getFullYear();
       </div>
     </div>
 
-    <div class="meta flex flex-wrap items-center gap-x-6 gap-y-3 pt-5 text-[10px] text-white/70">
+    <div class="meta flex flex-wrap items-center gap-x-6 gap-y-3 pt-4 text-[10px] text-white/70">
       <span>© {anio} {sitio.razon}</span>
       <a href={politicaDatos.url} class="underline decoration-white/30 underline-offset-4 hover:text-white">
         {politicaDatos.titulo}

@@ -45,9 +45,9 @@ const jsonld = {
       </h2>
 
       {lineas.length > 0 ? (
-        <ul class="mt-8 grid gap-px border border-rule bg-rule sm:grid-cols-2 lg:grid-cols-3">
+        <ul class="rejilla mt-8 sm:grid-cols-2 lg:grid-cols-3">
           {lineas.map((p) => (
-            <li class="bg-white">
+            <li class="border-b border-r border-rule">
               <a href={`/marcas/${m.slug}/${p.slug}`} class="group flex h-full flex-col p-6 transition-colors hover:bg-paper">
                 <span class="font-display text-[clamp(17px,1.9vw,21px)] leading-tight font-bold [font-variation-settings:'wdth'_110]">
                   {p.titulo}

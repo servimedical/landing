@@ -37,7 +37,6 @@ export const mobiliario: Producto[] = [
     cierreDimensionamiento:
       'Con estas respuestas hacemos el levantamiento y proponemos la distribución. Sin ellas, se instala estantería que no cabe o que obliga a apilar.',
 
-    estacionPrimaria: 5,
 
     necesita: [
       {
@@ -77,7 +76,7 @@ export const mobiliario: Producto[] = [
     categoria: 'mobiliario',
     titulo: 'Carros de transporte',
     entradilla:
-      'El carro de sucio y el de estéril nunca son el mismo. En cuanto uno hace los dos recorridos, la barrera que se construyó en seis estaciones deja de significar algo.',
+      'El carro de sucio y el de estéril nunca son el mismo. En cuanto uno hace los dos recorridos, la barrera que separa lo sucio de lo estéril deja de significar algo.',
 
     procesa: [
       'Transporte de material sucio desde salas hacia la central',
@@ -90,7 +89,7 @@ export const mobiliario: Producto[] = [
     alternativa: {
       titulo: 'El ciclo completo',
       url: '/#/ciclo/01',
-      nota: 'El recorrido de sucio empieza en la estación 01 y el de estéril termina en la 06. Son dos flujos que no se cruzan.',
+      nota: 'El recorrido de lo sucio y el de lo estéril son dos flujos que no se cruzan en ningún punto.',
     },
 
     dimensionamiento: [
@@ -102,8 +101,6 @@ export const mobiliario: Producto[] = [
     cierreDimensionamiento:
       'Con estas respuestas proponemos el carro y la cantidad. Sin ellas, se compra un carro que no pasa por una puerta del recorrido.',
 
-    estacionPrimaria: 6,
-    estacionesSecundarias: [1, 3],
 
     necesita: [
       {
@@ -161,8 +158,6 @@ export const mobiliario: Producto[] = [
     cierreDimensionamiento:
       'Con estas respuestas hacemos el levantamiento y proponemos la distribución. Sin ellas, se fabrica una mesa que no corresponde al puesto de trabajo real.',
 
-    estacionPrimaria: 2,
-    estacionesSecundarias: [1],
 
     necesita: [
       {

@@ -29,19 +29,8 @@ export const canalesContacto = [
   contacto.fijo, contacto.whatsapp, contacto.comercial, contacto.general, contacto.sede,
 ];
 
-/** Las seis marcas representadas, para la franja de la home y el pie.
- *  El papel de cada una dentro del proceso vive en institucional.ts. */
-export const marcas = [
-  { nombre: 'Tuttnauer' },
-  { nombre: 'Sanqiang' },
-  { nombre: 'Easyseal' },
-  { nombre: 'Hong Run' },
-  { nombre: 'Anhui' },
-  { nombre: '2i Health Care' },
-] as const;
 
 /** Único CTA persistente del sitio. */
 export const cta = { texto: 'Solicitar cotización', url: '/contacto' } as const;
 
-/** Ancla al concepto rector, dentro de la home. El componente llega en el paso 2. */
 export const anclaCiclo = '/#ciclo';

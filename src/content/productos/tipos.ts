@@ -12,8 +12,6 @@
 
 export type CategoriaProducto = 'esterilizacion' | 'consumibles' | 'accesorios' | 'mobiliario';
 
-export type Estacion = 1 | 2 | 3 | 4 | 5 | 6;
-
 export type Necesidad = {
   titulo: string;
   /** Slug de otra línea del catálogo. La URL la resuelve la marca que la
@@ -30,7 +28,7 @@ export type Producto = {
   slug: string;
   categoria: CategoriaProducto;
   titulo: string;
-  /** Dos frases bajo el h1. Es donde la página nombra el dolor de su estación. */
+  /** Dos frases bajo el h1. Es donde la página nombra el problema que resuelve. */
   entradilla: string;
 
   /** Bloque 1. Qué material entra aquí. */
@@ -46,8 +44,6 @@ export type Producto = {
   cierreDimensionamiento: string;
 
   /** Bloque 3. */
-  estacionPrimaria: Estacion;
-  estacionesSecundarias?: Estacion[];
 
   /** Bloque 4. Sale de la matriz de venta cruzada; no se inventan relaciones. */
   necesita: Necesidad[];

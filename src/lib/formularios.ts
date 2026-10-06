@@ -89,7 +89,7 @@ export const FORMULARIO: Formulario = {
   id: 'solicitud',
   titulo: 'Solicitar cotización o servicio',
   intro:
-    'Un solo formulario para cotizar, pedir un repuesto o reportar un equipo detenido. Rellene lo que sepa.',
+    'Escriba lo que sepa y un especialista le responde. Si el equipo está detenido, llame también al fijo.',
   finalidad: 'Atender su solicitud y mantener la comunicación relacionada con ella.',
   acuse: 'Su solicitud quedó registrada. El equipo comercial responde al correo que indicó.',
   campos: [

@@ -47,7 +47,7 @@ export const marcas: Marca[] = [
     nombre: 'Sanqiang',
     rol: 'Lavado y desinfección térmica',
     intro:
-      'Cubre la primera estación del proceso con una estructura de costo distinta a la marca premium. Es la opción cuando la central necesita automatizar el lavado sin el presupuesto de la línea alta.',
+      'Lavado y desinfección térmica con una estructura de costo distinta a la de la marca premium. Es la opción cuando la central necesita automatizar el lavado sin el presupuesto de la línea alta.',
     lineas: ['termodesinfectoras'],
     porConfirmar:
       '{{ POR CONFIRMAR: qué otras líneas de Sanqiang representa SVMG, y si incluye autoclaves de vapor }}',
@@ -98,7 +98,7 @@ export const marcas: Marca[] = [
     nombre: 'Easymedical',
     rol: 'Sellado de empaque',
     intro:
-      'El sellado es un proceso validable, no un gesto mecánico. Es un equipo pequeño con un peso desproporcionado en el resultado del ciclo.',
+      'El sellado es un proceso validable, no un gesto mecánico. Es un equipo pequeño con un peso desproporcionado en el resultado.',
     lineas: ['selladoras'],
     porConfirmar:
       '{{ POR CONFIRMAR: catálogo completo de Easymedical y si es la misma marca que antes figuraba como Easyseal }}',
