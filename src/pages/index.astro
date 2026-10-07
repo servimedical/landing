@@ -3,7 +3,6 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Hero from '../components/hero/Hero.astro';
 import FranjaMarcas from '../components/marca/FranjaMarcas.astro';
-import CartaCiclo from '../components/hero/CartaCiclo.astro';
 import TarjetaMarca from '../components/marca/TarjetaMarca.astro';
 import { home, servicios } from '../content/institucional.ts';
 
@@ -15,15 +14,17 @@ const marcas = (await getCollection('marcas'))
   titulo="Servimedical Group — Centrales de esterilización en Colombia"
   descripcion="Equipos de esterilización, consumibles, accesorios, repuestos y mobiliario en acero, con servicio técnico propio. Importación directa desde Bogotá, cobertura nacional."
 >
-  <Hero />
-  <FranjaMarcas />
+  {/* Hero y franja ocupan juntos la primera pantalla: la franja queda abajo,
+      en el borde de lo que se ve al entrar. */}
+  <div class="flex min-h-[calc(100svh-var(--spacing-header))] flex-col">
+    <div class="flex flex-1 items-center"><Hero /></div>
+    <FranjaMarcas />
+  </div>
 
   <!-- Marcas que representamos -->
   <section class="border-t border-rule" aria-labelledby="marcas">
     <div class="contenedor py-14 lg:py-20">
-      {/* La franja del hero ya dijo cuáles son; aquí se dice qué vende cada
-          una. Repetir el mismo titular a 200 px de distancia no informa. */}
-      <h2 id="marcas" class="text-[clamp(24px,3vw,34px)]">Qué vende cada marca</h2>
+      <h2 id="marcas" class="text-[clamp(24px,3vw,34px)]">Nuestras marcas</h2>
       <p class="mt-4 max-w-[58ch] text-[17px] text-steel">
         Importación directa de fábrica, con servicio técnico y repuesto original sostenidos en Colombia.
       </p>
@@ -55,18 +56,6 @@ const marcas = (await getCollection('marcas'))
           </li>
         ))}
       </ul>
-    </div>
-  </section>
-
-  <!-- Así se ve un ciclo de vapor -->
-  <section class="border-t border-rule" aria-labelledby="ciclo">
-    <div class="contenedor py-14 lg:py-20">
-      <h2 id="ciclo" class="text-[clamp(24px,3vw,34px)]">Así se ve un ciclo de vapor</h2>
-      <p class="mt-4 max-w-[58ch] text-[17px] text-steel">
-        Prevacío fraccionado para sacar el aire, exposición a 134 °C y secado al vacío. La curva
-        es la misma que imprime el equipo al final de cada carga.
-      </p>
-      <div class="mt-9 max-w-[640px]"><CartaCiclo /></div>
     </div>
   </section>
 

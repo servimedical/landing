@@ -2,6 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import Migas from '../../components/Migas.astro';
 import Formulario from '../../components/formulario/Formulario.astro';
+import CartaCiclo from '../../components/hero/CartaCiclo.astro';
 import TarjetaProducto from '../../components/catalogo/TarjetaProducto.astro';
 import { lineas, rotuloEtapa } from '../../datos/lineas.ts';
 import { productosDeLinea, lineaTienePagina } from '../../datos/productos.ts';
@@ -62,6 +63,11 @@ if (l.faq?.length)
         <p class="mt-7 flex max-w-[58ch] items-start gap-3 text-[16px] font-medium">
           <span aria-hidden="true" class="senal mt-2"></span>{l.empaque}
         </p>
+      )}
+
+      {/* La curva sólo tiene sentido donde se explica el método del vapor. */}
+      {l.slug === 'vapor' && (
+        <div class="mt-10 max-w-[640px]"><CartaCiclo /></div>
       )}
     </div>
   </section>

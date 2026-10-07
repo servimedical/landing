@@ -35,18 +35,18 @@ if (imagen) {
   }
 }
 ---
-<section class="hero" aria-labelledby="hero-h">
+<section class="hero w-full" aria-labelledby="hero-h">
   <div class="contenedor hero-rejilla">
     <div class="hero-texto">
       <p class="meta text-steel">Centrales de esterilización · Colombia</p>
 
       <h1 id="hero-h" class="hero-titular">
-        Del lavado a la <span class="block text-steel">carga liberada.</span>
+        Especialistas en <span class="block text-steel">esterilización</span>
       </h1>
 
       <p class="hero-lead">
-        Importamos y respaldamos los equipos y consumibles de cada etapa de la central,
-        con servicio técnico propio y repuesto en Bogotá.
+        Importamos y comercializamos equipos y consumibles para esterilización,
+        con servicio técnico propio.
       </p>
 
       <div class="hero-acciones">
@@ -106,6 +106,7 @@ if (imagen) {
     display: grid;
     gap: 40px;
     padding-block: 32px 40px;
+    inline-size: 100%;
   }
 
   .hero-titular {
@@ -268,7 +269,7 @@ if (imagen) {
       grid-template-columns: repeat(12, 1fr);
       align-items: center;
       column-gap: clamp(32px, 4vw, 64px);
-      padding-block: 80px 64px;
+      padding-block: 64px 56px;
     }
     .hero-texto { grid-column: 1 / 7; }
     .hero-figura { grid-column: 7 / 13; }
