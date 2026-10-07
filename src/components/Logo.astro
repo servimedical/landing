@@ -1,7 +1,18 @@
 ---
-/* {{ POR CONFIRMAR: logotipo definitivo en SVG }}
-   Mientras tanto, marca tipográfica. Aislado a propósito: cuando llegue el
-   SVG definitivo se reemplaza aquí y no hay que tocar nada más. */
+/* Logotipo de Servimedical Group, en el encabezado y en el pie.
+
+   Si el archivo existe, se usa; si no, cae a la marca tipográfica, que es la
+   que está hoy. Dos archivos porque el pie va sobre navy y un logotipo azul
+   ahí no se lee:
+
+     public/logos/servimedical-group.svg          fondo claro  · encabezado
+     public/logos/servimedical-group-blanco.svg   fondo oscuro · pie
+
+   Se acepta .svg o .png con el mismo nombre. Mientras falte el blanco, el pie
+   sigue con la marca tipográfica, que ya cumple contraste AA. */
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+
 interface Props {
   sufijo?: string;
   /** `oscuro` para fondos navy: sube el contraste del sufijo a AA. */
@@ -9,15 +20,45 @@ interface Props {
   class?: string;
 }
 const { sufijo = 'GROUP', variante = 'claro', class: clase = '' } = Astro.props;
+
+const base = variante === 'oscuro' ? 'servimedical-group-blanco' : 'servimedical-group';
+/* Se resuelve contra `process.cwd()`, que en build y en dev es la raíz del
+   proyecto. No contra `import.meta.url`: en el build el componente vive en
+   dist/.prerender/chunks y la ruta relativa apunta a otra parte. */
+const archivo = ['svg', 'png']
+  .map((ext) => `/logos/${base}.${ext}`)
+  .find((f) => existsSync(join(process.cwd(), 'public', f)));
 ---
-<span class:list={['inline-flex items-baseline gap-[7px]', clase]}>
-  <span class="font-display text-[19px] leading-none [font-variation-settings:'wdth'_118] font-extrabold">
-    SERVIMEDICAL
+{archivo ? (
+  <img
+    src={archivo}
+    alt="Servimedical Group"
+    class:list={['svmg-marca', clase]}
+    width="200" height="26" loading="eager" decoding="async"
+  />
+) : (
+  <span class:list={['inline-flex items-baseline gap-[7px]', clase]}>
+    <span class="font-display text-[19px] leading-none [font-variation-settings:'wdth'_118] font-extrabold">
+      SERVIMEDICAL
+    </span>
+    <span
+      class:list={[
+        'font-mono text-[10px] leading-none tracking-[.22em]',
+        variante === 'oscuro' ? 'text-white/70' : 'text-steel',
+      ]}
+    >{sufijo}</span>
   </span>
-  <span
-    class:list={[
-      'font-mono text-[10px] leading-none tracking-[.22em]',
-      variante === 'oscuro' ? 'text-white/70' : 'text-steel',
-    ]}
-  >{sufijo}</span>
-</span>
+)}
+
+<style>
+  /* Alto fijo y ancho al contenido: el logotipo manda el ancho, no al revés,
+     para que no se deforme ni empuje la barra. */
+  .svmg-marca {
+    display: block;
+    block-size: 26px;
+    inline-size: auto;
+    max-inline-size: 220px;
+    object-fit: contain;
+    object-position: left center;
+  }
+</style>

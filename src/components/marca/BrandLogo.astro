@@ -11,6 +11,7 @@
    —nunca a un ícono genérico ni a un rectángulo vacío—. No se dibuja el
    logotipo de un fabricante: o es el suyo, o no es. */
 import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import type { Marca } from '../../datos/tipos.ts';
 
 const CAJAS = {
@@ -27,9 +28,11 @@ interface Props {
 const { marca, size = 'md', class: clase } = Astro.props;
 const caja = CAJAS[size];
 
-/* Se acepta SVG o PNG con el mismo nombre: lo que haya en la carpeta. */
-const candidatos = [marca.logo.src, marca.logo.src.replace(/\.svg$/, '.png')];
-const archivo = candidatos.find((f) => existsSync(new URL(`../../../public${f}`, import.meta.url)));
+/* Se acepta SVG o PNG con el mismo nombre: lo que haya en la carpeta.
+   La ruta se resuelve contra `process.cwd()` —la raíz del proyecto— y no
+   contra `import.meta.url`, que en el build apunta a dist/.prerender/chunks. */
+const candidatos = [marca.logo.src, marca.logo.src.replace(/\.(svg|png)$/, '.svg'), marca.logo.src.replace(/\.(svg|png)$/, '.png')];
+const archivo = candidatos.find((f) => existsSync(join(process.cwd(), 'public', f)));
 const escala = marca.logoEscala ?? 1;
 ---
 <span
