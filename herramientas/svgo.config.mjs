@@ -6,7 +6,8 @@ export default {
   plugins: [
     { name: 'preset-default', params: { overrides: { removeViewBox: false } } },
     'removeDimensions',
-    'removeXMLNS',
+    /* `removeXMLNS` NO: sirve para SVG incrustado en el HTML, pero un archivo
+       servido como <img> sin xmlns no parsea y el navegador lo da por roto. */
     { name: 'removeAttrs', params: { attrs: '(data-name|class)' } },
   ],
 };

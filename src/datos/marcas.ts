@@ -23,7 +23,7 @@ export const marcas: Marca[] = [
     fabricante: { pais: 'China y Hungría', fundacion: '1925' },
     rolSVMG: 'representante',
     // TODO INVIMA · número de registro sanitario por equipo, empezando por PlazMax
-    logo: { src: '/logos/marcas/tuttnauer.svg', alt: 'Logo de Tuttnauer' },
+    logo: { src: '/logos/marcas/tuttnauer.png', alt: 'Logo de Tuttnauer' },
     etapasCiclo: ['lavado', 'esterilizacion'],
     pruebas: [
       { dato: 'Fundada en 1925, con plantas en China y Hungría.', fuente: 'tuttnauer.com · página de empresa' },
@@ -54,7 +54,8 @@ export const marcas: Marca[] = [
       'Sanqiang diseña y fabrica en Hua County, en la provincia de Henan, autoclaves de vacío pulsante, esterilizadores de plasma de peróxido, termodesinfectoras y equipos de óxido de etileno, formaldehído a baja temperatura y secado. Declara certificación ISO 13485, ISO 9001 y marcado CE, y un equipo de cincuenta ingenieros de investigación y desarrollo.',
     fabricante: { razonSocial: 'Henan Sanqiang Medical Equipment', ciudad: 'Hua County, Henan', pais: 'China', fundacion: '2010' },
     rolSVMG: 'distribuidor',
-    logo: { src: '/logos/marcas/sanqiang.svg', alt: 'Logo de Sanqiang' },
+    logo: { src: '/logos/marcas/sanqiang.png', alt: 'Logo de Sanqiang' },
+    logoEscala: 0.88, // apaisa el peso óptico frente a los logotipos horizontales
     etapasCiclo: ['lavado', 'esterilizacion', 'residuos'],
     // VERIFICAR · el sitio de exportación y la tienda oficial se contradicen en
     // número de empleados (500+ vs 304) y superficie de planta (56.000 vs
@@ -89,7 +90,8 @@ export const marcas: Marca[] = [
     fabricante: { razonSocial: 'Celitron Medical Technologies', ciudad: 'Vác', pais: 'Hungría' },
     // TODO confirmar con Felipe · ¿representante o distribuidor de Celitron?
     rolSVMG: 'distribuidor',
-    logo: { src: '/logos/marcas/celitron.svg', alt: 'Logo de Celitron' },
+    logo: { src: '/logos/marcas/celitron.png', alt: 'Logo de Celitron' },
+    logoEscala: 0.95, // apaisa el peso óptico frente a los logotipos horizontales
     etapasCiclo: ['residuos'],
     // VERIFICAR · el sitio dice «más de 5.000 esterilizadores en más de 80
     // países» en empresa y «40+ países» en la página del ISS. Se usa la del
@@ -121,7 +123,7 @@ export const marcas: Marca[] = [
       'Akarmak fabrica autoclaves y recipientes a presión para las industrias del vidrio, los compuestos, el caucho y la construcción, y aplica esa ingeniería al tratamiento de residuos médicos. Fabrica bajo la Directiva de Equipos a Presión 2014/68/UE, ASME VIII, AD 2000 e ISO 9001:2015, y sus sistemas de residuos están validados por organismos independientes como el Instituto Robert Koch, en nivel STAATT IV.',
     fabricante: { razonSocial: 'Akar Makina', ciudad: 'Eskişehir', pais: 'Turquía', fundacion: '1990' },
     rolSVMG: 'distribuidor',
-    logo: { src: '/logos/marcas/akarmak.svg', alt: 'Logo de Akarmak' },
+    logo: { src: '/logos/marcas/akarmak.png', alt: 'Logo de Akarmak' },
     etapasCiclo: ['residuos'],
     pruebas: [
       { dato: 'Reducción microbiana de 8 log₁₀ en sistemas con trituración previa.', fuente: 'akarmak.com · esterilización de residuos médicos' },
@@ -153,7 +155,8 @@ export const marcas: Marca[] = [
     rolSVMG: 'distribuidor',
     // TODO confirmar con Felipe · registro INVIMA y certificación ISO 13485,
     // que no es visible públicamente.
-    logo: { src: '/logos/marcas/2i.svg', alt: 'Logo de 2i' },
+    logo: { src: '/logos/marcas/2i.png', alt: 'Logo de 2i' },
+    logoEscala: 0.85, // apaisa el peso óptico frente a los logotipos horizontales
     etapasCiclo: ['monitoreo'],
     pruebas: [
       { dato: 'Indicadores de las clases 1, 2, 4, 5 y 6 de la ISO 11140-1.', fuente: '2i.ind.br · catálogo de indicadores químicos' },

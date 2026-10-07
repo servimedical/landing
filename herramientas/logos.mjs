@@ -38,7 +38,7 @@ const corre = (cmd, args) => {
 };
 
 for (const m of marcas) {
-  const base = m.logo.src.split('/').pop().replace(/\.svg$/, '');
+  const base = m.logo.src.split('/').pop().replace(/\.(svg|png)$/i, '');
   const svg = `${base}.svg`;
   const png = `${base}.png`;
 

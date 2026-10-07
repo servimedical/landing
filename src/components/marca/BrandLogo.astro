@@ -54,8 +54,11 @@ const escala = marca.logoEscala ?? 1;
   }
 
   .svmg-logo img {
-    max-block-size: 100%;
-    max-inline-size: 100%;
+    /* En unidades absolutas, no en %: un porcentaje sobre un grid item
+       centrado se resuelve contra una altura indefinida y el logo se salía
+       de la caja. Con `--w` y `--h` el contenido siempre cabe. */
+    max-block-size: var(--h);
+    max-inline-size: var(--w);
     inline-size: auto;
     block-size: auto;
     object-fit: contain;
