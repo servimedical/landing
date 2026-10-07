@@ -13,10 +13,10 @@
     "verify": "astro check && astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "marcadores": "node herramientas/marcadores.mjs",
+    "marcadores": "node herramientas/correr.mjs marcadores",
     "redirecciones": "node herramientas/redirecciones.mjs",
-    "logos": "node herramientas/logos.mjs",
-    "media": "node herramientas/media.mjs"
+    "logos": "node herramientas/correr.mjs logos",
+    "media": "node herramientas/correr.mjs media"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
