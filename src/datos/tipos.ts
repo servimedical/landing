@@ -70,6 +70,12 @@ export type Linea = {
   marca: string;
   nombre: string;
   tipo: 'equipo' | 'consumible' | 'mobiliario';
+  /** Slug de `src/datos/categorias.ts`. Agrupa la línea por método, no por
+   *  fabricante: es lo que arma el menú de Líneas y /lineas. */
+  categoria: string;
+  /** Sólo cuando una marca aporta más de una línea a la misma categoría y el
+   *  nombre de la marca ya no basta para distinguirlas en el menú. */
+  etiquetaMenu?: string;
   /** [qué carga procesa] + [cómo] + [por qué importa en la central]. */
   lead: string;
   /** El método en una línea. Va en la tarjeta de la marca y en el hero. */

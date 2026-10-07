@@ -12,6 +12,7 @@
 
 import { marcas } from '../datos/marcas.ts';
 import { lineasDe, urlLinea, urlMarca } from '../datos/lineas.ts';
+import { categorias, urlCategoria } from '../datos/categorias.ts';
 import type { Marca } from '../datos/tipos.ts';
 
 export type NodoNav = {
@@ -34,6 +35,23 @@ const nodoMarca = (m: Marca): NodoNav => ({
 
 export const navegacion: NodoNav[] = [
   { titulo: 'Inicio', url: '/', enNavbar: false, enFooter: false },
+
+  /* Líneas va primero: es la entrada de quien llega con una necesidad y no
+     con un fabricante en la cabeza.
+
+     Sus hijos son las categorías, no las páginas de línea. Las páginas de
+     línea cuelgan de la marca y tienen que seguir haciéndolo: si aparecieran
+     también aquí, `rutaActiva` las encontraría primero y la miga de pan de
+     /marcas/tuttnauer/vapor diría «Líneas» en lugar de «Marcas». */
+  {
+    titulo: 'Líneas',
+    url: '/lineas',
+    enNavbar: true,
+    enFooter: 'empresa',
+    hijos: [...categorias]
+      .sort((a, b) => a.orden - b.orden)
+      .map((c) => ({ titulo: c.nombre, url: urlCategoria(c.slug), descriptor: c.descriptor })),
+  },
 
   {
     titulo: 'Marcas',
@@ -98,6 +116,10 @@ export const enNavbar: NodoNav[] = navegacion.filter((n) => n.enNavbar);
 /** Las marcas como nodos, para el panel del menú y el pie. */
 export const nodosMarcas: NodoNav[] =
   navegacion.find((n) => n.url === '/marcas')?.hijos ?? [];
+
+/** Las categorías como nodos, para el panel del menú. */
+export const nodosCategorias: NodoNav[] =
+  navegacion.find((n) => n.url === '/lineas')?.hijos ?? [];
 
 export function columnaFooter(clave: 'marcas' | 'empresa'): NodoNav[] {
   return todosLosNodos().filter((n) => n.enFooter === clave);

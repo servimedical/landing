@@ -1,0 +1,148 @@
+---
+import Base from '../../layouts/Base.astro';
+import Migas from '../../components/Migas.astro';
+import Formulario from '../../components/formulario/Formulario.astro';
+import { categorias, rotuloEtapa, type Categoria } from '../../datos/categorias.ts';
+import { lineasDeCategoria, etiquetaMenu, urlLinea } from '../../datos/lineas.ts';
+import { marcas } from '../../datos/marcas.ts';
+import { normalizar } from '../../content/navegacion.ts';
+import { sitio } from '../../content/sitio.ts';
+import type { Linea } from '../../datos/tipos.ts';
+
+export function getStaticPaths() {
+  /* Una categoría con una sola línea no merece página: sería un paso
+     intermedio vacío entre el menú y la línea. Esas redirigen con 301 desde
+     vercel.json, y la lista de redirecciones se deriva de estos mismos datos
+     —cuando Akarmak o Celitron aporten su línea de residuos, la categoría
+     pasa a tener página y la redirección desaparece sola—. */
+  return categorias
+    .filter((c) => lineasDeCategoria(c.slug).length > 1)
+    .sort((a, b) => a.orden - b.orden)
+    .map((c) => ({ params: { categoria: c.slug }, props: { c } }));
+}
+
+const { c } = Astro.props as { c: Categoria };
+const rutaActual = normalizar(Astro.url.pathname);
+const lineas = lineasDeCategoria(c.slug);
+const nombreMarca = (slug: string) => marcas.find((m) => m.slug === slug)!.nombre;
+const marcaDe = (l: Linea) => marcas.find((m) => m.slug === l.marca)!;
+
+const unicos = (xs: string[]) => [...new Set(xs)];
+const metodos = unicos(lineas.map((l) => l.metodo));
+const usos = unicos(lineas.map((l) => l.uso));
+
+const lead =
+  metodos.length === 1
+    ? `${metodos[0]}, para ${usos.join(' · ').toLowerCase()}.`
+    : `${usos.join(' · ')}. El método y el alcance cambian por marca: compárelos antes de cotizar.`;
+
+/* Filas de la tabla: las etiquetas de `specsClave` que están en todas las
+   columnas, más la norma y el rol de Servimedical. Una fila que no tenga
+   valor en alguna columna no entra: media comparación es peor que ninguna. */
+const comunes = (lineas[0]!.specsClave ?? [])
+  .map((s) => s.label)
+  .filter((label) => lineas.every((l) => l.specsClave.some((s) => s.label === label)));
+
+/* El valor de una fila de norma sale de `normasProceso`, que trae el conjunto
+   completo; `specsClave` sólo lleva la principal, por espacio en el hero. */
+const valorSpec = (l: Linea, label: string) =>
+  /norma/i.test(label) && l.normasProceso?.length
+    ? l.normasProceso.map((n) => n.norma).join(' · ')
+    : l.specsClave.find((s) => s.label === label)!.valor;
+
+/* «Para qué» sólo entra cuando distingue: si las dos columnas procesan lo
+   mismo, una fila idéntica no compara nada. */
+const paraQue = lineas.map((l) => l.uso);
+
+const filas: { label: string; valores: string[] }[] = [
+  ...(new Set(paraQue).size > 1 ? [{ label: 'Para qué', valores: paraQue }] : []),
+  ...comunes.map((label) => ({
+    label,
+    valores: lineas.map((l) => valorSpec(l, label)),
+  })),
+  /* La norma sólo entra como fila propia si `specsClave` no la trae ya; si no,
+     la tabla mostraría dos veces lo mismo. */
+  ...(!comunes.some((l) => /norma/i.test(l)) && lineas.every((l) => l.normasProceso?.length)
+    ? [{ label: 'Normas de referencia', valores: lineas.map((l) => l.normasProceso!.map((n) => n.norma).join(' · ')) }]
+    : []),
+  {
+    label: 'Rol de Servimedical',
+    valores: lineas.map((l) => (marcaDe(l).rolSVMG === 'representante' ? 'Representante en Colombia' : 'Distribuidor autorizado')),
+  },
+];
+
+const encabezado = (l: Linea) => etiquetaMenu(l, nombreMarca(l.marca));
+
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: c.nombre,
+  description: c.seo.descripcion,
+  url: new URL(rutaActual, sitio.dominio).href,
+};
+---
+<Base titulo={c.seo.titulo} descripcion={c.seo.descripcion}>
+  <Migas rutaActual={rutaActual} />
+
+  <div class="contenedor py-12 lg:py-16">
+    <p class="meta text-steel">{rotuloEtapa(c)}</p>
+    <h1 class="mt-4 max-w-[20ch] text-[clamp(30px,4vw,48px)]">{c.nombre}</h1>
+    <p class="mt-5 max-w-[56ch] text-[clamp(16px,1.3vw,18px)] leading-relaxed text-steel">{lead}</p>
+
+    <a href="#cotizar" class="mt-8 inline-flex items-center gap-2.5 border border-navy bg-navy px-5 py-3.5 text-[14.5px] font-medium text-white hover:bg-navy-deep">
+      <span aria-hidden="true" class="senal"></span>Hablar con un especialista
+    </a>
+  </div>
+
+  <section class="field-paper border-t border-rule" aria-labelledby="comparar">
+    <div class="contenedor py-12 lg:py-16">
+      <h2 id="comparar" class="text-[clamp(22px,2.6vw,30px)]">Qué cambia entre una y otra</h2>
+
+      <div class="mt-8 overflow-x-auto border border-rule bg-white">
+        <table class="w-full min-w-[640px] border-collapse text-[15px]">
+          <caption class="sr-only">Comparación de {c.nombre} por marca</caption>
+          <thead>
+            <tr>
+              <th scope="col" class="meta w-[180px] border-b border-r border-rule px-5 py-3.5 text-left text-[10px] text-steel">
+                <span class="sr-only">Característica</span>
+              </th>
+              {lineas.map((l) => (
+                <th scope="col" class="border-b border-r border-rule px-5 py-3.5 text-left last:border-r-0">
+                  <span class="font-display text-[17px] leading-tight font-bold [font-variation-settings:'wdth'_110]">
+                    {encabezado(l)}
+                  </span>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {filas.map((f) => (
+              <tr>
+                <th scope="row" class="meta border-b border-r border-rule px-5 py-3.5 text-left align-top text-[10px] font-normal text-steel">
+                  {f.label}
+                </th>
+                {f.valores.map((v) => (
+                  <td class="border-b border-r border-rule px-5 py-3.5 align-top leading-snug last:border-r-0">{v}</td>
+                ))}
+              </tr>
+            ))}
+            <tr>
+              <td class="border-r border-rule px-5 py-4"></td>
+              {lineas.map((l) => (
+                <td class="border-r border-rule px-5 py-4 last:border-r-0">
+                  <a href={urlLinea(l)} class="meta text-[10px] text-steel hover:text-navy">
+                    Ver {l.nombre.toLowerCase()} {nombreMarca(l.marca)} →
+                  </a>
+                </td>
+              ))}
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <Formulario fijo={c.nombre} titulo="Hable con un especialista" />
+
+  <script type="application/ld+json" set:html={JSON.stringify(jsonld)} is:inline />
+</Base>

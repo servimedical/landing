@@ -1,0 +1,67 @@
+---
+import Base from '../../layouts/Base.astro';
+import Migas from '../../components/Migas.astro';
+import Formulario from '../../components/formulario/Formulario.astro';
+import { categorias, urlCategoria, rotuloEtapa } from '../../datos/categorias.ts';
+import { lineasDeCategoria, urlLinea, etiquetaMenu } from '../../datos/lineas.ts';
+import { marcas } from '../../datos/marcas.ts';
+import { normalizar } from '../../content/navegacion.ts';
+
+const rutaActual = normalizar(Astro.url.pathname);
+const nombreMarca = (slug: string) => marcas.find((m) => m.slug === slug)!.nombre;
+
+const fichas = [...categorias]
+  .sort((a, b) => a.orden - b.orden)
+  .map((c) => ({ c, lineas: lineasDeCategoria(c.slug) }))
+  .filter((f) => f.lineas.length > 0);
+---
+<Base
+  titulo="Líneas | Servimedical"
+  descripcion="El equipo y el consumible de cada etapa de la central de esterilización —lavado, empaque, esterilización, monitoreo, almacenamiento y residuos— y las marcas que los respaldan en Colombia."
+>
+  <Migas rutaActual={rutaActual} />
+
+  <div class="contenedor py-12 lg:py-16">
+    <h1 class="text-[clamp(30px,4vw,48px)]">Líneas</h1>
+    <p class="mt-6 max-w-[58ch] text-[clamp(16px,1.3vw,18px)] text-steel">
+      El equipo y el consumible de cada etapa de la central, y las marcas que los respaldan en Colombia.
+    </p>
+  </div>
+
+  <section class="border-t border-rule">
+    <div class="contenedor py-12 lg:py-16">
+      <ul class="rejilla sm:grid-cols-2 lg:grid-cols-3">
+        {fichas.map(({ c, lineas }) => (
+          <li class="flex flex-col border-b border-r border-rule p-6 lg:p-7">
+            <span class="meta text-[10px] text-steel">{rotuloEtapa(c)}</span>
+
+            <a href={urlCategoria(c.slug)} class="group mt-4">
+              <span class="font-display block text-[clamp(18px,2vw,22px)] leading-tight font-bold [font-variation-settings:'wdth'_110] group-hover:text-steel">
+                {c.nombre}
+              </span>
+            </a>
+            <p class="mt-3 text-[14.5px] leading-relaxed text-steel">{c.descriptor}</p>
+
+            <ul class="mt-5 flex flex-wrap gap-2">
+              {lineas.map((l) => (
+                <li>
+                  <a href={urlLinea(l)} class="inline-block border border-rule px-2.5 py-1.5 text-[13px] text-steel transition-colors hover:border-navy/35 hover:text-navy">
+                    {etiquetaMenu(l, nombreMarca(l.marca))}
+                  </a>
+                </li>
+              ))}
+            </ul>
+
+            <div class="mt-auto pt-7">
+              <a href={urlCategoria(c.slug)} class="meta block border-t border-rule pt-4 text-[10px] text-steel hover:text-navy">
+                Ver línea →
+              </a>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <Formulario titulo="Hable con un especialista" />
+</Base>

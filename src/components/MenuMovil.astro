@@ -1,6 +1,8 @@
 ---
-import { enNavbar, nodosMarcas, rutaActiva, normalizar } from '../content/navegacion.ts';
+import { enNavbar, nodosMarcas, nodosCategorias, rutaActiva, normalizar } from '../content/navegacion.ts';
 import { cta } from '../content/sitio.ts';
+import { marcas } from '../datos/marcas.ts';
+import { lineasDeCategoria, etiquetaMenu, urlLinea } from '../datos/lineas.ts';
 import Buscador from './Buscador.astro';
 
 interface Props { rutaActual: string }
@@ -8,6 +10,31 @@ const { rutaActual } = Astro.props;
 const cadena = rutaActiva(rutaActual).map((n) => n.url);
 const exacta = normalizar(rutaActual);
 const marcado = (url: string) => cadena.includes(url);
+const nombreMarca = (slug: string) => marcas.find((m) => m.slug === slug)!.nombre;
+
+/* Los dos árboles del catálogo, con la misma forma: grupo → rama → hoja.
+   Los identificadores llevan el prefijo del grupo, así que «2i» no choca con
+   nada y los dos árboles no comparten ningún id. */
+type Rama = { titulo: string; url: string; hojas: { titulo: string; url: string }[] };
+const ramasDe = (raiz: string): Rama[] =>
+  raiz === '/lineas'
+    ? nodosCategorias.map((c) => ({
+        titulo: c.titulo,
+        url: c.url,
+        hojas: lineasDeCategoria(c.url.split('/').pop()!).map((l) => ({
+          titulo: etiquetaMenu(l, nombreMarca(l.marca)),
+          url: urlLinea(l),
+        })),
+      }))
+    : nodosMarcas.map((m) => ({
+        titulo: m.titulo,
+        url: m.url,
+        hojas: (m.hijos ?? []).map((h) => ({ titulo: h.titulo, url: h.url })),
+      }));
+
+const DESPLEGABLES = ['/lineas', '/marcas'];
+const idGrupo = (raiz: string) => `acordeon${raiz.replace(/\//g, '-')}`;
+const idRama = (raiz: string, url: string) => `${idGrupo(raiz)}-${url.split('/').pop()}`;
 ---
 <button
   id="boton-menu"
@@ -34,23 +61,20 @@ const marcado = (url: string) => cadena.includes(url);
     <ul>
       {enNavbar.map((nodo) => (
         <li class="border-b border-rule">
-          {nodo.url === '/marcas' ? (
+          {DESPLEGABLES.includes(nodo.url) ? (
             <>
               <div class="flex items-stretch">
                 <a
                   href={nodo.url}
                   aria-current={normalizar(nodo.url) === exacta ? 'page' : undefined}
-                  class:list={[
-                    'flex-1 py-4 text-[17px]',
-                    marcado(nodo.url) && 'border-l-2 border-signal pl-3',
-                  ]}
+                  class:list={['flex-1 py-4 text-[17px]', marcado(nodo.url) && 'border-l-2 border-signal pl-3']}
                 >{nodo.titulo}</a>
                 <button
                   type="button"
                   class="acordeon flex w-12 items-center justify-center text-steel"
                   aria-expanded="false"
-                  aria-controls="acordeon-marcas"
-                  aria-label="Desplegar las marcas"
+                  aria-controls={idGrupo(nodo.url)}
+                  aria-label={`Desplegar ${nodo.titulo.toLowerCase()}`}
                 >
                   <svg viewBox="0 0 10 6" class="chevron h-[7px] w-[12px] transition-transform" aria-hidden="true">
                     <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" />
@@ -58,48 +82,46 @@ const marcado = (url: string) => cadena.includes(url);
                 </button>
               </div>
 
-              <ul id="acordeon-marcas" class="border-t border-rule pl-3" hidden>
-                {nodosMarcas.map((cat: (typeof nodosMarcas)[number], i: number) => (
+              <ul id={idGrupo(nodo.url)} class="border-t border-rule pl-3" hidden>
+                {ramasDe(nodo.url).map((rama, i) => (
                   <li class={i > 0 ? 'border-t border-rule' : ''}>
                     <div class="flex items-stretch">
                       <a
-                        href={cat.url}
-                        aria-current={normalizar(cat.url) === exacta ? 'page' : undefined}
-                        class:list={[
-                          'flex-1 py-3.5 text-[15.5px]',
-                          marcado(cat.url) && 'border-l-2 border-signal pl-3',
-                        ]}
-                      >{cat.titulo}</a>
-                      {cat.hijos?.length ? (
+                        href={rama.url}
+                        aria-current={normalizar(rama.url) === exacta ? 'page' : undefined}
+                        class:list={['flex-1 py-3.5 text-[15.5px]', marcado(rama.url) && 'border-l-2 border-signal pl-3']}
+                      >{rama.titulo}</a>
+                      {rama.hojas.length > 0 && (
                         <button
                           type="button"
                           class="acordeon flex w-12 items-center justify-center text-steel"
                           aria-expanded="false"
-                          aria-controls={`acordeon-${cat.url.split('/').pop()}`}
-                          aria-label={`Desplegar ${cat.titulo}`}
+                          aria-controls={idRama(nodo.url, rama.url)}
+                          aria-label={`Desplegar ${rama.titulo}`}
                         >
                           <svg viewBox="0 0 10 6" class="chevron h-[7px] w-[12px] transition-transform" aria-hidden="true">
                             <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" />
                           </svg>
                         </button>
-                      ) : null}
+                      )}
                     </div>
-                    {cat.hijos?.length ? (
-                      <ul id={`acordeon-${cat.url.split('/').pop()}`} class="border-t border-rule pl-3" hidden>
-                        {cat.hijos.map((hijo: (typeof nodosMarcas)[number], j: number) => (
+
+                    {rama.hojas.length > 0 && (
+                      <ul id={idRama(nodo.url, rama.url)} class="border-t border-rule pl-3" hidden>
+                        {rama.hojas.map((hoja, j) => (
                           <li class={j > 0 ? 'border-t border-rule' : ''}>
                             <a
-                              href={hijo.url}
-                              aria-current={normalizar(hijo.url) === exacta ? 'page' : undefined}
+                              href={hoja.url}
+                              aria-current={normalizar(hoja.url) === exacta ? 'page' : undefined}
                               class:list={[
                                 'block py-3 text-[15px] text-steel',
-                                marcado(hijo.url) && 'border-l-2 border-signal pl-3 text-navy',
+                                marcado(hoja.url) && 'border-l-2 border-signal pl-3 text-navy',
                               ]}
-                            >{hijo.titulo}</a>
+                            >{hoja.titulo}</a>
                           </li>
                         ))}
                       </ul>
-                    ) : null}
+                    )}
                   </li>
                 ))}
               </ul>
@@ -108,10 +130,7 @@ const marcado = (url: string) => cadena.includes(url);
             <a
               href={nodo.url}
               aria-current={normalizar(nodo.url) === exacta ? 'page' : undefined}
-              class:list={[
-                'block py-4 text-[17px]',
-                marcado(nodo.url) && 'border-l-2 border-signal pl-3',
-              ]}
+              class:list={['block py-4 text-[17px]', marcado(nodo.url) && 'border-l-2 border-signal pl-3']}
             >{nodo.titulo}</a>
           )}
         </li>

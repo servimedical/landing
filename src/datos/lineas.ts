@@ -1,4 +1,7 @@
 import type { Linea } from './tipos.ts';
+import { marcas } from './marcas.ts';
+
+const ORDEN_MARCA = [...marcas].sort((a, b) => a.orden - b.orden).map((m) => m.slug);
 
 /* ============================================================================
    LAS LÍNEAS
@@ -36,6 +39,7 @@ export const lineas: Linea[] = [
     marca: 'tuttnauer',
     nombre: 'Vapor',
     tipo: 'equipo',
+    categoria: 'vapor',
     lead:
       'Vapor saturado con prevacío fraccionado para todo el material termorresistente y empacado. Decide cuántas cargas salen por turno y, con eso, cuánto instrumental hay que tener duplicado.',
     metodo: 'Vapor saturado con prevacío fraccionado',
@@ -109,6 +113,7 @@ export const lineas: Linea[] = [
     marca: 'tuttnauer',
     nombre: 'Plasma',
     tipo: 'equipo',
+    categoria: 'plasma',
     lead:
       'Baja temperatura para lo que el vapor destruye: óptica, motores, cables y polímeros. Su valor está en la rotación: devuelve el instrumental caro a sala el mismo día.',
     metodo: 'Peróxido de hidrógeno vaporizado a baja temperatura',
@@ -175,6 +180,7 @@ export const lineas: Linea[] = [
     marca: 'tuttnauer',
     nombre: 'Termodesinfectoras',
     tipo: 'equipo',
+    categoria: 'termodesinfectoras',
     lead:
       'Lavado y desinfección térmica bajo proceso validado. Ningún método de esterilización corrige lo que el lavado no removió.',
     metodo: 'Desinfección térmica con proceso validado',
@@ -227,6 +233,7 @@ export const lineas: Linea[] = [
     marca: 'sanqiang',
     nombre: 'Vapor',
     tipo: 'equipo',
+    categoria: 'vapor',
     lead:
       'Esterilización por vapor saturado para material termorresistente y empacado, con una estructura de costo distinta a la de la marca premium.',
     metodo: 'Vapor saturado con prevacío',
@@ -290,6 +297,7 @@ export const lineas: Linea[] = [
     marca: 'sanqiang',
     nombre: 'Plasma',
     tipo: 'equipo',
+    categoria: 'plasma',
     lead:
       'Baja temperatura por peróxido de hidrógeno para óptica, motores y polímeros, en centrales que necesitan el método sin el presupuesto de la línea alta.',
     metodo: 'Peróxido de hidrógeno vaporizado a baja temperatura',
@@ -342,6 +350,7 @@ export const lineas: Linea[] = [
     marca: 'sanqiang',
     nombre: 'Termodesinfectoras',
     tipo: 'equipo',
+    categoria: 'termodesinfectoras',
     lead:
       'Lavado y desinfección térmica bajo proceso validado. Ningún método de esterilización corrige lo que el lavado no removió.',
     metodo: 'Desinfección térmica con proceso validado',
@@ -389,6 +398,7 @@ export const lineas: Linea[] = [
     marca: 'sanqiang',
     nombre: 'Tratamiento de residuos hospitalarios',
     tipo: 'equipo',
+    categoria: 'residuos-hospitalarios',
     lead:
       'Trata el residuo biosanitario en la institución, por vapor, antes de que salga por la puerta. Reduce el volumen que se entrega al gestor externo y el riesgo del tramo que no se controla.',
     metodo: 'Tratamiento por vapor con trituración',
@@ -444,6 +454,7 @@ export const lineas: Linea[] = [
     marca: 'servimedical',
     nombre: 'Papel grado esterilización y Tyvek',
     tipo: 'consumible',
+    categoria: 'empaque',
     lead:
       'El empaque no envuelve el set: es la barrera estéril. Sostiene la esterilidad hasta que alguien abre el paquete en sala.',
     metodo: 'Barrera estéril por método de esterilización',
@@ -493,6 +504,7 @@ export const lineas: Linea[] = [
     marca: 'servimedical',
     nombre: 'Mobiliario en acero inoxidable',
     tipo: 'mobiliario',
+    categoria: 'mobiliario',
     lead:
       'Mesas, mesones, carros y estantería fabricados contra el plano de la central. Superficie continua y soldadura pulida, sin uniones que retengan residuo.',
     metodo: 'Acero inoxidable AISI 304, fabricado sobre medida',
@@ -543,6 +555,7 @@ export const lineas: Linea[] = [
     marca: 'servimedical',
     nombre: 'Repuestos',
     tipo: 'consumible',
+    categoria: 'repuestos',
     lead:
       'Partes originales de las marcas que representamos, con inventario local de lo que más se pide. Un autoclave detenido es un quirófano detenido, así que atendemos también equipos fuera de garantía y de marcas que no vendimos.',
     metodo: 'Repuesto original, con inventario en Bogotá',
@@ -594,6 +607,8 @@ export const lineas: Linea[] = [
     marca: '2i',
     nombre: 'Indicadores químicos',
     tipo: 'consumible',
+    categoria: 'indicadores',
+    etiquetaMenu: 'Químicos',
     lead:
       'Un indicador externo dice que el paquete pasó por el equipo. Uno interno, que el agente llegó al centro. La central necesita los dos.',
     metodo: 'Viraje por exposición a los parámetros del ciclo',
@@ -646,6 +661,8 @@ export const lineas: Linea[] = [
     marca: '2i',
     nombre: 'Indicadores biológicos',
     tipo: 'consumible',
+    categoria: 'indicadores',
+    etiquetaMenu: 'Biológicos',
     lead:
       'Es la única evidencia de que el proceso mató la carga microbiana. Todo lo demás es indicio.',
     metodo: 'Inactivación de esporas con incubación y lectura',
@@ -703,6 +720,22 @@ export const lineaPorSlug = (slugMarca: string, slug: string) =>
   lineas.find((l) => l.marca === slugMarca && l.slug === slug);
 
 export const urlMarca = (slugMarca: string) => `/marcas/${slugMarca}`;
+
+/** Las líneas de una categoría, en el orden de las marcas del portafolio. */
+export const lineasDeCategoria = (slugCategoria: string) =>
+  lineas
+    .filter((l) => l.categoria === slugCategoria)
+    .sort((a, b) => ORDEN_MARCA.indexOf(a.marca) - ORDEN_MARCA.indexOf(b.marca) || a.orden - b.orden);
+
+/** Cuántas marcas distintas aportan a una categoría. Decide si /lineas/<cat>
+ *  es un comparador o una redirección a la única línea que hay. */
+export const marcasDeCategoria = (slugCategoria: string) =>
+  [...new Set(lineasDeCategoria(slugCategoria).map((l) => l.marca))];
+
+/** Etiqueta de la línea en el menú de Líneas: el nombre de la marca basta,
+ *  salvo cuando una marca aporta más de una línea a la misma categoría. */
+export const etiquetaMenu = (l: { marca: string; etiquetaMenu?: string }, nombreMarca: string) =>
+  l.etiquetaMenu ? `${l.etiquetaMenu} · ${nombreMarca}` : nombreMarca;
 export const urlLinea = (l: { marca: string; slug: string }) => `/marcas/${l.marca}/${l.slug}`;
 
 /** Resuelve una referencia de `relacionadas`. Prefiere la línea de la misma

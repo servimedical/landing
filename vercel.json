@@ -75,6 +75,26 @@
       "source": "/marcas/easymedical/:resto*",
       "destination": "/marcas",
       "statusCode": 301
+    },
+    {
+      "source": "/lineas/empaque",
+      "destination": "/marcas/servimedical/papel-y-tyvek",
+      "statusCode": 301
+    },
+    {
+      "source": "/lineas/mobiliario",
+      "destination": "/marcas/servimedical/mobiliario-acero-inoxidable",
+      "statusCode": 301
+    },
+    {
+      "source": "/lineas/residuos-hospitalarios",
+      "destination": "/marcas/sanqiang/residuos-hospitalarios",
+      "statusCode": 301
+    },
+    {
+      "source": "/lineas/repuestos",
+      "destination": "/marcas/servimedical/repuestos",
+      "statusCode": 301
     }
   ],
   "headers": [

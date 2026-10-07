@@ -2,6 +2,7 @@ import { defineCollection } from 'astro:content';
 import { z } from 'zod';
 import { marcas } from './datos/marcas.ts';
 import { lineas } from './datos/lineas.ts';
+import { categorias, SLUGS_CATEGORIA } from './datos/categorias.ts';
 
 /* ============================================================================
    COLECCIONES DE CONTENIDO
@@ -49,6 +50,8 @@ const esquemaLinea = z.object({
   marca: z.string().regex(/^[a-z0-9-]+$/),
   nombre: z.string().min(1),
   tipo: z.enum(['equipo', 'consumible', 'mobiliario']),
+  categoria: z.enum(SLUGS_CATEGORIA),
+  etiquetaMenu: z.string().min(1).max(24).optional(),
   lead: z.string().min(1).max(360),
   metodo: z.string().min(1).max(80),
   uso: z.string().min(1).max(80),
@@ -124,6 +127,28 @@ const validarPortafolio = () => {
       fallos.push(`${l.marca}/${l.slug}: la alternativa «${l.alternativa.linea}» no existe`);
   }
 
+  /* Ninguna categoría puede quedar vacía: si lo está, es que se borró la
+     última línea y la columna del menú y la página /lineas/<slug> saldrían
+     en blanco. Akarmak y Celitron no tienen líneas y por eso tampoco
+     aparecen; el día que las tengan, aparecen solas. */
+  for (const c of categorias) {
+    const n = lineas.filter((l) => l.categoria === c.slug).length;
+    if (n === 0) fallos.push(`categoría ${c.slug}: no tiene ninguna línea`);
+  }
+
+  /* Dos líneas de la misma marca en la misma categoría necesitan etiqueta
+     propia, o el menú mostraría el nombre de la marca repetido. */
+  const porCatMarca = new Map<string, number>();
+  for (const l of lineas) {
+    const k = `${l.categoria}|${l.marca}`;
+    porCatMarca.set(k, (porCatMarca.get(k) ?? 0) + 1);
+  }
+  for (const l of lineas) {
+    const k = `${l.categoria}|${l.marca}`;
+    if ((porCatMarca.get(k) ?? 0) > 1 && !l.etiquetaMenu)
+      fallos.push(`${l.marca}/${l.slug}: comparte categoría «${l.categoria}» con otra línea de la misma marca y necesita \`etiquetaMenu\``);
+  }
+
   /* §1 · el dropdown no admite más de cuatro líneas por marca. */
   for (const m of marcas) {
     const n = lineas.filter((l) => l.marca === m.slug).length;
@@ -138,6 +163,7 @@ const validarPortafolio = () => {
     vistas.add(id);
   }
 
+  auditar('categorias', categorias, fallos);
   auditar('marcas', marcas, fallos);
   auditar('lineas', lineas, fallos);
 

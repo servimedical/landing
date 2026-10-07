@@ -5,6 +5,20 @@
  * y la integración de abajo detiene el build si los dos se separan. Un 301
  * que se pierde es tráfico y posiciones que se pierden en silencio.
  */
+/* Categorías con una sola línea: /lineas/<cat> no tiene página propia porque
+   sería un paso intermedio vacío, así que va directo a la línea. Se deriva de
+   los datos: el día que una segunda marca entre a la categoría, la página
+   aparece y esta redirección desaparece sola. */
+async function categoriasDeUnaLinea() {
+  const { categorias } = await import('../src/datos/categorias.ts');
+  const { lineasDeCategoria, urlLinea } = await import('../src/datos/lineas.ts');
+  return [...categorias]
+    .sort((a, b) => a.orden - b.orden)
+    .map((c) => [c, lineasDeCategoria(c.slug)])
+    .filter(([, l]) => l.length === 1)
+    .map(([c, l]) => [`/lineas/${c.slug}`, urlLinea(l[0])]);
+}
+
 export const redirecciones = [
   // Tuttnauer · nombres de línea cortos
   ['/marcas/tuttnauer/autoclaves-de-vapor',          '/marcas/tuttnauer/vapor'],
@@ -43,8 +57,9 @@ export const redirecciones = [
 /* `statusCode: 301` y no `permanent: true`: Vercel traduce `permanent` a 308,
    que preserva el método. Para una migración de URLs lo que corresponde es un
    301, que es además lo que esperan las herramientas de SEO. */
-export const comoVercel = () =>
-  redirecciones.map(([source, destination]) => ({ source, destination, statusCode: 301 }));
+export const comoVercel = async () =>
+  [...redirecciones, ...(await categoriasDeUnaLinea())]
+    .map(([source, destination]) => ({ source, destination, statusCode: 301 }));
 
 /** Detiene el build si `vercel.json` y este archivo se separaron. */
 export function validarRedirecciones() {
@@ -54,14 +69,15 @@ export function validarRedirecciones() {
       'astro:config:done': async ({ logger }) => {
         const { readFileSync } = await import('node:fs');
         const vercel = JSON.parse(readFileSync(new URL('../vercel.json', import.meta.url), 'utf8'));
-        const esperado = JSON.stringify(comoVercel());
+        const reglas = await comoVercel();
+        const esperado = JSON.stringify(reglas);
         const actual = JSON.stringify(vercel.redirects ?? []);
         if (esperado !== actual)
           throw new Error(
             '\n\nvercel.json no coincide con integraciones/redirecciones.mjs.\n' +
             'Ejecute `npm run redirecciones` para regenerarlo.\n'
           );
-        logger.info(`redirecciones: ${redirecciones.length} reglas 301 sincronizadas con vercel.json ✓`);
+        logger.info(`redirecciones: ${reglas.length} reglas 301 sincronizadas con vercel.json ✓`);
       },
     },
   };

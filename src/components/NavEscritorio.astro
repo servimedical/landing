@@ -1,37 +1,69 @@
 ---
-import { enNavbar, rutaActiva, normalizar } from '../content/navegacion.ts';
-import PanelMarcas from './PanelProductos.astro';
+import { enNavbar, nodosMarcas, nodosCategorias, rutaActiva, normalizar } from '../content/navegacion.ts';
+import PanelMenu, { type ColumnaMenu } from './PanelMenu.astro';
+import { marcas } from '../datos/marcas.ts';
+import { lineasDeCategoria, etiquetaMenu, urlLinea } from '../datos/lineas.ts';
+import { categorias, urlCategoria } from '../datos/categorias.ts';
 
 interface Props { rutaActual: string }
 const { rutaActual } = Astro.props;
 
 const cadena = rutaActiva(rutaActual).map((n) => n.url);
 const exacta = normalizar(rutaActual);
+const nombreMarca = (slug: string) => marcas.find((m) => m.slug === slug)!.nombre;
+
+/* Las dos vistas del mismo catálogo. Líneas lo ordena por método y Marcas por
+   fabricante; las dos salen de src/datos, no hay una tercera lista. */
+const columnasLineas: ColumnaMenu[] = [...categorias]
+  .sort((a, b) => a.orden - b.orden)
+  .map((c) => ({
+    titulo: c.nombre,
+    url: urlCategoria(c.slug),
+    descriptor: c.descriptor,
+    items: lineasDeCategoria(c.slug).map((l) => ({
+      titulo: etiquetaMenu(l, nombreMarca(l.marca)),
+      url: urlLinea(l),
+    })),
+  }))
+  .filter((c) => c.items.length > 0);
+
+const columnasMarcas: ColumnaMenu[] = nodosMarcas.map((m) => ({
+  titulo: m.titulo,
+  url: m.url,
+  descriptor: m.descriptor ?? '',
+  items: (m.hijos ?? []).map((h) => ({ titulo: h.titulo, url: h.url })),
+}));
+
+/* Qué entrada del navbar abre qué panel. */
+const PANELES: Record<string, { id: string; etiqueta: string }> = {
+  '/lineas': { id: 'panel-lineas', etiqueta: 'el menú de líneas' },
+  '/marcas': { id: 'panel-marcas', etiqueta: 'el menú de marcas' },
+};
+void nodosCategorias;
 ---
 <nav aria-label="Principal" class="hidden lg:block">
   <ul class="flex items-center gap-5 xl:gap-7">
     {enNavbar.map((nodo) => {
-      const enCadena = cadena.includes(nodo.url);
-      const esExacta = normalizar(nodo.url) === exacta;
-      const tienePanel = nodo.url === '/marcas';
+      const panel = PANELES[nodo.url];
       return (
-        <li class:list={['h-(--spacing-header) flex items-center', tienePanel && 'grupo-marcas']}>
+        <li class:list={['h-(--spacing-header) flex items-center', panel && 'grupo-panel']} data-panel={panel?.id}>
           <a
             href={nodo.url}
-            aria-current={esExacta ? 'page' : undefined}
+            aria-current={normalizar(nodo.url) === exacta ? 'page' : undefined}
             class:list={[
               'flex h-full items-center border-b-2 text-[14.5px] transition-colors',
-              enCadena ? 'border-signal' : 'border-transparent hover:border-rule',
+              cadena.includes(nodo.url) ? 'border-signal' : 'border-transparent hover:border-rule',
             ]}
           >{nodo.titulo}</a>
 
-          {tienePanel && (
+          {panel && (
             <button
               type="button"
               class="disparador ml-1.5 flex h-6 w-6 items-center justify-center text-steel"
               aria-expanded="false"
-              aria-controls="panel-marcas"
-              aria-label="Abrir el menú de marcas"
+              aria-controls={panel.id}
+              aria-label={`Abrir ${panel.etiqueta}`}
+              data-etiqueta={panel.etiqueta}
             >
               <svg viewBox="0 0 10 6" class="chevron h-[6px] w-[10px] transition-transform" aria-hidden="true">
                 <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" />
@@ -44,38 +76,58 @@ const exacta = normalizar(rutaActual);
   </ul>
 </nav>
 
-<PanelMarcas rutaActual={rutaActual} />
+<PanelMenu id="panel-lineas" columnas={columnasLineas} cols={4} rutaActual={rutaActual}
+           pie={{ texto: 'Ver todas las líneas', url: '/lineas' }} />
+
+<PanelMenu id="panel-marcas" columnas={columnasMarcas} cols={3} rutaActual={rutaActual}
+           pie={{ texto: 'Ver todas las marcas', url: '/marcas' }} />
 
 <style>
   .disparador[aria-expanded='true'] .chevron { transform: rotate(180deg); }
 </style>
 
 <script>
-  const grupo = document.querySelector<HTMLElement>('.grupo-marcas');
-  const disparador = document.querySelector<HTMLButtonElement>('.disparador');
-  const panel = document.getElementById('panel-marcas');
+  /* Un solo guion para los dos paneles: abrir uno cierra el otro. */
   const finoOApuntador = window.matchMedia('(hover: hover) and (pointer: fine)');
 
-  if (grupo && disparador && panel) {
-    let cerrarDiferido: number | undefined;
+  type Menu = {
+    grupo: HTMLElement;
+    disparador: HTMLButtonElement;
+    panel: HTMLElement;
+    abrir: (v: boolean) => void;
+    abierto: () => boolean;
+  };
 
-    const abrir = (v: boolean) => {
-      window.clearTimeout(cerrarDiferido);
-      disparador.setAttribute('aria-expanded', String(v));
-      disparador.setAttribute('aria-label', v ? 'Cerrar el menú de marcas' : 'Abrir el menú de marcas');
-      if (v) {
-        panel.hidden = false;
-        // el atributo hidden debe caer antes de que corra la transición
-        requestAnimationFrame(() => panel.setAttribute('data-abierto', ''));
-      } else {
-        panel.removeAttribute('data-abierto');
-        cerrarDiferido = window.setTimeout(() => { panel.hidden = true; }, 150);
-      }
-    };
+  const menus: Menu[] = [];
+
+  document.querySelectorAll<HTMLElement>('.grupo-panel').forEach((grupo) => {
+    const disparador = grupo.querySelector<HTMLButtonElement>('.disparador');
+    const panel = document.getElementById(grupo.dataset.panel ?? '');
+    if (!disparador || !panel) return;
+
+    const etiqueta = disparador.dataset.etiqueta ?? 'el menú';
 
     const abierto = () => disparador.getAttribute('aria-expanded') === 'true';
 
-    disparador.addEventListener('click', () => abrir(!abierto()));
+    const abrir = (v: boolean) => {
+      if (v) menus.forEach((m) => { if (m.panel !== panel && m.abierto()) m.abrir(false); });
+      disparador.setAttribute('aria-expanded', String(v));
+      disparador.setAttribute('aria-label', `${v ? 'Cerrar' : 'Abrir'} ${etiqueta}`);
+      panel.toggleAttribute('data-abierto', v);
+    };
+
+    const menu: Menu = { grupo, disparador, panel, abrir, abierto };
+    menus.push(menu);
+
+    /* Con ratón manda el hover, no el clic: si el clic también alternara,
+       acercar el puntero abriría el panel y el clic lo cerraría de inmediato.
+       El clic alterna sólo donde no hay hover —táctil— y cuando viene del
+       teclado, que es un clic sin coordenadas (`detail === 0`). */
+    disparador.addEventListener('click', (e) => {
+      const porTeclado = (e as MouseEvent).detail === 0;
+      if (!porTeclado && finoOApuntador.matches) return;
+      abrir(!abierto());
+    });
 
     // Hover sólo en apuntadores finos: en táctil manda el clic.
     const entra = () => { if (finoOApuntador.matches) abrir(true); };
@@ -89,19 +141,22 @@ const exacta = normalizar(rutaActual);
     grupo.addEventListener('mouseleave', sale);
     panel.addEventListener('mouseenter', entra);
     panel.addEventListener('mouseleave', sale);
+  });
 
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && abierto()) { abrir(false); disparador.focus(); }
-    });
+  const dentroDeAlguno = (t: Node) =>
+    menus.some((m) => m.panel.contains(t) || m.grupo.contains(t));
 
-    // Clic fuera y pérdida de foco.
-    document.addEventListener('pointerdown', (e) => {
-      const t = e.target as Node;
-      if (abierto() && !panel.contains(t) && !grupo.contains(t)) abrir(false);
-    });
-    document.addEventListener('focusin', (e) => {
-      const t = e.target as Node;
-      if (abierto() && !panel.contains(t) && !grupo.contains(t)) abrir(false);
-    });
-  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const abierto = menus.find((m) => m.abierto());
+    if (abierto) { abierto.abrir(false); abierto.disparador.focus(); }
+  });
+
+  // Clic fuera y pérdida de foco.
+  document.addEventListener('pointerdown', (e) => {
+    if (!dentroDeAlguno(e.target as Node)) menus.forEach((m) => m.abierto() && m.abrir(false));
+  });
+  document.addEventListener('focusin', (e) => {
+    if (!dentroDeAlguno(e.target as Node)) menus.forEach((m) => m.abierto() && m.abrir(false));
+  });
 </script>

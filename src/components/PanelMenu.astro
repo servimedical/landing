@@ -1,0 +1,77 @@
+---
+/* Mega-menú. Lo usan «Líneas» y «Marcas»: cambian las columnas, no el
+   comportamiento ni la forma. La grilla es de columnas iguales y no se
+   rellenan celdas sobrantes —cierra limpia o no cierra—.
+
+   El id entra por props porque hay dos paneles en la misma página y el guion
+   de NavEscritorio los engancha por `aria-controls`. */
+export type ItemMenu = { titulo: string; url: string };
+export type ColumnaMenu = {
+  titulo: string;
+  url: string;
+  descriptor: string;
+  items: ItemMenu[];
+};
+
+interface Props {
+  id: string;
+  columnas: ColumnaMenu[];
+  pie: { texto: string; url: string };
+  /** Columnas de la grilla en escritorio. */
+  cols: 3 | 4;
+  rutaActual: string;
+}
+const { id, columnas, pie, cols, rutaActual } = Astro.props;
+const activa = (url: string) => rutaActual === url || rutaActual.startsWith(url + '/');
+---
+<div
+  id={id}
+  class="panel invisible absolute inset-x-0 top-(--spacing-header) z-40 border-b border-t
+         border-rule bg-white opacity-0 transition-opacity duration-150 ease-out"
+>
+  <div class="contenedor py-px">
+    <ul class:list={['grid gap-px bg-rule', cols === 4 ? 'grid-cols-4' : 'grid-cols-3']}>
+      {columnas.map((col) => (
+        <li class="bg-white p-6">
+          <a
+            href={col.url}
+            class:list={[
+              "font-display inline-block border-b-2 pb-0.5 text-[17px] leading-tight font-bold [font-variation-settings:'wdth'_110]",
+              activa(col.url) ? 'border-signal' : 'border-transparent hover:border-rule',
+            ]}
+          >{col.titulo}</a>
+          <p class="mt-2 text-[13px] leading-snug text-steel">{col.descriptor}</p>
+
+          {col.items.length > 0 && (
+            <ul class="mt-4 border-t border-rule">
+              {col.items.map((item) => (
+                <li class="border-b border-rule">
+                  <a
+                    href={item.url}
+                    class:list={[
+                      'block py-2.5 text-[14.5px] hover:text-steel',
+                      activa(item.url) && 'border-l-2 border-signal pl-2.5',
+                    ]}
+                  >{item.titulo}</a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </li>
+      ))}
+    </ul>
+
+    <p class="border-t border-rule py-4">
+      <a href={pie.url} class="meta text-[10px] text-steel hover:text-navy">{pie.texto} →</a>
+    </p>
+  </div>
+</div>
+
+<style>
+  /* El panel se oculta con `visibility`, no con el atributo `hidden`.
+     `visibility: hidden` ya saca sus enlaces del orden de tabulación y del
+     árbol de accesibilidad, y así el estado abierto es un solo atributo que
+     la transición puede animar sin depender de requestAnimationFrame —que no
+     corre cuando la pestaña está en segundo plano—. */
+  .panel[data-abierto] { visibility: visible; opacity: 1; }
+</style>
