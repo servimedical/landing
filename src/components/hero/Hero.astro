@@ -8,27 +8,39 @@
 
    Si la imagen no está, el panel queda vacío con su etiqueta y no se rompe
    nada. `npm run hero` dice qué falta. */
-import { existsSync } from 'node:fs';
+import { existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { contacto } from '../../content/sitio.ts';
 
 const CARPETA = join(process.cwd(), 'public', 'hero');
 const BASE = 'autoclave-tuttnauer';
 
-/* Se prefieren las versiones que genera `npm run hero`; si no existen, se usa
-   el original tal cual, para que poner el archivo baste. */
-const hay = (f: string) => existsSync(join(CARPETA, f));
-const optimizadas = hay(`${BASE}-1600.webp`) && hay(`${BASE}-800.webp`);
-const original = ['webp', 'png', 'jpg', 'jpeg'].map((e) => `${BASE}.${e}`).find(hay);
-const imagen = optimizadas ? `/hero/${BASE}-1600.webp` : original ? `/hero/${original}` : null;
+/* Los anchos no se asumen: se descubren. `npm run hero` genera sólo los que el
+   original puede dar —agrandar no añade detalle—, así que la plantilla lee la
+   carpeta y arma el srcset con lo que de verdad existe. Si no hay versiones
+   generadas, se usa el original tal cual, para que poner el archivo baste. */
+const archivos = existsSync(CARPETA) ? readdirSync(CARPETA) : [];
+const generadas = archivos
+  .map((f) => f.match(new RegExp(`^${BASE}-(\\d+)\\.webp$`)))
+  .filter(Boolean)
+  .map((m) => ({ archivo: m![0], ancho: Number(m![1]) }))
+  .sort((a, b) => a.ancho - b.ancho);
+
+const original = ['webp', 'png', 'jpg', 'jpeg']
+  .map((e) => `${BASE}.${e}`)
+  .find((f) => archivos.includes(f));
+
+const servida = generadas.at(-1)?.archivo ?? original ?? null;
+const imagen = servida ? `/hero/${servida}` : null;
+const srcset = generadas.map((g) => `/hero/${g.archivo} ${g.ancho}w`).join(', ');
 
 /* Las dimensiones reales evitan el salto de maquetación. Se leen del archivo
    servido, no se escriben a mano. */
 let dim = { w: 1200, h: 1600 };
-if (imagen) {
+if (servida) {
   try {
     const sharp = (await import('sharp')).default;
-    const m = await sharp(join(CARPETA, imagen.replace('/hero/', ''))).metadata();
+    const m = await sharp(join(CARPETA, servida)).metadata();
     if (m.width && m.height) dim = { w: m.width, h: m.height };
   } catch {
     /* sin sharp se usan las proporciones por defecto; no vale romper el build */
@@ -67,22 +79,18 @@ if (imagen) {
         <div class="hero-caja">
           {imagen && (
             <picture>
-              {optimizadas && (
-                <source
-                type="image/webp"
-                srcset={`/hero/${BASE}-800.webp 800w, /hero/${BASE}-1600.webp 1600w`}
-                  sizes="(min-width: 1024px) 45vw, 90vw"
-                />
+              {generadas.length > 1 && (
+                <source type="image/webp" srcset={srcset} sizes="(min-width: 1024px) 45vw, 90vw" />
               )}
               <img
-              class="hero-equipo"
-              src={imagen}
-              alt="Autoclave de vapor Tuttnauer con carro de carga e instrumental empacado"
-              width={dim.w}
-              height={dim.h}
-              fetchpriority="high"
-              decoding="async"
-            />
+                class="hero-equipo"
+                src={imagen}
+                alt="Autoclave de vapor Tuttnauer de doble puerta, con la cámara cargada"
+                width={dim.w}
+                height={dim.h}
+                fetchpriority="high"
+                decoding="async"
+              />
             </picture>
           )}
         </div>
@@ -281,6 +289,10 @@ if (imagen) {
       block-size: calc(100% + 40px);
       margin-bottom: -40px;
       max-inline-size: 78%;
+      /* A la derecha del centro: la etiqueta vive en la esquina inferior
+         izquierda y el encargo pide que no tape el equipo. */
+      justify-self: end;
+      margin-inline-end: 6%;
     }
 
     .hero-caja::after { bottom: -46px; }

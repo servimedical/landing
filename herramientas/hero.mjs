@@ -65,29 +65,38 @@ if (kb > PESO_MAXIMO_KB)
   avisos.push(`Pesa ${kb} kB; el máximo recomendado es ${PESO_MAXIMO_KB} kB.`);
 
 /* Las versiones viejas se borran antes: si la nueva imagen es más pequeña, una
-   versión anterior más grande seguiría sirviéndose desde el srcset. */
+   versión anterior más grande seguiría sirviéndose desde el srcset.
+   Nunca se borra el original, aunque llegue con uno de esos nombres. */
 for (const a of ANCHOS) {
   const f = join(CARPETA, `${BASE}-${a}.webp`);
-  if (existsSync(f)) unlinkSync(f);
+  if (existsSync(f) && f !== original) unlinkSync(f);
 }
+
+/* Sólo se generan los anchos que el original puede dar. Agrandar una imagen no
+   añade detalle, y anunciar «1600w» en el srcset para un archivo de 423 px le
+   dice al navegador que descargue el grande en pantallas donde no sirve. */
+const anchoUtil = (await sharp(original).trim().metadata()).width;
+const aGenerar = ANCHOS.filter((a) => a <= anchoUtil);
+if (!aGenerar.length) aGenerar.push(anchoUtil);
 
 console.log('\nGENERADAS');
 const salidas = [];
-for (const ancho of ANCHOS) {
+for (const ancho of aGenerar) {
   const destino = join(CARPETA, `${BASE}-${ancho}.webp`);
   const info = await sharp(original)
     .trim()                                   // fuera el margen vacío
     .resize({ width: ancho, withoutEnlargement: true, fit: 'inside' })
     .webp({ quality: 86 })
     .toFile(destino);
-  const salidaKb = Math.round(info.size / 1024);
-  salidas.push({ ancho: info.width, alto: info.height, kb: salidaKb });
-  console.log(`  ${BASE}-${ancho}.webp · ${info.width} × ${info.height} px · ${salidaKb} kB`);
+  salidas.push({ nombre: `${BASE}-${ancho}.webp`, ancho: info.width, alto: info.height, kb: Math.round(info.size / 1024) });
+  console.log(`  ${BASE}-${ancho}.webp · ${info.width} × ${info.height} px · ${Math.round(info.size / 1024)} kB`);
 }
+for (const a of ANCHOS.filter((a) => a > anchoUtil))
+  console.log(`  ${BASE}-${a}.webp · no se genera: el original sólo da ${anchoUtil} px de ancho`);
 
-const grande = salidas[0];
+const grande = salidas[salidas.length - 1];
 console.log('\nPARA LA PÁGINA');
-console.log(`  La plantilla ya declara width="${grande.ancho}" height="${grande.alto}" sola.`);
+console.log(`  Se sirve a ${grande.ancho} × ${grande.alto} px. La plantilla lo lee sola.`);
 
 if (avisos.length) {
   console.log(`\nAVISOS`);
