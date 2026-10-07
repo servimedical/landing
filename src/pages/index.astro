@@ -1,83 +1,77 @@
 ---
+import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import CartaCiclo from '../components/hero/CartaCiclo.astro';
-import { home } from '../content/institucional.ts';
-import { marcas } from '../datos/marcas.ts';
-import BrandLogo from '../components/marca/BrandLogo.astro';
+import TarjetaMarca from '../components/marca/TarjetaMarca.astro';
+import { home, servicios } from '../content/institucional.ts';
+
+const marcas = (await getCollection('marcas'))
+  .sort((a, b) => a.data.orden - b.data.orden)
+  .map((e) => e.data);
 ---
 <Base
   titulo="Servimedical Group — Centrales de esterilización en Colombia"
   descripcion="Equipos de esterilización, consumibles, accesorios, repuestos y mobiliario en acero, con servicio técnico propio. Importación directa desde Bogotá, cobertura nacional."
 >
-  {/* Hero y franja de marcas ocupan juntos la primera pantalla. */}
-  <div class="flex min-h-[calc(100svh-var(--spacing-header))] flex-col">
-    <div class="contenedor grid flex-1 items-center gap-8 py-6 lg:grid-cols-[1.12fr_.88fr] lg:gap-[clamp(32px,5vw,72px)] lg:py-12">
-      <div>
-        <p class="meta text-steel">Especialistas en esterilización · Latam</p>
-        {/* Única línea del sitio con tuteo. Decisión del cliente; el resto
-            mantiene el trato de usted (ver src/content/VOZ.md). */}
-        <h1 class="mt-4 max-w-[26ch] text-[clamp(28px,3.4vw,44px)] lg:mt-5">
-          Tu aliado en todo el{' '}<span class="block text-steel">proceso de esterilización</span>
-        </h1>
-        <p class="mt-5 max-w-[48ch] text-[15px] leading-relaxed text-steel lg:mt-6 lg:text-[clamp(16px,1.3vw,18.5px)]">
-          Importamos y distribuimos equipos de esterilización y consumibles para
-          Latinoamérica, con servicio técnico 24/7.
-        </p>
-        <div class="mt-6 flex flex-wrap gap-3 lg:mt-8">
-          <a href="/contacto" class="inline-flex items-center gap-2.5 border border-navy bg-navy px-5 py-3.5 text-[14.5px] font-medium text-white hover:bg-navy-deep">
-            <span aria-hidden="true" class="senal"></span>Hablar con un especialista
-          </a>
-          <a href="/marcas" class="inline-flex items-center border border-rule px-5 py-3.5 text-[14.5px] hover:bg-paper">
-            Ver las marcas
-          </a>
-        </div>
+  {/* Hero: ocupa la primera pantalla, con tope. Sin el tope, en un monitor
+      alto el titular queda flotando en medio de medio metro de blanco. */}
+  <div class="contenedor grid min-h-[min(calc(100svh-var(--spacing-header)),760px)] items-center gap-8 py-6 lg:grid-cols-[1.12fr_.88fr] lg:gap-[clamp(32px,5vw,72px)] lg:py-12">
+    <div>
+      <p class="meta text-steel">Especialistas en esterilización · Colombia</p>
+      <h1 class="mt-4 max-w-[26ch] text-[clamp(28px,3.4vw,44px)] lg:mt-5">
+        Todo el proceso de{' '}<span class="block text-steel">esterilización, con un responsable</span>
+      </h1>
+      <p class="mt-5 max-w-[48ch] text-[15px] leading-relaxed text-steel lg:mt-6 lg:text-[clamp(16px,1.3vw,18.5px)]">
+        Importamos y distribuimos equipos de esterilización y consumibles para centrales de
+        esterilización en Colombia, con servicio técnico propio.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-3 lg:mt-8">
+        <a href="/contacto" class="inline-flex items-center gap-2.5 border border-navy bg-navy px-5 py-3.5 text-[14.5px] font-medium text-white hover:bg-navy-deep">
+          <span aria-hidden="true" class="senal"></span>Hablar con un especialista
+        </a>
+        <a href="/lineas" class="inline-flex items-center border border-rule px-5 py-3.5 text-[14.5px] hover:bg-paper">
+          Ver las líneas
+        </a>
       </div>
-      <CartaCiclo />
     </div>
-
-    <section class="border-t border-rule bg-paper" aria-labelledby="marcas-h">
-      <div class="contenedor py-5 lg:py-6">
-        <div class="flex flex-wrap items-baseline justify-between gap-4">
-          <h2 id="marcas-h" class="meta text-[10px] text-steel">Marcas que representamos</h2>
-          <p id="marcas-pista" class="meta text-[10px] text-steel transition-opacity" hidden>
-            Deslice <span aria-hidden="true">→</span>
-          </p>
-        </div>
-
-        <ul
-          id="marcas-pista-track"
-          class="deslizable [--sangria:clamp(20px,5vw,64px)] -mx-[clamp(20px,5vw,64px)]
-                 mt-4 flex items-center gap-x-[clamp(22px,3.4vw,52px)]
-                 px-[clamp(20px,5vw,64px)] lg:mx-0 lg:justify-between lg:px-0 lg:[--sangria:0px]"
-        >
-          {[...marcas].sort((a, b) => a.orden - b.orden).map((m) => (
-            <li class="shrink-0">
-              <a href={`/marcas/${m.slug}`} title={m.descriptor} class="block">
-                <BrandLogo marca={m} alto="34px" />
-              </a>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
+    <CartaCiclo />
   </div>
 
-  <!-- Líneas de negocio -->
-  <section class="border-t border-rule" aria-labelledby="lineas">
+  <!-- Marcas que representamos -->
+  <section class="border-t border-rule" aria-labelledby="marcas">
     <div class="contenedor py-14 lg:py-20">
-      <h2 id="lineas" class="sr-only">Líneas de negocio</h2>
-      <div class="grid gap-px border border-rule bg-rule lg:grid-cols-2">
-        {home.lineas.map((l) => (
-          <a href={l.url} class="group flex flex-col bg-white p-8 transition-colors hover:bg-paper lg:p-12">
-            <span class="meta text-[10.5px] text-steel">{l.etiqueta}</span>
-            <span class="mt-4 font-display text-[clamp(24px,2.8vw,34px)] leading-tight font-bold [font-variation-settings:'wdth'_112]">
-              {l.titulo}
-            </span>
-            <span class="mt-4 max-w-[44ch] flex-1 text-[16px] leading-relaxed text-steel">{l.texto}</span>
-            <span class="meta mt-8 border-t border-rule pt-5 text-[10px] text-steel group-hover:text-navy">Ver la línea →</span>
-          </a>
+      <h2 id="marcas" class="text-[clamp(24px,3vw,34px)]">Marcas que representamos</h2>
+      <p class="mt-4 max-w-[58ch] text-[17px] text-steel">
+        Importación directa de fábrica, con servicio técnico y repuesto original sostenidos en Colombia.
+      </p>
+
+      <ul class="rejilla mt-9 sm:grid-cols-2 lg:grid-cols-3">
+        {marcas.map((m) => (<TarjetaMarca marca={m} />))}
+      </ul>
+
+      <a href="/marcas" class="meta mt-8 inline-block text-[10px] text-steel hover:text-navy">Ver todas las marcas →</a>
+    </div>
+  </section>
+
+  <!-- Servicios -->
+  <section class="field-paper border-t border-rule" aria-labelledby="servicios">
+    <div class="contenedor py-14 lg:py-20">
+      <h2 id="servicios" class="text-[clamp(24px,3vw,34px)]">Servicios</h2>
+      <p class="mt-4 max-w-[58ch] text-[17px] text-steel">{servicios.lead}</p>
+
+      <ul class="rejilla mt-9 sm:grid-cols-2 lg:grid-cols-4">
+        {servicios.items.map((s) => (
+          <li class="flex flex-col border-b border-r border-rule bg-white">
+            <a href={`/servicios#${s.slug}`} class="group flex h-full flex-col p-6 transition-colors hover:bg-paper">
+              <span class="font-display text-[clamp(17px,1.9vw,20px)] leading-tight font-bold [font-variation-settings:'wdth'_110]">
+                {s.titulo}
+              </span>
+              <span class="mt-3 flex-1 text-[14.5px] leading-relaxed text-steel">{s.resumen}</span>
+              <span class="meta mt-6 border-t border-rule pt-4 text-[10px] text-steel group-hover:text-navy">Ver servicio →</span>
+            </a>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   </section>
 
@@ -92,7 +86,7 @@ import BrandLogo from '../components/marca/BrandLogo.astro';
   </div>
 
   <!-- Cierre -->
-  <section class="field-paper border-t border-rule" aria-labelledby="cierre">
+  <section class="border-t border-rule" aria-labelledby="cierre">
     <div class="contenedor flex flex-wrap items-end justify-between gap-8 py-14 lg:py-20">
       <div>
         <h2 id="cierre" class="max-w-[18ch] text-[clamp(24px,3vw,36px)]">{home.cierre.titulo}</h2>
@@ -104,21 +98,3 @@ import BrandLogo from '../components/marca/BrandLogo.astro';
     </div>
   </section>
 </Base>
-
-<script>
-  /* Pista de deslizamiento: aparece sólo cuando la franja desborda. */
-  const track = document.getElementById('marcas-pista-track');
-  const pista = document.getElementById('marcas-pista');
-  if (track && pista) {
-    const revisar = () => {
-      const desborda = track.scrollWidth - track.clientWidth > 8;
-      pista.hidden = !desborda;
-      const alFinal = track.scrollLeft + track.clientWidth >= track.scrollWidth - 8;
-      pista.style.opacity = desborda && !alFinal ? '1' : '0';
-    };
-    revisar();
-    track.addEventListener('scroll', revisar, { passive: true });
-    addEventListener('resize', revisar);
-    if (document.fonts) document.fonts.ready.then(revisar);
-  }
-</script>

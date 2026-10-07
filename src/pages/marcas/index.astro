@@ -2,15 +2,14 @@
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Migas from '../../components/Migas.astro';
-import BrandLogo from '../../components/marca/BrandLogo.astro';
+import TarjetaMarca from '../../components/marca/TarjetaMarca.astro';
 import Formulario from '../../components/formulario/Formulario.astro';
-import { lineasDe, urlLinea } from '../../datos/lineas.ts';
 import { normalizar } from '../../content/navegacion.ts';
 
 const rutaActual = normalizar(Astro.url.pathname);
 const marcas = (await getCollection('marcas'))
   .sort((a, b) => a.data.orden - b.data.orden)
-  .map((e) => ({ m: e.data, lineas: lineasDe(e.data.slug) }));
+  .map((e) => e.data);
 ---
 <Base
   titulo="Marcas que representamos | Servimedical"
@@ -29,32 +28,7 @@ const marcas = (await getCollection('marcas'))
   <section class="border-t border-rule">
     <div class="contenedor py-12 lg:py-16">
       <ul class="rejilla sm:grid-cols-2 lg:grid-cols-3">
-        {marcas.map(({ m, lineas }) => (
-          <li class="flex flex-col border-b border-r border-rule p-6 lg:p-7">
-            <a href={`/marcas/${m.slug}`} class="group">
-              <BrandLogo marca={m} alto="44px" />
-              <span class="meta mt-5 block text-[10px] text-steel">{m.descriptor}</span>
-            </a>
-
-            {lineas.length > 0 && (
-              <ul class="mt-5 flex flex-wrap gap-2">
-                {lineas.map((l) => (
-                  <li>
-                    <a href={urlLinea(l)} class="inline-block border border-rule px-2.5 py-1.5 text-[13px] text-steel transition-colors hover:border-navy/35 hover:text-navy">
-                      {l.nombre}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            )}
-
-            <div class="mt-auto pt-7">
-              <a href={`/marcas/${m.slug}`} class="meta block border-t border-rule pt-4 text-[10px] text-steel hover:text-navy">
-                Ver marca →
-              </a>
-            </div>
-          </li>
-        ))}
+        {marcas.map((m) => (<TarjetaMarca marca={m} />))}
       </ul>
     </div>
   </section>

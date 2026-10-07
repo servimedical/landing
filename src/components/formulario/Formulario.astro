@@ -5,22 +5,28 @@
 
    La casilla de autorización no viene marcada y sin ella no se envía:
    Ley 1581 de 2012 y Decreto 1377 de 2013. */
-import { FORMULARIO, TEXTO_AUTORIZACION, URL_POLITICA, CAMPO_TRAMPA } from '../../lib/formularios.ts';
+import { FORMULARIO, TEXTO_AUTORIZACION, URL_POLITICA, CAMPO_TRAMPA, INTRO } from '../../lib/formularios.ts';
 import { contacto, canalesContacto, sitio } from '../../content/sitio.ts';
 
 interface Props {
-  /** Valor del campo fijo «Sobre qué». */
-  fijo?: string;
   id?: string;
   titulo?: string;
   /** 1 cuando el formulario es el contenido de la página (/contacto). */
   nivel?: 1 | 2;
   /** Muestra todos los canales con su rótulo, no sólo los tres de atajo. */
   detallado?: boolean;
+  /** Qué se dimensiona en esta página. Decide el encuadre de la entradilla. */
+  encuadre?: keyof typeof INTRO;
+  /** Línea o marca de la página: se escribe al inicio de la descripción,
+   *  editable, y preselecciona «Cotización». */
+  contexto?: string;
 }
-const { fijo, id = 'cotizar', titulo, nivel = 2, detallado = false } = Astro.props;
+const { id = 'cotizar', titulo, nivel = 2, detallado = false, encuadre = 'general', contexto } = Astro.props;
 const form = FORMULARIO;
 const Encabezado = nivel === 1 ? 'h1' : 'h2';
+const intro = INTRO[encuadre];
+const tipoPorDefecto = contexto ? 'Cotización' : '';
+const descripcionInicial = contexto ? `${contexto}. ` : '';
 const horarioVisible = !sitio.horario.startsWith('{{');
 ---
 <section id={id} class="field-paper border-t border-rule" aria-labelledby={`${id}-t`}>
@@ -30,7 +36,7 @@ const horarioVisible = !sitio.horario.startsWith('{{');
         <Encabezado id={`${id}-t`} class:list={[nivel === 1 ? 'text-[clamp(28px,3.4vw,42px)]' : 'text-[clamp(22px,2.6vw,32px)]']}>
           {titulo ?? form.titulo}
         </Encabezado>
-        <p class="mt-4 max-w-[44ch] text-steel">{form.intro}</p>
+        <p class="mt-4 max-w-[44ch] text-steel">{intro}</p>
 
         {detallado ? (
           <dl class="mt-8 border-t border-rule">
@@ -80,27 +86,37 @@ const horarioVisible = !sitio.horario.startsWith('{{');
               const idc = `${id}-${c.nombre}`;
               const desc = [c.ayuda ? `${idc}-ayuda` : null, `${idc}-error`].filter(Boolean).join(' ');
               return (
-                <div class:list={['campo', c.ancho && 'campo--full']}>
-                  <label class="k" for={idc}>
-                    {c.rotulo}{c.requerido && <i class="req" aria-hidden="true"></i>}
-                    {c.requerido && <span class="sr-only"> (obligatorio)</span>}
-                  </label>
+                <div class:list={['campo', c.ancho && 'campo--full']} role={c.tipo === 'opcion' ? 'group' : undefined} aria-labelledby={c.tipo === 'opcion' ? `${idc}-k` : undefined}>
+                  {c.tipo === 'opcion' ? (
+                    <span class="k" id={`${idc}-k`}>
+                      {c.rotulo}<i class="req" aria-hidden="true"></i><span class="sr-only"> (obligatorio)</span>
+                    </span>
+                  ) : (
+                    <label class="k" for={idc}>
+                      {c.rotulo}{c.requerido && <i class="req" aria-hidden="true"></i>}
+                      {c.requerido && <span class="sr-only"> (obligatorio)</span>}
+                    </label>
+                  )}
 
                   {c.tipo === 'area' ? (
                     <textarea id={idc} name={c.nombre} rows="3" placeholder={c.marcador}
-                      aria-describedby={desc} required={c.requerido} />
-                  ) : c.tipo === 'seleccion' ? (
-                    <select id={idc} name={c.nombre} aria-describedby={desc} required={c.requerido}>
-                      <option value="">Seleccione…</option>
-                      {c.opciones?.map((o) => (<option value={o}>{o}</option>))}
-                    </select>
+                      aria-describedby={desc} required={c.requerido}
+                      set:text={c.nombre === 'descripcion' ? descripcionInicial : ''} />
+                  ) : c.tipo === 'opcion' ? (
+                    <div class="opciones">
+                      {c.opciones?.map((o) => (
+                        <label class="opcion">
+                          <input type="radio" name={c.nombre} value={o}
+                            checked={o === tipoPorDefecto || undefined}
+                            aria-describedby={desc} />
+                          <span>{o}</span>
+                        </label>
+                      ))}
+                    </div>
                   ) : (
                     <input id={idc} name={c.nombre}
                       type={c.tipo === 'correo' ? 'email' : c.tipo === 'telefono' ? 'tel' : 'text'}
-                      value={c.fijo ? fijo : undefined}
-                      readonly={(c.fijo && !!fijo) || undefined}
-                      placeholder={c.fijo && !fijo ? 'Autoclave, papel grado esterilización, repuesto…' : c.marcador}
-                      autocomplete={c.autocomplete}
+                      placeholder={c.marcador} autocomplete={c.autocomplete}
                       aria-describedby={desc} required={c.requerido} />
                   )}
 
@@ -117,18 +133,15 @@ const horarioVisible = !sitio.horario.startsWith('{{');
             <input id={`${id}-${CAMPO_TRAMPA}`} name={CAMPO_TRAMPA} type="text" tabindex="-1" autocomplete="off" />
           </div>
 
-          <!-- Habeas data -->
-          <div class="mt-6 border border-rule p-5">
-            <p class="meta text-[10px] text-steel">Finalidad del tratamiento</p>
-            <p class="mt-2 text-[14.5px] text-steel">{form.finalidad}</p>
-
-            <div class="mt-4 flex items-start gap-3">
+          <!-- Habeas data · Ley 1581 de 2012. La casilla nunca viene marcada. -->
+          <div class="mt-5">
+            <div class="flex items-start gap-3">
               <input id={`${id}-autorizacion`} name="autorizacion" type="checkbox"
                 class="casilla" required aria-describedby={`${id}-autorizacion-error`} />
-              <label for={`${id}-autorizacion`} class="text-[14.5px] leading-relaxed">
+              <label for={`${id}-autorizacion`} class="text-[14px] leading-relaxed text-steel">
                 {TEXTO_AUTORIZACION}{' '}
-                <a href={URL_POLITICA} class="underline decoration-rule underline-offset-4 hover:decoration-navy">
-                  Ver la política de tratamiento de datos</a>.
+                <a href={URL_POLITICA} class="text-navy underline decoration-navy/35 underline-offset-[3px] hover:decoration-navy">
+                  Ver la política</a>.
               </label>
             </div>
             <p id={`${id}-autorizacion-error`} class="error" data-error="autorizacion" hidden></p>
@@ -136,11 +149,12 @@ const horarioVisible = !sitio.horario.startsWith('{{');
 
           <p class="error error--global" data-error-global hidden role="alert"></p>
 
-          <div class="mt-6 flex flex-wrap gap-3">
+          <div class="mt-6">
             <button type="submit" class="enviar inline-flex items-center gap-2.5 border border-navy bg-navy px-5 py-3.5 text-[14.5px] font-medium text-white hover:bg-navy-deep disabled:opacity-60">
               <span class="senal" aria-hidden="true"></span>
               <span data-etiqueta>Enviar solicitud</span>
             </button>
+            <p class="mt-3 text-[13px] text-steel">Respondemos en horario hábil.</p>
           </div>
         </form>
 
@@ -179,6 +193,23 @@ const horarioVisible = !sitio.horario.startsWith('{{');
   input::placeholder, textarea::placeholder { color: #9fb0c4 }
   input:not(.casilla):focus, textarea:focus, select:focus { outline: 0 }
 
+  /* Cuatro botones de selección, no un desplegable: el tipo de solicitud
+     decide qué se pregunta después, así que tiene que verse entero. */
+  .opciones { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px }
+  .opcion {
+    display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+    border: 1px solid var(--color-rule); padding: 8px 13px;
+    font-size: 14.5px; color: var(--color-navy); line-height: 1.2;
+    transition: border-color 120ms ease, background-color 120ms ease;
+  }
+  .opcion:hover { border-color: color-mix(in srgb, var(--color-navy) 35%, transparent) }
+  .opcion input {
+    width: 14px; height: 14px; flex: none; margin: 0;
+    accent-color: var(--color-signal); cursor: pointer;
+  }
+  .opcion:has(input:checked) { border-color: var(--color-navy); background: var(--color-paper) }
+  .opcion:has(input:focus-visible) { outline: 2px solid var(--color-navy); outline-offset: 2px }
+
   .casilla {
     width: 18px; height: 18px; flex: none; margin-top: 3px;
     accent-color: var(--color-signal); cursor: pointer;
@@ -196,7 +227,7 @@ const horarioVisible = !sitio.horario.startsWith('{{');
 </style>
 
 <script>
-  import { FORMULARIO, validar, hayErrores, CAMPO_TRAMPA } from '../../lib/formularios.ts';
+  import { FORMULARIO, validar, hayErrores, CAMPO_TRAMPA, DESCRIPCION_POR_TIPO } from '../../lib/formularios.ts';
 
   const emitir = (nombre: string, detalle: Record<string, unknown>) => {
     document.dispatchEvent(new CustomEvent(`svmg:${nombre}`, { detail: detalle }));
@@ -216,6 +247,29 @@ const horarioVisible = !sitio.horario.startsWith('{{');
     const campo = (n: string) => form.querySelector<HTMLElement>(`[name="${n}"]`);
     const cajaError = (n: string) => form.querySelector<HTMLElement>(`[data-error="${n}"]`);
 
+    /* Lo que se pide en la descripción depende del tipo de solicitud: a quien
+       tiene el equipo parado no se le pregunta por el volumen de carga. */
+    const descripcion = form.querySelector<HTMLTextAreaElement>('[name="descripcion"]');
+    const ayudaDescripcion = form.querySelector<HTMLElement>(`#${CSS.escape(descripcion?.id ?? '')}-ayuda`);
+
+    const ajustarDescripcion = (valor: string) => {
+      const d = DESCRIPCION_POR_TIPO[valor as keyof typeof DESCRIPCION_POR_TIPO];
+      if (!d || !descripcion) return;
+      descripcion.placeholder = d.marcador;
+      if (ayudaDescripcion) {
+        ayudaDescripcion.textContent = d.ayuda ?? '';
+        ayudaDescripcion.hidden = !d.ayuda;
+      }
+    };
+
+    form.querySelectorAll<HTMLInputElement>('[name="tipo"]').forEach((r) => {
+      r.addEventListener('change', () => {
+        ajustarDescripcion(r.value);
+        revisarCampo('tipo');
+      });
+      if (r.checked) ajustarDescripcion(r.value);
+    });
+
     const limpiar = () => {
       global.hidden = true;
       form.querySelectorAll<HTMLElement>('[data-error]').forEach((e) => { e.hidden = true; e.textContent = ''; });
@@ -230,7 +284,7 @@ const horarioVisible = !sitio.horario.startsWith('{{');
         campo(n)?.setAttribute('aria-invalid', 'true');
       }
       const primero = Object.keys(errores)[0];
-      if (primero) campo(primero)?.focus();
+      if (primero) (campo(primero) as HTMLElement | null)?.focus();
     };
 
     const datos = () => {
@@ -239,6 +293,36 @@ const horarioVisible = !sitio.horario.startsWith('{{');
       for (const c of def.campos) o[c.nombre] = String(d.get(c.nombre) ?? '');
       return o;
     };
+
+    /* Validación en línea: cada campo se revisa al salir de él, y un campo
+       que ya estaba marcado se corrige en cuanto deja de estar mal. Nunca se
+       usan los avisos del navegador —de ahí el `novalidate`—. */
+    function revisarCampo(nombre: string) {
+      const errores = validar(def, datos());
+      const msg = errores[nombre];
+      const caja = cajaError(nombre);
+      const control = campo(nombre);
+      if (caja) { caja.textContent = msg ?? ''; caja.hidden = !msg; }
+      if (control) {
+        if (msg) control.setAttribute('aria-invalid', 'true');
+        else control.removeAttribute('aria-invalid');
+      }
+    }
+
+    for (const c of def.campos) {
+      if (c.tipo === 'opcion') continue;
+      const control = campo(c.nombre);
+      control?.addEventListener('blur', () => revisarCampo(c.nombre));
+      control?.addEventListener('input', () => {
+        if (control.getAttribute('aria-invalid') === 'true') revisarCampo(c.nombre);
+      });
+    }
+
+    const casilla = form.querySelector<HTMLInputElement>('[name="autorizacion"]');
+    casilla?.addEventListener('change', () => {
+      const caja = cajaError('autorizacion');
+      if (caja && casilla.checked) { caja.hidden = true; caja.textContent = ''; }
+    });
 
     /* Un error de envío nunca pierde lo escrito: el formulario sigue ahí, con
        sus valores, y se ofrece la vía alterna. */

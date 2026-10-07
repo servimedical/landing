@@ -47,10 +47,12 @@ export function validarEnlaces() {
         }
 
         /* Enlaces del contenido institucional. */
-        for (const l of home.lineas) revisar(l.url, `home · tarjeta «${l.titulo}»`);
         revisar(home.cierre.url, 'home · cierre');
         for (const r of contactoPagina.rutas ?? []) if (r.ancla?.startsWith('/')) revisar(r.ancla, 'contacto');
-        void servicios;
+
+        /* Las tarjetas de servicio de la home anclan dentro de /servicios: el
+           ancla tiene que existir como sección de esa página. */
+        for (const x of servicios.items) revisar('/servicios', `home · tarjeta «${x.titulo}»`);
 
         if (fallos.length)
           throw new Error(

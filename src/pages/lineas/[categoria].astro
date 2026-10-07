@@ -73,6 +73,10 @@ const filas: { label: string; valores: string[] }[] = [
 
 const encabezado = (l: Linea) => etiquetaMenu(l, nombreMarca(l.marca));
 
+/* Un equipo se dimensiona; un consumible se programa. La categoría hereda el
+   encuadre de sus líneas. */
+const encuadre = lineas.every((l) => l.tipo === 'equipo') ? 'equipo' : 'consumible';
+
 const jsonld = {
   '@context': 'https://schema.org',
   '@type': 'CollectionPage',
@@ -142,7 +146,7 @@ const jsonld = {
     </div>
   </section>
 
-  <Formulario fijo={c.nombre} titulo="Hable con un especialista" />
+  <Formulario contexto={c.nombre} encuadre={encuadre} titulo="Hable con un especialista" />
 
   <script type="application/ld+json" set:html={JSON.stringify(jsonld)} is:inline />
 </Base>

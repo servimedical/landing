@@ -47,7 +47,9 @@ export type Marca = {
   rolSVMG: 'representante' | 'distribuidor';
   /** Número real de registro sanitario. Vacío mientras no esté confirmado. */
   invima?: string;
-  logo: { src: string; alt: string; escala?: number };
+  logo: { src: string; alt: string };
+  /** Corrige el peso óptico de un logo suelto. 1 es el tamaño natural. */
+  logoEscala?: number;
   etapasCiclo: EtapaCiclo[];
   pruebas?: Prueba[];
   respaldo?: string[];

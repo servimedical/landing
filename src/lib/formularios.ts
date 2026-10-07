@@ -5,11 +5,12 @@
    comodidad; la que cuenta es la del servidor, y ambas tienen que decir lo
    mismo o el usuario ve un error que no entiende.
 
-   Los tres formularios comparten componente, validación y manejo de estados.
-   Cambian los campos, no el comportamiento.
+   Un solo formulario para todo el sitio. Lo que cambia con la página es el
+   encuadre —qué se dimensiona— y lo que se pide en la descripción según el
+   tipo de solicitud. El comportamiento no cambia nunca.
    ========================================================================== */
 
-export type TipoCampo = 'texto' | 'correo' | 'telefono' | 'area' | 'seleccion';
+export type TipoCampo = 'texto' | 'correo' | 'telefono' | 'area' | 'opcion';
 
 export type Campo = {
   nombre: string;
@@ -21,8 +22,6 @@ export type Campo = {
   opciones?: string[];
   /** Ocupa las dos columnas de la rejilla. */
   ancho?: boolean;
-  /** Se rellena desde la página y no se edita. */
-  fijo?: boolean;
   autocomplete?: string;
 };
 
@@ -48,9 +47,7 @@ export type Formulario = {
 export const VERSION_AUTORIZACION = '2026-08-26.v1';
 
 export const TEXTO_AUTORIZACION =
-  'Autorizo a Servimedical Group SAS a tratar mis datos personales con la ' +
-  'finalidad indicada arriba, en los términos de su política de tratamiento ' +
-  'de datos.';
+  'Autorizo a Servimedical Group SAS a tratar mis datos para atender esta solicitud.';
 
 export const URL_POLITICA = '/politica-de-tratamiento-de-datos';
 
@@ -64,43 +61,61 @@ export const CAMPO_TRAMPA = 'apellido_materno';
 export const MINIMO_SEGUNDOS = 3;
 
 /* ---------------------------------------------------------------------------
-   LOS TRES FORMULARIOS
+   EL FORMULARIO
    -------------------------------------------------------------------------- */
 
-const CONTACTO_BASE: Campo[] = [
-  { nombre: 'institucion', rotulo: 'Institución', tipo: 'texto', requerido: true, marcador: 'Clínica San Rafael', autocomplete: 'organization' },
-  { nombre: 'ciudad', rotulo: 'Ciudad', tipo: 'texto', marcador: 'Bogotá', autocomplete: 'address-level2' },
-  { nombre: 'nombre', rotulo: 'Nombre y cargo', tipo: 'texto', requerido: true, marcador: 'Ana Ruiz, jefe de central', autocomplete: 'name' },
-  { nombre: 'telefono', rotulo: 'Teléfono o WhatsApp', tipo: 'telefono', marcador: '300 000 0000', autocomplete: 'tel' },
-  { nombre: 'correo', rotulo: 'Correo', tipo: 'correo', requerido: true, marcador: 'ana@clinica.com', autocomplete: 'email' },
-];
+export const TIPOS_SOLICITUD = ['Cotización', 'Servicio técnico', 'Repuesto', 'Licitación'] as const;
+export type TipoSolicitud = (typeof TIPOS_SOLICITUD)[number];
 
-export const TIPOS_SOLICITUD = [
-  'Cotización',
-  'Servicio técnico o equipo detenido',
-  'Repuesto',
-  'Licitación o pliego',
-] as const;
+/* Lo que se pide en la descripción cambia con el tipo de solicitud: a un
+   ingeniero con el equipo parado no se le pregunta por el volumen de carga.
+   El guion del componente intercambia marcador y ayuda al escoger el tipo. */
+export const DESCRIPCION_POR_TIPO: Record<TipoSolicitud, { marcador: string; ayuda?: string }> = {
+  'Cotización': {
+    marcador: 'Qué necesita procesar, cuántas cargas por día y para cuándo.',
+    ayuda: 'Si tiene plano o pliego, mencione que lo tiene y se lo pedimos.',
+  },
+  'Servicio técnico': {
+    marcador: 'Equipo, marca y modelo (están en la placa), qué falla y desde cuándo.',
+    ayuda: 'Si el equipo está detenido, llame también al fijo.',
+  },
+  'Repuesto': {
+    marcador: 'Equipo, marca, modelo y serie, y la referencia del repuesto si la tiene.',
+  },
+  'Licitación': {
+    marcador: 'Entidad, número de proceso y fecha de cierre.',
+  },
+};
 
-/* Un solo formulario para todo. Antes había tres y la persona tenía que
-   adivinar cuál le tocaba; ahora escoge el tipo de solicitud y los campos
-   propios de repuesto y de servicio técnico aparecen sólo si aplican. */
+/* Tres encuadres del mismo formulario. El de la página decide cuál aplica:
+   un autoclave se dimensiona, un consumible se programa. */
+export const INTRO = {
+  equipo: 'Dimensionamos el equipo con su volumen de carga, su flujo y la infraestructura de la central.',
+  consumible: 'Armamos el esquema de consumo con sus cargas por día y el método de cada equipo.',
+  general: 'Cuéntenos qué necesita su central y le responde un especialista, no un formulario automático.',
+} as const;
+
+/* La rejilla es de dos columnas: un campo ancho, seis a media columna —tres
+   filas exactas— y la descripción ancha. Cierra sin celdas sueltas. */
 export const FORMULARIO: Formulario = {
   id: 'solicitud',
   titulo: 'Hable con un especialista en esterilización',
-  intro:
-    'Dimensionamos el equipo con su volumen de carga, su flujo y la infraestructura de la central. Si el equipo está detenido, llame también al fijo.',
+  intro: INTRO.general,
   finalidad: 'Atender su solicitud y mantener la comunicación relacionada con ella.',
   acuse: 'Su solicitud quedó registrada. El equipo comercial responde al correo que indicó.',
   campos: [
-    { nombre: 'tipo', rotulo: 'Tipo de solicitud', tipo: 'seleccion', requerido: true, opciones: [...TIPOS_SOLICITUD] },
-    { nombre: 'necesita', rotulo: 'Sobre qué', tipo: 'texto', requerido: true, fijo: true },
-    ...CONTACTO_BASE,
-    { nombre: 'equipo', rotulo: 'Equipo, marca y modelo', tipo: 'texto', ancho: true,
-      ayuda: 'Para servicio técnico o repuesto. La placa del equipo trae marca, modelo y serie.',
-      marcador: 'Autoclave Tuttnauer, modelo de la placa' },
-    { nombre: 'detalle', rotulo: 'Detalle', tipo: 'area', ancho: true,
-      marcador: 'Qué procesa y cuánto, o qué hace el equipo y desde cuándo.' },
+    { nombre: 'tipo', rotulo: 'Tipo de solicitud', tipo: 'opcion', requerido: true, ancho: true, opciones: [...TIPOS_SOLICITUD] },
+
+    { nombre: 'nombre', rotulo: 'Nombre', tipo: 'texto', requerido: true, marcador: 'Ana Ruiz', autocomplete: 'name' },
+    { nombre: 'cargo', rotulo: 'Cargo', tipo: 'texto', requerido: true, marcador: 'Jefe de central de esterilización', autocomplete: 'organization-title' },
+    { nombre: 'institucion', rotulo: 'Institución', tipo: 'texto', requerido: true, marcador: 'Clínica San Rafael', autocomplete: 'organization' },
+    { nombre: 'ciudad', rotulo: 'Ciudad', tipo: 'texto', marcador: 'Bogotá', autocomplete: 'address-level2' },
+    { nombre: 'correo', rotulo: 'Correo', tipo: 'correo', requerido: true, marcador: 'ana@clinica.com', autocomplete: 'email' },
+    { nombre: 'telefono', rotulo: 'Teléfono o WhatsApp', tipo: 'telefono', marcador: '300 000 0000', autocomplete: 'tel' },
+
+    { nombre: 'descripcion', rotulo: 'Descripción de la solicitud', tipo: 'area', requerido: true, ancho: true,
+      marcador: DESCRIPCION_POR_TIPO['Cotización'].marcador,
+      ayuda: DESCRIPCION_POR_TIPO['Cotización'].ayuda },
   ],
 };
 
@@ -127,7 +142,10 @@ export function validar(
   for (const c of form.campos) {
     const v = (datos[c.nombre] ?? '').trim();
 
-    if (c.requerido && !v) { e[c.nombre] = `${c.rotulo} es obligatorio.`; continue; }
+    if (c.requerido && !v) {
+      e[c.nombre] = c.tipo === 'opcion' ? 'Escoja el tipo de solicitud.' : `${c.rotulo} es obligatorio.`;
+      continue;
+    }
     if (!v) continue;
 
     if (v.length > (c.tipo === 'area' ? 2000 : 200))
@@ -136,7 +154,7 @@ export function validar(
       e[c.nombre] = 'Escriba un correo válido, con arroba y dominio.';
     else if (c.tipo === 'telefono' && !TELEFONO.test(v))
       e[c.nombre] = 'Escriba un número de teléfono válido.';
-    else if (c.tipo === 'seleccion' && c.opciones && !c.opciones.includes(v))
+    else if (c.tipo === 'opcion' && c.opciones && !c.opciones.includes(v))
       e[c.nombre] = `Escoja una de las opciones de ${c.rotulo.toLowerCase()}.`;
   }
 

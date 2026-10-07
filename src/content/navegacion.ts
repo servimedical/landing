@@ -62,7 +62,9 @@ export const navegacion: NodoNav[] = [
   },
 
   { titulo: 'Servicios', url: '/servicios', enNavbar: true, enFooter: 'empresa' },
-  { titulo: 'Contacto', url: '/contacto', enNavbar: true, enFooter: false },
+  /* Fuera del navbar: el botón «Hablar con un especialista» ya lleva aquí y
+     dos entradas al mismo sitio compiten entre ellas. Se mantiene en el pie. */
+  { titulo: 'Contacto', url: '/contacto', enNavbar: false, enFooter: 'empresa' },
 
   {
     titulo: 'Política de tratamiento de datos',

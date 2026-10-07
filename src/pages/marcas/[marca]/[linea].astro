@@ -63,7 +63,7 @@ if (l.faq?.length)
   <div class="contenedor grid gap-x-[clamp(32px,5vw,72px)] gap-y-10 py-12 lg:grid-cols-[1.05fr_.95fr] lg:py-16">
     <div>
       <a href={`/marcas/${m.slug}`} class="inline-block" aria-label={`Ver la marca ${m.nombre}`}>
-        <BrandLogo marca={m} alto="34px" />
+        <BrandLogo marca={m} size="sm" />
       </a>
       <h1 class="mt-5 max-w-[20ch] text-[clamp(28px,3.6vw,44px)]">{titular}</h1>
       <p class="mt-5 max-w-[52ch] text-[clamp(16px,1.3vw,18px)] leading-relaxed text-steel">{l.lead}</p>
@@ -275,7 +275,7 @@ if (l.faq?.length)
   ) : null}
 
   {/* 10 · CTA final */}
-  <Formulario fijo={`${l.nombre} — ${m.nombre}`} titulo={cotizar} />
+  <Formulario contexto={titular} encuadre={l.tipo === 'equipo' ? 'equipo' : 'consumible'} titulo={cotizar} />
 
   {jsonld.map((j) => (<script type="application/ld+json" set:html={JSON.stringify(j)} is:inline />))}
 </Base>

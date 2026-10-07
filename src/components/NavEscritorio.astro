@@ -1,8 +1,7 @@
 ---
 import { enNavbar, nodosMarcas, nodosCategorias, rutaActiva, normalizar } from '../content/navegacion.ts';
 import PanelMenu, { type ColumnaMenu } from './PanelMenu.astro';
-import { marcas } from '../datos/marcas.ts';
-import { lineasDeCategoria, etiquetaMenu, urlLinea } from '../datos/lineas.ts';
+import { lineasDeCategoria, urlLinea } from '../datos/lineas.ts';
 import { categorias, urlCategoria } from '../datos/categorias.ts';
 
 interface Props { rutaActual: string }
@@ -10,22 +9,24 @@ const { rutaActual } = Astro.props;
 
 const cadena = rutaActiva(rutaActual).map((n) => n.url);
 const exacta = normalizar(rutaActual);
-const nombreMarca = (slug: string) => marcas.find((m) => m.slug === slug)!.nombre;
 
 /* Las dos vistas del mismo catálogo. Líneas lo ordena por método y Marcas por
-   fabricante; las dos salen de src/datos, no hay una tercera lista. */
+   fabricante; las dos salen de src/datos, no hay una tercera lista.
+
+   El menú de Líneas no repite las marcas: quien entra por aquí busca el
+   método. Cuando la categoría tiene una sola línea el enlace va directo a
+   ella, porque /lineas/<cat> redirige allí de todas formas y un salto de
+   redirección desde el menú es un salto de más. */
 const columnasLineas: ColumnaMenu[] = [...categorias]
   .sort((a, b) => a.orden - b.orden)
-  .map((c) => ({
+  .map((c) => ({ c, suyas: lineasDeCategoria(c.slug) }))
+  .filter(({ suyas }) => suyas.length > 0)
+  .map(({ c, suyas }) => ({
     titulo: c.nombre,
-    url: urlCategoria(c.slug),
+    url: suyas.length === 1 ? urlLinea(suyas[0]!) : urlCategoria(c.slug),
     descriptor: c.descriptor,
-    items: lineasDeCategoria(c.slug).map((l) => ({
-      titulo: etiquetaMenu(l, nombreMarca(l.marca)),
-      url: urlLinea(l),
-    })),
-  }))
-  .filter((c) => c.items.length > 0);
+    items: [],
+  }));
 
 const columnasMarcas: ColumnaMenu[] = nodosMarcas.map((m) => ({
   titulo: m.titulo,
@@ -76,7 +77,7 @@ void nodosCategorias;
   </ul>
 </nav>
 
-<PanelMenu id="panel-lineas" columnas={columnasLineas} cols={4} rutaActual={rutaActual}
+<PanelMenu id="panel-lineas" columnas={columnasLineas} cols={2} variante="simple" rutaActual={rutaActual}
            pie={{ texto: 'Ver todas las líneas', url: '/lineas' }} />
 
 <PanelMenu id="panel-marcas" columnas={columnasMarcas} cols={3} rutaActual={rutaActual}
@@ -109,8 +110,21 @@ void nodosCategorias;
 
     const abierto = () => disparador.getAttribute('aria-expanded') === 'true';
 
+    /* Un panel angosto se ancla bajo su propia entrada del navbar; uno de
+       ancho completo no se mueve. Se recalcula al abrir porque la posición
+       del navbar cambia con el ancho de la ventana. */
+    const anclar = () => {
+      if (!panel.hasAttribute('data-anclado')) return;
+      const cabecera = panel.offsetParent as HTMLElement | null;
+      if (!cabecera) return;
+      const margen = 20;
+      const x = grupo.getBoundingClientRect().left - cabecera.getBoundingClientRect().left;
+      const maximo = cabecera.clientWidth - panel.offsetWidth - margen;
+      panel.style.left = `${Math.max(margen, Math.min(x, maximo))}px`;
+    };
+
     const abrir = (v: boolean) => {
-      if (v) menus.forEach((m) => { if (m.panel !== panel && m.abierto()) m.abrir(false); });
+      if (v) { menus.forEach((m) => { if (m.panel !== panel && m.abierto()) m.abrir(false); }); anclar(); }
       disparador.setAttribute('aria-expanded', String(v));
       disparador.setAttribute('aria-label', `${v ? 'Cerrar' : 'Abrir'} ${etiqueta}`);
       panel.toggleAttribute('data-abierto', v);

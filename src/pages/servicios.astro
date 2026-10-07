@@ -6,57 +6,40 @@ import { servicios } from '../content/institucional.ts';
 import { normalizar } from '../content/navegacion.ts';
 
 const rutaActual = normalizar(Astro.url.pathname);
-const bloques = [servicios.tecnico, servicios.asesoria];
 ---
 <Base
-  titulo="Servicio técnico y diseño de centrales — Servimedical Group"
-  descripcion="Instalación, calificación y mantenimiento con técnicos propios entrenados por fábrica, y asesoría de diseño de centrales de esterilización para obra nueva, ampliación o remodelación."
+  titulo="Servicios | Servimedical"
+  descripcion="Instalación y calificación, mantenimiento preventivo y correctivo, entrenamiento, y estudio y diseño de la central de esterilización. Técnicos propios en Colombia."
 >
   <Migas rutaActual={rutaActual} />
 
   <div class="contenedor pt-10 pb-2 lg:pt-12">
     <h1 class="text-[clamp(30px,4vw,48px)]">Servicios</h1>
+    <p class="mt-5 max-w-[58ch] text-[clamp(16px,1.3vw,18px)] text-steel">{servicios.lead}</p>
   </div>
 
-  {bloques.map((b) => (
-    <section class:list={['border-t border-rule', b.idx === 'asesoria' && 'field-paper']} aria-labelledby={`s-${b.idx}`}>
+  {servicios.items.map((s, i) => (
+    <section class:list={['border-t border-rule', i % 2 === 1 && 'field-paper']} aria-labelledby={`s-${s.slug}`} id={s.slug}>
       <div class="contenedor py-12 lg:py-16">
-        <p class="meta text-steel">{b.etiqueta}</p>
-        <h2 id={`s-${b.idx}`} class="mt-4 text-[clamp(24px,3vw,34px)]">{b.titulo}</h2>
-        <p class="mt-5 max-w-[56ch] text-[17px] text-steel">{b.intro}</p>
+        <h2 id={`s-${s.slug}`} class="text-[clamp(24px,3vw,34px)]">{s.titulo}</h2>
+        <p class="mt-5 max-w-[56ch] text-[17px] text-steel">{s.resumen}</p>
 
-        {'angulo' in b && b.angulo && (
+        {s.angulo && (
           <p class="mt-6 flex max-w-[58ch] items-start gap-3 text-[16px] font-medium">
-            <span aria-hidden="true" class="senal mt-2"></span>{b.angulo}
+            <span aria-hidden="true" class="senal mt-2"></span>{s.angulo}
           </p>
         )}
 
-        <div class="mt-9 grid gap-px border border-rule bg-rule lg:grid-cols-2">
-          {b.grupos.map((g) => (
-            <div class="bg-white p-6 lg:p-8">
-              <h3 class="text-[clamp(18px,2vw,23px)]">{g.titulo}</h3>
-              {'angulo' in g && g.angulo && (
-                <p class="mt-4 flex max-w-[42ch] items-start gap-3 text-[15px] font-medium">
-                  <span aria-hidden="true" class="senal mt-2"></span>{g.angulo}
-                </p>
-              )}
-              <ul class="mt-5 border-t border-rule">
-                {g.puntos.map((x) => (
-                  <li class="flex items-start gap-3 border-b border-rule py-3 text-[15px]">
-                    <span aria-hidden="true" class="mt-2 block h-[7px] w-[7px] shrink-0 bg-mist"></span>{x}
-                  </li>
-                ))}
-              </ul>
-            </div>
+        <ul class="mt-8 max-w-[70ch] border-t border-rule">
+          {s.puntos.map((x) => (
+            <li class="flex items-start gap-3 border-b border-rule py-3.5 text-[15.5px]">
+              <span aria-hidden="true" class="mt-2 block h-[7px] w-[7px] shrink-0 bg-mist"></span>{x}
+            </li>
           ))}
-        </div>
-
-        {'alcance' in b && b.alcance && (
-          <p class="meta mt-6 text-[10.5px] text-steel">{b.alcance}</p>
-        )}
+        </ul>
       </div>
     </section>
   ))}
 
-  <Formulario fijo="Servicio técnico o asesoría" titulo="Hable con un especialista en esterilización" />
+  <Formulario titulo="Hable con un especialista en esterilización" />
 </Base>

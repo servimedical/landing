@@ -1,35 +1,44 @@
 ---
-/* Logotipo de fabricante en caja de proporción fija.
+/* Logotipo de fabricante en caja de tamaño fijo.
 
-   Un logo horizontal y uno cuadrado no pesan igual a la misma altura, así que
-   la caja es 3:2 con `object-contain` y relleno uniforme: lo que varía es el
-   logo dentro de la caja, no la caja. `escala` corrige el peso óptico de un
-   archivo suelto sin tocar la rejilla.
+   Tres tamaños y nada más. Un logo horizontal y uno cuadrado no pesan igual
+   a la misma altura, así que la caja es fija y el archivo se ajusta dentro
+   con `object-fit: contain`. Si uno queda visiblemente más grande o más
+   pequeño que el resto, se corrige con `logoEscala` en src/datos/marcas.ts,
+   no recortando el archivo.
 
-   Si el archivo no está, cae a la marca tipográfica —nunca a un ícono genérico
-   ni a un rectángulo vacío—. No se dibuja el logotipo de un fabricante: o es
-   el suyo, o no es. */
+   Si el archivo no está, cae a la marca tipográfica dentro de la misma caja
+   —nunca a un ícono genérico ni a un rectángulo vacío—. No se dibuja el
+   logotipo de un fabricante: o es el suyo, o no es. */
 import { existsSync } from 'node:fs';
 import type { Marca } from '../../datos/tipos.ts';
 
+const CAJAS = {
+  sm: { w: 120, h: 40 },  // menús y chips
+  md: { w: 180, h: 64 },  // tarjetas de la home y de /marcas
+  lg: { w: 280, h: 96 },  // encabezado de la página de marca
+} as const;
+
 interface Props {
-  marca: Pick<Marca, 'nombre' | 'logo'>;
-  /** Alto de la caja. El ancho sale de la proporción 3:2. */
-  alto?: string;
+  marca: Pick<Marca, 'nombre' | 'logo' | 'logoEscala'>;
+  size?: keyof typeof CAJAS;
   class?: string;
 }
-const { marca, alto = '48px', class: clase } = Astro.props;
+const { marca, size = 'md', class: clase } = Astro.props;
+const caja = CAJAS[size];
 
-const hayArchivo = existsSync(new URL(`../../../public${marca.logo.src}`, import.meta.url));
-const escala = marca.logo.escala ?? 1;
+/* Se acepta SVG o PNG con el mismo nombre: lo que haya en la carpeta. */
+const candidatos = [marca.logo.src, marca.logo.src.replace(/\.svg$/, '.png')];
+const archivo = candidatos.find((f) => existsSync(new URL(`../../../public${f}`, import.meta.url)));
+const escala = marca.logoEscala ?? 1;
 ---
 <span
   class:list={['svmg-logo', clase]}
-  style={`--alto:${alto};--escala:${escala}`}
-  data-tipografico={!hayArchivo || undefined}
+  style={`--w:${caja.w}px;--h:${caja.h}px;--escala:${escala}`}
+  data-tipografico={!archivo || undefined}
 >
-  {hayArchivo
-    ? <img src={marca.logo.src} alt={marca.logo.alt} loading="lazy" decoding="async" />
+  {archivo
+    ? <img src={archivo} alt={marca.logo.alt} width={caja.w} height={caja.h} loading="lazy" decoding="async" />
     : <span class="nombre">{marca.nombre}</span>}
 </span>
 
@@ -38,19 +47,20 @@ const escala = marca.logo.escala ?? 1;
     /* `inline-grid`, no `grid`: en el caso tipográfico la caja ajusta al
        texto y el nombre queda alineado con el titular, no centrado. */
     display: inline-grid;
-    place-items: center;
-    block-size: var(--alto);
-    inline-size: calc(var(--alto) * 1.5); /* caja 3:2 */
-    padding: calc(var(--alto) * 0.08);
+    place-items: center start;
+    block-size: var(--h);
+    inline-size: var(--w);
     overflow: hidden;
   }
 
   .svmg-logo img {
     max-block-size: 100%;
     max-inline-size: 100%;
+    inline-size: auto;
+    block-size: auto;
     object-fit: contain;
     scale: var(--escala);
-    /* Gris por defecto, color al pasar o al enfocar. Donde no hay puntero
+    /* Gris en reposo, color al pasar o al enfocar. Donde no hay puntero
        —táctil— el logo va siempre a color. */
     transition: filter 160ms ease, opacity 160ms ease;
   }
@@ -64,13 +74,13 @@ const escala = marca.logo.escala ?? 1;
     }
   }
 
-  /* Marca tipográfica: mismo tamaño de caja, sin recorte. */
-  .svmg-logo[data-tipografico] { inline-size: max-content; padding-inline: 0; }
+  /* Marca tipográfica: misma altura de caja, ancho al contenido. */
+  .svmg-logo[data-tipografico] { inline-size: max-content; max-inline-size: var(--w); }
   .svmg-logo .nombre {
     font-family: var(--font-display);
     font-weight: 700;
     font-variation-settings: 'wdth' 108;
-    font-size: calc(var(--alto) * 0.44);
+    font-size: calc(var(--h) * 0.42);
     line-height: 1;
     letter-spacing: -0.01em;
     white-space: nowrap;

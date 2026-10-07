@@ -33,7 +33,8 @@ const esquemaMarca = z.object({
   }),
   rolSVMG: z.enum(['representante', 'distribuidor']),
   invima: z.string().min(1).optional(),
-  logo: z.object({ src: z.string().min(1), alt: z.string().min(1), escala: z.number().optional() }),
+  logo: z.object({ src: z.string().min(1), alt: z.string().min(1) }),
+  logoEscala: z.number().positive().max(3).optional(),
   etapasCiclo: z.array(z.enum(ETAPAS)).min(1),
   pruebas: z.array(prueba).optional(),
   respaldo: z.array(z.string().min(1)).optional(),
@@ -95,7 +96,10 @@ const PROHIBIDO: [RegExp, string][] = [
   [/el grueso\b/i, 'autorreferencia vaga'],
   [/\b(siete|seis|cinco|cuatro|\d+)\s+marcas\b/i, 'el número de marcas se cuenta desde los datos, no se escribe'],
   [/una sola conversaci/i, 'relleno'],
-  [/cu[eé]ntenos|cu[eé]ntanos/i, 'CTA retirado: use «Hable con un especialista»'],
+  /* Lo retirado es el CTA «Cuéntenos qué necesita esterilizar», no el verbo:
+     la entradilla del formulario lo usa a propósito. */
+  [/cu[eé]ntenos qu[eé] necesita esterilizar/i, 'CTA retirado: use «Hable con un especialista»'],
+  [/cu[eé]ntanos|escr[ií]benos|cont[aá]ctanos/i, 'el sitio trata de usted'],
   [/termodesinfectadora/i, 'el término es «termodesinfectora»'],
   [/grado m[eé]dico/i, 'el término es «papel grado esterilización»'],
 ];

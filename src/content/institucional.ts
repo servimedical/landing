@@ -10,20 +10,6 @@ export const home = {
     'Hospitales', 'Clínicas', 'IPS ambulatorias', 'Centros de cirugía',
     'Universidades', 'Laboratorios', 'Distribuidores',
   ],
-  lineas: [
-    {
-      etiqueta: 'Catálogo',
-      titulo: 'Marcas',
-      texto: 'Equipos, consumibles, mobiliario y repuestos de las marcas que representamos: el autoclave se compra una vez, el consumible todos los meses.',
-      url: '/marcas',
-    },
-    {
-      etiqueta: 'Servicios',
-      titulo: 'Servicio técnico',
-      texto: 'Instalación, calificación y mantenimiento con técnicos propios. Y el estudio de la central antes de que se funda la primera placa.',
-      url: '/servicios',
-    },
-  ],
   cierre: {
     titulo: 'Hable con un especialista en esterilización',
     texto: 'Dimensionamos el equipo con su volumen de carga, su flujo y la infraestructura de la central.',
@@ -34,71 +20,73 @@ export const home = {
 
 /* --------------------------------------------------------------- SERVICIOS */
 
+export type Servicio = {
+  slug: string;
+  titulo: string;
+  /** Una frase para la tarjeta de la home. */
+  resumen: string;
+  /** La frase con filo del bloque, cuando la hay. */
+  angulo?: string;
+  puntos: string[];
+};
+
+/* Cuatro servicios, una sola fuente. La home pinta las tarjetas y /servicios
+   el detalle; si se añade uno aquí, aparece en los dos sitios. */
 export const servicios = {
-  tecnico: {
-    idx: 'servicio-tecnico',
-    etiqueta: 'Servicio técnico',
-    titulo: 'Servicio técnico especializado',
-    intro:
-      'Técnicos propios entrenados por fábrica, con documentación de servicio y repuesto original. Atendemos marcas representadas y equipos de terceros.',
-    grupos: [
-      {
-        titulo: 'Instalación y puesta en marcha',
-        angulo: 'No se instala un esterilizador sobre una acometida que no lo sostiene.',
-        puntos: [
-          'Verificación previa de acometidas eléctrica, hidráulica y de vapor',
-          'Instalación, nivelación y conexión a servicios',
-          'Calificación de instalación y de operación',
-          'Pruebas de vacío, Bowie-Dick y ciclos de aceptación',
-          'Entrenamiento al personal de la central y a biomédica',
-        ],
-      },
-      {
-        titulo: 'Mantenimiento y respuesta',
-        angulo: 'Un mantenimiento sin informe no existe para el auditor.',
-        puntos: [
-          'Preventivo con rutina y protocolo por equipo',
-          'Correctivo con repuesto original',
-          'Contratos con tiempo de respuesta pactado',
-          'Reposición programada de partes de desgaste',
-          'Informe técnico y hoja de vida del equipo para auditoría',
-        ],
-      },
-    ],
-  },
-
-  asesoria: {
-    idx: 'asesoria',
-    etiqueta: 'Asesoría y diseño',
-    titulo: 'Asesoría y diseño de centrales de esterilización',
-    intro: 'Estudio técnico previo a la obra o a la remodelación.',
-    angulo: 'Corregir un flujo en planos cuesta una reunión. Corregirlo construido cuesta la obra otra vez.',
-    grupos: [
-      {
-        titulo: 'Qué entregamos',
-        puntos: [
-          'Flujo unidireccional sucio–limpio–estéril y barreras',
-          'Zonificación de áreas y control de acceso',
-          'Dimensionamiento por carga quirúrgica y rotación de sets',
-          'Requerimientos de agua, vapor, aire comprimido y eléctrico',
-          'Ventilación, presiones diferenciales y recambios por área',
-          'Plan de dotación de equipos y mobiliario con presupuesto',
-        ],
-      },
-      {
-        titulo: 'Cómo trabajamos el estudio',
-        puntos: [
-          'Visita técnica y levantamiento de la operación actual',
-          'Proyección de crecimiento a cinco años',
-          'Coordinación con arquitectura e ingeniería del proyecto',
-          'Cronograma de implementación por etapas',
-          'Honorarios deducibles del contrato de dotación posterior',
-        ],
-      },
-    ],
-    alcance: 'Aplica a obra nueva, ampliación y remodelación.',
-  },
-
+  lead: 'Lo que sostiene el equipo después de la compra, y el estudio que decide si la central va a funcionar.',
+  items: [
+    {
+      slug: 'instalacion-y-calificacion',
+      titulo: 'Instalación y calificación',
+      resumen: 'Verificación de acometidas, puesta en marcha y calificación de instalación y de operación.',
+      angulo: 'No se instala un esterilizador sobre una acometida que no lo sostiene.',
+      puntos: [
+        'Verificación previa de acometidas eléctrica, hidráulica y de vapor',
+        'Instalación, nivelación y conexión a servicios',
+        'Calificación de instalación y de operación',
+        'Pruebas de vacío, Bowie-Dick y ciclos de aceptación',
+      ],
+    },
+    {
+      slug: 'mantenimiento',
+      titulo: 'Mantenimiento preventivo y correctivo',
+      resumen: 'Rutina por equipo, repuesto original y tiempo de respuesta pactado.',
+      angulo: 'Un mantenimiento sin informe no existe para el auditor.',
+      puntos: [
+        'Preventivo con rutina y protocolo por equipo',
+        'Correctivo con repuesto original',
+        'Contratos con tiempo de respuesta pactado',
+        'Reposición programada de partes de desgaste',
+        'Informe técnico y hoja de vida del equipo para auditoría',
+      ],
+    },
+    {
+      slug: 'entrenamiento',
+      titulo: 'Entrenamiento',
+      resumen: 'Al personal de la central y al área biomédica, sobre los equipos que operan.',
+      angulo: 'Un equipo mal cargado no esteriliza, por bueno que sea.',
+      puntos: [
+        'Carga, conformación de paquete y empaque compatible con cada método',
+        'Lectura e interpretación de indicadores y liberación de carga',
+        'Rutina diaria de verificación y conducta ante resultado no conforme',
+        'Primer nivel de diagnóstico para el área biomédica',
+      ],
+    },
+    {
+      slug: 'estudio-de-central',
+      titulo: 'Estudio y diseño de la central',
+      resumen: 'Estudio y diseño de la central antes de construirla, para obra nueva, ampliación o remodelación.',
+      angulo: 'Corregir un flujo en planos cuesta una reunión. Corregirlo construido cuesta la obra otra vez.',
+      puntos: [
+        'Flujo unidireccional sucio–limpio–estéril y barreras',
+        'Zonificación de áreas y control de acceso',
+        'Dimensionamiento por carga quirúrgica y rotación de sets',
+        'Requerimientos de agua, vapor, aire comprimido y eléctrico',
+        'Ventilación, presiones diferenciales y recambios por área',
+        'Plan de dotación de equipos y mobiliario con presupuesto',
+      ],
+    },
+  ] satisfies Servicio[],
 } as const;
 
 /* ---------------------------------------------------------------- CONTACTO */

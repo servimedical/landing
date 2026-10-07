@@ -45,9 +45,11 @@ const jsonld = {
   {/* 1 · Hero */}
   <div class="contenedor grid gap-x-[clamp(32px,5vw,72px)] gap-y-9 py-12 lg:grid-cols-[1.05fr_.95fr] lg:py-16">
     <div>
-      <BrandLogo marca={m} alto="52px" />
-      <h1 class="mt-6 text-[clamp(30px,4vw,48px)]">{m.nombre}</h1>
-      <p class="mt-5 max-w-[56ch] text-[clamp(16px,1.3vw,18px)] leading-relaxed text-steel">{m.lead}</p>
+      {/* El logotipo hace de titular: repetir el nombre debajo era decir
+          dos veces lo mismo. El h1 queda para lectores y buscadores. */}
+      <BrandLogo marca={m} size="lg" />
+      <h1 class="sr-only">{m.nombre}</h1>
+      <p class="mt-6 max-w-[56ch] text-[clamp(17px,1.4vw,19px)] leading-relaxed text-steel">{m.lead}</p>
 
       <div class="mt-8 flex flex-wrap gap-3">
         <a href="#cotizar" class="inline-flex items-center gap-2.5 border border-navy bg-navy px-5 py-3.5 text-[14.5px] font-medium text-white hover:bg-navy-deep">
@@ -157,7 +159,7 @@ const jsonld = {
   ) : null}
 
   {/* 7 · CTA final */}
-  <Formulario fijo={m.nombre} titulo={`Hable con un especialista en ${m.nombre}`} />
+  <Formulario contexto={m.nombre} titulo={`Hable con un especialista en ${m.nombre}`} />
 
   <script type="application/ld+json" set:html={JSON.stringify(jsonld)} is:inline />
 </Base>
