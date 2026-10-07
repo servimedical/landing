@@ -4,8 +4,9 @@
  *
  *   node herramientas/marcadores.mjs        ·  npm run marcadores
  */
-const { lineas, urlLinea, urlMarca } = await import('../src/datos/lineas.ts');
-const { marcas } = await import('../src/datos/marcas.ts');
+const { lineas, urlLinea } = await import('../src/datos/lineas.ts');
+const { marcas, urlMarca } = await import('../src/datos/marcas.ts');
+const { productos, urlProducto, idProducto } = await import('../src/datos/productos.ts');
 const { sitio } = await import('../src/content/sitio.ts');
 const inst = await import('../src/content/institucional.ts');
 const legal = await import('../src/content/legal.ts');
@@ -31,8 +32,9 @@ const recorrer = (pagina, obj, prefijo = '') => {
     for (const [k, v] of Object.entries(obj)) recorrer(pagina, v, prefijo ? `${prefijo}.${k}` : k);
 };
 
-for (const l of lineas) recorrer(urlLinea(l), l);
+for (const l of lineas) recorrer(urlLinea(l.slug), l);
 for (const m of marcas) recorrer(urlMarca(m.slug), m);
+for (const p of productos) recorrer(urlProducto(p), p);
 recorrer('/servicios', inst.servicios);
 recorrer('/contacto', inst.contactoPagina);
 recorrer('/politica-de-tratamiento-de-datos', { VIGENCIA: legal.VIGENCIA, CANAL_TITULAR: legal.CANAL_TITULAR });
@@ -43,6 +45,18 @@ recorrer('(global) src/components/Footer.astro', {
 recorrer('(global) api/formulario.ts', {
   destinatarios: '{{ POR CONFIRMAR: dirección interna que recibe el formulario, y si repuestos y servicio técnico van a un destinatario distinto de comercial }}',
 });
+
+/* Los datos del catálogo marcan sus huecos con `// TODO` y `// VERIFICAR` al
+   lado del campo, no con llaves dobles: un comentario no se puede colar a la
+   página. Se listan aparte. */
+const { readFileSync: leer } = await import('node:fs');
+const pendientesCatalogo = [];
+for (const archivo of ['src/datos/marcas.ts', 'src/datos/lineas.ts', 'src/datos/productos.ts']) {
+  leer(archivo, 'utf8').split('\n').forEach((linea, i) => {
+    const m = linea.match(/\/\/\s*(TODO|VERIFICAR)\b(.*)$/);
+    if (m) pendientesCatalogo.push([`${archivo}:${i + 1}`, m[1], m[2].trim().replace(/^·\s*/, '')]);
+  });
+}
 
 /* Barrido del código fuente: cualquier marcador que no viva en un módulo de
    contenido —comentarios, plantillas, la función de formularios— también
@@ -81,6 +95,12 @@ const imprimir = (titulo, grupos) => {
 };
 
 imprimir('DECISIÓN COMERCIAL — datos que debe confirmar SVMG', comercial);
+
+if (pendientesCatalogo.length) {
+  console.log(`\n${'═'.repeat(72)}\nCATÁLOGO — datos de fabricante por confirmar o contrastar — ${pendientesCatalogo.length}\n${'═'.repeat(72)}\n`);
+  for (const [donde, tipo, texto] of pendientesCatalogo)
+    console.log(`${donde}\n  · [${tipo}] ${texto || '(ver el comentario en el archivo)'}`);
+}
 console.log(`\n${'═'.repeat(72)}\nREVISIÓN JURÍDICA — no publicar sin validación\n${'═'.repeat(72)}`);
 console.log('\nsrc/content/legal.ts');
 console.log('  · [encabezado del archivo] {{ REQUIERE REVISIÓN JURÍDICA }} · borrador completo de la');
