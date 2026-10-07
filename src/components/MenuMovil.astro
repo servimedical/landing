@@ -1,7 +1,8 @@
 ---
-import { enNavbar, nodosMarcas, nodosCategorias, rutaActiva, normalizar } from '../content/navegacion.ts';
+import { enNavbar, nodosLineas, rutaActiva, normalizar } from '../content/navegacion.ts';
 import { cta } from '../content/sitio.ts';
-import { lineasDeCategoria, urlLinea } from '../datos/lineas.ts';
+import { marcas, urlMarca } from '../datos/marcas.ts';
+import { lineasDeMarca, productosDeMarca, urlProducto } from '../datos/productos.ts';
 import Buscador from './Buscador.astro';
 
 interface Props { rutaActual: string }
@@ -10,24 +11,22 @@ const cadena = rutaActiva(rutaActual).map((n) => n.url);
 const exacta = normalizar(rutaActual);
 const marcado = (url: string) => cadena.includes(url);
 
-/* Los dos árboles del catálogo, con la misma forma: grupo → rama → hoja.
-   Los identificadores llevan el prefijo del grupo, así que «2i» no choca con
-   nada y los dos árboles no comparten ningún id. */
+/* Los dos árboles, con la misma forma: grupo → rama → hoja. Líneas es una
+   lista plana —sin marcas debajo—, igual que en escritorio. Los
+   identificadores llevan el prefijo del grupo, así que «2i» no choca con nada
+   y los dos árboles no comparten ninguno. */
 type Rama = { titulo: string; url: string; hojas: { titulo: string; url: string }[] };
 
-/* Líneas es una lista plana: sin marcas debajo, igual que en escritorio. Una
-   categoría con una sola línea enlaza directo a ella, porque la categoría
-   redirige allí de todas formas. */
 const ramasDe = (raiz: string): Rama[] =>
   raiz === '/lineas'
-    ? nodosCategorias.map((c) => {
-        const suyas = lineasDeCategoria(c.url.split('/').pop()!);
-        return { titulo: c.titulo, url: suyas.length === 1 ? urlLinea(suyas[0]!) : c.url, hojas: [] };
-      })
-    : nodosMarcas.map((m) => ({
-        titulo: m.titulo,
-        url: m.url,
-        hojas: (m.hijos ?? []).map((h) => ({ titulo: h.titulo, url: h.url })),
+    ? nodosLineas.map((l) => ({ titulo: l.titulo, url: l.url, hojas: [] }))
+    : [...marcas].sort((a, b) => a.orden - b.orden).map((m) => ({
+        titulo: m.nombre,
+        url: urlMarca(m.slug),
+        hojas: lineasDeMarca(m.slug).map((l) => {
+          const p = productosDeMarca(m.slug).find((x) => x.linea === l.slug)!;
+          return { titulo: l.nombre, url: urlProducto(p) };
+        }),
       }));
 
 const DESPLEGABLES = ['/lineas', '/marcas'];

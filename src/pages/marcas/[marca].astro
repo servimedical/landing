@@ -5,7 +5,8 @@ import Migas from '../../components/Migas.astro';
 import BrandLogo from '../../components/marca/BrandLogo.astro';
 import CicloEtapas from '../../components/marca/CicloEtapas.astro';
 import Formulario from '../../components/formulario/Formulario.astro';
-import { lineasDe, urlLinea } from '../../datos/lineas.ts';
+import { lineaPorSlug } from '../../datos/lineas.ts';
+import { productosDeMarca, urlProducto } from '../../datos/productos.ts';
 import { normalizar } from '../../content/navegacion.ts';
 import { sitio } from '../../content/sitio.ts';
 
@@ -18,14 +19,14 @@ export async function getStaticPaths() {
 
 const { m } = Astro.props;
 const rutaActual = normalizar(Astro.url.pathname);
-const lineas = lineasDe(m.slug);
+const suyos = productosDeMarca(m.slug);
 
-/* Ficha rápida: sólo lo que está confirmado. Un campo vacío no se renderiza. */
-const origen = [m.fabricante.razonSocial, m.fabricante.pais].filter(Boolean).join(' · ');
+/* Ficha rápida: sólo lo confirmado. Un campo vacío no se renderiza. */
+const origen = [m.fabricante.razonSocial, m.fabricante.ciudad, m.fabricante.pais].filter(Boolean).join(' · ');
 const ficha: [string, string][] = [
-  ...(origen ? ([['Fabricante', m.fabricante.fundacion ? `${origen} · desde ${m.fabricante.fundacion}` : origen]] as [string, string][]) : []),
+  ['Fabricante', m.fabricante.fundacion ? `${origen} · desde ${m.fabricante.fundacion}` : origen],
   ['Rol de Servimedical', m.rolSVMG === 'representante' ? 'Representante en Colombia' : 'Distribuidor autorizado'],
-  ...(lineas.length ? ([['Líneas', lineas.map((l) => l.nombre).join(' · ')]] as [string, string][]) : []),
+  ...(suyos.length ? ([['Líneas', suyos.map((p) => lineaPorSlug(p.linea)!.nombre).join(' · ')]] as [string, string][]) : []),
   ...(m.invima ? ([['Registro INVIMA', m.invima]] as [string, string][]) : []),
 ];
 
@@ -42,25 +43,18 @@ const jsonld = {
 <Base titulo={m.seo.titulo} descripcion={m.seo.descripcion}>
   <Migas rutaActual={rutaActual} />
 
-  {/* 1 · Hero */}
-  <div class="contenedor grid gap-x-[clamp(32px,5vw,72px)] gap-y-9 py-12 lg:grid-cols-[1.05fr_.95fr] lg:py-16">
+  {/* 1 · Mini hero */}
+  <div class="contenedor grid gap-x-[clamp(32px,5vw,72px)] gap-y-9 py-12 lg:grid-cols-[1.05fr_.95fr] lg:py-14">
     <div>
-      {/* El logotipo hace de titular: repetir el nombre debajo era decir
-          dos veces lo mismo. El h1 queda para lectores y buscadores. */}
+      {/* El logotipo hace de titular: repetir el nombre debajo era decir dos
+          veces lo mismo. El h1 queda para lectores y buscadores. */}
       <BrandLogo marca={m} size="lg" />
       <h1 class="sr-only">{m.nombre}</h1>
       <p class="mt-6 max-w-[56ch] text-[clamp(17px,1.4vw,19px)] leading-relaxed text-steel">{m.lead}</p>
 
-      <div class="mt-8 flex flex-wrap gap-3">
-        <a href="#cotizar" class="inline-flex items-center gap-2.5 border border-navy bg-navy px-5 py-3.5 text-[14.5px] font-medium text-white hover:bg-navy-deep">
-          <span aria-hidden="true" class="senal"></span>Hablar con un especialista
-        </a>
-        {m.catalogo && (
-          <a href={m.catalogo} class="inline-flex items-center border border-rule px-5 py-3.5 text-[14.5px] hover:bg-paper">
-            Descargar catálogo
-          </a>
-        )}
-      </div>
+      <a href="#cotizar" class="mt-8 inline-flex items-center gap-2.5 border border-navy bg-navy px-5 py-3.5 text-[14.5px] font-medium text-white hover:bg-navy-deep">
+        <span aria-hidden="true" class="senal"></span>Hablar con un especialista
+      </a>
     </div>
 
     <dl class="self-start border border-rule">
@@ -73,30 +67,34 @@ const jsonld = {
     </dl>
   </div>
 
-  {/* 2 · Dónde entra en la central */}
-  <section class="field-paper border-t border-rule" aria-labelledby="ciclo">
+  {/* 2 · Quién es el fabricante */}
+  <section class="field-paper border-t border-rule" aria-labelledby="quien">
     <div class="contenedor py-12 lg:py-16">
-      <h2 id="ciclo" class="text-[clamp(22px,2.6vw,30px)]">Dónde entra en la central</h2>
-      <div class="mt-8"><CicloEtapas activas={m.etapasCiclo} marca={m.nombre} /></div>
+      <h2 id="quien" class="text-[clamp(22px,2.6vw,30px)]">Quién es el fabricante</h2>
+      <p class="mt-7 max-w-[68ch] text-[16.5px] leading-relaxed text-steel">{m.quienEs}</p>
     </div>
   </section>
 
-  {/* 3 · Líneas */}
-  {lineas.length > 0 && (
-    <section class="border-t border-rule" aria-labelledby="lineas">
+  {/* 3 · Productos de esta marca */}
+  {suyos.length > 0 && (
+    <section class="border-t border-rule" aria-labelledby="productos">
       <div class="contenedor py-12 lg:py-16">
-        <h2 id="lineas" class="text-[clamp(22px,2.6vw,30px)]">Líneas</h2>
+        <h2 id="productos" class="text-[clamp(22px,2.6vw,30px)]">Productos de esta marca</h2>
 
         <ul class="rejilla mt-8 sm:grid-cols-2 lg:grid-cols-3">
-          {lineas.map((l) => (
-            <li class="border-b border-r border-rule">
-              <a href={urlLinea(l)} class="group flex h-full flex-col p-6 transition-colors hover:bg-paper lg:p-7">
-                <span class="font-display text-[clamp(17px,1.9vw,21px)] leading-tight font-bold [font-variation-settings:'wdth'_110]">
-                  {l.nombre}
+          {suyos.map((p) => (
+            <li class="flex flex-col border-b border-r border-rule">
+              <a href={urlProducto(p)} class="group flex h-full flex-col p-6 transition-colors hover:bg-paper lg:p-7">
+                {p.media?.foto && (
+                  <img src={p.media.foto} alt={p.nombre} width="800" height="600"
+                       class="mb-6 aspect-[4/3] w-full bg-paper object-contain" loading="lazy" decoding="async" />
+                )}
+                <span class="meta text-[10px] text-steel">{lineaPorSlug(p.linea)!.nombre}</span>
+                <span class="font-display mt-3 block text-[clamp(17px,1.9vw,21px)] leading-tight font-bold [font-variation-settings:'wdth'_110]">
+                  {p.nombre}
                 </span>
-                <span class="mt-3 text-[14.5px] leading-relaxed text-steel">{l.metodo}</span>
-                <span class="mt-2 flex-1 text-[14.5px] leading-relaxed text-steel">{l.uso}</span>
-                <span class="meta mt-6 border-t border-rule pt-4 text-[10px] text-steel group-hover:text-navy">Ver línea →</span>
+                <span class="mt-3 text-[14.5px] leading-relaxed text-steel">{p.franja[0]!.valor}</span>
+                <span class="meta mt-auto block pt-6 text-[10px] text-steel group-hover:text-navy">Ver producto →</span>
               </a>
             </li>
           ))}
@@ -105,7 +103,15 @@ const jsonld = {
     </section>
   )}
 
-  {/* 4 · Por qué esta marca — sólo con datos que tengan fuente */}
+  {/* 4 · Dónde entra en la central */}
+  <section class="field-paper border-t border-rule" aria-labelledby="ciclo">
+    <div class="contenedor py-12 lg:py-16">
+      <h2 id="ciclo" class="text-[clamp(22px,2.6vw,30px)]">Dónde entra en la central</h2>
+      <div class="mt-8"><CicloEtapas activas={m.etapasCiclo} marca={m.nombre} /></div>
+    </div>
+  </section>
+
+  {/* 5 · Por qué esta marca — sólo con datos que tengan fuente */}
   {pruebas.length > 0 && (
     <section class="border-t border-rule" aria-labelledby="pruebas">
       <div class="contenedor py-12 lg:py-16">
@@ -122,7 +128,7 @@ const jsonld = {
     </section>
   )}
 
-  {/* 5 · Respaldo en Colombia */}
+  {/* 6 · Respaldo en Colombia */}
   {m.respaldo?.length ? (
     <section class="border-t border-rule" aria-labelledby="respaldo">
       <div class="contenedor py-12 lg:py-16">
@@ -139,7 +145,7 @@ const jsonld = {
     </section>
   ) : null}
 
-  {/* 6 · Documentación */}
+  {/* 7 · Documentación */}
   {m.documentos?.length ? (
     <section class="border-t border-rule" aria-labelledby="docs">
       <div class="contenedor py-12 lg:py-16">
@@ -158,7 +164,6 @@ const jsonld = {
     </section>
   ) : null}
 
-  {/* 7 · CTA final */}
   <Formulario contexto={m.nombre} titulo={`Hable con un especialista en ${m.nombre}`} />
 
   <script type="application/ld+json" set:html={JSON.stringify(jsonld)} is:inline />

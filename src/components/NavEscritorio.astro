@@ -1,8 +1,8 @@
 ---
-import { enNavbar, nodosMarcas, nodosCategorias, rutaActiva, normalizar } from '../content/navegacion.ts';
+import { enNavbar, nodosLineas, rutaActiva, normalizar } from '../content/navegacion.ts';
 import PanelMenu, { type ColumnaMenu } from './PanelMenu.astro';
-import { lineasDeCategoria, urlLinea } from '../datos/lineas.ts';
-import { categorias, urlCategoria } from '../datos/categorias.ts';
+import { marcas, urlMarca } from '../datos/marcas.ts';
+import { lineasDeMarca, productosDeMarca, urlProducto } from '../datos/productos.ts';
 
 interface Props { rutaActual: string }
 const { rutaActual } = Astro.props;
@@ -10,37 +10,32 @@ const { rutaActual } = Astro.props;
 const cadena = rutaActiva(rutaActual).map((n) => n.url);
 const exacta = normalizar(rutaActual);
 
-/* Las dos vistas del mismo catálogo. Líneas lo ordena por método y Marcas por
-   fabricante; las dos salen de src/datos, no hay una tercera lista.
-
-   El menú de Líneas no repite las marcas: quien entra por aquí busca el
-   método. Cuando la categoría tiene una sola línea el enlace va directo a
-   ella, porque /lineas/<cat> redirige allí de todas formas y un salto de
-   redirección desde el menú es un salto de más. */
-const columnasLineas: ColumnaMenu[] = [...categorias]
-  .sort((a, b) => a.orden - b.orden)
-  .map((c) => ({ c, suyas: lineasDeCategoria(c.slug) }))
-  .filter(({ suyas }) => suyas.length > 0)
-  .map(({ c, suyas }) => ({
-    titulo: c.nombre,
-    url: suyas.length === 1 ? urlLinea(suyas[0]!) : urlCategoria(c.slug),
-    descriptor: c.descriptor,
-    items: [],
-  }));
-
-const columnasMarcas: ColumnaMenu[] = nodosMarcas.map((m) => ({
-  titulo: m.titulo,
-  url: m.url,
-  descriptor: m.descriptor ?? '',
-  items: (m.hijos ?? []).map((h) => ({ titulo: h.titulo, url: h.url })),
+/* Dos vistas del mismo catálogo. Líneas lo ordena por método —lista simple,
+   sin marcas debajo—; Marcas, por fabricante. Las dos salen de src/datos. */
+const columnasLineas: ColumnaMenu[] = nodosLineas.map((l) => ({
+  titulo: l.titulo,
+  url: l.url,
+  descriptor: l.descriptor ?? '',
+  items: [],
 }));
+
+const columnasMarcas: ColumnaMenu[] = [...marcas]
+  .sort((a, b) => a.orden - b.orden)
+  .map((m) => ({
+    titulo: m.nombre,
+    url: urlMarca(m.slug),
+    descriptor: m.descriptor,
+    items: lineasDeMarca(m.slug).map((l) => {
+      const p = productosDeMarca(m.slug).find((x) => x.linea === l.slug)!;
+      return { titulo: l.nombre, url: urlProducto(p) };
+    }),
+  }));
 
 /* Qué entrada del navbar abre qué panel. */
 const PANELES: Record<string, { id: string; etiqueta: string }> = {
   '/lineas': { id: 'panel-lineas', etiqueta: 'el menú de líneas' },
   '/marcas': { id: 'panel-marcas', etiqueta: 'el menú de marcas' },
 };
-void nodosCategorias;
 ---
 <nav aria-label="Principal" class="hidden lg:block">
   <ul class="flex items-center gap-5 xl:gap-7">

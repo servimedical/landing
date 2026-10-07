@@ -2,12 +2,13 @@
 /* Tarjeta de marca. La usan la home y /marcas: una sola definición, así que
    no pueden divergir. */
 import BrandLogo from './BrandLogo.astro';
-import { lineasDe, urlLinea } from '../../datos/lineas.ts';
+import { lineasDeMarca, productosDeMarca, urlProducto } from '../../datos/productos.ts';
 import type { Marca } from '../../datos/tipos.ts';
 
 interface Props { marca: Marca }
 const { marca } = Astro.props;
-const lineas = lineasDe(marca.slug);
+const lineas = lineasDeMarca(marca.slug);
+const productoDe = (slugLinea: string) => productosDeMarca(marca.slug).find((p) => p.linea === slugLinea)!;
 ---
 <li class="flex flex-col border-b border-r border-rule p-6 lg:p-7">
   <a href={`/marcas/${marca.slug}`} class="group">
@@ -19,7 +20,7 @@ const lineas = lineasDe(marca.slug);
     <ul class="mt-5 flex flex-wrap gap-2">
       {lineas.map((l) => (
         <li>
-          <a href={urlLinea(l)} class="inline-block border border-rule px-2.5 py-1.5 text-[13px] text-steel transition-colors hover:border-navy/35 hover:text-navy">
+          <a href={urlProducto(productoDe(l.slug))} class="inline-block border border-rule px-2.5 py-1.5 text-[13px] text-steel transition-colors hover:border-navy/35 hover:text-navy">
             {l.nombre}
           </a>
         </li>

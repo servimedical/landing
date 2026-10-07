@@ -1,9 +1,10 @@
 /* ============================================================================
    FUENTE ÚNICA DE NAVEGACIÓN
 
-   El catálogo se organiza por marca: /marcas/<marca>/<linea>. El árbol se
-   deriva de src/datos, así que añadir una marca o una línea allí la publica
-   en el menú, el pie, las migas, el buscador y el sitemap.
+   Tres niveles: la línea es el método, el producto es el equipo de una marca,
+   y la marca es el fabricante. El árbol se deriva de src/datos, así que añadir
+   un producto allí lo publica en el menú, el pie, las migas, el buscador y el
+   sitemap sin tocar nada más.
 
    Se leen los módulos de datos, no las colecciones: la navegación tiene que
    resolverse de forma síncrona. Las colecciones los validan con zod sobre
@@ -11,9 +12,9 @@
    ========================================================================== */
 
 import { marcas } from '../datos/marcas.ts';
-import { lineasDe, urlLinea, urlMarca } from '../datos/lineas.ts';
-import { categorias, urlCategoria } from '../datos/categorias.ts';
-import type { Marca } from '../datos/tipos.ts';
+import { lineas, urlLinea } from '../datos/lineas.ts';
+import { productos, productosDeLinea, lineasDeMarca, urlProducto, lineaTienePagina } from '../datos/productos.ts';
+import { marcaPorSlug, urlMarca } from '../datos/marcas.ts';
 
 export type NodoNav = {
   titulo: string;
@@ -25,32 +26,51 @@ export type NodoNav = {
   enFooter?: 'marcas' | 'empresa' | false;
 };
 
-const nodoMarca = (m: Marca): NodoNav => ({
+/* Las migas del producto son Inicio / Líneas / {Línea} / {Marca}: se llega a
+   un equipo por el método, no por el fabricante. Por eso los productos cuelgan
+   de la rama de Líneas, que va primero y es la que `rutaActiva` encuentra.
+
+   Una línea con un solo producto no tiene página propia: su nodo apunta
+   directo al producto, y así la miga no pasa por una redirección. */
+const nodoLinea = (l: (typeof lineas)[number]): NodoNav => {
+  const suyos = productosDeLinea(l.slug);
+  if (!lineaTienePagina(l.slug))
+    return { titulo: l.nombre, url: urlProducto(suyos[0]!), descriptor: l.descriptor };
+  /* La hoja lleva el nombre de la marca, que es lo que distingue a un
+     producto de otro dentro del método. Salvo cuando una marca aporta dos
+     productos a la misma línea —los indicadores de 2i—: ahí el nombre de la
+     marca repetido no distingue nada y manda el del producto. */
+  const repiteMarca = (slugMarca: string) => suyos.filter((x) => x.marca === slugMarca).length > 1;
+  return {
+    titulo: l.nombre,
+    url: urlLinea(l.slug),
+    descriptor: l.descriptor,
+    hijos: suyos.map((p) => ({
+      titulo: repiteMarca(p.marca) ? p.nombre : marcaPorSlug(p.marca)!.nombre,
+      url: urlProducto(p),
+    })),
+  };
+};
+
+/* La rama de Marcas no repite los productos: si los repitiera, `rutaActiva`
+   podría encontrarlos aquí y la miga diría «Marcas» en vez de «Líneas». El
+   dropdown de marcas arma sus líneas desde los datos, no desde este árbol. */
+const nodoMarca = (m: (typeof marcas)[number]): NodoNav => ({
   titulo: m.nombre,
   url: urlMarca(m.slug),
   descriptor: m.descriptor,
   enFooter: 'marcas',
-  hijos: lineasDe(m.slug).map((l) => ({ titulo: l.nombre, url: urlLinea(l) })),
 });
 
 export const navegacion: NodoNav[] = [
   { titulo: 'Inicio', url: '/', enNavbar: false, enFooter: false },
 
-  /* Líneas va primero: es la entrada de quien llega con una necesidad y no
-     con un fabricante en la cabeza.
-
-     Sus hijos son las categorías, no las páginas de línea. Las páginas de
-     línea cuelgan de la marca y tienen que seguir haciéndolo: si aparecieran
-     también aquí, `rutaActiva` las encontraría primero y la miga de pan de
-     /marcas/tuttnauer/vapor diría «Líneas» en lugar de «Marcas». */
   {
     titulo: 'Líneas',
     url: '/lineas',
     enNavbar: true,
     enFooter: 'empresa',
-    hijos: [...categorias]
-      .sort((a, b) => a.orden - b.orden)
-      .map((c) => ({ titulo: c.nombre, url: urlCategoria(c.slug), descriptor: c.descriptor })),
+    hijos: [...lineas].sort((a, b) => a.orden - b.orden).map(nodoLinea),
   },
 
   {
@@ -62,8 +82,6 @@ export const navegacion: NodoNav[] = [
   },
 
   { titulo: 'Servicios', url: '/servicios', enNavbar: true, enFooter: 'empresa' },
-  /* Fuera del navbar: el botón «Hablar con un especialista» ya lleva aquí y
-     dos entradas al mismo sitio compiten entre ellas. Se mantiene en el pie. */
   { titulo: 'Contacto', url: '/contacto', enNavbar: false, enFooter: 'empresa' },
 
   {
@@ -73,6 +91,9 @@ export const navegacion: NodoNav[] = [
     enFooter: false,
   },
 ];
+
+void productos;
+void lineasDeMarca;
 
 /* ---------------------------------------------------------------- CONSULTAS */
 
@@ -119,8 +140,8 @@ export const enNavbar: NodoNav[] = navegacion.filter((n) => n.enNavbar);
 export const nodosMarcas: NodoNav[] =
   navegacion.find((n) => n.url === '/marcas')?.hijos ?? [];
 
-/** Las categorías como nodos, para el panel del menú. */
-export const nodosCategorias: NodoNav[] =
+/** Las líneas como nodos, para el panel del menú. */
+export const nodosLineas: NodoNav[] =
   navegacion.find((n) => n.url === '/lineas')?.hijos ?? [];
 
 export function columnaFooter(clave: 'marcas' | 'empresa'): NodoNav[] {

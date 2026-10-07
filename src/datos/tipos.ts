@@ -1,16 +1,22 @@
 /* ============================================================================
-   MODELO DE DATOS DEL PORTAFOLIO
+   MODELO DE DATOS DEL CATÁLOGO
 
-   Un solo origen de verdad. El navbar, la home, /marcas, las páginas de marca
-   y las de línea leen de aquí. Ningún componente lleva listas propias.
+   Tres niveles, cada uno con una pregunta propia y sin repetirse:
+
+     Marca    /marcas/{marca}            quién fabrica y qué respalda SVMG aquí
+     Línea    /lineas/{linea}            qué es el método y cuándo se usa
+     Producto /marcas/{marca}/{linea}    el equipo concreto, con cifras
+
+   El método se explica UNA vez, en la línea. El producto no lo repite: trae
+   sus modelos, sus ciclos y sus cifras, y enlaza a la línea.
 
    Reglas que no se negocian:
-
-   · Una cifra sin fuente no se publica. Si el fabricante no la declara en su
-     ficha, el campo va vacío y marcado. Estos equipos procesan material que
-     entra a un paciente: una capacidad inventada en una ficha técnica no es
-     un error de redacción.
+   · Una cifra sin fuente no se publica. Si el fabricante no la declara, el
+     campo va vacío y marcado. Estos equipos procesan material que entra a un
+     paciente: una capacidad inventada no es un error de redacción.
    · Una sección sin datos no se renderiza. Nunca se rellena un hueco.
+   · `instalacion` sólo admite cifras. Una fila que diría «según la placa» se
+     omite: no informa y ocupa el lugar de la que sí informaría.
    · Los marcadores viven en el código, nunca en la página (ver VOZ.md).
    ========================================================================== */
 
@@ -36,14 +42,25 @@ export type Prueba = { dato: string; fuente: string };
 
 export type Documento = { titulo: string; url: string; tipo: string; peso: string };
 
+export type Spec = { label: string; valor: string };
+
+/* ------------------------------------------------------------------ MARCA */
+
 export type Marca = {
   slug: string;
   nombre: string;
-  /** Una línea bajo el nombre, en el dropdown y en las tarjetas. 1–6 palabras. */
+  /** Una línea bajo el nombre, en menús y tarjetas. */
   descriptor: string;
-  /** [quién es] + [qué resuelve en la central, con método] + [qué sostiene SVMG]. */
+  /** Dos frases: quién es y qué sostiene SVMG en Colombia. */
   lead: string;
-  fabricante: { pais: string; fundacion?: string; razonSocial?: string; fuente?: string };
+  /** Un párrafo: historia, planta, normas de fabricación y alcance. */
+  quienEs: string;
+  fabricante: {
+    razonSocial?: string;
+    ciudad?: string;
+    pais: string;
+    fundacion?: string;
+  };
   rolSVMG: 'representante' | 'distribuidor';
   /** Número real de registro sanitario. Vacío mientras no esté confirmado. */
   invima?: string;
@@ -54,57 +71,84 @@ export type Marca = {
   pruebas?: Prueba[];
   respaldo?: string[];
   documentos?: Documento[];
-  catalogo?: string;
   orden: number;
   seo: { titulo: string; descripcion: string };
 };
 
-export type Spec = { label: string; valor: string };
-
-export type Relacionada = {
-  /** Slug de otra línea. La URL la resuelve su marca. */
-  linea: string;
-  porque: string;
-};
+/* ------------------------------------------------------------------ LÍNEA
+   El método. Lo que es cierto para cualquier fabricante que lo venda. */
 
 export type Linea = {
   slug: string;
+  nombre: string;
+  /** 3–6 palabras bajo el nombre, en el menú y en las tarjetas. */
+  descriptor: string;
+  etapa: EtapaCiclo | 'transversal';
+  /** Una frase. */
+  lead: string;
+  /** 2–3 párrafos. Aquí, y sólo aquí, se explica cómo funciona el método. */
+  comoFunciona: string[];
+  compatible: string[];
+  noCompatible: string[];
+  /** Nota sobre el empaque que exige el método, cuando la hay. */
+  empaque?: string;
+  normas: { norma: string; que: string }[];
+  faq?: { p: string; r: string }[];
+  orden: number;
+  seo: { titulo: string; descripcion: string };
+};
+
+/* --------------------------------------------------------------- PRODUCTO */
+
+export type Modelos = { encabezados: string[]; filas: string[][] };
+
+/** Foto, galería y brochure. La plantilla resuelve en build qué existe y
+ *  elige la variante del hero. `npm run media` lista lo que falta. */
+export type Media = {
+  foto?: string;
+  galeria?: string[];
+  brochure?: { url: string; titulo: string; pesoKB: number };
+};
+
+export type Relacionado = {
+  /** Identificador de otro producto: `marca/linea`. */
+  producto: string;
+  porque: string;
+};
+
+export type Producto = {
   marca: string;
+  /** Segmento de la URL: /marcas/{marca}/{slug}. Casi siempre coincide con
+   *  `linea`; difiere cuando una marca aporta dos productos a la misma línea,
+   *  como los indicadores químicos y biológicos de 2i. */
+  slug: string;
+  /** Slug de la línea —el método— a la que pertenece. */
+  linea: string;
+  /** Nombre comercial de la familia: «PlazMax», «Azteca», «AKR». */
   nombre: string;
   tipo: 'equipo' | 'consumible' | 'mobiliario';
-  /** Slug de `src/datos/categorias.ts`. Agrupa la línea por método, no por
-   *  fabricante: es lo que arma el menú de Líneas y /lineas. */
-  categoria: string;
-  /** Sólo cuando una marca aporta más de una línea a la misma categoría y el
-   *  nombre de la marca ya no basta para distinguirlas en el menú. */
-  etiquetaMenu?: string;
-  /** [qué carga procesa] + [cómo] + [por qué importa en la central]. */
+  /** Una o dos frases con cifras. */
   lead: string;
-  /** El método en una línea. Va en la tarjeta de la marca y en el hero. */
-  metodo: string;
-  /** Para qué carga o servicio. */
-  uso: string;
-  /** 3–4 datos duros bajo el hero. */
-  specsClave: Spec[];
-  modelos?: { encabezados: string[]; filas: string[][] };
-  /** Sólo `equipo`. */
-  compatible?: string[];
-  noCompatible?: string[];
-  /** Reemplaza a compatible/noCompatible en consumibles y mobiliario. */
-  dondeSeUsa?: string[];
-  /** A dónde remitir lo que esta línea no procesa. */
-  alternativa?: { titulo: string; linea: string; nota: string };
-  /** Norma que gobierna el proceso, no una certificación del fabricante. */
-  normasProceso?: { norma: string; que: string }[];
-  /** Lo que el fabricante declara en su ficha. Vacío mientras no se tenga. */
-  certificaciones?: Prueba[];
-  /** Sólo `equipo`. */
+  /** 3–4 datos duros bajo el H1. */
+  franja: Spec[];
+  /** Dos párrafos sobre este equipo: construcción, control y qué lo distingue. */
+  descripcion: string[];
+  modelos?: Modelos;
+  /** Ciclos y pruebas declarados por el fabricante. */
+  ciclos?: string[];
+  /** Sólo cifras reales. Sin cifra, la fila no entra. */
   instalacion?: Spec[];
+  /** Lo que el fabricante declara. Distinto de las normas del método. */
+  normasDeclaradas?: string[];
+  /** Exactamente 3, para la tarjeta de la línea. Son lo que lo distingue. */
+  diferenciales: [string, string, string];
   preguntasCotizacion: string[];
-  /** Máximo 3, sin destinos repetidos. */
-  relacionadas: Relacionada[];
+  /** Máximo 3 productos de otras etapas, sin repetir destino. */
+  relacionadas: Relacionado[];
   servicio: string[];
-  faq?: { p: string; r: string }[];
+  media?: Media;
+  /** Dónde descargar el brochure oficial, mientras no esté en el repo. */
+  fuenteBrochure?: string;
   orden: number;
   seo: { titulo: string; descripcion: string };
 };

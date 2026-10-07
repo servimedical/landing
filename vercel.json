@@ -87,11 +87,6 @@
       "statusCode": 301
     },
     {
-      "source": "/lineas/residuos-hospitalarios",
-      "destination": "/marcas/sanqiang/residuos-hospitalarios",
-      "statusCode": 301
-    },
-    {
       "source": "/lineas/repuestos",
       "destination": "/marcas/servimedical/repuestos",
       "statusCode": 301

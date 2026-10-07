@@ -3,11 +3,12 @@ import type { Marca } from './tipos.ts';
 /* ============================================================================
    LAS MARCAS
 
-   El orden de este arreglo es el orden del dropdown, de la franja de la home
-   y de /marcas. Nunca se escribe el número de marcas en copy: se cuenta aquí.
+   El orden de este arreglo manda en el menú, en la home y en /marcas. Nunca
+   se escribe el número de marcas en copy: se cuenta desde aquí.
 
-   Cada cifra de fabricante lleva `// VERIFICAR`. Mientras lo lleve, hay que
-   contrastarla contra la ficha o el sitio del fabricante antes de publicar.
+   Las cifras salen de las fuentes primarias del catálogo de investigación
+   (7 de octubre de 2026). Lo que una fuente contradice lleva `// VERIFICAR`
+   y no se publica hasta que Felipe lo confirme.
    ========================================================================== */
 
 export const marcas: Marca[] = [
@@ -16,18 +17,19 @@ export const marcas: Marca[] = [
     nombre: 'Tuttnauer',
     descriptor: 'Esterilización y desinfección térmica',
     lead:
-      // VERIFICAR · año de fundación (1925) y número de países (más de 130)
-      'Fabricante de autoclaves desde 1925, con equipos en centrales de esterilización de más de 130 países. Esterilización por vapor, plasma de peróxido de hidrógeno y termodesinfección, con instalación, calificación y repuesto original desde Bogotá.',
-    fabricante: {
-      pais: 'Países Bajos e Israel', // VERIFICAR · sedes de fabricación
-      fundacion: '1925', // VERIFICAR
-    },
+      'Fabricante de autoclaves desde 1925, con más de 200 distribuidores en más de 140 países. Esterilización por vapor, plasma de peróxido de hidrógeno y lavado con termodesinfección para la central, con instalación, calificación y repuesto original desde Bogotá.',
+    quienEs:
+      'Tuttnauer empezó en 1925 como taller de recipientes a presión y hoy diseña equipos de esterilización y control de infecciones para hospitales, clínicas, laboratorios y odontología. Tiene oficinas regionales en Estados Unidos, Europa, India y China, y plantas en China desde 2013 y en Hungría desde 2022. Sus autoclaves hospitalarios se fabrican bajo EN 285, ANSI/AAMI ST8, ISO 13485 e ISO 9001, y la Directiva de Equipos a Presión 2014/68/UE.',
+    fabricante: { pais: 'China y Hungría', fundacion: '1925' },
     rolSVMG: 'representante',
-    // invima: pendiente. No se escribe un número de registro que no se tenga.
+    // TODO INVIMA · número de registro sanitario por equipo, empezando por PlazMax
     logo: { src: '/logos/marcas/tuttnauer.svg', alt: 'Logo de Tuttnauer' },
     etapasCiclo: ['lavado', 'esterilizacion'],
-    // pruebas: cada entrada necesita `fuente`. Sin fuente, el bloque no se renderiza.
-    // TODO pruebas: normas de fabricación declaradas (ISO 13485, EN 285, ISO 15883)
+    pruebas: [
+      { dato: 'Fundada en 1925, con plantas en China y Hungría.', fuente: 'tuttnauer.com · página de empresa' },
+      { dato: 'Autoclaves de central bajo EN 285 y ANSI/AAMI ST8.', fuente: 'Ficha técnica 44/55 Compact v2.5' },
+      { dato: 'Trazabilidad por impresora, USB y Ethernet en toda la línea hospitalaria.', fuente: 'Fichas de producto Tuttnauer' },
+    ],
     respaldo: [
       'Instalación y calificación de instalación y de operación',
       'Mantenimiento preventivo y correctivo con técnicos propios',
@@ -38,7 +40,7 @@ export const marcas: Marca[] = [
     seo: {
       titulo: 'Tuttnauer en Colombia | Servimedical',
       descripcion:
-        'Autoclaves de vapor, plasma de peróxido de hidrógeno y termodesinfectoras Tuttnauer, con instalación, calificación y repuesto original desde Bogotá.',
+        'Autoclaves de vapor de 120 a 1.010 L, plasma PlazMax y termodesinfectoras TIVA. Instalación, calificación y repuesto original desde Bogotá.',
     },
   },
 
@@ -47,15 +49,22 @@ export const marcas: Marca[] = [
     nombre: 'Sanqiang',
     descriptor: 'Esterilización, desinfección y residuos',
     lead:
-      // VERIFICAR · año (2010) y ciudad de fundación (Henan)
-      'Fabricante chino de equipos para central de esterilización, fundado en 2010 en Henan. Cubre el ciclo de punta a punta: lavado y termodesinfección, vapor, plasma de peróxido y tratamiento de residuos hospitalarios.',
-    fabricante: {
-      pais: 'China',
-      fundacion: '2010', // VERIFICAR
-    },
+      'Fabricante chino de equipos para la central de esterilización, fundado en 2010 y exportador a más de 100 países. Cubre el lavado y la termodesinfección, el vapor, el plasma de peróxido y el tratamiento de residuos hospitalarios, con equipos de gran capacidad de cámara.',
+    quienEs:
+      'Sanqiang diseña y fabrica en Hua County, en la provincia de Henan, autoclaves de vacío pulsante, esterilizadores de plasma de peróxido, termodesinfectoras y equipos de óxido de etileno, formaldehído a baja temperatura y secado. Declara certificación ISO 13485, ISO 9001 y marcado CE, y un equipo de cincuenta ingenieros de investigación y desarrollo.',
+    fabricante: { razonSocial: 'Henan Sanqiang Medical Equipment', ciudad: 'Hua County, Henan', pais: 'China', fundacion: '2010' },
     rolSVMG: 'distribuidor',
     logo: { src: '/logos/marcas/sanqiang.svg', alt: 'Logo de Sanqiang' },
     etapasCiclo: ['lavado', 'esterilizacion', 'residuos'],
+    // VERIFICAR · el sitio de exportación y la tienda oficial se contradicen en
+    // número de empleados (500+ vs 304) y superficie de planta (56.000 vs
+    // 51.677 m²). «5.000+ equipos instalados» sólo aparece en una de las dos.
+    // No se publica ninguna de las tres hasta tener una cifra sola.
+    pruebas: [
+      { dato: 'Cámaras de vapor de hasta 1.500 L.', fuente: 'sanqiangmedical.com · autoclaves grandes' },
+      { dato: 'Plasma de 100 a 190 L, con ciclo corto de 30 minutos.', fuente: 'sanqiangmedical.com · plasma SQ-WD' },
+      { dato: 'Termodesinfectoras de hasta 12 cestas.', fuente: 'sanqiangmedical.com · lavadoras desinfectadoras' },
+    ],
     respaldo: [
       'Instalación y puesta en marcha con técnicos propios',
       'Mantenimiento preventivo y correctivo',
@@ -65,30 +74,70 @@ export const marcas: Marca[] = [
     seo: {
       titulo: 'Sanqiang en Colombia | Servimedical',
       descripcion:
-        'Equipos Sanqiang para central de esterilización: termodesinfectoras, autoclaves de vapor, plasma de peróxido y tratamiento de residuos hospitalarios.',
+        'Autoclaves de vacío pulsante hasta 1.500 L, plasma SQ-WD, termodesinfectoras y tratamiento de residuos. Importación directa y servicio técnico propio.',
     },
   },
 
   {
-    slug: 'servimedical',
-    nombre: 'Servimedical',
-    descriptor: 'Empaque, mobiliario y repuestos',
+    slug: 'celitron',
+    nombre: 'Celitron',
+    descriptor: 'Tratamiento de residuos biosanitarios',
     lead:
-      'Lo que la central consume y lo que la sostiene: papel grado esterilización y Tyvek, mobiliario en acero inoxidable fabricado a la medida de su flujo, y repuestos para mantener los equipos en operación.',
-    fabricante: { pais: 'Colombia', razonSocial: 'Servimedical Group SAS' },
-    rolSVMG: 'representante',
-    logo: { src: '/logos/marcas/servimedical.svg', alt: 'Logo de Servimedical' },
-    etapasCiclo: ['empaque', 'almacenamiento'],
+      'Fabricante húngaro del sistema ISS, que tritura y esteriliza residuos biosanitarios en un solo recipiente, dentro del hospital. Más de 500 unidades en más de 40 países.',
+    quienEs:
+      'Celitron diseña y fabrica en Vác, en Hungría, autoclaves hospitalarios bajo EN 285 y equipos de tratamiento de residuos sin incineración. Es una empresa certificada ISO 9001 e ISO 13485, con productos con marcado CE. Reporta más de quinientas unidades de tratamiento de residuos vendidas en más de cuarenta países.',
+    fabricante: { razonSocial: 'Celitron Medical Technologies', ciudad: 'Vác', pais: 'Hungría' },
+    // TODO confirmar con Felipe · ¿representante o distribuidor de Celitron?
+    rolSVMG: 'distribuidor',
+    logo: { src: '/logos/marcas/celitron.svg', alt: 'Logo de Celitron' },
+    etapasCiclo: ['residuos'],
+    // VERIFICAR · el sitio dice «más de 5.000 esterilizadores en más de 80
+    // países» en empresa y «40+ países» en la página del ISS. Se usa la del
+    // ISS, que es la línea que representamos. El año de fundación no aparece.
+    pruebas: [
+      { dato: 'Más de 500 unidades de tratamiento de residuos en más de 40 países.', fuente: 'celitron.com · página del sistema ISS' },
+      { dato: 'Fabricación bajo EN 285, con empresa certificada ISO 9001 e ISO 13485.', fuente: 'celitron.com · página de empresa' },
+    ],
     respaldo: [
-      'Abastecimiento programado desde Bogotá',
-      'Mobiliario fabricado a la medida del flujo de la central',
-      'Repuesto original para las marcas que representamos',
+      'Instalación y puesta en marcha con técnicos propios',
+      'Mantenimiento del circuito de vapor y del sistema de trituración',
+      'Entrenamiento al personal del recinto de residuos',
     ],
     orden: 3,
     seo: {
-      titulo: 'Servimedical — empaque, mobiliario y repuestos | Servimedical',
+      titulo: 'Celitron en Colombia — sistema ISS | Servimedical',
       descripcion:
-        'Papel grado esterilización y Tyvek, mobiliario en acero inoxidable a la medida del flujo de la central, y repuestos originales con despacho desde Bogotá.',
+        'Sistema ISS de Celitron: tritura y esteriliza residuos biosanitarios en un solo recipiente, dentro del hospital, en 15 a 35 minutos.',
+    },
+  },
+
+  {
+    slug: 'akarmak',
+    nombre: 'Akarmak',
+    descriptor: 'Tratamiento de residuos biosanitarios',
+    lead:
+      'Fabricante turco de autoclaves industriales desde 1990, con clientes en más de 70 países. Su línea médica esteriliza y tritura residuos biosanitarios, desde equipos para un solo hospital hasta plantas centralizadas.',
+    quienEs:
+      'Akarmak fabrica autoclaves y recipientes a presión para las industrias del vidrio, los compuestos, el caucho y la construcción, y aplica esa ingeniería al tratamiento de residuos médicos. Fabrica bajo la Directiva de Equipos a Presión 2014/68/UE, ASME VIII, AD 2000 e ISO 9001:2015, y sus sistemas de residuos están validados por organismos independientes como el Instituto Robert Koch, en nivel STAATT IV.',
+    fabricante: { razonSocial: 'Akar Makina', ciudad: 'Eskişehir', pais: 'Turquía', fundacion: '1990' },
+    rolSVMG: 'distribuidor',
+    logo: { src: '/logos/marcas/akarmak.svg', alt: 'Logo de Akarmak' },
+    etapasCiclo: ['residuos'],
+    pruebas: [
+      { dato: 'Reducción microbiana de 8 log₁₀ en sistemas con trituración previa.', fuente: 'akarmak.com · esterilización de residuos médicos' },
+      { dato: 'Validación del Instituto Robert Koch, nivel STAATT IV.', fuente: 'akarmak.com · esterilización de residuos médicos' },
+      { dato: 'Trituradora de fabricación propia, con doble motor y reversa automática.', fuente: 'akarmak.com · ficha de residuos médicos' },
+    ],
+    respaldo: [
+      'Alcance llave en mano: generador de vapor, presurización y cargue automático',
+      'Instalación y puesta en marcha con técnicos propios',
+      'Mantenimiento del sistema de trituración',
+    ],
+    orden: 4,
+    seo: {
+      titulo: 'Akarmak en Colombia — residuos biosanitarios | Servimedical',
+      descripcion:
+        'Sistemas Akarmak de esterilización de residuos biosanitarios con vapor y trituradora propia, de 20 kg por ciclo a 1.800 kg por hora.',
     },
   },
 
@@ -97,75 +146,58 @@ export const marcas: Marca[] = [
     nombre: '2i',
     descriptor: 'Monitoreo del proceso',
     lead:
-      'Indicadores químicos y biológicos para liberar cada carga con evidencia. Sin ellos no hay trazabilidad que presentar ante el comité de infecciones.',
-    fabricante: {
-      pais: '', // TODO confirmar con Felipe · país de fabricación de 2i
-    },
+      'Indicadores químicos y biológicos para monitorear vapor, peróxido de hidrógeno, óxido de etileno y formaldehído, con lectura rápida desde 19 minutos en vapor. La evidencia con la que la central libera cada carga.',
+    quienEs:
+      '2i fabrica en Brasil indicadores para todas las clases de la ISO 11140-1, indicadores biológicos autocontenidos, paquetes de prueba, pruebas de limpieza para lavadoras, y lectoras e incubadoras propias.',
+    fabricante: { razonSocial: '2i Health Care', ciudad: 'Cambé, Paraná', pais: 'Brasil' },
     rolSVMG: 'distribuidor',
+    // TODO confirmar con Felipe · registro INVIMA y certificación ISO 13485,
+    // que no es visible públicamente.
     logo: { src: '/logos/marcas/2i.svg', alt: 'Logo de 2i' },
     etapasCiclo: ['monitoreo'],
-    // TODO pruebas: normas declaradas por el fabricante (ISO 11140, ISO 11138)
-    respaldo: [
-      'Abastecimiento programado según cargas por turno',
-      'Lotes con certificado de análisis',
+    pruebas: [
+      { dato: 'Indicadores de las clases 1, 2, 4, 5 y 6 de la ISO 11140-1.', fuente: '2i.ind.br · catálogo de indicadores químicos' },
+      { dato: 'Lectura biológica desde 19 minutos en vapor.', fuente: '2i.ind.br · catálogo de indicadores biológicos' },
+      { dato: 'Lectoras de 4 y 12 pozos e incubadora de 6 pozos propias.', fuente: '2i.ind.br · catálogo de equipos' },
     ],
-    orden: 4,
+    respaldo: [
+      'Definición del esquema de monitoreo junto con la central',
+      'Abastecimiento programado por carga y por equipo',
+      'Entrenamiento en lectura e interpretación',
+    ],
+    orden: 5,
     seo: {
       titulo: '2i en Colombia — indicadores químicos y biológicos | Servimedical',
       descripcion:
-        'Indicadores químicos y biológicos 2i para monitorear y liberar cada carga de la central de esterilización, con abastecimiento programado desde Bogotá.',
+        'Indicadores químicos de clases 1 a 6 e indicadores biológicos autocontenidos con lectura desde 19 minutos, para vapor, peróxido, óxido de etileno y formaldehído.',
     },
   },
 
   {
-    slug: 'akarmak',
-    nombre: 'Akarmak',
-    descriptor: 'Tratamiento de residuos hospitalarios',
+    slug: 'servimedical',
+    nombre: 'Servimedical',
+    descriptor: 'Empaque, mobiliario y repuestos',
     lead:
-      // VERIFICAR · año de fundación (1990) y razón social (Akar Makina)
-      'Fabricante turco de autoclaves industriales desde 1990. Su línea hospitalaria trata residuos biosanitarios con vapor y trituración, en sitio.',
-    fabricante: {
-      pais: 'Turquía',
-      razonSocial: 'Akar Makina', // VERIFICAR
-      fundacion: '1990', // VERIFICAR
-    },
-    rolSVMG: 'distribuidor',
-    logo: { src: '/logos/marcas/akarmak.svg', alt: 'Logo de Akarmak' },
-    etapasCiclo: ['residuos'],
-    // TODO líneas pendientes de confirmar · no hay ninguna en src/datos/lineas.ts.
-    // Por portafolio público el fabricante trata residuos por vapor con
-    // trituración, pero no se crea una línea sin saber qué representa SVMG.
-    orden: 5,
-    seo: {
-      titulo: 'Akarmak en Colombia — tratamiento de residuos | Servimedical',
-      descripcion:
-        'Akarmak, fabricante turco de autoclaves industriales. Tratamiento de residuos biosanitarios por vapor y trituración en sitio, representado en Colombia por Servimedical.',
-    },
-  },
-
-  {
-    slug: 'celitron',
-    nombre: 'Celitron',
-    descriptor: 'Vapor y tratamiento de residuos',
-    lead:
-      // VERIFICAR · denominación del sistema (ISS) y de la línea de autoclaves (Azteca)
-      'Fabricante de esterilizadores de vapor y del sistema ISS, que esteriliza y tritura residuos biosanitarios en un solo recipiente.',
-    fabricante: {
-      pais: 'Hungría', // VERIFICAR · país de fabricación
-    },
-    rolSVMG: 'distribuidor',
-    logo: { src: '/logos/marcas/celitron.svg', alt: 'Logo de Celitron' },
-    etapasCiclo: ['esterilizacion', 'residuos'],
-    // TODO líneas pendientes de confirmar · no hay ninguna en src/datos/lineas.ts.
-    // Por portafolio público: sistema ISS —esterilizador-triturador en un solo
-    // recipiente— y autoclaves de vapor. No se crean sin confirmar el alcance.
+      'Lo que la central consume y lo que la sostiene: papel grado esterilización y Tyvek para la barrera estéril, mobiliario en acero inoxidable para el flujo de sucio a limpio a estéril, y repuestos para que los equipos no se detengan.',
+    quienEs:
+      'La línea propia de Servimedical cubre lo que no depende de un fabricante de equipos: el empaque bajo ISO 11607 y EN 868, el mobiliario según los ambientes que exige la Resolución 3100 de 2019, y el repuesto para el mantenimiento y la revalidación anual que pide la Resolución 2183 de 2004.',
+    fabricante: { razonSocial: 'Servimedical Group SAS', ciudad: 'Bogotá', pais: 'Colombia' },
+    rolSVMG: 'representante',
+    logo: { src: '/logos/marcas/servimedical.svg', alt: 'Logo de Servimedical' },
+    etapasCiclo: ['empaque', 'almacenamiento'],
+    respaldo: [
+      'Abastecimiento programado desde Bogotá',
+      'Mobiliario fabricado a la medida del flujo de la central',
+      'Repuesto de desgaste en inventario para las marcas que representamos',
+    ],
     orden: 6,
     seo: {
-      titulo: 'Celitron en Colombia — vapor y residuos | Servimedical',
+      titulo: 'Servimedical — empaque, mobiliario y repuestos | Servimedical',
       descripcion:
-        'Celitron: esterilizadores de vapor y el sistema ISS, que esteriliza y tritura residuos biosanitarios en un solo recipiente. Representada en Colombia por Servimedical.',
+        'Papel grado esterilización y Tyvek bajo ISO 11607, mobiliario en acero inoxidable a la medida del plano, y repuestos con existencias en Bogotá.',
     },
   },
 ];
 
 export const marcaPorSlug = (slug: string) => marcas.find((m) => m.slug === slug);
+export const urlMarca = (slug: string) => `/marcas/${slug}`;

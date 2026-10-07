@@ -5,18 +5,19 @@
  * y la integración de abajo detiene el build si los dos se separan. Un 301
  * que se pierde es tráfico y posiciones que se pierden en silencio.
  */
-/* Categorías con una sola línea: /lineas/<cat> no tiene página propia porque
-   sería un paso intermedio vacío, así que va directo a la línea. Se deriva de
-   los datos: el día que una segunda marca entre a la categoría, la página
-   aparece y esta redirección desaparece sola. */
-async function categoriasDeUnaLinea() {
-  const { categorias } = await import('../src/datos/categorias.ts');
-  const { lineasDeCategoria, urlLinea } = await import('../src/datos/lineas.ts');
-  return [...categorias]
+/* Líneas con un solo producto: /lineas/<linea> no tiene página propia porque
+   sería un paso intermedio vacío, así que va directo al producto. Se deriva de
+   los datos: el día que una segunda marca entre a la línea, la página aparece
+   y esta redirección desaparece sola. Así pasó con residuos hospitalarios al
+   sumar Celitron y Akarmak. */
+async function lineasDeUnProducto() {
+  const { lineas } = await import('../src/datos/lineas.ts');
+  const { productosDeLinea, urlProducto } = await import('../src/datos/productos.ts');
+  return [...lineas]
     .sort((a, b) => a.orden - b.orden)
-    .map((c) => [c, lineasDeCategoria(c.slug)])
-    .filter(([, l]) => l.length === 1)
-    .map(([c, l]) => [`/lineas/${c.slug}`, urlLinea(l[0])]);
+    .map((l) => [l, productosDeLinea(l.slug)])
+    .filter(([, p]) => p.length === 1)
+    .map(([l, p]) => [`/lineas/${l.slug}`, urlProducto(p[0])]);
 }
 
 export const redirecciones = [
@@ -58,7 +59,7 @@ export const redirecciones = [
    que preserva el método. Para una migración de URLs lo que corresponde es un
    301, que es además lo que esperan las herramientas de SEO. */
 export const comoVercel = async () =>
-  [...redirecciones, ...(await categoriasDeUnaLinea())]
+  [...redirecciones, ...(await lineasDeUnProducto())]
     .map(([source, destination]) => ({ source, destination, statusCode: 301 }));
 
 /** Detiene el build si `vercel.json` y este archivo se separaron. */

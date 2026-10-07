@@ -1,746 +1,319 @@
-import type { Linea } from './tipos.ts';
-import { marcas } from './marcas.ts';
-
-const ORDEN_MARCA = [...marcas].sort((a, b) => a.orden - b.orden).map((m) => m.slug);
+import { ETAPAS, type Linea, type EtapaCiclo } from './tipos.ts';
 
 /* ============================================================================
-   LAS LÍNEAS
+   LAS LÍNEAS · el método
 
-   Una línea pertenece a exactamente una marca. El orden dentro de cada marca
-   es el orden del dropdown y de la grilla de la página de marca.
+   Aquí se explica cómo funciona cada método, qué procesa y qué no, y bajo qué
+   normas. Una sola vez. Los productos no repiten nada de esto: enlazan.
 
-   Lo que NO está aquí y no se inventa:
-   · `modelos` — ninguna línea tiene tabla porque no hay fichas del fabricante.
-   · `certificaciones` — lo que el fabricante declara en su ficha. Distinto de
-     `normasProceso`, que es la norma que gobierna el proceso en sí.
-   · capacidades y dimensiones en `specsClave`.
-   Cada hueco lleva su `// TODO`. Una sección sin datos no se renderiza.
+   `orden` es el orden del ciclo de la central, no el alfabético.
    ========================================================================== */
 
-/* --------------------------------------------------- normas de referencia --
-   Son las normas que gobiernan el proceso, no certificaciones de un equipo.
-   Se repiten entre marcas porque el proceso es el mismo. */
-const N_VAPOR = [
-  { norma: 'ISO 17665', que: 'Esterilización por calor húmedo: desarrollo, validación y control de rutina del proceso.' },
-  { norma: 'EN 285 · EN 13060', que: 'Requisitos de los esterilizadores de vapor grandes y pequeños.' },
-];
-const N_PLASMA = [
-  { norma: 'ISO 14937', que: 'Requisitos generales para caracterizar un agente esterilizante y validar el proceso.' },
-  { norma: 'ISO 22441', que: 'Esterilización a baja temperatura por peróxido de hidrógeno vaporizado.' },
-];
-const N_TERMO = [
-  { norma: 'ISO 15883', que: 'Lavadoras desinfectadoras: requisitos, ensayos y validación del proceso.' },
-];
-
 export const lineas: Linea[] = [
-  /* ════════════════════════════════════════════════════════ TUTTNAUER ════ */
   {
-    slug: 'vapor',
-    marca: 'tuttnauer',
-    nombre: 'Vapor',
-    tipo: 'equipo',
-    categoria: 'vapor',
-    lead:
-      'Vapor saturado con prevacío fraccionado para todo el material termorresistente y empacado. Decide cuántas cargas salen por turno y, con eso, cuánto instrumental hay que tener duplicado.',
-    metodo: 'Vapor saturado con prevacío fraccionado',
-    uso: 'Instrumental termorresistente, textiles y contenedores',
-    specsClave: [
-      { label: 'Método', valor: 'Vapor saturado · prevacío fraccionado' },
-      { label: 'Temperatura de ciclo', valor: '121 °C y 134 °C' },
-      { label: 'Norma del proceso', valor: 'ISO 17665' },
-      // TODO capacidad: rango de volumen de cámara según catálogo Tuttnauer
+    slug: 'termodesinfectoras',
+    nombre: 'Termodesinfectoras',
+    descriptor: 'Lavado y desinfección térmica validada',
+    etapa: 'lavado',
+    orden: 1,
+    lead: 'Lavado y desinfección térmica automática del instrumental antes del empaque. Sin una carga limpia no hay esterilización que valga.',
+    comoFunciona: [
+      'La termodesinfectora lava el instrumental con agua, detergente enzimático o alcalino y presión, lo enjuaga, y lo desinfecta con agua por encima de 90 °C durante un tiempo controlado. El resultado se expresa como valor A0, según la ISO 15883.',
+      'Al final, el secado con aire caliente filtrado deja la carga lista para inspección y empaque. Reemplaza el lavado manual, que no se puede validar ni repetir igual en cada carga.',
     ],
     compatible: [
-      'Instrumental quirúrgico de acero inoxidable',
-      'Textiles y ropa quirúrgica',
-      'Material poroso empacado',
-      'Vidriería y líquidos en ciclo específico',
-      'Sets conformados en contenedor rígido',
+      'Instrumental quirúrgico',
+      'Contenedores',
+      'Material de anestesia',
+      'Instrumental canulado, con carro de inyección',
     ],
     noCompatible: [
-      'Óptica y endoscopios flexibles',
-      'Motores e instrumental con electrónica',
-      'Polímeros termosensibles',
-      'Material sensible a la humedad',
+      'Endoscopios flexibles, que van a una reprocesadora de endoscopios',
+      'Material termosensible que no tolere 90 °C',
     ],
-    alternativa: {
-      titulo: 'Plasma Tuttnauer',
-      linea: 'plasma',
-      nota: 'Todo lo termosensible va por baja temperatura. Forzarlo en vapor daña el material y no lo esteriliza.',
-    },
-    normasProceso: N_VAPOR,
-    instalacion: [
-      { label: 'Eléctrico', valor: 'Acometida dedicada según la placa del modelo.' },
-      { label: 'Agua', valor: 'Agua tratada. La dureza y la conductividad las fija el fabricante en la ficha del modelo.' },
-      { label: 'Vapor', valor: 'Red de planta o generador propio, según configuración.' },
-      { label: 'Drenaje', valor: 'Desagüe con capacidad para la descarga de condensado del ciclo.' },
-      { label: 'Ventilación', valor: 'Extracción en el recinto y disipación del calor del equipo.' },
-      { label: 'Espacio', valor: 'Área de servicio al respaldo y, si hay barrera sanitaria, doble puerta.' },
-    ],
-    preguntasCotizacion: [
-      'Cirugías por día y por especialidad',
-      'Cargas por turno y turnos que opera la central',
-      'Rotación de sets y cuáles son los sets críticos duplicados',
-      'Espacio disponible y necesidad de doble puerta con barrera sanitaria',
-      'Acometidas de vapor, agua, desagüe y eléctrica disponibles',
-    ],
-    relacionadas: [
-      { linea: 'papel-y-tyvek', porque: 'El vapor solo esteriliza lo que atraviesa. El empaque deja pasar el agente y sostiene la barrera hasta sala.' },
-      { linea: 'indicadores-biologicos', porque: 'Es la única evidencia de letalidad. Sin él no hay liberación que sostenga una auditoría.' },
-      { linea: 'repuestos', porque: 'Empaquetadura y válvulas son partes de desgaste. En inventario, una parada de días es de horas.' },
-    ],
-    servicio: [
-      'Calificación de instalación y de operación, con pruebas de vacío y Bowie-Dick de aceptación',
-      'Mantenimiento preventivo con rutina definida por equipo',
-      'Repuesto original con existencias en Bogotá',
+    normas: [
+      { norma: 'ISO 15883-1', que: 'Lavadoras desinfectadoras: requisitos generales, términos y ensayos.' },
+      { norma: 'ISO 15883-2', que: 'Requisitos para las que procesan instrumental quirúrgico, de anestesia y contenedores.' },
     ],
     faq: [
-      { p: '¿Sirve para óptica y motores?', r: 'No. El vapor destruye la óptica, los cables y la electrónica. Ese material va por plasma de peróxido.' },
-      { p: '¿Hace falta generador de vapor propio?', r: 'Depende de la red de la institución. Si la planta entrega vapor en especificación y con caudal suficiente, el equipo se conecta a ella; si no, se configura con generador propio.' },
-      { p: '¿Con qué frecuencia se corre el Bowie-Dick?', r: 'Diaria, en la primera carga del día, antes de procesar material. Es la prueba que verifica la remoción de aire del prevacío.' },
-      { p: '¿Se puede instalar sin tratamiento de agua?', r: 'Se puede, pero la incrustación acorta la vida de la cámara y del generador y el daño no se ve hasta que el equipo falla. El análisis del agua va antes de la instalación.' },
+      { p: '¿Reemplaza el lavado manual?', r: 'Sí, para todo lo que entra en un carro. Es repetible y queda registrado, que es lo que el lavado manual no puede ofrecer.' },
+      { p: '¿Qué agua necesita?', r: 'Blanda para el lavado y desmineralizada para el enjuague final, para no dejar manchas ni residuos sobre el instrumental ya limpio.' },
+      { p: '¿Cómo se verifica la limpieza?', r: 'Con pruebas de limpieza —de suciedad o de proteína— por carga o por turno, según el protocolo de la institución.' },
     ],
-    orden: 1,
     seo: {
-      titulo: 'Vapor Tuttnauer en Colombia | Servimedical',
-      descripcion:
-        'Autoclaves Tuttnauer de vapor saturado con prevacío fraccionado para instrumental, textiles y contenedores. Instalación, calificación y repuesto original desde Bogotá.',
+      titulo: 'Termodesinfectoras en Colombia | Servimedical',
+      descripcion: 'Lavado y desinfección térmica validada por encima de 90 °C bajo ISO 15883, con secado por aire filtrado. Equipos Tuttnauer y Sanqiang en Colombia.',
+    },
+  },
+
+  {
+    slug: 'empaque',
+    nombre: 'Papel grado esterilización y Tyvek',
+    descriptor: 'La barrera estéril hasta sala',
+    etapa: 'empaque',
+    orden: 2,
+    lead: 'El empaque no envuelve el set: es la barrera estéril. Sostiene la esterilidad desde el autoclave hasta que alguien abre el paquete en sala.',
+    comoFunciona: [
+      'El sistema de barrera estéril deja pasar el agente esterilizante, lo retiene fuera después del ciclo y resiste la manipulación hasta la apertura. La ISO 11607 lo regula como sistema, no como material suelto: el empaque, el sellado y la validación van juntos.',
+      'El método decide el material. El vapor atraviesa la celulosa, así que se empaca en papel grado esterilización o en rollo papel-película. El peróxido de hidrógeno es neutralizado por la celulosa, así que el plasma exige Tyvek o envoltorio SMS de polipropileno.',
+    ],
+    compatible: [
+      'Rollos y sobres papel-película para vapor y óxido de etileno',
+      'Papel crepado y envoltorio SMS para doblado de sets',
+      'Tyvek-película para plasma de peróxido y óxido de etileno',
+    ],
+    noCompatible: [
+      'Papel y celulosa en ciclos de peróxido de hidrógeno',
+      'Empaque reutilizado o con el sello comprometido',
+    ],
+    empaque: 'El sello térmico debe tener un ancho mínimo de 6 mm, según la EN 868-5.',
+    normas: [
+      { norma: 'ISO 11607-1 y -2', que: 'Sistemas de barrera estéril: requisitos de materiales y validación de los procesos de empaque.' },
+      { norma: 'EN 868-2, -3 y -5', que: 'Requisitos del papel de envoltura, el papel crepado y las bolsas y rollos termosellables.' },
+      { norma: 'ISO 11140-1', que: 'Gobierna el indicador de proceso impreso sobre el empaque.' },
+    ],
+    faq: [
+      { p: '¿Por qué no sirve el mismo empaque para vapor y para plasma?', r: 'Porque la celulosa absorbe el peróxido, baja la concentración del agente y aborta el ciclo. El plasma exige Tyvek o SMS.' },
+      { p: '¿Cuánto dura la barrera estéril?', r: 'El vencimiento lo define el protocolo de la institución según el tipo de empaque y las condiciones de almacenamiento, no el material por sí solo.' },
+    ],
+    seo: {
+      titulo: 'Papel grado esterilización y Tyvek | Servimedical',
+      descripcion: 'Barrera estéril bajo ISO 11607 y EN 868: rollos papel-película para vapor y Tyvek para plasma de peróxido. Abastecimiento programado desde Bogotá.',
+    },
+  },
+
+  {
+    slug: 'vapor',
+    nombre: 'Esterilización por vapor',
+    descriptor: 'El método de referencia de la central',
+    etapa: 'esterilizacion',
+    orden: 3,
+    lead: 'Vapor saturado a 121 o 134 °C para todo lo que resiste calor y humedad. El método de referencia de la central.',
+    comoFunciona: [
+      'El autoclave extrae el aire de la cámara con pulsos de vacío —prevacío fraccionado—, introduce vapor saturado, mantiene la temperatura durante el tiempo de exposición y seca la carga al vacío. Sin aire residual, el vapor llega al centro de cada paquete.',
+      'La prueba de Bowie-Dick al inicio del día confirma esa extracción de aire, y la prueba de vacío confirma que la cámara no tiene fugas. Son las dos verificaciones que preceden a la primera carga.',
+    ],
+    compatible: [
+      'Instrumental metálico',
+      'Textiles y ropa quirúrgica',
+      'Contenedores rígidos',
+      'Vidrio',
+      'Caucho y siliconas termorresistentes',
+    ],
+    noCompatible: [
+      'Óptica, cables y motores, que van a plasma',
+      'Polímeros termosensibles',
+      'Líquidos en recipientes sellados',
+    ],
+    normas: [
+      { norma: 'ISO 17665', que: 'Esterilización por calor húmedo: desarrollo, validación y control de rutina del proceso.' },
+      { norma: 'EN 285', que: 'Requisitos de los esterilizadores de vapor grandes, los de central.' },
+      { norma: 'EN 13060', que: 'Requisitos de los esterilizadores de vapor pequeños, los de consultorio y sala.' },
+    ],
+    faq: [
+      { p: '¿121 o 134 °C?', r: '134 °C para la mayoría del instrumental envuelto, con exposición de 4 minutos. 121 °C para material que no tolera 134 °C, con exposición más larga.' },
+      { p: '¿Por qué la prueba de Bowie-Dick todos los días?', r: 'Porque detecta aire residual o fugas antes de procesar la primera carga. Un prevacío que falla no se nota en el paquete: se nota en el indicador.' },
+      { p: '¿Qué agua necesita el generador?', r: 'Desmineralizada o de baja conductividad, para proteger el generador y la calidad del vapor. La incrustación no se ve hasta que el equipo falla.' },
+    ],
+    seo: {
+      titulo: 'Esterilización por vapor en Colombia | Servimedical',
+      descripcion: 'Autoclaves de prevacío a 121 y 134 °C bajo ISO 17665 y EN 285, de 120 a 1.500 L. Equipos Tuttnauer y Sanqiang con servicio técnico propio.',
     },
   },
 
   {
     slug: 'plasma',
-    marca: 'tuttnauer',
-    nombre: 'Plasma',
-    tipo: 'equipo',
-    categoria: 'plasma',
-    lead:
-      'Baja temperatura para lo que el vapor destruye: óptica, motores, cables y polímeros. Su valor está en la rotación: devuelve el instrumental caro a sala el mismo día.',
-    metodo: 'Peróxido de hidrógeno vaporizado a baja temperatura',
-    uso: 'Óptica, motores, cables y material termosensible',
-    specsClave: [
-      { label: 'Método', valor: 'Peróxido de hidrógeno vaporizado' },
-      { label: 'Temperatura de ciclo', valor: 'Baja temperatura' },
-      { label: 'Norma del proceso', valor: 'ISO 22441' },
-      // TODO capacidad y duración de ciclo según catálogo Tuttnauer
+    nombre: 'Esterilización por plasma',
+    descriptor: 'Baja temperatura para lo termosensible',
+    etapa: 'esterilizacion',
+    orden: 4,
+    lead: 'Peróxido de hidrógeno vaporizado por debajo de 55 °C para lo que el vapor destruye: óptica, cables, motores y polímeros.',
+    comoFunciona: [
+      'El equipo hace vacío en la cámara, vaporiza peróxido de hidrógeno, lo difunde en la carga y lo convierte en plasma, que descompone el residuo en agua y oxígeno. No usa agua de red y no deja residuos tóxicos.',
+      'El ciclo dura entre 30 y 60 minutos, así que el instrumental termosensible vuelve a sala el mismo día. Ahí está su valor: no reemplaza al autoclave, recupera la rotación del instrumental caro.',
     ],
     compatible: [
-      'Óptica rígida y flexible',
+      'Óptica rígida',
       'Cables y fibra',
       'Motores e instrumental con electrónica',
       'Polímeros y material termosensible',
     ],
     noCompatible: [
-      'Celulosa, textiles y papel',
+      'Celulosa: papel, textiles y gasa, que absorben el peróxido y abortan el ciclo',
       'Líquidos y polvos',
-      'Lúmenes fuera de la especificación del equipo',
+      'Lúmenes fuera del límite de diámetro y longitud de cada equipo',
     ],
-    alternativa: {
-      titulo: 'Vapor Tuttnauer',
-      linea: 'vapor',
-      nota: 'La celulosa absorbe el peróxido y aborta el ciclo. Todo lo termorresistente y poroso va por vapor.',
-    },
-    normasProceso: N_PLASMA,
-    instalacion: [
-      { label: 'Eléctrico', valor: 'Acometida dedicada según la placa del modelo.' },
-      { label: 'Ventilación', valor: 'Recinto ventilado, por el agente químico del proceso.' },
-      { label: 'Espacio', valor: 'Área de servicio al respaldo y espacio para el almacenamiento de cartuchos.' },
-    ],
-    preguntasCotizacion: [
-      'Volumen de material termosensible por turno',
-      'Tipo de lúmenes y longitudes que hay que procesar',
-      'Urgencia de rotación entre cirugías',
-      'Disponibilidad de empaque compatible con el método',
-    ],
-    relacionadas: [
-      { linea: 'papel-y-tyvek', porque: 'La celulosa absorbe el agente y aborta el ciclo. Esta línea necesita su propia barrera, en Tyvek.' },
-      { linea: 'indicadores-quimicos', porque: 'Los indicadores de vapor no viran con peróxido. No sirven como control aquí.' },
-      { linea: 'repuestos', porque: 'Electrónica sensible: el canal directo de fábrica evita paradas largas por una parte menor.' },
-    ],
-    servicio: [
-      'Calificación de instalación y de operación del ciclo de baja temperatura',
-      'Mantenimiento preventivo con rutina propia del equipo de plasma',
-      'Entrenamiento en carga, empaque compatible y control del proceso',
+    empaque: 'Se empaca en Tyvek o en envoltorio SMS de polipropileno, nunca en papel.',
+    normas: [
+      { norma: 'ISO 14937', que: 'Requisitos generales para caracterizar un agente esterilizante y validar el proceso.' },
+      { norma: 'ISO 22441', que: 'Esterilización a baja temperatura por peróxido de hidrógeno vaporizado.' },
     ],
     faq: [
-      { p: '¿Por qué no se puede empacar en papel?', r: 'La celulosa absorbe el peróxido, baja la concentración del agente y aborta el ciclo. El empaque de esta línea es Tyvek.' },
-      { p: '¿Procesa lúmenes largos?', r: 'Dentro del límite de diámetro y longitud que declara el fabricante para cada ciclo. Fuera de ese límite el agente no llega al interior.' },
-      { p: '¿Reemplaza al autoclave de vapor?', r: 'No. Son métodos complementarios: el plasma cubre lo termosensible y el vapor todo lo termorresistente y poroso. Una central necesita los dos.' },
+      { p: '¿Por qué no se puede usar papel?', r: 'La celulosa neutraliza el peróxido. El empaque de esta línea es Tyvek o SMS.' },
+      { p: '¿Reemplaza al autoclave?', r: 'No. Es complementario: el plasma cubre lo termosensible y el vapor todo lo demás. Una central necesita los dos.' },
+      { p: '¿Qué indicador uso?', r: 'Uno específico para peróxido. Los indicadores de vapor no viran con este método y dan una lectura que no significa nada.' },
     ],
-    orden: 2,
     seo: {
-      titulo: 'Plasma Tuttnauer en Colombia | Servimedical',
-      descripcion:
-        'Esterilización Tuttnauer por peróxido de hidrógeno vaporizado para óptica, motores, cables y material termosensible. Instalación, calificación y servicio técnico propio.',
+      titulo: 'Esterilización por plasma en Colombia | Servimedical',
+      descripcion: 'Peróxido de hidrógeno vaporizado por debajo de 55 °C bajo ISO 14937, en ciclos de 30 a 60 minutos. Equipos Tuttnauer PlazMax y Sanqiang SQ-WD.',
     },
   },
 
   {
-    slug: 'termodesinfectoras',
-    marca: 'tuttnauer',
-    nombre: 'Termodesinfectoras',
-    tipo: 'equipo',
-    categoria: 'termodesinfectoras',
-    lead:
-      'Lavado y desinfección térmica bajo proceso validado. Ningún método de esterilización corrige lo que el lavado no removió.',
-    metodo: 'Desinfección térmica con proceso validado',
-    uso: 'Instrumental de lúmenes, endoscopios y accesorios',
-    specsClave: [
-      { label: 'Método', valor: 'Lavado y desinfección térmica' },
-      { label: 'Norma del proceso', valor: 'ISO 15883' },
-      // TODO capacidad: bandejas o DIN por cámara según catálogo Tuttnauer
-    ],
-    compatible: ['Instrumental de lúmenes', 'Endoscopios flexibles', 'Accesorios de endoscopia', 'Instrumental quirúrgico general'],
-    noCompatible: ['Material termosensible fuera de la especificación del ciclo', 'Instrumental con electrónica no sumergible'],
-    normasProceso: N_TERMO,
-    instalacion: [
-      { label: 'Eléctrico', valor: 'Acometida dedicada según la placa del modelo.' },
-      { label: 'Agua', valor: 'Agua tratada para el enjuague final. El manchado del instrumental casi siempre entra por ahí.' },
-      { label: 'Drenaje', valor: 'Desagüe con capacidad para la descarga de cada fase del ciclo.' },
-      { label: 'Espacio', valor: 'Zona sucia del área de lavado, con paso hacia la zona limpia sin cruce de flujos.' },
-    ],
-    preguntasCotizacion: [
-      'Número de procedimientos por día y tipo de instrumental',
-      'Cantidad de equipos que hay que procesar por turno',
-      'Calidad del agua de alimentación disponible',
-      'Espacio en el área de lavado y flujo hacia la zona limpia',
-    ],
-    relacionadas: [
-      { linea: 'mobiliario-acero-inoxidable', porque: 'Sin puesto de prelavado y escurrido, el material entra con residuo y el ciclo no lo corrige.' },
-      { linea: 'papel-y-tyvek', porque: 'Lo que sale limpio se empaca de inmediato. Si no hay barrera lista, el material espera descubierto.' },
-      { linea: 'repuestos', porque: 'Bombas, válvulas y sensores se desgastan en un equipo que trabaja con agua todo el día.' },
-    ],
-    servicio: [
-      'Calificación de instalación y de operación del proceso de lavado',
-      'Mantenimiento preventivo con protocolo definido por equipo',
-      'Entrenamiento al personal de la zona de lavado',
-    ],
-    faq: [
-      { p: '¿Reemplaza el lavado manual?', r: 'Lo automatiza y lo hace validable. El prelavado y el escurrido siguen siendo parte del flujo, en el puesto anterior al equipo.' },
-      { p: '¿Por qué importa tanto el agua del enjuague final?', r: 'Porque es la última que toca el instrumental. Fuera de especificación deja depósitos y manchas sobre material ya limpio.' },
-    ],
-    orden: 3,
-    seo: {
-      titulo: 'Termodesinfectoras Tuttnauer en Colombia | Servimedical',
-      descripcion:
-        'Termodesinfectoras Tuttnauer para lavado y desinfección térmica validada de instrumental de lúmenes y endoscopios. Instalación, calificación y servicio técnico propio.',
-    },
-  },
-
-  /* ═════════════════════════════════════════════════════════ SANQIANG ════ */
-  {
-    slug: 'vapor',
-    marca: 'sanqiang',
-    nombre: 'Vapor',
-    tipo: 'equipo',
-    categoria: 'vapor',
-    lead:
-      'Esterilización por vapor saturado para material termorresistente y empacado, con una estructura de costo distinta a la de la marca premium.',
-    metodo: 'Vapor saturado con prevacío',
-    uso: 'Instrumental termorresistente, textiles y contenedores',
-    specsClave: [
-      { label: 'Método', valor: 'Vapor saturado · prevacío' },
-      { label: 'Temperatura de ciclo', valor: '121 °C y 134 °C' },
-      { label: 'Norma del proceso', valor: 'ISO 17665' },
-      // TODO capacidad: rango de volumen de cámara según catálogo Sanqiang
+    slug: 'indicadores',
+    nombre: 'Indicadores químicos y biológicos',
+    descriptor: 'La evidencia para liberar la carga',
+    etapa: 'monitoreo',
+    orden: 5,
+    lead: 'La evidencia para liberar una carga: el químico confirma que el agente llegó y el biológico, que el proceso mató las esporas.',
+    comoFunciona: [
+      'El indicador químico cambia de color al exponerse al proceso. Según la ISO 11140-1, el Tipo 1 distingue un paquete procesado de uno que no; el Tipo 2 es la prueba de Bowie-Dick; y los Tipos 4, 5 y 6 responden a varias variables críticas del ciclo, donde el Tipo 5 —el integrador— sigue el comportamiento de un indicador biológico.',
+      'El indicador biológico lleva esporas de alta resistencia: Geobacillus stearothermophilus en vapor. Tras el ciclo se incuba, y si no hay crecimiento el proceso fue letal. Es la única evidencia directa de letalidad; todo lo demás es indicio.',
+      'La Resolución 3100 de 2019 exige indicador químico en cada paquete e indicador biológico como mínimo semanal.',
     ],
     compatible: [
-      'Instrumental quirúrgico de acero inoxidable',
-      'Textiles y ropa quirúrgica',
-      'Material poroso empacado',
-      'Sets conformados en contenedor rígido',
+      'Control externo de proceso, sobre la barrera',
+      'Control interno de paquete, en el centro de la carga',
+      'Paquete de prueba, armado con el mismo material que representa',
+      'Test de Bowie-Dick diario, en la primera carga del día',
+      'Control biológico de carga y verificación periódica de cada equipo',
     ],
     noCompatible: [
-      'Óptica y endoscopios flexibles',
-      'Motores e instrumental con electrónica',
-      'Polímeros termosensibles',
+      'Un indicador de vapor en un ciclo de peróxido, y al revés: cada método tiene el suyo',
+      'La liberación de una carga con implantes sin control biológico',
     ],
-    alternativa: {
-      titulo: 'Plasma Sanqiang',
-      linea: 'plasma',
-      nota: 'Lo termosensible va por baja temperatura. En vapor se daña y no se esteriliza.',
-    },
-    normasProceso: N_VAPOR,
-    instalacion: [
-      { label: 'Eléctrico', valor: 'Acometida dedicada según la placa del modelo.' },
-      { label: 'Agua', valor: 'Agua tratada. La especificación la fija el fabricante en la ficha del modelo.' },
-      { label: 'Vapor', valor: 'Red de planta o generador propio, según configuración.' },
-      { label: 'Drenaje', valor: 'Desagüe con capacidad para la descarga de condensado del ciclo.' },
-      { label: 'Espacio', valor: 'Área de servicio al respaldo y, si hay barrera sanitaria, doble puerta.' },
-    ],
-    preguntasCotizacion: [
-      'Cargas por turno y turnos que opera la central',
-      'Material que procesa y tamaño promedio del set',
-      'Espacio disponible y necesidad de doble puerta',
-      'Acometidas de vapor, agua, desagüe y eléctrica disponibles',
-    ],
-    relacionadas: [
-      { linea: 'papel-y-tyvek', porque: 'El vapor solo esteriliza lo que atraviesa. El empaque sostiene la barrera hasta sala.' },
-      { linea: 'indicadores-biologicos', porque: 'Es la única evidencia de letalidad del ciclo.' },
-      { linea: 'repuestos', porque: 'Empaquetadura y válvulas son partes de desgaste y definen el tiempo de parada.' },
-    ],
-    servicio: [
-      'Instalación y puesta en marcha con técnicos propios',
-      'Mantenimiento preventivo y correctivo',
-      'Repuesto original por importación directa',
-    ],
-    orden: 1,
-    seo: {
-      titulo: 'Vapor Sanqiang en Colombia | Servimedical',
-      descripcion:
-        'Autoclaves Sanqiang de vapor saturado para instrumental termorresistente, textiles y contenedores, con instalación y servicio técnico propio desde Bogotá.',
-    },
-  },
-
-  {
-    slug: 'plasma',
-    marca: 'sanqiang',
-    nombre: 'Plasma',
-    tipo: 'equipo',
-    categoria: 'plasma',
-    lead:
-      'Baja temperatura por peróxido de hidrógeno para óptica, motores y polímeros, en centrales que necesitan el método sin el presupuesto de la línea alta.',
-    metodo: 'Peróxido de hidrógeno vaporizado a baja temperatura',
-    uso: 'Óptica, motores, cables y material termosensible',
-    specsClave: [
-      { label: 'Método', valor: 'Peróxido de hidrógeno vaporizado' },
-      { label: 'Temperatura de ciclo', valor: 'Baja temperatura' },
-      { label: 'Norma del proceso', valor: 'ISO 22441' },
-      // TODO capacidad y duración de ciclo según catálogo Sanqiang
-    ],
-    compatible: ['Óptica rígida y flexible', 'Cables y fibra', 'Motores e instrumental con electrónica', 'Polímeros y material termosensible'],
-    noCompatible: ['Celulosa, textiles y papel', 'Líquidos y polvos', 'Lúmenes fuera de la especificación del equipo'],
-    alternativa: {
-      titulo: 'Vapor Sanqiang',
-      linea: 'vapor',
-      nota: 'La celulosa absorbe el peróxido y aborta el ciclo. Lo termorresistente y poroso va por vapor.',
-    },
-    normasProceso: N_PLASMA,
-    instalacion: [
-      { label: 'Eléctrico', valor: 'Acometida dedicada según la placa del modelo.' },
-      { label: 'Ventilación', valor: 'Recinto ventilado, por el agente químico del proceso.' },
-      { label: 'Espacio', valor: 'Área de servicio al respaldo y espacio para el almacenamiento de cartuchos.' },
-    ],
-    preguntasCotizacion: [
-      'Volumen de material termosensible por turno',
-      'Tipo de lúmenes y longitudes que hay que procesar',
-      'Urgencia de rotación entre cirugías',
-      'Disponibilidad de empaque compatible con el método',
-    ],
-    relacionadas: [
-      { linea: 'papel-y-tyvek', porque: 'La celulosa aborta el ciclo. Esta línea necesita barrera en Tyvek.' },
-      { linea: 'indicadores-quimicos', porque: 'Los indicadores de vapor no viran con peróxido. No sirven como control aquí.' },
-      { linea: 'repuestos', porque: 'Electrónica sensible: el canal de fábrica evita paradas largas por una parte menor.' },
-    ],
-    servicio: [
-      'Instalación y puesta en marcha con técnicos propios',
-      'Mantenimiento preventivo con rutina propia del equipo de plasma',
-      'Entrenamiento en carga y empaque compatible',
-    ],
-    orden: 2,
-    seo: {
-      titulo: 'Plasma Sanqiang en Colombia | Servimedical',
-      descripcion:
-        'Esterilización Sanqiang por peróxido de hidrógeno vaporizado para óptica, motores y material termosensible, con instalación y servicio técnico propio en Colombia.',
-    },
-  },
-
-  {
-    slug: 'termodesinfectoras',
-    marca: 'sanqiang',
-    nombre: 'Termodesinfectoras',
-    tipo: 'equipo',
-    categoria: 'termodesinfectoras',
-    lead:
-      'Lavado y desinfección térmica bajo proceso validado. Ningún método de esterilización corrige lo que el lavado no removió.',
-    metodo: 'Desinfección térmica con proceso validado',
-    uso: 'Instrumental de lúmenes, endoscopios y accesorios',
-    specsClave: [
-      { label: 'Método', valor: 'Lavado y desinfección térmica' },
-      { label: 'Norma del proceso', valor: 'ISO 15883' },
-      // TODO capacidad: bandejas o DIN por cámara según catálogo Sanqiang
-    ],
-    compatible: ['Endoscopios flexibles', 'Instrumental de lúmenes', 'Accesorios de endoscopia', 'Instrumental quirúrgico general'],
-    noCompatible: ['Material termosensible fuera de la especificación del ciclo', 'Instrumental con electrónica no sumergible'],
-    normasProceso: N_TERMO,
-    instalacion: [
-      { label: 'Eléctrico', valor: 'Acometida dedicada según la placa del modelo.' },
-      { label: 'Agua', valor: 'Agua tratada para el enjuague final.' },
-      { label: 'Drenaje', valor: 'Desagüe con capacidad para la descarga de cada fase del ciclo.' },
-      { label: 'Espacio', valor: 'Zona sucia del área de lavado, con paso hacia la zona limpia sin cruce de flujos.' },
-    ],
-    preguntasCotizacion: [
-      'Número de procedimientos endoscópicos por día',
-      'Tipo y cantidad de equipos que hay que procesar',
-      'Calidad del agua de alimentación disponible',
-      'Espacio en el área de lavado y flujo hacia la zona limpia',
-    ],
-    relacionadas: [
-      { linea: 'mobiliario-acero-inoxidable', porque: 'Sin puesto de prelavado y escurrido, el material entra con residuo y el ciclo no lo corrige.' },
-      { linea: 'papel-y-tyvek', porque: 'Lo que sale limpio se empaca de inmediato, o espera descubierto.' },
-      { linea: 'repuestos', porque: 'Bombas, válvulas y sensores se desgastan en un equipo que trabaja con agua todo el día.' },
-    ],
-    servicio: [
-      'Instalación con conexión hidráulica y de desagüe, y puesta en marcha',
-      'Mantenimiento preventivo con protocolo definido por equipo',
-      'Entrenamiento al personal de la zona de lavado',
-    ],
-    orden: 3,
-    seo: {
-      titulo: 'Termodesinfectoras Sanqiang en Colombia | Servimedical',
-      descripcion:
-        'Termodesinfectoras Sanqiang para lavado y desinfección térmica validada de endoscopios e instrumental de lúmenes, con instalación y servicio técnico en Colombia.',
-    },
-  },
-
-  {
-    slug: 'residuos-hospitalarios',
-    marca: 'sanqiang',
-    nombre: 'Tratamiento de residuos hospitalarios',
-    tipo: 'equipo',
-    categoria: 'residuos-hospitalarios',
-    lead:
-      'Trata el residuo biosanitario en la institución, por vapor, antes de que salga por la puerta. Reduce el volumen que se entrega al gestor externo y el riesgo del tramo que no se controla.',
-    metodo: 'Tratamiento por vapor con trituración',
-    uso: 'Residuo biosanitario generado en la institución',
-    specsClave: [
-      { label: 'Método', valor: 'Vapor con trituración' },
-      { label: 'Tratamiento', valor: 'En sitio, dentro de la institución' },
-      // TODO capacidad por ciclo y reducción logarítmica declarada en la ficha Sanqiang
-    ],
-    compatible: ['Residuo biosanitario de salas y central', 'Cortopunzantes en contenedor rígido', 'Cultivos y material de laboratorio'],
-    noCompatible: ['Residuo químico y farmacéutico', 'Residuo radiactivo', 'Residuo anatomopatológico, según la normativa aplicable'],
-    normasProceso: [
-      { norma: 'Reducción logarítmica validada', que: 'La eficacia del tratamiento se demuestra con el nivel de inactivación que declara el fabricante en su ficha.' },
-    ],
-    instalacion: [
-      { label: 'Eléctrico', valor: 'Acometida dedicada según la placa del modelo.' },
-      { label: 'Agua', valor: 'Alimentación para la generación de vapor del ciclo.' },
-      { label: 'Drenaje', valor: 'Desagüe conectado al manejo de efluentes de la institución.' },
-      { label: 'Ventilación', valor: 'Extracción en el recinto de tratamiento.' },
-      { label: 'Espacio', valor: 'Recinto de residuos con acceso para el ingreso del contenedor y la salida del material tratado.' },
-    ],
-    preguntasCotizacion: [
-      'Kilos de residuo biosanitario por día y por turno',
-      'Si el tratamiento se hace en la central o en un recinto aparte',
-      'Costo actual de la gestión externa, para comparar',
-      'Acometidas disponibles en el recinto de residuos',
-    ],
-    relacionadas: [
-      { linea: 'mobiliario-acero-inoxidable', porque: 'El residuo se mueve en carro cerrado y diferenciado, nunca en el mismo que el material estéril.' },
-      { linea: 'indicadores-biologicos', porque: 'La inactivación se verifica con control biológico, igual que una carga de esterilización.' },
-      { linea: 'repuestos', porque: 'El sistema de trituración es la parte de mayor desgaste del equipo.' },
-    ],
-    servicio: [
-      'Instalación y puesta en marcha con técnicos propios',
-      'Mantenimiento preventivo del sistema de trituración y del circuito de vapor',
-      'Entrenamiento al personal que opera el recinto de residuos',
+    normas: [
+      { norma: 'ISO 11140-1', que: 'Indicadores químicos: clases, requisitos y métodos de ensayo.' },
+      { norma: 'ISO 11140-4', que: 'Indicadores de la prueba de Bowie-Dick.' },
+      { norma: 'ISO 11138-1 y -3', que: 'Indicadores biológicos: requisitos generales y los propios del vapor.' },
     ],
     faq: [
-      { p: '¿Elimina la necesidad del gestor externo?', r: 'No la elimina: reduce el volumen y el riesgo del material que sale. Lo que exige la normativa ambiental sobre disposición final lo define la autoridad competente, no el equipo.' },
-      { p: '¿Trata cortopunzantes?', r: 'Sí, dentro de su contenedor rígido. Lo que no trata es el residuo químico, el farmacéutico y el radiactivo.' },
+      { p: '¿Basta con el indicador externo?', r: 'No. El externo dice que el paquete pasó por el equipo; el interno, que el agente llegó al centro de la carga.' },
+      { p: '¿Con qué frecuencia el biológico?', r: 'Como mínimo semanal, según la Resolución 3100 de 2019, y preferiblemente diario. La carga con implantes no admite excepción.' },
+      { p: '¿Sirve el mismo indicador para vapor y plasma?', r: 'No. Cada método tiene el suyo, y uno de vapor no vira con peróxido.' },
     ],
-    orden: 4,
     seo: {
-      titulo: 'Residuos hospitalarios Sanqiang en Colombia | Servimedical',
-      descripcion:
-        'Tratamiento de residuo biosanitario por vapor con trituración, en sitio. Equipos Sanqiang con instalación, mantenimiento y entrenamiento desde Bogotá.',
-    },
-  },
-
-  /* ═════════════════════════════════════════════════════ SERVIMEDICAL ════ */
-  {
-    slug: 'papel-y-tyvek',
-    marca: 'servimedical',
-    nombre: 'Papel grado esterilización y Tyvek',
-    tipo: 'consumible',
-    categoria: 'empaque',
-    lead:
-      'El empaque no envuelve el set: es la barrera estéril. Sostiene la esterilidad hasta que alguien abre el paquete en sala.',
-    metodo: 'Barrera estéril por método de esterilización',
-    uso: 'Conformación y sellado de paquete en la zona de empaque',
-    specsClave: [
-      { label: 'Formatos', valor: 'Rollo mixto, bolsa autosellante, papel crepado' },
-      { label: 'Tyvek', valor: 'Para plasma de peróxido' },
-      { label: 'Abastecimiento', valor: 'Programado contra el consumo real' },
-    ],
-    dondeSeUsa: [
-      'Rollo mixto y bolsas autosellantes para sellado térmico',
-      'Papel crepado para doblado de sets',
-      'Papel grado esterilización para material poroso',
-      'Tyvek para los ciclos de plasma de peróxido, que no admiten celulosa',
-      'Cintas indicadoras de proceso sobre la barrera',
-    ],
-    preguntasCotizacion: [
-      'Paquetes por turno y tamaño promedio del set',
-      'Método de esterilización de cada línea de material',
-      'Si el empaque es de sellado térmico o de doblado',
-      'Consumo mensual actual, para programar el abastecimiento',
-    ],
-    relacionadas: [
-      { linea: 'indicadores-quimicos', porque: 'La cinta dice que el paquete pasó por el equipo. Lo de adentro lo dice el indicador interno.' },
-      { linea: 'mobiliario-acero-inoxidable', porque: 'La superficie y la altura deciden cuántos paquetes salen por turno y en qué estado.' },
-      { linea: 'vapor', porque: 'El método de esterilización decide la barrera, no al revés. Celulosa en vapor, Tyvek en plasma.' },
-    ],
-    servicio: [
-      'Abastecimiento programado contra el consumo real de la central',
-      'Acompañamiento en la elección de barrera por método de esterilización',
-      'Entrenamiento en conformación y sellado de paquete',
-    ],
-    faq: [
-      { p: '¿Por qué no sirve el mismo empaque para vapor y para plasma?', r: 'Porque la celulosa absorbe el peróxido y aborta el ciclo de plasma. Ese método exige Tyvek.' },
-      { p: '¿Cuánto dura la barrera estéril?', r: 'El vencimiento lo define el protocolo de la institución según el tipo de empaque y las condiciones de almacenamiento, no el material por sí solo.' },
-    ],
-    orden: 1,
-    seo: {
-      titulo: 'Papel grado esterilización y Tyvek | Servimedical',
-      descripcion:
-        'Rollo mixto, bolsas autosellantes, papel crepado y Tyvek para barrera estéril. Abastecimiento programado contra consumo real, con despacho nacional desde Bogotá.',
+      titulo: 'Indicadores químicos y biológicos | Servimedical',
+      descripcion: 'Indicadores de las clases 1 a 6 de ISO 11140-1 e indicadores biológicos bajo ISO 11138, para liberar cada carga con evidencia.',
     },
   },
 
   {
-    slug: 'mobiliario-acero-inoxidable',
-    marca: 'servimedical',
+    slug: 'mobiliario',
     nombre: 'Mobiliario en acero inoxidable',
-    tipo: 'mobiliario',
-    categoria: 'mobiliario',
-    lead:
-      'Mesas, mesones, carros y estantería fabricados contra el plano de la central. Superficie continua y soldadura pulida, sin uniones que retengan residuo.',
-    metodo: 'Acero inoxidable AISI 304, fabricado sobre medida',
-    uso: 'Lavado, empaque, transporte y almacenamiento estéril',
-    specsClave: [
-      { label: 'Material', valor: 'Acero inoxidable AISI 304' },
-      { label: 'Fabricación', valor: 'Sobre medida, contra el plano de la central' },
-      { label: 'Acabado', valor: 'Superficie continua, soldadura pulida' },
+    descriptor: 'El flujo de sucio a limpio a estéril',
+    etapa: 'almacenamiento',
+    orden: 6,
+    lead: 'Mesas, mesones, carros y estanterías que definen el recorrido del material. El mobiliario no acompaña el flujo de la central: lo construye.',
+    comoFunciona: [
+      'La central se organiza en tres zonas que no se cruzan: sucio, limpio y estéril. El mobiliario es lo que las separa físicamente, y la Resolución 3100 de 2019 exige mesón de trabajo con poceta y unidireccionalidad en cada etapa.',
+      'La superficie decide la higiene. Una unión, un remache o una junta retienen residuo y no se limpian, así que se fabrica con superficie continua y soldadura pulida. Se usa acero AISI 304 para mesas y estanterías, y AISI 316 en zonas húmedas, donde el molibdeno da más resistencia a cloruros y detergentes.',
     ],
-    dondeSeUsa: [
-      'Mesones de lavado con poza y escurridero, en la zona sucia',
+    compatible: [
+      'Mesones de lavado con poceta y escurridero, en la zona sucia',
       'Mesas de inspección y empaque, en la zona limpia',
       'Carros de transporte cerrados y diferenciados por flujo',
       'Carros de carga y descarga de autoclave',
       'Estantería y armarios para almacenamiento estéril',
     ],
-    preguntasCotizacion: [
-      'Plano del área y zonificación de sucio, limpio y estéril',
-      'Número de puestos de empaque simultáneos y altura de trabajo del personal',
-      'Paquetes en circulación y tiempo de permanencia en estéril',
-      'Distancia entre la central y las salas, y dimensiones de puertas y ascensores',
+    noCompatible: [
+      'Un mismo carro para material sucio y estéril',
+      'Superficies con uniones, remaches o juntas que retengan residuo',
     ],
-    relacionadas: [
-      { linea: 'papel-y-tyvek', porque: 'El paquete se conforma en la mesa y se guarda en la estantería. Se dimensionan juntas.' },
-      { linea: 'termodesinfectoras', porque: 'Cuando el volumen de lúmenes crece, el lavado manual deja de sostener el proceso y hay que automatizarlo.' },
-      { linea: 'repuestos', porque: 'Ruedas, bisagras y rieles son las partes que primero ceden en un mobiliario que se mueve todo el día.' },
-    ],
-    servicio: [
-      'Levantamiento en sitio de las zonas de lavado, empaque y almacenamiento',
-      'Propuesta de distribución y de altura de trabajo según el flujo',
-      'Fabricación e instalación, con conexión a las acometidas existentes',
+    normas: [
+      { norma: 'Resolución 3100 de 2019', que: 'Exige mesón de trabajo con poceta y flujo unidireccional en cada etapa de la central.' },
+      { norma: 'Resolución 2183 de 2004', que: 'Fija el almacenamiento estéril entre 18 y 22 °C, con humedad relativa de 35 a 70 %.' },
     ],
     faq: [
-      { p: '¿Se puede usar un mismo carro para sucio y para estéril?', r: 'No. En cuanto un carro hace los dos recorridos, la barrera que separa lo sucio de lo estéril deja de significar algo. Los carros van diferenciados por flujo.' },
-      { p: '¿Por qué soldadura pulida y superficie continua?', r: 'Porque una unión, un remache o una junta retienen residuo y no se limpian. En la zona de lavado y de empaque eso es un foco.' },
-      { p: '¿Fabrican contra plano?', r: 'Sí. El levantamiento en sitio va antes de la cotización: la altura de trabajo y el largo del puesto deciden cuántos paquetes salen bien conformados al final del turno.' },
+      { p: '¿Se puede usar un mismo carro para sucio y para estéril?', r: 'No. En cuanto un carro hace los dos recorridos, la barrera que separa lo sucio de lo estéril deja de significar algo.' },
+      { p: '¿A qué altura se almacena el material estéril?', r: 'La AAMI ST79 recomienda a 20–25 cm del piso, a 45 cm de los rociadores y a 5 cm de los muros exteriores. Es una recomendación internacional, no una norma colombiana.' },
     ],
-    orden: 2,
     seo: {
-      titulo: 'Mobiliario en acero inoxidable en Colombia | Servimedical',
-      descripcion:
-        'Mesones de lavado, mesas de empaque, carros diferenciados por flujo y estantería estéril en acero AISI 304. Levantamiento en sitio y fabricación contra el plano de la central.',
+      titulo: 'Mobiliario en acero inoxidable para central | Servimedical',
+      descripcion: 'Mesones con poceta, mesas de empaque, carros diferenciados por flujo y estantería estéril en acero AISI 304 y 316, bajo Resolución 3100 de 2019.',
+    },
+  },
+
+  {
+    slug: 'residuos-hospitalarios',
+    nombre: 'Tratamiento de residuos',
+    descriptor: 'Vapor y trituración en sitio',
+    etapa: 'residuos',
+    orden: 7,
+    lead: 'Vapor y trituración en el mismo sitio donde se genera el residuo biosanitario. Sale estéril, irreconocible y con una fracción del volumen.',
+    comoFunciona: [
+      'El residuo infeccioso entra a un autoclave que lo esteriliza con vapor a presión y lo tritura, antes o después de la exposición. Sale estéril, fragmentado y reducido hasta en un 80 %, y se dispone como residuo ordinario según la reglamentación local.',
+      'Hay dos arquitecturas. La trituración en el mismo recipiente, o antes del vapor, da equipos compactos para un hospital. La trituración después del vapor, en continuo, da plantas centralizadas para una región o para un gestor.',
+      'Tratar en sitio evita transportar residuo infeccioso fuera del hospital y no genera las emisiones de la incineración.',
+    ],
+    compatible: [
+      'Cortopunzantes en contenedor rígido',
+      'Jeringas, gasas y textiles',
+      'Plásticos y vidrio',
+      'Filtros de diálisis',
+    ],
+    noCompatible: [
+      'Residuo químico y farmacéutico',
+      'Residuo citotóxico',
+      'Residuo radiactivo',
+    ],
+    normas: [
+      { norma: 'Reducción logarítmica validada', que: 'La eficacia se demuestra con el nivel de inactivación que declara el fabricante y que validan organismos independientes.' },
+      { norma: 'STAATT nivel IV', que: 'Escala internacional de inactivación para tecnologías de tratamiento de residuos médicos.' },
+    ],
+    faq: [
+      { p: '¿Qué pasa con el residuo tratado?', r: 'Sale estéril y triturado, y se dispone como residuo no peligroso según la autorización ambiental de la institución.' },
+      { p: '¿Cuánto reduce?', r: 'Hasta una quinta parte del volumen original, según el equipo y el tipo de residuo.' },
+      { p: '¿Elimina al gestor externo?', r: 'No lo elimina: reduce el volumen y el riesgo del material que sale. Lo que exige la normativa ambiental sobre disposición final lo define la autoridad competente.' },
+    ],
+    seo: {
+      titulo: 'Tratamiento de residuos hospitalarios | Servimedical',
+      descripcion: 'Esterilización por vapor y trituración de residuo biosanitario en sitio, de 20 kg por ciclo a 1.800 kg por hora. Sanqiang, Celitron y Akarmak.',
     },
   },
 
   {
     slug: 'repuestos',
-    marca: 'servimedical',
     nombre: 'Repuestos',
-    tipo: 'consumible',
-    categoria: 'repuestos',
-    lead:
-      'Partes originales de las marcas que representamos, con inventario local de lo que más se pide. Un autoclave detenido es un quirófano detenido, así que atendemos también equipos fuera de garantía y de marcas que no vendimos.',
-    metodo: 'Repuesto original, con inventario en Bogotá',
-    uso: 'Mantenimiento preventivo y correctivo de los equipos de la central',
-    specsClave: [
-      { label: 'Origen', valor: 'Original de fábrica' },
-      { label: 'Inventario', valor: 'En Bogotá, las partes de mayor rotación' },
-      { label: 'Cobertura', valor: 'Equipos dentro y fuera de garantía' },
+    descriptor: 'Partes originales con inventario local',
+    etapa: 'transversal',
+    orden: 8,
+    lead: 'Repuesto para el mantenimiento preventivo, el correctivo y la revalidación anual. Un autoclave detenido es un quirófano detenido.',
+    comoFunciona: [
+      'La Resolución 2183 de 2004 exige revalidar los esterilizadores como mínimo cada doce meses y calibrar los instrumentos a intervalos definidos. Esa rutina consume partes: el repuesto no es una emergencia, es un programa.',
+      'El kit de mantenimiento preventivo anual de un autoclave incluye empaque de puerta, filtro de cámara, fuelle de puerta y válvulas. Lo que decide el tiempo de parada no es el diagnóstico: es si la parte está en el país.',
     ],
-    dondeSeUsa: [
-      'Empaquetaduras y sellos de puerta',
+    compatible: [
+      'Empaques y fuelles de puerta',
+      'Filtros de cámara y bacteriológicos de línea',
       'Válvulas, trampas de vapor y purgadores',
-      'Filtros bacteriológicos de línea',
       'Sensores y transductores de temperatura y presión',
-      'Tarjetas de control e impresoras de ciclo',
+      'Bombas de vacío y resistencias de generador',
+      'Impresoras de ciclo y papel térmico',
     ],
-    preguntasCotizacion: [
-      'Marca, modelo y número de serie del equipo',
-      'Qué hace el equipo y en qué momento se detiene',
-      'Si el equipo está parado o la falla es intermitente',
-      'Si se busca una reposición puntual o un plan programado',
+    noCompatible: [
+      'Partes adaptadas o equivalentes no originales',
     ],
-    relacionadas: [
-      { linea: 'vapor', porque: 'La empaquetadura de puerta es la falla más frecuente y la más fácil de prevenir.' },
-      { linea: 'plasma', porque: 'La electrónica del ciclo de baja temperatura no admite partes equivalentes.' },
-      { linea: 'termodesinfectoras', porque: 'Bombas y sensores se desgastan en un equipo que trabaja con agua todo el día.' },
-    ],
-    servicio: [
-      'Identificación de la parte a partir de la placa del equipo',
-      'Reposición programada contra la rutina de mantenimiento',
-      'Canal directo de fábrica para lo que no está en inventario',
+    normas: [
+      { norma: 'Resolución 2183 de 2004', que: 'Exige revalidar los esterilizadores como mínimo cada doce meses y calibrar los instrumentos.' },
     ],
     faq: [
-      { p: '¿Atienden equipos que no compramos a ustedes?', r: 'Sí, dentro y fuera de garantía. Un autoclave detenido es un quirófano detenido.' },
+      { p: '¿Atienden equipos que no compramos a ustedes?', r: 'Sí, dentro y fuera de garantía.' },
       { p: '¿Trabajan con partes equivalentes?', r: 'No. En un equipo que esteriliza material que entra a un paciente, una parte adaptada cambia el comportamiento del ciclo sin que nadie lo vea.' },
-      { p: 'No sé qué parte falló. ¿Qué hago?', r: 'El diagnóstico va antes del pedido. Con la placa del equipo y la descripción de la falla el servicio técnico identifica la parte.' },
+      { p: 'No sé qué parte falló. ¿Qué hago?', r: 'El diagnóstico va antes del pedido. Con la placa del equipo y la descripción de la falla, el servicio técnico identifica la parte.' },
     ],
-    orden: 3,
     seo: {
-      titulo: 'Repuestos originales para equipos de esterilización | Servimedical',
-      descripcion:
-        'Empaquetaduras de puerta, válvulas, trampas de vapor, sensores y tarjetas de control. Inventario en Bogotá y atención a equipos dentro y fuera de garantía.',
-    },
-  },
-
-  /* ═══════════════════════════════════════════════════════════════ 2i ════ */
-  {
-    slug: 'indicadores-quimicos',
-    marca: '2i',
-    nombre: 'Indicadores químicos',
-    tipo: 'consumible',
-    categoria: 'indicadores',
-    etiquetaMenu: 'Químicos',
-    lead:
-      'Un indicador externo dice que el paquete pasó por el equipo. Uno interno, que el agente llegó al centro. La central necesita los dos.',
-    metodo: 'Viraje por exposición a los parámetros del ciclo',
-    uso: 'Control de proceso, de paquete y test de Bowie-Dick',
-    specsClave: [
-      { label: 'Lectura', valor: 'Inmediata, por viraje' },
-      { label: 'Norma del proceso', valor: 'ISO 11140' },
-      // TODO clases de indicador y métodos compatibles declarados en la ficha 2i
-    ],
-    dondeSeUsa: [
-      'Control externo de proceso, sobre la barrera',
-      'Control interno de paquete, en el centro de la carga',
-      'Paquete de prueba, armado con el mismo material que representa',
-      'Test de Bowie-Dick diario, en la primera carga del día',
-    ],
-    normasProceso: [
-      { norma: 'ISO 11140', que: 'Indicadores químicos: clases, requisitos y métodos de ensayo.' },
-    ],
-    preguntasCotizacion: [
-      'Cargas por día y por equipo',
-      'Protocolo interno de monitoreo de la institución',
-      'Método de esterilización de cada línea',
-      'Nivel de evidencia que exige el comité de infecciones',
-    ],
-    relacionadas: [
-      { linea: 'indicadores-biologicos', porque: 'El químico es lectura inmediata, pero indicio. El biológico es la prueba.' },
-      { linea: 'papel-y-tyvek', porque: 'Uno va dentro del paquete y otro sobre la barrera. El consumo se mueve al mismo ritmo.' },
-      { linea: 'vapor', porque: 'El indicador se escoge contra el método del equipo: los de vapor no viran con peróxido.' },
-    ],
-    servicio: [
-      'Definición del esquema de monitoreo junto con la central',
-      'Abastecimiento programado por carga y por equipo',
-      'Entrenamiento en lectura e interpretación de viraje',
-    ],
-    faq: [
-      { p: '¿Basta con el indicador externo?', r: 'No. El externo solo dice que el paquete estuvo en el equipo. Que el agente llegó al centro de la carga lo dice el interno.' },
-      { p: '¿Sirve el mismo indicador para vapor y para plasma?', r: 'No. Cada método tiene su indicador; uno de vapor no vira con peróxido y da una lectura que no significa nada.' },
-      { p: '¿El indicador químico permite liberar la carga?', r: 'Es parte de la evidencia, no toda. La liberación se sostiene con el registro del equipo, el químico y el biológico, según el protocolo de la institución.' },
-    ],
-    orden: 1,
-    seo: {
-      titulo: 'Indicadores químicos 2i en Colombia | Servimedical',
-      descripcion:
-        'Indicadores químicos de proceso y de paquete, paquetes de prueba y test de Bowie-Dick para central de esterilización. Abastecimiento programado desde Bogotá.',
-    },
-  },
-
-  {
-    slug: 'indicadores-biologicos',
-    marca: '2i',
-    nombre: 'Indicadores biológicos',
-    tipo: 'consumible',
-    categoria: 'indicadores',
-    etiquetaMenu: 'Biológicos',
-    lead:
-      'Es la única evidencia de que el proceso mató la carga microbiana. Todo lo demás es indicio.',
-    metodo: 'Inactivación de esporas con incubación y lectura',
-    uso: 'Control biológico de carga y verificación de equipo',
-    specsClave: [
-      { label: 'Evidencia', valor: 'Letalidad del proceso' },
-      { label: 'Norma del proceso', valor: 'ISO 11138' },
-      // TODO tiempo de incubación y tipo de espora declarados en la ficha 2i
-    ],
-    dondeSeUsa: [
-      'Control biológico de carga, según el protocolo de la institución',
-      'Verificación periódica de cada equipo',
-      'Liberación de cargas con implantes',
-      'Verificación tras un mantenimiento correctivo',
-    ],
-    normasProceso: [
-      { norma: 'ISO 11138', que: 'Indicadores biológicos: requisitos generales y por método de esterilización.' },
-    ],
-    preguntasCotizacion: [
-      'Frecuencia de control biológico que define el protocolo de la institución',
-      'Número de equipos y de cargas que hay que cubrir',
-      'Disponibilidad de incubadora en la central',
-      'Tiempo de lectura que tolera la operación sin frenar el giro quirúrgico',
-    ],
-    relacionadas: [
-      { linea: 'indicadores-quimicos', porque: 'El biológico se lee en horas; el químico, en el momento. La carga se libera con los dos.' },
-      { linea: 'vapor', porque: 'Verifica el equipo, no solo la carga. Un resultado no conforme es un dato de mantenimiento.' },
-      { linea: 'repuestos', porque: 'Un resultado no conforme repetido suele ser el equipo, no la carga. Ahí entra el repuesto.' },
-    ],
-    servicio: [
-      'Definición de la frecuencia de control junto con la central',
-      'Abastecimiento programado, con reserva para cargas con implantes',
-      'Entrenamiento en incubación, lectura y conducta ante resultado no conforme',
-    ],
-    faq: [
-      { p: '¿Con qué frecuencia se corre?', r: 'La define el protocolo de la institución. Lo que no admite excepción es la carga con implantes.' },
-      { p: '¿Qué se hace ante un resultado no conforme?', r: 'Se retiene la carga, se revisa el equipo y se repite el control. Si se repite, el problema suele ser el equipo y no la carga.' },
-      { p: '¿Hace falta incubadora propia?', r: 'Sí, en la central, para no depender de un laboratorio externo y poder liberar dentro del giro quirúrgico.' },
-    ],
-    orden: 2,
-    seo: {
-      titulo: 'Indicadores biológicos 2i en Colombia | Servimedical',
-      descripcion:
-        'Control biológico de carga y verificación de equipo para central de esterilización, con incubación y lectura. Abastecimiento programado desde Bogotá.',
+      titulo: 'Repuestos para equipos de esterilización | Servimedical',
+      descripcion: 'Empaques de puerta, filtros, válvulas, sensores y bombas para autoclaves, plasma y termodesinfectoras, con existencias en Bogotá.',
     },
   },
 ];
 
-/** Las líneas de una marca, en su orden. */
-export const lineasDe = (slugMarca: string) =>
-  lineas.filter((l) => l.marca === slugMarca).sort((a, b) => a.orden - b.orden);
+export const lineaPorSlug = (slug: string) => lineas.find((l) => l.slug === slug);
+export const urlLinea = (slug: string) => `/lineas/${slug}`;
 
-/** Una línea se identifica por marca + slug: `vapor` existe en dos marcas. */
-export const lineaPorSlug = (slugMarca: string, slug: string) =>
-  lineas.find((l) => l.marca === slugMarca && l.slug === slug);
-
-export const urlMarca = (slugMarca: string) => `/marcas/${slugMarca}`;
-
-/** Las líneas de una categoría, en el orden de las marcas del portafolio. */
-export const lineasDeCategoria = (slugCategoria: string) =>
-  lineas
-    .filter((l) => l.categoria === slugCategoria)
-    .sort((a, b) => ORDEN_MARCA.indexOf(a.marca) - ORDEN_MARCA.indexOf(b.marca) || a.orden - b.orden);
-
-/** Cuántas marcas distintas aportan a una categoría. Decide si /lineas/<cat>
- *  es un comparador o una redirección a la única línea que hay. */
-export const marcasDeCategoria = (slugCategoria: string) =>
-  [...new Set(lineasDeCategoria(slugCategoria).map((l) => l.marca))];
-
-/** Etiqueta de la línea en el menú de Líneas: el nombre de la marca basta,
- *  salvo cuando una marca aporta más de una línea a la misma categoría. */
-export const etiquetaMenu = (l: { marca: string; etiquetaMenu?: string }, nombreMarca: string) =>
-  l.etiquetaMenu ? `${l.etiquetaMenu} · ${nombreMarca}` : nombreMarca;
-export const urlLinea = (l: { marca: string; slug: string }) => `/marcas/${l.marca}/${l.slug}`;
-
-/** Resuelve una referencia de `relacionadas`. Prefiere la línea de la misma
- *  marca cuando el slug existe en varias —`vapor`, `plasma`—, para no mandar
- *  al visitante a otro fabricante sin motivo. */
-export const resolverLinea = (slug: string, marcaPreferida?: string) =>
-  (marcaPreferida && lineas.find((l) => l.slug === slug && l.marca === marcaPreferida)) ||
-  lineas.find((l) => l.slug === slug);
+/** Rótulo de etapa: «03 · Esterilización», o «Transversal» si no tiene una. */
+export const rotuloEtapa = (l: Linea): string => {
+  const i = ETAPAS.findIndex((e) => e.id === (l.etapa as EtapaCiclo));
+  return i < 0 ? 'Transversal' : `${String(i + 1).padStart(2, '0')} · ${ETAPAS[i]!.titulo}`;
+};

@@ -1,0 +1,40 @@
+---
+/* Tarjeta de producto en la página de línea. Muestra la marca, el nombre de la
+   familia, el origen, el rol de Servimedical y los tres diferenciales: lo que
+   de verdad separa a un fabricante de otro en ese método. */
+import BrandLogo from '../marca/BrandLogo.astro';
+import { marcaPorSlug } from '../../datos/marcas.ts';
+import { urlProducto } from '../../datos/productos.ts';
+import type { Producto } from '../../datos/tipos.ts';
+
+interface Props { producto: Producto }
+const { producto: p } = Astro.props;
+const m = marcaPorSlug(p.marca)!;
+const origen = [m.fabricante.ciudad, m.fabricante.pais].filter(Boolean).join(', ');
+const rol = m.rolSVMG === 'representante' ? 'Representante en Colombia' : 'Distribuidor autorizado';
+---
+<li class="flex flex-col border-b border-r border-rule bg-white">
+  <a href={urlProducto(p)} class="group flex h-full flex-col p-6 transition-colors hover:bg-paper lg:p-7">
+    {p.media?.foto && (
+      <img src={p.media.foto} alt={`${p.nombre} de ${m.nombre}`} width="800" height="600"
+           class="mb-6 aspect-[4/3] w-full bg-paper object-contain" loading="lazy" decoding="async" />
+    )}
+
+    <BrandLogo marca={m} size="sm" />
+
+    <span class="font-display mt-4 block text-[clamp(17px,1.9vw,21px)] leading-tight font-bold [font-variation-settings:'wdth'_110]">
+      {p.nombre}
+    </span>
+    <span class="meta mt-2 block text-[10px] text-steel">{origen} · {rol}</span>
+
+    <ul class="mt-5 border-t border-rule">
+      {p.diferenciales.map((d) => (
+        <li class="flex items-start gap-3 border-b border-rule py-2.5 text-[14.5px]">
+          <span aria-hidden="true" class="senal mt-[7px]"></span>{d}
+        </li>
+      ))}
+    </ul>
+
+    <span class="meta mt-auto block pt-6 text-[10px] text-steel group-hover:text-navy">Ver producto →</span>
+  </a>
+</li>

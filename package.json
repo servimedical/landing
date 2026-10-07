@@ -15,7 +15,8 @@
     "astro": "astro",
     "marcadores": "node herramientas/marcadores.mjs",
     "redirecciones": "node herramientas/redirecciones.mjs",
-    "logos": "node herramientas/logos.mjs"
+    "logos": "node herramientas/logos.mjs",
+    "media": "node herramientas/media.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
