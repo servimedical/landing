@@ -1,0 +1,74 @@
+---
+/* Franja de logotipos bajo el hero. Forma parte del primer pantallazo: es lo
+   que responde «¿y ustedes qué representan?» antes de cualquier scroll.
+   En móvil se desliza con enganche, sin barra visible. */
+import { getCollection } from 'astro:content';
+import BrandLogo from './BrandLogo.astro';
+import { urlMarca } from '../../datos/marcas.ts';
+
+const marcas = (await getCollection('marcas'))
+  .sort((a, b) => a.data.orden - b.data.orden)
+  .map((e) => e.data);
+---
+<section class="franja" aria-labelledby="franja-h">
+  <div class="contenedor franja-caja">
+    <h2 id="franja-h" class="meta franja-rotulo">Marcas que representamos</h2>
+
+    <ul class="franja-pista deslizable [--sangria:clamp(20px,5vw,64px)]">
+      {marcas.map((m) => (
+        <li>
+          <a href={urlMarca(m.slug)} title={m.descriptor} class="franja-enlace">
+            <BrandLogo marca={m} size="sm" />
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .franja { border-top: 1px solid var(--color-rule); }
+
+  .franja-caja {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-block: 18px 20px;
+  }
+
+  .franja-rotulo {
+    font-size: 10px;
+    color: var(--color-steel);
+    flex: none;
+  }
+
+  /* El desbordamiento y el enganche los pone la utilidad `deslizable`, que
+     además fija `scroll-padding-inline`: sin eso, el enganche arrastra la
+     pista hasta pegar el primer logo al borde y se come la sangría. */
+  .franja-pista {
+    display: flex;
+    align-items: center;
+    gap: clamp(20px, 3vw, 44px);
+    margin-inline: calc(-1 * var(--sangria));
+    padding-inline: var(--sangria);
+  }
+  .franja-pista > li { flex: none; }
+
+  /* El foco lo pinta la regla global de global.css, en verde señal. */
+  .franja-enlace { display: block; }
+
+  @media (width >= 62.5rem) {
+    .franja-caja {
+      flex-direction: row;
+      align-items: center;
+      gap: clamp(24px, 3vw, 48px);
+      padding-block: 16px;
+    }
+    .franja-pista {
+      flex: 1;
+      justify-content: space-between;
+      --sangria: 0px;
+      overflow: visible;
+    }
+  }
+</style>

@@ -50,8 +50,8 @@ const CURVA =
       <p class="rotulo meta mt-1.5 text-[10px] text-steel">Temperatura<span class="rotulo-largo"> cámara</span></p>
     </div>
     <div class="border-l border-rule pt-3.5 pl-4">
-      <p class="lectura" id="carta-bar">0.0 bar</p>
-      <p class="rotulo meta mt-1.5 text-[10px] text-steel">Presión</p>
+      <p class="lectura" id="carta-bar">0.0 bar(g)</p>
+      <p class="rotulo meta mt-1.5 text-[10px] text-steel">Presión manométrica</p>
     </div>
     <div class="border-l border-rule pt-3.5 pl-4">
       <p class="lectura" id="carta-tiempo">00:00</p>
@@ -122,7 +122,7 @@ const CURVA =
       punto.setAttribute('cx', String(pt.x));
       punto.setAttribute('cy', String(pt.y));
       temp.textContent = `${t.toFixed(0)} °C`;
-      bar.textContent = `${aPresion(t).toFixed(1)} bar`;
+      bar.textContent = `${aPresion(t).toFixed(1)} bar(g)`;
       const segundos = Math.round(p * 34 * 60);
       tiempo.textContent =
         `${String(Math.floor(segundos / 60)).padStart(2, '0')}:${String(segundos % 60).padStart(2, '0')}`;
@@ -130,7 +130,7 @@ const CURVA =
 
     const cerrar = () => {
       temp.textContent = '134 °C';
-      bar.textContent = '2.1 bar';
+      bar.textContent = '2.1 bar(g)';
       tiempo.textContent = '34:00';
       estado.textContent = 'Carga liberada';
     };

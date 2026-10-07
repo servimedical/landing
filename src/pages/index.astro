@@ -1,6 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import Hero from '../components/hero/Hero.astro';
+import FranjaMarcas from '../components/marca/FranjaMarcas.astro';
 import CartaCiclo from '../components/hero/CartaCiclo.astro';
 import TarjetaMarca from '../components/marca/TarjetaMarca.astro';
 import { home, servicios } from '../content/institucional.ts';
@@ -13,36 +15,15 @@ const marcas = (await getCollection('marcas'))
   titulo="Servimedical Group — Centrales de esterilización en Colombia"
   descripcion="Equipos de esterilización, consumibles, accesorios, repuestos y mobiliario en acero, con servicio técnico propio. Importación directa desde Bogotá, cobertura nacional."
 >
-  {/* Hero: ocupa la primera pantalla, con tope. Sin el tope, en un monitor
-      alto el titular queda flotando en medio de medio metro de blanco. */}
-  <div class="contenedor grid min-h-[min(calc(100svh-var(--spacing-header)),760px)] items-center gap-8 py-6 lg:grid-cols-[1.12fr_.88fr] lg:gap-[clamp(32px,5vw,72px)] lg:py-12">
-    <div>
-      <p class="meta text-steel">Especialistas en esterilización · Colombia</p>
-      {/* Única línea del sitio con tuteo. Decisión del cliente; el resto
-          mantiene el trato de usted (ver src/content/VOZ.md). */}
-      <h1 class="mt-4 max-w-[26ch] text-[clamp(28px,3.4vw,44px)] lg:mt-5">
-        Tu aliado en todo el{' '}<span class="block text-steel">proceso de esterilización</span>
-      </h1>
-      <p class="mt-5 max-w-[48ch] text-[15px] leading-relaxed text-steel lg:mt-6 lg:text-[clamp(16px,1.3vw,18.5px)]">
-        Importamos y distribuimos equipos de esterilización y consumibles para centrales de
-        esterilización en Colombia, con servicio técnico propio.
-      </p>
-      <div class="mt-6 flex flex-wrap gap-3 lg:mt-8">
-        <a href="/contacto" class="inline-flex items-center gap-2.5 border border-navy bg-navy px-5 py-3.5 text-[14.5px] font-medium text-white hover:bg-navy-deep">
-          <span aria-hidden="true" class="senal"></span>Hablar con un especialista
-        </a>
-        <a href="/lineas" class="inline-flex items-center border border-rule px-5 py-3.5 text-[14.5px] hover:bg-paper">
-          Ver las líneas
-        </a>
-      </div>
-    </div>
-    <CartaCiclo />
-  </div>
+  <Hero />
+  <FranjaMarcas />
 
   <!-- Marcas que representamos -->
   <section class="border-t border-rule" aria-labelledby="marcas">
     <div class="contenedor py-14 lg:py-20">
-      <h2 id="marcas" class="text-[clamp(24px,3vw,34px)]">Marcas que representamos</h2>
+      {/* La franja del hero ya dijo cuáles son; aquí se dice qué vende cada
+          una. Repetir el mismo titular a 200 px de distancia no informa. */}
+      <h2 id="marcas" class="text-[clamp(24px,3vw,34px)]">Qué vende cada marca</h2>
       <p class="mt-4 max-w-[58ch] text-[17px] text-steel">
         Importación directa de fábrica, con servicio técnico y repuesto original sostenidos en Colombia.
       </p>
@@ -74,6 +55,18 @@ const marcas = (await getCollection('marcas'))
           </li>
         ))}
       </ul>
+    </div>
+  </section>
+
+  <!-- Así se ve un ciclo de vapor -->
+  <section class="border-t border-rule" aria-labelledby="ciclo">
+    <div class="contenedor py-14 lg:py-20">
+      <h2 id="ciclo" class="text-[clamp(24px,3vw,34px)]">Así se ve un ciclo de vapor</h2>
+      <p class="mt-4 max-w-[58ch] text-[17px] text-steel">
+        Prevacío fraccionado para sacar el aire, exposición a 134 °C y secado al vacío. La curva
+        es la misma que imprime el equipo al final de cada carga.
+      </p>
+      <div class="mt-9 max-w-[640px]"><CartaCiclo /></div>
     </div>
   </section>
 

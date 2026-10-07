@@ -78,11 +78,75 @@ for (const m of marcas) {
       .toBuffer();
     writeFileSync(ruta(png), salida);
     const nueva = await sharp(salida).metadata();
-    hechos.push(`  ${png} · recortado y normalizado a ${nueva.width}×${nueva.height}`);
+
+    /* El mismo logo en WebP. Un PNG de 560 px con transparencia pesa cinco o
+       seis veces más, y seis de ellos van en la franja del hero, encima del
+       pliegue: es la diferencia entre 370 kB y 60 kB en la primera pantalla. */
+    const webp = `${base}.webp`;
+    const salidaWebp = await sharp(salida).webp({ quality: 90 }).toBuffer();
+    writeFileSync(ruta(webp), salidaWebp);
+    hechos.push(
+      `  ${png} · ${nueva.width}×${nueva.height} · ` +
+      `${Math.round(salida.length / 1024)} kB → ${webp} ${Math.round(salidaWebp.length / 1024)} kB`,
+    );
   } else {
     faltan.push(`  ${svg}  (${m.nombre})`);
   }
 }
+
+/* ------------------------------------------------- logotipo de la empresa --
+   El de la barra y el pie. Se procesa aparte porque el original suele llegar
+   como archivo de impresión: CMYK, con margen y fondo opaco. Se prepara sin
+   redibujar nada —espacio de color, recorte y blanco a transparente— y se
+   deja al tamaño en que se muestra, no al que vino. */
+const EMPRESA = 'servimedical-group';
+const ANCHO_EMPRESA = 260; // ~2,5× de lo que mide en la barra
+
+const prepararEmpresa = async () => {
+  const dir = new URL('../public/logos/', import.meta.url);
+  const fuente = ['servimedical.jpg', 'servimedical.png', 'servimedical.webp', `${EMPRESA}.svg`]
+    .map((f) => new URL(f, dir))
+    .find((u) => existsSync(u));
+  if (!fuente) return;
+  if (fuente.pathname.endsWith('.svg')) {
+    hechos.push(`  ${EMPRESA}.svg · se usa tal cual`);
+    return;
+  }
+
+  let sharp;
+  try { sharp = (await import('sharp')).default; } catch { return; }
+
+  const srgb = await sharp(fuente.pathname).toColourspace('srgb').png().toBuffer();
+  const { data, info } = await sharp(srgb)
+    .trim({ threshold: 10 })
+    .resize({ width: ANCHO_EMPRESA, withoutEnlargement: true })
+    .ensureAlpha()
+    .raw()
+    .toBuffer({ resolveWithObject: true });
+
+  /* Blanco puro a transparente, con alfa parcial en los grises de borde: sin
+     eso, las diagonales del símbolo quedan serruchadas. */
+  let opacos = 0;
+  for (let i = 0; i < data.length; i += info.channels) {
+    const luz = Math.min(data[i], data[i + 1], data[i + 2]);
+    if (luz > 244) data[i + 3] = 0;
+    else if (luz > 200) data[i + 3] = Math.round(255 * (1 - (luz - 200) / 44));
+    else opacos++;
+  }
+  if (!opacos) { avisos.push('  el logotipo de la empresa quedó vacío al recortar; revise el archivo'); return; }
+
+  const png = await sharp(data, { raw: { width: info.width, height: info.height, channels: info.channels } })
+    .png({ compressionLevel: 9 }).toBuffer();
+  const webp = await sharp(png).webp({ quality: 92 }).toBuffer();
+  writeFileSync(new URL(`${EMPRESA}.png`, dir), png);
+  writeFileSync(new URL(`${EMPRESA}.webp`, dir), webp);
+  hechos.push(`  ${EMPRESA}.webp · ${info.width}×${info.height} · ${Math.round(webp.length / 1024)} kB · con transparencia`);
+
+  if (info.width / info.height < 2.6)
+    avisos.push('  el logotipo de la empresa es apilado; en una barra de 72 px la segunda línea se lee con dificultad. Pida al diseñador la versión horizontal.');
+};
+
+await prepararEmpresa();
 
 const linea = '─'.repeat(64);
 console.log(`\n${linea}\nLOGOTIPOS DE MARCA\n${linea}`);

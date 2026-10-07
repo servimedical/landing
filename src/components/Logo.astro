@@ -8,8 +8,9 @@
      public/logos/servimedical-group.svg          fondo claro  · encabezado
      public/logos/servimedical-group-blanco.svg   fondo oscuro · pie
 
-   Se acepta .svg o .png con el mismo nombre. Mientras falte el blanco, el pie
-   sigue con la marca tipográfica, que ya cumple contraste AA. */
+   Se acepta .svg, .webp o .png con el mismo nombre. Mientras falte el blanco,
+   el pie sigue con la marca tipográfica, que ya cumple contraste AA: un
+   logotipo azul sobre navy no se lee, y recolorearlo sería rehacer la marca. */
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -25,7 +26,7 @@ const base = variante === 'oscuro' ? 'servimedical-group-blanco' : 'servimedical
 /* Se resuelve contra `process.cwd()`, que en build y en dev es la raíz del
    proyecto. No contra `import.meta.url`: en el build el componente vive en
    dist/.prerender/chunks y la ruta relativa apunta a otra parte. */
-const archivo = ['svg', 'png']
+const archivo = ['svg', 'webp', 'png']
   .map((ext) => `/logos/${base}.${ext}`)
   .find((f) => existsSync(join(process.cwd(), 'public', f)));
 ---
@@ -34,7 +35,7 @@ const archivo = ['svg', 'png']
     src={archivo}
     alt="Servimedical Group"
     class:list={['svmg-marca', clase]}
-    width="200" height="26" loading="eager" decoding="async"
+    width="260" height="119" loading="eager" decoding="async"
   />
 ) : (
   <span class:list={['inline-flex items-baseline gap-[7px]', clase]}>
@@ -52,10 +53,14 @@ const archivo = ['svg', 'png']
 
 <style>
   /* Alto fijo y ancho al contenido: el logotipo manda el ancho, no al revés,
-     para que no se deforme ni empuje la barra. */
+     para que no se deforme ni empuje la barra.
+
+     46 px y no 26: el logotipo de Servimedical es un bloque apilado —símbolo
+     arriba, texto debajo— y por debajo de eso la segunda línea deja de
+     leerse. La barra mide 72 px, así que quedan 13 px de aire a cada lado. */
   .svmg-marca {
     display: block;
-    block-size: 26px;
+    block-size: 46px;
     inline-size: auto;
     max-inline-size: 220px;
     object-fit: contain;
