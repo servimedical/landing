@@ -8,44 +8,10 @@
 
    Si la imagen no está, el panel queda vacío con su etiqueta y no se rompe
    nada. `npm run hero` dice qué falta. */
-import { existsSync, readdirSync } from 'node:fs';
-import { join } from 'node:path';
 import { contacto } from '../../content/sitio.ts';
+import { imagenHero } from '../../lib/heroImagen.ts';
 
-const CARPETA = join(process.cwd(), 'public', 'hero');
-const BASE = 'autoclave-tuttnauer';
-
-/* Los anchos no se asumen: se descubren. `npm run hero` genera sólo los que el
-   original puede dar —agrandar no añade detalle—, así que la plantilla lee la
-   carpeta y arma el srcset con lo que de verdad existe. Si no hay versiones
-   generadas, se usa el original tal cual, para que poner el archivo baste. */
-const archivos = existsSync(CARPETA) ? readdirSync(CARPETA) : [];
-const generadas = archivos
-  .map((f) => f.match(new RegExp(`^${BASE}-(\\d+)\\.webp$`)))
-  .filter(Boolean)
-  .map((m) => ({ archivo: m![0], ancho: Number(m![1]) }))
-  .sort((a, b) => a.ancho - b.ancho);
-
-const original = ['webp', 'png', 'jpg', 'jpeg']
-  .map((e) => `${BASE}.${e}`)
-  .find((f) => archivos.includes(f));
-
-const servida = generadas.at(-1)?.archivo ?? original ?? null;
-const imagen = servida ? `/hero/${servida}` : null;
-const srcset = generadas.map((g) => `/hero/${g.archivo} ${g.ancho}w`).join(', ');
-
-/* Las dimensiones reales evitan el salto de maquetación. Se leen del archivo
-   servido, no se escriben a mano. */
-let dim = { w: 1200, h: 1600 };
-if (servida) {
-  try {
-    const sharp = (await import('sharp')).default;
-    const m = await sharp(join(CARPETA, servida)).metadata();
-    if (m.width && m.height) dim = { w: m.width, h: m.height };
-  } catch {
-    /* sin sharp se usan las proporciones por defecto; no vale romper el build */
-  }
-}
+const { src: imagen, srcset, ancho, alto } = await imagenHero();
 ---
 <section class="hero w-full" aria-labelledby="hero-h">
   <div class="contenedor hero-rejilla">
@@ -79,15 +45,15 @@ if (servida) {
         <div class="hero-caja">
           {imagen && (
             <picture>
-              {generadas.length > 1 && (
+              {srcset && (
                 <source type="image/webp" srcset={srcset} sizes="(min-width: 1024px) 45vw, 90vw" />
               )}
               <img
                 class="hero-equipo"
                 src={imagen}
                 alt="Autoclave de vapor Tuttnauer de doble puerta, con la cámara cargada"
-                width={dim.w}
-                height={dim.h}
+                width={ancho}
+                height={alto}
                 fetchpriority="high"
                 decoding="async"
               />

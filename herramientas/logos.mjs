@@ -85,9 +85,18 @@ for (const m of marcas) {
     const webp = `${base}.webp`;
     const salidaWebp = await sharp(salida).webp({ quality: 90 }).toBuffer();
     writeFileSync(ruta(webp), salidaWebp);
+
+    /* Y una versión chica. La caja grande mide 280 px y sólo se usa en el
+       encabezado de la página de marca; en los menús y en la franja del hero
+       la caja es de 132 px. Servir ahí el archivo de 560 px son seis imágenes
+       cuatro veces más grandes de lo que se ven, encima del pliegue. */
+    const chico = `${base}-280.webp`;
+    const salidaChica = await sharp(salida).resize({ width: 280 }).webp({ quality: 90 }).toBuffer();
+    writeFileSync(ruta(chico), salidaChica);
+
     hechos.push(
-      `  ${png} · ${nueva.width}×${nueva.height} · ` +
-      `${Math.round(salida.length / 1024)} kB → ${webp} ${Math.round(salidaWebp.length / 1024)} kB`,
+      `  ${png} · ${nueva.width}×${nueva.height} · ${Math.round(salida.length / 1024)} kB → ` +
+      `${webp} ${Math.round(salidaWebp.length / 1024)} kB · ${chico} ${Math.round(salidaChica.length / 1024)} kB`,
     );
   } else {
     faltan.push(`  ${svg}  (${m.nombre})`);

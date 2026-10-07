@@ -5,8 +5,14 @@ import Footer from '../components/Footer.astro';
 import { sitio, contacto } from '../content/sitio.ts';
 import { normalizar } from '../content/navegacion.ts';
 
-interface Props { titulo: string; descripcion: string }
-const { titulo, descripcion } = Astro.props;
+interface Props {
+  titulo: string;
+  descripcion: string;
+  /** Imagen que define el LCP de la página. Se precarga desde el <head>:
+   *  sin esto el navegador no la descubre hasta haber leído el CSS. */
+  precargarImagen?: string | null;
+}
+const { titulo, descripcion, precargarImagen } = Astro.props;
 
 const rutaActual = normalizar(Astro.url.pathname);
 const canonica = new URL(rutaActual, sitio.dominio).href;
@@ -55,6 +61,9 @@ const jsonld = {
   {!produccion && <meta name="robots" content="noindex, nofollow" />}
 
   <script type="application/ld+json" set:html={JSON.stringify(jsonld)} is:inline />
+  {precargarImagen && (
+    <link rel="preload" as="image" href={precargarImagen} fetchpriority="high" />
+  )}
 </head>
 <body>
   <a href="#contenido" class="salto">Saltar al contenido</a>

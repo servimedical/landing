@@ -5,6 +5,9 @@ import Hero from '../components/hero/Hero.astro';
 import FranjaMarcas from '../components/marca/FranjaMarcas.astro';
 import TarjetaMarca from '../components/marca/TarjetaMarca.astro';
 import { home, servicios } from '../content/institucional.ts';
+import { imagenHero } from '../lib/heroImagen.ts';
+
+const { src: imagenDelHero } = await imagenHero();
 
 const marcas = (await getCollection('marcas'))
   .sort((a, b) => a.data.orden - b.data.orden)
@@ -13,6 +16,7 @@ const marcas = (await getCollection('marcas'))
 <Base
   titulo="Servimedical Group — Centrales de esterilización en Colombia"
   descripcion="Equipos de esterilización, consumibles, accesorios, repuestos y mobiliario en acero, con servicio técnico propio. Importación directa desde Bogotá, cobertura nacional."
+  precargarImagen={imagenDelHero}
 >
   {/* Hero y franja ocupan juntos la primera pantalla: la franja queda abajo,
       en el borde de lo que se ve al entrar. */}

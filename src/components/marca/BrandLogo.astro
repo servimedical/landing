@@ -31,10 +31,13 @@ const caja = CAJAS[size];
 /* Se acepta SVG o PNG con el mismo nombre: lo que haya en la carpeta.
    La ruta se resuelve contra `process.cwd()` —la raíz del proyecto— y no
    contra `import.meta.url`, que en el build apunta a dist/.prerender/chunks. */
-/* El WebP primero: lo genera `npm run logos` y pesa una fracción del PNG.
-   Si no está, se usa el archivo declarado en los datos. */
+/* El WebP primero: lo genera `npm run logos` y pesa una fracción del PNG. Y
+   la versión de 280 px salvo en la caja grande, que es la única que la
+   necesita: en la franja del hero van seis logotipos encima del pliegue. */
 const sinExt = marca.logo.src.replace(/\.(svg|png|webp)$/, '');
-const candidatos = [`${sinExt}.webp`, marca.logo.src, `${sinExt}.svg`, `${sinExt}.png`];
+const candidatos = size === 'lg'
+  ? [`${sinExt}.webp`, marca.logo.src, `${sinExt}.svg`, `${sinExt}.png`]
+  : [`${sinExt}-280.webp`, `${sinExt}.webp`, marca.logo.src, `${sinExt}.svg`, `${sinExt}.png`];
 const archivo = candidatos.find((f) => existsSync(join(process.cwd(), 'public', f)));
 const escala = marca.logoEscala ?? 1;
 ---
