@@ -63,18 +63,14 @@ const escala = marca.logoEscala ?? 1;
     block-size: auto;
     object-fit: contain;
     scale: var(--escala);
-    /* Gris en reposo, color al pasar o al enfocar. Donde no hay puntero
-       —táctil— el logo va siempre a color. */
-    transition: filter 160ms ease, opacity 160ms ease;
+    /* A color en todo el sitio. El gris de reposo se retiró: apagaba marcas
+       cuyo color es parte de su identidad —el verde de Celitron, el azul de
+       2i— y obligaba a pasar el puntero para verlas como son. */
+    transition: opacity 160ms ease;
   }
 
   @media (hover: hover) {
-    .svmg-logo img { filter: grayscale(1); opacity: 0.7; }
-    :where(a, button):hover .svmg-logo img,
-    :where(a, button):focus-visible .svmg-logo img {
-      filter: none;
-      opacity: 1;
-    }
+    :where(a, button):hover .svmg-logo img { opacity: 0.78; }
   }
 
   /* Marca tipográfica: misma altura de caja, ancho al contenido. */

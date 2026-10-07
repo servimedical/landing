@@ -18,8 +18,10 @@ const marcas = (await getCollection('marcas'))
   <div class="contenedor grid min-h-[min(calc(100svh-var(--spacing-header)),760px)] items-center gap-8 py-6 lg:grid-cols-[1.12fr_.88fr] lg:gap-[clamp(32px,5vw,72px)] lg:py-12">
     <div>
       <p class="meta text-steel">Especialistas en esterilización · Colombia</p>
+      {/* Única línea del sitio con tuteo. Decisión del cliente; el resto
+          mantiene el trato de usted (ver src/content/VOZ.md). */}
       <h1 class="mt-4 max-w-[26ch] text-[clamp(28px,3.4vw,44px)] lg:mt-5">
-        Todo el proceso de{' '}<span class="block text-steel">esterilización, con un responsable</span>
+        Tu aliado en todo el{' '}<span class="block text-steel">proceso de esterilización</span>
       </h1>
       <p class="mt-5 max-w-[48ch] text-[15px] leading-relaxed text-steel lg:mt-6 lg:text-[clamp(16px,1.3vw,18.5px)]">
         Importamos y distribuimos equipos de esterilización y consumibles para centrales de
