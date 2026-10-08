@@ -8,52 +8,112 @@
   "redirects": [
     {
       "source": "/marcas/tuttnauer/autoclaves-de-vapor",
-      "destination": "/marcas/tuttnauer/vapor",
+      "destination": "/marcas/tuttnauer/autoclaves",
       "statusCode": 301
     },
     {
       "source": "/marcas/tuttnauer/plasma-de-peroxido",
-      "destination": "/marcas/tuttnauer/plasma",
+      "destination": "/marcas/tuttnauer/baja-temperatura",
       "statusCode": 301
     },
     {
       "source": "/marcas/tuttnauer/esterilizacion-por-plasma",
-      "destination": "/marcas/tuttnauer/plasma",
+      "destination": "/marcas/tuttnauer/baja-temperatura",
       "statusCode": 301
     },
     {
       "source": "/marcas/servimedical/papel-y-empaque",
-      "destination": "/marcas/servimedical/papel-y-tyvek",
+      "destination": "/marcas/svm/papel-para-esterilizacion",
       "statusCode": 301
     },
     {
       "source": "/marcas/servimedical/repuestos-originales",
-      "destination": "/marcas/servimedical/repuestos",
+      "destination": "/marcas/svm/repuestos",
       "statusCode": 301
     },
     {
       "source": "/marcas/servimedical/mesas-y-mesones",
-      "destination": "/marcas/servimedical/mobiliario-acero-inoxidable",
+      "destination": "/marcas/svm/mobiliario-acero-inoxidable",
       "statusCode": 301
     },
     {
       "source": "/marcas/servimedical/carros-de-transporte",
-      "destination": "/marcas/servimedical/mobiliario-acero-inoxidable",
+      "destination": "/marcas/svm/mobiliario-acero-inoxidable",
       "statusCode": 301
     },
     {
       "source": "/marcas/servimedical/almacenamiento-esteril",
-      "destination": "/marcas/servimedical/mobiliario-acero-inoxidable",
+      "destination": "/marcas/svm/mobiliario-acero-inoxidable",
       "statusCode": 301
     },
     {
       "source": "/marcas/servimedical/compresores",
-      "destination": "/marcas/servimedical",
+      "destination": "/marcas/svm",
       "statusCode": 301
     },
     {
       "source": "/marcas/servimedical/tratamiento-de-agua",
-      "destination": "/marcas/servimedical",
+      "destination": "/marcas/svm",
+      "statusCode": 301
+    },
+    {
+      "source": "/lineas/vapor",
+      "destination": "/lineas/autoclaves",
+      "statusCode": 301
+    },
+    {
+      "source": "/lineas/plasma",
+      "destination": "/lineas/baja-temperatura",
+      "statusCode": 301
+    },
+    {
+      "source": "/marcas/tuttnauer/vapor",
+      "destination": "/marcas/tuttnauer/autoclaves",
+      "statusCode": 301
+    },
+    {
+      "source": "/marcas/sanqiang/vapor",
+      "destination": "/marcas/sanqiang/autoclaves",
+      "statusCode": 301
+    },
+    {
+      "source": "/marcas/tuttnauer/plasma",
+      "destination": "/marcas/tuttnauer/baja-temperatura",
+      "statusCode": 301
+    },
+    {
+      "source": "/marcas/sanqiang/plasma",
+      "destination": "/marcas/sanqiang/baja-temperatura",
+      "statusCode": 301
+    },
+    {
+      "source": "/lineas/empaque",
+      "destination": "/lineas/indicadores",
+      "statusCode": 301
+    },
+    {
+      "source": "/marcas/servimedical/papel-y-tyvek",
+      "destination": "/marcas/svm/papel-para-esterilizacion",
+      "statusCode": 301
+    },
+    {
+      "source": "/marcas/svm/papel-y-tyvek",
+      "destination": "/marcas/svm/papel-para-esterilizacion",
+      "statusCode": 301
+    },
+    {
+      "source": "/marcas/servimedical",
+      "destination": "/marcas/svm",
+      "statusCode": 301
+    },
+    {
+      "source": "/marcas/servimedical/mobiliario-acero-inoxidable",
+      "destination": "/marcas/svm/mobiliario-acero-inoxidable",
+      "statusCode": 301
+    },
+    {
+      "source": "/marcas/servimedical/repuestos",
+      "destination": "/marcas/svm/repuestos",
       "statusCode": 301
     },
     {
@@ -77,18 +137,13 @@
       "statusCode": 301
     },
     {
-      "source": "/lineas/empaque",
-      "destination": "/marcas/servimedical/papel-y-tyvek",
-      "statusCode": 301
-    },
-    {
       "source": "/lineas/mobiliario",
-      "destination": "/marcas/servimedical/mobiliario-acero-inoxidable",
+      "destination": "/marcas/svm/mobiliario-acero-inoxidable",
       "statusCode": 301
     },
     {
       "source": "/lineas/repuestos",
-      "destination": "/marcas/servimedical/repuestos",
+      "destination": "/marcas/svm/repuestos",
       "statusCode": 301
     }
   ],

@@ -18,9 +18,14 @@ import { marcaPorSlug, urlMarca } from '../datos/marcas.ts';
 
 export type NodoNav = {
   titulo: string;
+  /** Nombre corto para el menú, cuando el de la página es más largo de lo que
+   *  cabe en una línea del desplegable. */
+  tituloCorto?: string;
   url: string;
   /** Una línea bajo el nombre, en el panel del menú. */
   descriptor?: string;
+  /** Slug de la marca, cuando el nodo representa una. */
+  marca?: string;
   hijos?: NodoNav[];
   enNavbar?: boolean;
   enFooter?: 'marcas' | 'empresa' | false;
@@ -35,7 +40,7 @@ export type NodoNav = {
 const nodoLinea = (l: (typeof lineas)[number]): NodoNav => {
   const suyos = productosDeLinea(l.slug);
   if (!lineaTienePagina(l.slug))
-    return { titulo: l.nombre, url: urlProducto(suyos[0]!), descriptor: l.descriptor };
+    return { titulo: l.nombre, tituloCorto: l.nombreNav, url: urlProducto(suyos[0]!), descriptor: l.descriptor };
   /* La hoja lleva el nombre de la marca, que es lo que distingue a un
      producto de otro dentro del método. Salvo cuando una marca aporta dos
      productos a la misma línea —los indicadores de 2i—: ahí el nombre de la
@@ -43,6 +48,7 @@ const nodoLinea = (l: (typeof lineas)[number]): NodoNav => {
   const repiteMarca = (slugMarca: string) => suyos.filter((x) => x.marca === slugMarca).length > 1;
   return {
     titulo: l.nombre,
+    tituloCorto: l.nombreNav,
     url: urlLinea(l.slug),
     descriptor: l.descriptor,
     hijos: suyos.map((p) => ({
@@ -59,6 +65,8 @@ const nodoMarca = (m: (typeof marcas)[number]): NodoNav => ({
   titulo: m.nombre,
   url: urlMarca(m.slug),
   descriptor: m.descriptor,
+  /* El panel pinta el logotipo, no el nombre, y lo busca por aquí. */
+  marca: m.slug,
   enFooter: 'marcas',
 });
 

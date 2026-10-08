@@ -25,20 +25,20 @@ Las carpetas, con el nombre exacto:
 
 | Carpeta | Producto |
 |---|---|
-| `tuttnauer-vapor` | Autoclaves hospitalarios Tuttnauer |
-| `tuttnauer-plasma` | PlazMax |
+| `tuttnauer-autoclaves` | Autoclaves hospitalarios Tuttnauer |
+| `tuttnauer-baja-temperatura` | PlazMax |
 | `tuttnauer-termodesinfectoras` | TIVA |
-| `sanqiang-vapor` | Serie MD.JD |
-| `sanqiang-plasma` | SQ-WD |
+| `sanqiang-autoclaves` | Serie MD.JD |
+| `sanqiang-baja-temperatura` | SQ-WD |
 | `sanqiang-termodesinfectoras` | SQ-KX y SQ-X360 |
 | `sanqiang-residuos-hospitalarios` | Tratamiento de residuos Sanqiang |
 | `celitron-residuos-hospitalarios` | ISS |
 | `akarmak-residuos-hospitalarios` | AKR |
 | `2i-indicadores-quimicos` | Indicadores químicos 2i |
 | `2i-indicadores-biologicos` | Indicadores biológicos 2i |
-| `servimedical-papel-y-tyvek` | Papel grado esterilización y Tyvek |
-| `servimedical-mobiliario-acero-inoxidable` | Mobiliario en acero inoxidable |
-| `servimedical-repuestos` | Repuestos originales |
+| `svm-papel-para-esterilizacion` | Papel para esterilización y Tyvek |
+| `svm-mobiliario-acero-inoxidable` | Mobiliario en acero inoxidable |
+| `svm-repuestos` | Repuestos originales |
 
 ---
 
@@ -70,9 +70,9 @@ producto correspondiente:
 
 ```ts
 media: {
-  foto: '/productos/tuttnauer-plasma/foto.webp',
+  foto: '/productos/tuttnauer-baja-temperatura/foto.webp',
   brochure: {
-    url: '/productos/tuttnauer-plasma/brochure.pdf',
+    url: '/productos/tuttnauer-baja-temperatura/brochure.pdf',
     titulo: 'PlazMax · ficha técnica',
     pesoKB: 1240,
   },

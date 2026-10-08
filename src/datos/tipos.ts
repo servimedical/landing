@@ -81,9 +81,17 @@ export type Marca = {
 export type Linea = {
   slug: string;
   nombre: string;
+  /** Nombre corto para el navbar, cuando el de la página no cabe o sobra.
+   *  «Indicadores y empaque» en la página, «Indicadores» en el menú. */
+  nombreNav?: string;
   /** 3–6 palabras bajo el nombre, en el menú y en las tarjetas. */
   descriptor: string;
   etapa: EtapaCiclo | 'transversal';
+  /** Una línea puede cubrir más de una etapa del ciclo. «Indicadores y
+   *  empaque» vigila el proceso y además sostiene la barrera estéril, y sin
+   *  esto la marca que aporta el papel no podría declarar la etapa
+   *  «empaque». */
+  etapasAdicionales?: EtapaCiclo[];
   /** Una frase. */
   lead: string;
   /** 2–3 párrafos. Aquí, y sólo aquí, se explica cómo funciona el método. */

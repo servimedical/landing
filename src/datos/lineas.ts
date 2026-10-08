@@ -15,7 +15,7 @@ export const lineas: Linea[] = [
     nombre: 'Termodesinfectoras',
     descriptor: 'Lavado y desinfección térmica validada',
     etapa: 'lavado',
-    orden: 1,
+    orden: 3,
     lead: 'Lavado y desinfección térmica automática del instrumental antes del empaque. Sin una carga limpia no hay esterilización que valga.',
     comoFunciona: [
       'La termodesinfectora lava el instrumental con agua, detergente enzimático o alcalino y presión, lo enjuaga, y lo desinfecta con agua por encima de 90 °C durante un tiempo controlado. El resultado se expresa como valor A0, según la ISO 15883.',
@@ -47,47 +47,11 @@ export const lineas: Linea[] = [
   },
 
   {
-    slug: 'empaque',
-    nombre: 'Papel grado esterilización y Tyvek',
-    descriptor: 'La barrera estéril hasta sala',
-    etapa: 'empaque',
-    orden: 2,
-    lead: 'El empaque no envuelve el set: es la barrera estéril. Sostiene la esterilidad desde el autoclave hasta que alguien abre el paquete en sala.',
-    comoFunciona: [
-      'El sistema de barrera estéril deja pasar el agente esterilizante, lo retiene fuera después del ciclo y resiste la manipulación hasta la apertura. La ISO 11607 lo regula como sistema, no como material suelto: el empaque, el sellado y la validación van juntos.',
-      'El método decide el material. El vapor atraviesa la celulosa, así que se empaca en papel grado esterilización o en rollo papel-película. El peróxido de hidrógeno es neutralizado por la celulosa, así que el plasma exige Tyvek o envoltorio SMS de polipropileno.',
-    ],
-    compatible: [
-      'Rollos y sobres papel-película para vapor y óxido de etileno',
-      'Papel crepado y envoltorio SMS para doblado de sets',
-      'Tyvek-película para plasma de peróxido y óxido de etileno',
-    ],
-    noCompatible: [
-      'Papel y celulosa en ciclos de peróxido de hidrógeno',
-      'Empaque reutilizado o con el sello comprometido',
-    ],
-    empaque: 'El sello térmico debe tener un ancho mínimo de 6 mm, según la EN 868-5.',
-    normas: [
-      { norma: 'ISO 11607-1 y -2', que: 'Sistemas de barrera estéril: requisitos de materiales y validación de los procesos de empaque.' },
-      { norma: 'EN 868-2, -3 y -5', que: 'Requisitos del papel de envoltura, el papel crepado y las bolsas y rollos termosellables.' },
-      { norma: 'ISO 11140-1', que: 'Gobierna el indicador de proceso impreso sobre el empaque.' },
-    ],
-    faq: [
-      { p: '¿Por qué no sirve el mismo empaque para vapor y para plasma?', r: 'Porque la celulosa absorbe el peróxido, baja la concentración del agente y aborta el ciclo. El plasma exige Tyvek o SMS.' },
-      { p: '¿Cuánto dura la barrera estéril?', r: 'El vencimiento lo define el protocolo de la institución según el tipo de empaque y las condiciones de almacenamiento, no el material por sí solo.' },
-    ],
-    seo: {
-      titulo: 'Papel grado esterilización y Tyvek | Servimedical',
-      descripcion: 'Barrera estéril bajo ISO 11607 y EN 868: rollos papel-película para vapor y Tyvek para plasma de peróxido. Abastecimiento programado desde Bogotá.',
-    },
-  },
-
-  {
-    slug: 'vapor',
-    nombre: 'Esterilización por vapor',
+    slug: 'autoclaves',
+    nombre: 'Autoclaves',
     descriptor: 'El método de referencia de la central',
     etapa: 'esterilizacion',
-    orden: 3,
+    orden: 1,
     lead: 'Vapor saturado a 121 o 134 °C para todo lo que resiste calor y humedad. El método de referencia de la central.',
     comoFunciona: [
       'El autoclave extrae el aire de la cámara con pulsos de vacío —prevacío fraccionado—, introduce vapor saturado, mantiene la temperatura durante el tiempo de exposición y seca la carga al vacío. Sin aire residual, el vapor llega al centro de cada paquete.',
@@ -118,17 +82,17 @@ export const lineas: Linea[] = [
       { p: '¿Mesa o central?', r: 'Depende de la carga por turno y del tamaño de los sets. Un equipo de mesa procesa bandejas; uno de central procesa carros completos. Se dimensiona con las cirugías por día.' },
     ],
     seo: {
-      titulo: 'Esterilización por vapor en Colombia | Servimedical',
+      titulo: 'Autoclaves de vapor en Colombia | Servimedical',
       descripcion: 'Autoclaves de vapor de 18 a 1.500 L, de mesa bajo EN 13060 a central bajo EN 285, a 121 y 134 °C. Equipos Tuttnauer y Sanqiang con servicio técnico propio.',
     },
   },
 
   {
-    slug: 'plasma',
-    nombre: 'Esterilización por plasma',
+    slug: 'baja-temperatura',
+    nombre: 'Baja temperatura',
     descriptor: 'Baja temperatura para lo termosensible',
     etapa: 'esterilizacion',
-    orden: 4,
+    orden: 2,
     lead: 'Peróxido de hidrógeno vaporizado por debajo de 55 °C para lo que el vapor destruye: óptica, cables, motores y polímeros.',
     comoFunciona: [
       'El equipo hace vacío en la cámara, vaporiza peróxido de hidrógeno, lo difunde en la carga y lo convierte en plasma, que descompone el residuo en agua y oxígeno. No usa agua de red y no deja residuos tóxicos.',
@@ -156,24 +120,32 @@ export const lineas: Linea[] = [
       { p: '¿Qué indicador uso?', r: 'Uno específico para peróxido. Los indicadores de vapor no viran con este método y dan una lectura que no significa nada.' },
     ],
     seo: {
-      titulo: 'Esterilización por plasma en Colombia | Servimedical',
+      titulo: 'Esterilización a baja temperatura en Colombia | Servimedical',
       descripcion: 'Peróxido de hidrógeno vaporizado por debajo de 55 °C bajo ISO 14937, en ciclos de 30 a 60 minutos. Equipos Tuttnauer PlazMax y Sanqiang SQ-WD.',
     },
   },
 
   {
     slug: 'indicadores',
-    nombre: 'Indicadores químicos y biológicos',
-    descriptor: 'La evidencia para liberar la carga',
+    nombre: 'Indicadores y empaque',
+    /* En el menú sobra «y empaque»: ocupa dos líneas y el visitante que busca
+       papel llega igual por el producto. */
+    nombreNav: 'Indicadores',
+    descriptor: 'La barrera y la evidencia',
     etapa: 'monitoreo',
-    orden: 5,
-    lead: 'La evidencia para liberar una carga: el químico confirma que el agente llegó y el biológico, que el proceso mató las esporas.',
+    etapasAdicionales: ['empaque'],
+    orden: 6,
+    lead: 'Dos mitades del mismo control: el empaque sostiene la barrera estéril y los indicadores prueban que el proceso funcionó dentro de ella.',
     comoFunciona: [
+      'El sistema de barrera estéril deja pasar el agente esterilizante, lo retiene fuera después del ciclo y resiste la manipulación hasta la apertura. La ISO 11607 lo regula como sistema —material, sellado y validación juntos—, no como material suelto. El método decide el material: el vapor atraviesa la celulosa, así que se empaca en papel para esterilización o en rollo papel-película; el peróxido de hidrógeno es neutralizado por la celulosa, así que la baja temperatura exige Tyvek o envoltorio SMS de polipropileno.',
       'El indicador químico cambia de color al exponerse al proceso. Según la ISO 11140-1, el Tipo 1 distingue un paquete procesado de uno que no —es la cinta testigo, que no está en el catálogo de 2i—; el Tipo 2 es la prueba de Bowie-Dick; y los Tipos 4, 5 y 6 responden a varias variables críticas del ciclo, donde el Tipo 5 —el integrador— sigue el comportamiento de un indicador biológico.',
       'El indicador biológico lleva esporas de alta resistencia: Geobacillus stearothermophilus en vapor. Tras el ciclo se incuba, y si no hay crecimiento el proceso fue letal. Es la única evidencia directa de letalidad; todo lo demás es indicio.',
-      'La Resolución 3100 de 2019 exige indicador químico en cada paquete e indicador biológico como mínimo semanal.',
+      'La Resolución 3100 de 2019 exige indicador químico en cada paquete e indicador biológico como mínimo semanal. Las dos mitades se compran juntas porque fallan juntas: un indicador impecable dentro de un empaque que perdió el sello no libera nada, porque lo que se certifica no es el ciclo, es el paquete que llega a sala.',
     ],
     compatible: [
+      'Rollos y sobres papel-película para vapor y óxido de etileno',
+      'Papel crepado y envoltorio SMS para doblado de sets',
+      'Tyvek-película para baja temperatura y óxido de etileno',
       'Control externo de proceso, sobre la barrera',
       'Control interno de paquete, en el centro de la carga',
       'Paquete de prueba, armado con el mismo material que representa',
@@ -181,22 +153,29 @@ export const lineas: Linea[] = [
       'Control biológico de carga y verificación periódica de cada equipo',
     ],
     noCompatible: [
+      'Papel y celulosa en ciclos de peróxido de hidrógeno',
+      'Empaque reutilizado o con el sello comprometido',
       'Un indicador de vapor en un ciclo de peróxido, y al revés: cada método tiene el suyo',
       'La liberación de una carga con implantes sin control biológico',
     ],
+    empaque: 'El sello térmico debe tener un ancho mínimo de 6 mm, según la EN 868-5.',
     normas: [
       { norma: 'ISO 11140-1', que: 'Indicadores químicos: clases, requisitos y métodos de ensayo.' },
       { norma: 'ISO 11140-4', que: 'Indicadores de la prueba de Bowie-Dick.' },
       { norma: 'ISO 11138-1 y -3', que: 'Indicadores biológicos: requisitos generales y los propios del vapor.' },
+      { norma: 'ISO 11607-1 y -2', que: 'Sistemas de barrera estéril: requisitos de materiales y validación de los procesos de empaque.' },
+      { norma: 'EN 868-2, -3 y -5', que: 'Requisitos del papel de envoltura, el papel crepado y las bolsas y rollos termosellables.' },
     ],
     faq: [
       { p: '¿Basta con el indicador externo?', r: 'No. El externo dice que el paquete pasó por el equipo; el interno, que el agente llegó al centro de la carga.' },
       { p: '¿Con qué frecuencia el biológico?', r: 'Como mínimo semanal, según la Resolución 3100 de 2019, y preferiblemente diario. La carga con implantes no admite excepción.' },
-      { p: '¿Sirve el mismo indicador para vapor y plasma?', r: 'No. Cada método tiene el suyo, y uno de vapor no vira con peróxido.' },
+      { p: '¿Sirve el mismo indicador para vapor y para baja temperatura?', r: 'No. Cada método tiene el suyo, y uno de vapor no vira con peróxido.' },
+      { p: '¿Por qué no sirve el mismo empaque para vapor y para baja temperatura?', r: 'Porque la celulosa absorbe el peróxido, baja la concentración del agente y aborta el ciclo. La baja temperatura exige Tyvek o SMS.' },
+      { p: '¿Cuánto dura la barrera estéril?', r: 'El vencimiento lo define el protocolo de la institución según el tipo de empaque y las condiciones de almacenamiento, no el material por sí solo.' },
     ],
     seo: {
-      titulo: 'Indicadores químicos y biológicos | Servimedical',
-      descripcion: 'Indicadores de las clases 1 a 6 de ISO 11140-1 e indicadores biológicos bajo ISO 11138, para liberar cada carga con evidencia.',
+      titulo: 'Indicadores y empaque para esterilización | Servimedical',
+      descripcion: 'Indicadores de las clases 1 a 6 de ISO 11140-1, indicadores biológicos bajo ISO 11138 y barrera estéril bajo ISO 11607 y EN 868.',
     },
   },
 
@@ -205,7 +184,7 @@ export const lineas: Linea[] = [
     nombre: 'Mobiliario en acero inoxidable',
     descriptor: 'El flujo de sucio a limpio a estéril',
     etapa: 'almacenamiento',
-    orden: 6,
+    orden: 7,
     lead: 'Mesas, mesones, carros y estanterías que definen el recorrido del material. El mobiliario no acompaña el flujo de la central: lo construye.',
     comoFunciona: [
       'La central se organiza en tres zonas que no se cruzan: sucio, limpio y estéril. El mobiliario es lo que las separa físicamente, y la Resolución 3100 de 2019 exige mesón de trabajo con poceta y unidireccionalidad en cada etapa.',
@@ -241,7 +220,7 @@ export const lineas: Linea[] = [
     nombre: 'Tratamiento de residuos',
     descriptor: 'Vapor y trituración en sitio',
     etapa: 'residuos',
-    orden: 7,
+    orden: 5,
     lead: 'Vapor y trituración en el mismo sitio donde se genera el residuo biosanitario. Sale estéril, irreconocible y con una fracción del volumen.',
     comoFunciona: [
       'El residuo infeccioso entra a un autoclave que lo esteriliza con vapor a presión y lo tritura, antes o después de la exposición. Sale estéril, fragmentado y reducido hasta en un 80 %, y se dispone como residuo ordinario según la reglamentación local.',
@@ -270,7 +249,7 @@ export const lineas: Linea[] = [
     ],
     seo: {
       titulo: 'Tratamiento de residuos hospitalarios | Servimedical',
-      descripcion: 'Esterilización por vapor y trituración de residuo biosanitario en sitio, de 20 kg por ciclo a 1.800 kg por hora. Sanqiang, Celitron y Akarmak.',
+      descripcion: 'Esterilización con vapor y trituración de residuo biosanitario en sitio, de 20 kg por ciclo a 1.800 kg por hora. Sanqiang, Celitron y Akarmak.',
     },
   },
 

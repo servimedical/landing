@@ -51,8 +51,13 @@ const esquemaLinea = z.object({
   nombre: z.string().min(1),
   descriptor: z.string().min(1).max(60),
   etapa: z.enum([...ETAPAS, 'transversal']),
+  etapasAdicionales: z.array(z.enum(ETAPAS)).optional(),
+  nombreNav: z.string().optional(),
   lead: z.string().min(1).max(260),
-  comoFunciona: z.array(z.string().min(80)).min(2).max(3),
+  /* Cuatro y no tres: «Indicadores y empaque» reúne dos materias que se
+     compran juntas, y explicarlas en tres párrafos obliga a apretarlas. El
+     tope sigue existiendo para que una línea no se vuelva un tratado. */
+  comoFunciona: z.array(z.string().min(80)).min(2).max(4),
   compatible: z.array(z.string().min(1)).min(2),
   noCompatible: z.array(z.string().min(1)).min(1),
   empaque: z.string().min(1).optional(),
@@ -64,6 +69,7 @@ const esquemaLinea = z.object({
 
 const esquemaProducto = z.object({
   marca: z.string().regex(SLUG),
+  etapa: z.enum(ETAPAS).optional(),
   publicado: z.boolean().optional(),
   slug: z.string().regex(SLUG),
   linea: z.string().regex(SLUG),
@@ -135,7 +141,9 @@ const PROHIBIDO: [RegExp, string][] = [
   [/cu[eé]ntenos qu[eé] necesita esterilizar/i, 'CTA retirado: use «Hable con un especialista»'],
   [/cu[eé]ntanos|escr[ií]benos|cont[aá]ctanos/i, 'el sitio trata de usted'],
   [/termodesinfectadora/i, 'el término es «termodesinfectora»'],
-  [/papel grado m[eé]dico/i, 'el término es «papel grado esterilización»'],
+  [/papel grado m[eé]dico/i, 'el término es «papel para esterilización»'],
+  [/grado esterilizaci[oó]n/i, 'nomenclatura anterior: es «papel para esterilización»'],
+  [/esterilizaci[oó]n por plasma/i, 'la línea se llama «baja temperatura»; el plasma es solo uno de sus métodos'],
 ];
 
 const auditar = (ruta: string, valor: unknown, fallos: string[]) => {
@@ -190,7 +198,10 @@ const validarCatalogo = () => {
   for (const m of marcas) {
     const suyas = new Set(
       publicados.filter((p) => p.marca === m.slug)
-        .map((p) => lineas.find((l) => l.slug === p.linea)!.etapa)
+        /* La etapa del producto, no la de su línea: «Indicadores y empaque»
+           abarca dos, y obligar a 2i a declarar «empaque» —o a SVM
+           «monitoreo»— sería hacerles decir que venden algo que no venden. */
+        .map((p) => p.etapa ?? lineas.find((x) => x.slug === p.linea)!.etapa)
         .filter((e) => e !== 'transversal'),
     );
     for (const e of suyas)

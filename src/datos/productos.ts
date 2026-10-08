@@ -19,8 +19,8 @@ export const productos: Producto[] = [
   /* ═══════════════════════════════════════════════════════ TUTTNAUER ════ */
   {
     marca: 'tuttnauer',
-    slug: 'vapor',
-    linea: 'vapor',
+    slug: 'autoclaves',
+    linea: 'autoclaves',
     nombre: 'Autoclaves',
     tipo: 'equipo',
     orden: 2,
@@ -134,9 +134,9 @@ export const productos: Producto[] = [
       'Acometidas de vapor, agua, desagüe y eléctrica disponibles',
     ],
     relacionadas: [
-      { producto: 'servimedical/papel-y-tyvek', porque: 'El vapor solo esteriliza lo que atraviesa. El empaque sostiene la barrera hasta sala.' },
+      { producto: 'svm/papel-para-esterilizacion', porque: 'El vapor solo esteriliza lo que atraviesa. El empaque sostiene la barrera hasta sala.' },
       { producto: '2i/indicadores-biologicos', porque: 'La única evidencia de letalidad del ciclo. Sin ella no hay liberación que sostenga una auditoría.' },
-      { producto: 'servimedical/repuestos', porque: 'Empaquetadura y válvulas son partes de desgaste. En inventario, una parada de días es de horas.' },
+      { producto: 'svm/repuestos', porque: 'Empaquetadura y válvulas son partes de desgaste. En inventario, una parada de días es de horas.' },
     ],
     servicio: [
       'Calificación de instalación y de operación, con prueba de vacío y Bowie-Dick de aceptación',
@@ -152,8 +152,8 @@ export const productos: Producto[] = [
 
   {
     marca: 'tuttnauer',
-    slug: 'plasma',
-    linea: 'plasma',
+    slug: 'baja-temperatura',
+    linea: 'baja-temperatura',
     nombre: 'PlazMax',
     tipo: 'equipo',
     orden: 3,
@@ -199,9 +199,9 @@ export const productos: Producto[] = [
       'Disponibilidad de empaque en Tyvek o SMS',
     ],
     relacionadas: [
-      { producto: 'servimedical/papel-y-tyvek', porque: 'La celulosa aborta el ciclo. Esta línea necesita barrera en Tyvek.' },
+      { producto: 'svm/papel-para-esterilizacion', porque: 'La celulosa aborta el ciclo. Esta línea necesita barrera en Tyvek.' },
       { producto: '2i/indicadores-quimicos', porque: 'Los indicadores de vapor no viran con peróxido. No sirven como control aquí.' },
-      { producto: 'servimedical/repuestos', porque: 'Electrónica sensible: el canal de fábrica evita paradas largas por una parte menor.' },
+      { producto: 'svm/repuestos', porque: 'Electrónica sensible: el canal de fábrica evita paradas largas por una parte menor.' },
     ],
     servicio: [
       'Calificación de instalación y de operación del ciclo de baja temperatura',
@@ -263,9 +263,9 @@ export const productos: Producto[] = [
       'Espacio en el área de lavado y paso hacia la zona limpia',
     ],
     relacionadas: [
-      { producto: 'servimedical/mobiliario-acero-inoxidable', porque: 'Sin puesto de prelavado y escurrido, el material entra con residuo y el ciclo no lo corrige.' },
-      { producto: 'servimedical/papel-y-tyvek', porque: 'Lo que sale limpio se empaca de inmediato, o espera descubierto.' },
-      { producto: 'servimedical/repuestos', porque: 'Bombas, válvulas y sensores se desgastan en un equipo que trabaja con agua todo el día.' },
+      { producto: 'svm/mobiliario-acero-inoxidable', porque: 'Sin puesto de prelavado y escurrido, el material entra con residuo y el ciclo no lo corrige.' },
+      { producto: 'svm/papel-para-esterilizacion', porque: 'Lo que sale limpio se empaca de inmediato, o espera descubierto.' },
+      { producto: 'svm/repuestos', porque: 'Bombas, válvulas y sensores se desgastan en un equipo que trabaja con agua todo el día.' },
     ],
     servicio: [
       'Calificación de instalación y de operación del proceso de lavado',
@@ -327,9 +327,9 @@ export const productos: Producto[] = [
       'Espacio en el área de lavado y paso hacia la zona limpia',
     ],
     relacionadas: [
-      { producto: 'servimedical/mobiliario-acero-inoxidable', porque: 'Sin puesto de prelavado y escurrido, el material entra con residuo y el ciclo no lo corrige.' },
-      { producto: 'servimedical/papel-y-tyvek', porque: 'Lo que sale limpio se empaca de inmediato, o espera descubierto.' },
-      { producto: 'servimedical/repuestos', porque: 'Bombas, válvulas y sensores se desgastan en un equipo que trabaja con agua todo el día.' },
+      { producto: 'svm/mobiliario-acero-inoxidable', porque: 'Sin puesto de prelavado y escurrido, el material entra con residuo y el ciclo no lo corrige.' },
+      { producto: 'svm/papel-para-esterilizacion', porque: 'Lo que sale limpio se empaca de inmediato, o espera descubierto.' },
+      { producto: 'svm/repuestos', porque: 'Bombas, válvulas y sensores se desgastan en un equipo que trabaja con agua todo el día.' },
     ],
     servicio: [
       'Instalación con conexión hidráulica y de desagüe, y puesta en marcha',
@@ -344,8 +344,8 @@ export const productos: Producto[] = [
 
   {
     marca: 'sanqiang',
-    slug: 'vapor',
-    linea: 'vapor',
+    slug: 'autoclaves',
+    linea: 'autoclaves',
     nombre: 'Autoclaves',
     tipo: 'equipo',
     orden: 2,
@@ -433,9 +433,9 @@ export const productos: Producto[] = [
       'Acometidas de vapor, agua, desagüe y eléctrica disponibles',
     ],
     relacionadas: [
-      { producto: 'servimedical/papel-y-tyvek', porque: 'El vapor solo esteriliza lo que atraviesa. El empaque sostiene la barrera hasta sala.' },
+      { producto: 'svm/papel-para-esterilizacion', porque: 'El vapor solo esteriliza lo que atraviesa. El empaque sostiene la barrera hasta sala.' },
       { producto: '2i/indicadores-biologicos', porque: 'La evidencia de letalidad del ciclo, sin la cual no hay liberación.' },
-      { producto: 'servimedical/repuestos', porque: 'Empaquetadura y válvulas definen el tiempo de parada cuando fallan.' },
+      { producto: 'svm/repuestos', porque: 'Empaquetadura y válvulas definen el tiempo de parada cuando fallan.' },
     ],
     servicio: [
       'Instalación y puesta en marcha con técnicos propios',
@@ -450,8 +450,8 @@ export const productos: Producto[] = [
 
   {
     marca: 'sanqiang',
-    slug: 'plasma',
-    linea: 'plasma',
+    slug: 'baja-temperatura',
+    linea: 'baja-temperatura',
     nombre: 'SQ-WD',
     tipo: 'equipo',
     orden: 3,
@@ -494,9 +494,9 @@ export const productos: Producto[] = [
       'Disponibilidad de empaque en Tyvek o SMS',
     ],
     relacionadas: [
-      { producto: 'servimedical/papel-y-tyvek', porque: 'La celulosa aborta el ciclo. Esta línea necesita barrera en Tyvek.' },
+      { producto: 'svm/papel-para-esterilizacion', porque: 'La celulosa aborta el ciclo. Esta línea necesita barrera en Tyvek.' },
       { producto: '2i/indicadores-quimicos', porque: 'Los indicadores de vapor no viran con peróxido. No sirven como control aquí.' },
-      { producto: 'servimedical/repuestos', porque: 'Electrónica sensible: el canal de fábrica evita paradas largas por una parte menor.' },
+      { producto: 'svm/repuestos', porque: 'Electrónica sensible: el canal de fábrica evita paradas largas por una parte menor.' },
     ],
     servicio: [
       'Instalación y puesta en marcha con técnicos propios',
@@ -540,9 +540,9 @@ export const productos: Producto[] = [
       'Acometidas disponibles en el recinto de residuos',
     ],
     relacionadas: [
-      { producto: 'servimedical/mobiliario-acero-inoxidable', porque: 'El residuo se mueve en carro cerrado y diferenciado, nunca en el mismo que el material estéril.' },
+      { producto: 'svm/mobiliario-acero-inoxidable', porque: 'El residuo se mueve en carro cerrado y diferenciado, nunca en el mismo que el material estéril.' },
       { producto: '2i/indicadores-biologicos', porque: 'La inactivación se verifica con control biológico, igual que una carga de esterilización.' },
-      { producto: 'servimedical/repuestos', porque: 'El sistema de trituración es la parte de mayor desgaste del equipo.' },
+      { producto: 'svm/repuestos', porque: 'El sistema de trituración es la parte de mayor desgaste del equipo.' },
     ],
     servicio: [
       'Instalación y puesta en marcha con técnicos propios',
@@ -602,9 +602,9 @@ export const productos: Producto[] = [
       'Autorización ambiental vigente de la institución',
     ],
     relacionadas: [
-      { producto: 'servimedical/mobiliario-acero-inoxidable', porque: 'El residuo se mueve en carro cerrado y diferenciado hasta el recinto de tratamiento.' },
+      { producto: 'svm/mobiliario-acero-inoxidable', porque: 'El residuo se mueve en carro cerrado y diferenciado hasta el recinto de tratamiento.' },
       { producto: '2i/indicadores-biologicos', porque: 'La inactivación se verifica con control biológico, igual que una carga de esterilización.' },
-      { producto: 'servimedical/repuestos', porque: 'Las cuchillas de trituración son la parte de mayor desgaste del equipo.' },
+      { producto: 'svm/repuestos', porque: 'Las cuchillas de trituración son la parte de mayor desgaste del equipo.' },
     ],
     servicio: [
       'Instalación y puesta en marcha con técnicos propios',
@@ -671,9 +671,9 @@ export const productos: Producto[] = [
       'Autorización ambiental vigente',
     ],
     relacionadas: [
-      { producto: 'servimedical/mobiliario-acero-inoxidable', porque: 'El residuo se mueve en carro cerrado y diferenciado hasta el recinto de tratamiento.' },
+      { producto: 'svm/mobiliario-acero-inoxidable', porque: 'El residuo se mueve en carro cerrado y diferenciado hasta el recinto de tratamiento.' },
       { producto: '2i/indicadores-biologicos', porque: 'La inactivación se verifica con control biológico, igual que una carga de esterilización.' },
-      { producto: 'servimedical/repuestos', porque: 'La trituradora es la parte de mayor desgaste de todo el sistema.' },
+      { producto: 'svm/repuestos', porque: 'La trituradora es la parte de mayor desgaste de todo el sistema.' },
     ],
     servicio: [
       'Instalación llave en mano con técnicos propios',
@@ -735,8 +735,8 @@ export const productos: Producto[] = [
     ],
     relacionadas: [
       { producto: '2i/indicadores-biologicos', porque: 'El químico es lectura inmediata, pero indicio. El biológico es la prueba.' },
-      { producto: 'servimedical/papel-y-tyvek', porque: 'Uno va dentro del paquete y otro sobre la barrera. El consumo se mueve al mismo ritmo.' },
-      { producto: 'sanqiang/plasma', porque: 'El indicador se escoge contra el método del equipo: los de vapor no viran con peróxido.' },
+      { producto: 'svm/papel-para-esterilizacion', porque: 'Uno va dentro del paquete y otro sobre la barrera. El consumo se mueve al mismo ritmo.' },
+      { producto: 'sanqiang/baja-temperatura', porque: 'El indicador se escoge contra el método del equipo: los de vapor no viran con peróxido.' },
     ],
     servicio: [
       'Definición del esquema de monitoreo junto con la central',
@@ -794,8 +794,8 @@ export const productos: Producto[] = [
     ],
     relacionadas: [
       { producto: '2i/indicadores-quimicos', porque: 'El biológico se lee en horas; el químico, en el momento. La carga se libera con los dos.' },
-      { producto: 'tuttnauer/vapor', porque: 'Verifica el equipo, no solo la carga. Un resultado no conforme es un dato de mantenimiento.' },
-      { producto: 'servimedical/repuestos', porque: 'Un resultado no conforme repetido suele ser el equipo. Ahí entra el repuesto.' },
+      { producto: 'tuttnauer/autoclaves', porque: 'Verifica el equipo, no solo la carga. Un resultado no conforme es un dato de mantenimiento.' },
+      { producto: 'svm/repuestos', porque: 'Un resultado no conforme repetido suele ser el equipo. Ahí entra el repuesto.' },
     ],
     servicio: [
       'Definición de la frecuencia de control junto con la central',
@@ -810,13 +810,15 @@ export const productos: Producto[] = [
 
   /* ════════════════════════════════════════════════════ SERVIMEDICAL ════ */
   {
-    marca: 'servimedical',
-    slug: 'papel-y-tyvek',
-    linea: 'empaque',
-    nombre: 'Papel grado esterilización y Tyvek',
+    marca: 'svm',
+    /* La línea abarca dos etapas; esta mitad es la barrera, no la evidencia. */
+    etapa: 'empaque',
+    slug: 'papel-para-esterilizacion',
+    linea: 'indicadores',
+    nombre: 'Papel para esterilización y Tyvek',
     tipo: 'consumible',
     orden: 1,
-    lead: 'Empaque de barrera estéril para cada método: papel grado esterilización y rollos papel-película para vapor, y Tyvek para plasma y óxido de etileno.',
+    lead: 'Empaque de barrera estéril para cada método: papel para esterilización y rollos papel-película para vapor, y Tyvek para plasma y óxido de etileno.',
     franja: [
       { label: 'Norma', valor: 'ISO 11607-1 · EN 868' },
       { label: 'Sello', valor: 'Ancho mínimo de 6 mm' },
@@ -839,8 +841,8 @@ export const productos: Producto[] = [
     ],
     relacionadas: [
       { producto: '2i/indicadores-quimicos', porque: 'La cinta dice que el paquete pasó por el equipo. Lo de adentro lo dice el indicador interno.' },
-      { producto: 'servimedical/mobiliario-acero-inoxidable', porque: 'La superficie y la altura deciden cuántos paquetes salen por turno y en qué estado.' },
-      { producto: 'sanqiang/vapor', porque: 'El método de esterilización decide la barrera, no al revés: celulosa en vapor, Tyvek en plasma.' },
+      { producto: 'svm/mobiliario-acero-inoxidable', porque: 'La superficie y la altura deciden cuántos paquetes salen por turno y en qué estado.' },
+      { producto: 'sanqiang/autoclaves', porque: 'El método de esterilización decide la barrera, no al revés: celulosa en vapor, Tyvek en plasma.' },
     ],
     servicio: [
       'Abastecimiento programado contra el consumo real de la central',
@@ -848,13 +850,13 @@ export const productos: Producto[] = [
       'Entrenamiento en conformación y sellado de paquete',
     ],
     seo: {
-      titulo: 'Papel grado esterilización y Tyvek | Servimedical',
+      titulo: 'Papel para esterilización y Tyvek | Servimedical',
       descripcion: 'Rollos papel-película para vapor y Tyvek para plasma, bajo ISO 11607 y EN 868, con sello de 6 mm y abastecimiento programado desde Bogotá.',
     },
   },
 
   {
-    marca: 'servimedical',
+    marca: 'svm',
     slug: 'mobiliario-acero-inoxidable',
     linea: 'mobiliario',
     nombre: 'Mobiliario en acero inoxidable',
@@ -892,7 +894,7 @@ export const productos: Producto[] = [
       'Distancia entre la central y las salas, y dimensiones de puertas y ascensores',
     ],
     relacionadas: [
-      { producto: 'servimedical/papel-y-tyvek', porque: 'El paquete se conforma en la mesa y se guarda en la estantería. Se dimensionan juntas.' },
+      { producto: 'svm/papel-para-esterilizacion', porque: 'El paquete se conforma en la mesa y se guarda en la estantería. Se dimensionan juntas.' },
       { producto: 'celitron/residuos-hospitalarios', porque: 'El residuo sale de la central en carro cerrado y diferenciado, hasta el recinto de tratamiento.' },
       { producto: 'tuttnauer/termodesinfectoras', porque: 'Cuando el volumen de lúmenes crece, el lavado manual deja de sostener el proceso.' },
     ],
@@ -908,7 +910,7 @@ export const productos: Producto[] = [
   },
 
   {
-    marca: 'servimedical',
+    marca: 'svm',
     slug: 'repuestos',
     linea: 'repuestos',
     nombre: 'Repuestos originales',
@@ -947,9 +949,9 @@ export const productos: Producto[] = [
       'Si busca una reposición puntual o un plan programado',
     ],
     relacionadas: [
-      { producto: 'tuttnauer/vapor', porque: 'La empaquetadura de puerta es la falla más frecuente y la más fácil de prevenir.' },
+      { producto: 'tuttnauer/autoclaves', porque: 'La empaquetadura de puerta es la falla más frecuente y la más fácil de prevenir.' },
       { producto: 'sanqiang/termodesinfectoras', porque: 'Bombas y sensores se desgastan en un equipo que trabaja con agua todo el día.' },
-      { producto: 'tuttnauer/plasma', porque: 'La electrónica del ciclo de baja temperatura no admite partes equivalentes.' },
+      { producto: 'tuttnauer/baja-temperatura', porque: 'La electrónica del ciclo de baja temperatura no admite partes equivalentes.' },
     ],
     servicio: [
       'Identificación de la parte a partir de la placa del equipo',

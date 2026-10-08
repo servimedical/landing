@@ -22,27 +22,51 @@ async function lineasDeUnProducto() {
 
 export const redirecciones = [
   // Tuttnauer · nombres de línea cortos
-  ['/marcas/tuttnauer/autoclaves-de-vapor',          '/marcas/tuttnauer/vapor'],
-  ['/marcas/tuttnauer/plasma-de-peroxido',           '/marcas/tuttnauer/plasma'],
-  ['/marcas/tuttnauer/esterilizacion-por-plasma',    '/marcas/tuttnauer/plasma'],
+  ['/marcas/tuttnauer/autoclaves-de-vapor',          '/marcas/tuttnauer/autoclaves'],
+  ['/marcas/tuttnauer/plasma-de-peroxido',           '/marcas/tuttnauer/baja-temperatura'],
+  ['/marcas/tuttnauer/esterilizacion-por-plasma',    '/marcas/tuttnauer/baja-temperatura'],
 
   // Servimedical · el empaque nombra el material, no la categoría
-  ['/marcas/servimedical/papel-y-empaque',           '/marcas/servimedical/papel-y-tyvek'],
-  ['/marcas/servimedical/repuestos-originales',      '/marcas/servimedical/repuestos'],
+  ['/marcas/servimedical/papel-y-empaque',           '/marcas/svm/papel-para-esterilizacion'],
+  ['/marcas/servimedical/repuestos-originales',      '/marcas/svm/repuestos'],
 
   // Servimedical · mesas, mesones, carros y estantería pasan a ser subtipos
   // dentro de una sola línea de mobiliario, no líneas aparte.
-  ['/marcas/servimedical/mesas-y-mesones',           '/marcas/servimedical/mobiliario-acero-inoxidable'],
-  ['/marcas/servimedical/carros-de-transporte',      '/marcas/servimedical/mobiliario-acero-inoxidable'],
-  ['/marcas/servimedical/almacenamiento-esteril',    '/marcas/servimedical/mobiliario-acero-inoxidable'],
+  ['/marcas/servimedical/mesas-y-mesones',           '/marcas/svm/mobiliario-acero-inoxidable'],
+  ['/marcas/servimedical/carros-de-transporte',      '/marcas/svm/mobiliario-acero-inoxidable'],
+  ['/marcas/servimedical/almacenamiento-esteril',    '/marcas/svm/mobiliario-acero-inoxidable'],
 
   // TODO confirmar con Felipe · compresores y tratamiento de agua salen del
   // portafolio de seis marcas. No caben como «insumo de instalación» dentro de
   // repuestos: cada uno tiene su propio dimensionamiento y su propio servicio.
   // Mientras se decide, van a la marca. El contenido completo de ambas líneas
   // está en el historial de git (commit 1966fa1, src/content/productos/).
-  ['/marcas/servimedical/compresores',               '/marcas/servimedical'],
-  ['/marcas/servimedical/tratamiento-de-agua',       '/marcas/servimedical'],
+  ['/marcas/servimedical/compresores',               '/marcas/svm'],
+  ['/marcas/servimedical/tratamiento-de-agua',       '/marcas/svm'],
+
+  // ───────────────────────────────────────────── ronda del 8 de octubre
+  // La línea deja de nombrar el agente físico y nombra el equipo: quien
+  // compra busca «autoclave», no «esterilización por vapor». Igual con el
+  // plasma, que es solo uno de los métodos de baja temperatura —el peróxido
+  // vaporizado sin plasma y el óxido de etileno también lo son—.
+  ['/lineas/vapor',                                  '/lineas/autoclaves'],
+  ['/lineas/plasma',                                 '/lineas/baja-temperatura'],
+  ['/marcas/tuttnauer/vapor',                        '/marcas/tuttnauer/autoclaves'],
+  ['/marcas/sanqiang/vapor',                         '/marcas/sanqiang/autoclaves'],
+  ['/marcas/tuttnauer/plasma',                       '/marcas/tuttnauer/baja-temperatura'],
+  ['/marcas/sanqiang/plasma',                        '/marcas/sanqiang/baja-temperatura'],
+
+  // El empaque deja de ser línea propia: la barrera y la evidencia de que el
+  // proceso funcionó dentro de ella se compran juntas y fallan juntas.
+  ['/lineas/empaque',                                '/lineas/indicadores'],
+  ['/marcas/servimedical/papel-y-tyvek',             '/marcas/svm/papel-para-esterilizacion'],
+  ['/marcas/svm/papel-y-tyvek',                      '/marcas/svm/papel-para-esterilizacion'],
+
+  // La marca propia pasa a llamarse SVM. La razón social, «Servimedical
+  // Group SAS», no cambia donde aparece como empresa.
+  ['/marcas/servimedical',                           '/marcas/svm'],
+  ['/marcas/servimedical/mobiliario-acero-inoxidable', '/marcas/svm/mobiliario-acero-inoxidable'],
+  ['/marcas/servimedical/repuestos',                 '/marcas/svm/repuestos'],
 
   // El fabricante turco es Akar Makina: Akarmak, no «Arkarmak».
   ['/marcas/arkarmak',                               '/marcas/akarmak'],

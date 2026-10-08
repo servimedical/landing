@@ -19,12 +19,12 @@ type Rama = { titulo: string; url: string; hojas: { titulo: string; url: string 
 
 const ramasDe = (raiz: string): Rama[] =>
   raiz === '/lineas'
-    ? nodosLineas.map((l) => ({ titulo: l.titulo, url: l.url, hojas: [] }))
+    ? nodosLineas.map((l) => ({ titulo: l.tituloCorto ?? l.titulo, url: l.url, hojas: [] }))
     : [...marcas].sort((a, b) => a.orden - b.orden).map((m) => ({
         titulo: m.nombre,
         url: urlMarca(m.slug),
         hojas: productosDeMarca(m.slug).map((p) => ({
-          titulo: p.nombre === 'Autoclaves' ? 'Autoclaves de vapor' : p.nombre,
+          titulo: p.nombre,
           url: urlProducto(p),
         })),
       }));

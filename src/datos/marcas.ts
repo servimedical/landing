@@ -17,7 +17,7 @@ export const marcas: Marca[] = [
     nombre: 'Tuttnauer',
     descriptor: 'Esterilización y desinfección térmica',
     lead:
-      'Fabricante de autoclaves desde 1925, con más de 200 distribuidores en más de 140 países. Esterilización por vapor, plasma de peróxido de hidrógeno y lavado con termodesinfección para la central, con instalación, calificación y repuesto original desde Bogotá.',
+      'Fabricante de autoclaves desde 1925, con más de 200 distribuidores en más de 140 países. Autoclaves de vapor, baja temperatura con peróxido de hidrógeno y lavado con termodesinfección para la central, con instalación, calificación y repuesto original desde Bogotá.',
     quienEs:
       'Tuttnauer empezó en 1925 como taller de recipientes a presión y hoy diseña equipos de esterilización y control de infecciones para hospitales, clínicas, laboratorios y odontología. Tiene oficinas regionales en Estados Unidos, Europa, India y China, y plantas en China desde 2013 y en Hungría desde 2022. Sus autoclaves hospitalarios se fabrican bajo EN 285, ANSI/AAMI ST8, ISO 13485 e ISO 9001, y la Directiva de Equipos a Presión 2014/68/UE.',
     fabricante: { pais: 'China y Hungría', fundacion: '1925' },
@@ -37,7 +37,7 @@ export const marcas: Marca[] = [
       'Repuesto original con existencias en Bogotá',
       'Entrenamiento al personal de la central y a biomédica',
     ],
-    orden: 1,
+    orden: 2,
     seo: {
       titulo: 'Tuttnauer en Colombia | Servimedical',
       descripcion:
@@ -73,7 +73,7 @@ export const marcas: Marca[] = [
       'Mantenimiento preventivo y correctivo',
       'Repuesto original por importación directa',
     ],
-    orden: 2,
+    orden: 1,
     seo: {
       titulo: 'Sanqiang en Colombia | Servimedical',
       descripcion:
@@ -107,7 +107,7 @@ export const marcas: Marca[] = [
       'Mantenimiento del circuito de vapor y del sistema de trituración',
       'Entrenamiento al personal del recinto de residuos',
     ],
-    orden: 3,
+    orden: 5,
     seo: {
       titulo: 'Celitron en Colombia — sistema ISS | Servimedical',
       descripcion:
@@ -138,7 +138,7 @@ export const marcas: Marca[] = [
       'Instalación y puesta en marcha con técnicos propios',
       'Mantenimiento del sistema de trituración',
     ],
-    orden: 4,
+    orden: 6,
     seo: {
       titulo: 'Akarmak en Colombia — residuos biosanitarios | Servimedical',
       descripcion:
@@ -171,7 +171,7 @@ export const marcas: Marca[] = [
       'Abastecimiento programado por carga y por equipo',
       'Entrenamiento en lectura e interpretación',
     ],
-    orden: 5,
+    orden: 3,
     seo: {
       titulo: '2i en Colombia — indicadores químicos y biológicos | Servimedical',
       descripcion:
@@ -180,16 +180,16 @@ export const marcas: Marca[] = [
   },
 
   {
-    slug: 'servimedical',
-    nombre: 'Servimedical',
+    slug: 'svm',
+    nombre: 'SVM',
     descriptor: 'Empaque, mobiliario y repuestos',
     lead:
-      'Lo que la central consume y lo que la sostiene: papel grado esterilización y Tyvek para la barrera estéril, mobiliario en acero inoxidable para el flujo de sucio a limpio a estéril, y repuestos para que los equipos no se detengan.',
+      'Lo que la central consume y lo que la sostiene: papel para esterilización y Tyvek para la barrera estéril, mobiliario en acero inoxidable para el flujo de sucio a limpio a estéril, y repuestos para que los equipos no se detengan.',
     quienEs:
       'La línea propia de Servimedical cubre lo que no depende de un fabricante de equipos: el empaque bajo ISO 11607 y EN 868, el mobiliario según los ambientes que exige la Resolución 3100 de 2019, y el repuesto para el mantenimiento y la revalidación anual que pide la Resolución 2183 de 2004.',
     fabricante: { razonSocial: 'Servimedical Group SAS', ciudad: 'Bogotá', pais: 'Colombia' },
     rolSVMG: 'representante',
-    logo: { src: '/logos/marcas/servimedical.svg', alt: 'Logo de Servimedical' },
+    logo: { src: '/logos/marcas/svm.svg', alt: 'Logo de SVM' },
     logoEscala: 1.00, // referencia
     etapasCiclo: ['empaque', 'almacenamiento'],
     respaldo: [
@@ -197,11 +197,11 @@ export const marcas: Marca[] = [
       'Mobiliario fabricado a la medida del flujo de la central',
       'Repuesto de desgaste en inventario para las marcas que representamos',
     ],
-    orden: 6,
+    orden: 4,
     seo: {
       titulo: 'Servimedical — empaque, mobiliario y repuestos | Servimedical',
       descripcion:
-        'Papel grado esterilización y Tyvek bajo ISO 11607, mobiliario en acero inoxidable a la medida del plano, y repuestos con existencias en Bogotá.',
+        'Papel para esterilización y Tyvek bajo ISO 11607, mobiliario en acero inoxidable a la medida del plano, y repuestos con existencias en Bogotá.',
     },
   },
 ];

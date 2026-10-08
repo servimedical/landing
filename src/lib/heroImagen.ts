@@ -17,6 +17,7 @@ import { existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { marcaPorSlug } from '../datos/marcas.ts';
 import { lineaPorSlug } from '../datos/lineas.ts';
+import { resolverProducto } from '../datos/alias.ts';
 import { publicados, urlProducto } from '../datos/productos.ts';
 
 const CARRUSEL = join(process.cwd(), 'public', 'home', 'hero');
@@ -47,7 +48,10 @@ const medir = async (ruta: string) => {
 };
 
 /** Etiqueta del producto, armada desde su ficha. */
-const etiquetaDe = (id: string) => {
+const etiquetaDe = (idCrudo: string) => {
+  /* El nombre del archivo puede venir con el identificador anterior: la foto
+     es la misma aunque la línea se llame distinto. */
+  const { id } = resolverProducto(idCrudo);
   const p = publicados.find((x) => `${x.marca}-${x.slug}` === id);
   if (!p) return undefined;
   const m = marcaPorSlug(p.marca);
@@ -126,6 +130,6 @@ export async function diapositivasHero(): Promise<Diapositiva[]> {
     alt: 'Autoclave de vapor Tuttnauer de doble puerta, con la cámara cargada',
     ancho,
     alto,
-    etiqueta: etiquetaDe('tuttnauer-vapor'),
+    etiqueta: etiquetaDe('tuttnauer-autoclaves'),
   }];
 }

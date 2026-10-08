@@ -20,7 +20,7 @@ const l = lineaPorSlug(p.linea)!;
 const rutaActual = normalizar(Astro.url.pathname);
 
 const esEquipo = p.tipo === 'equipo';
-/* La línea propia no se firma: «Papel grado esterilización y Tyvek
+/* La línea propia no se firma: «Papel para esterilización y Tyvek
    Servimedical» dice dos veces lo mismo. */
 const propia = m.slug === 'servimedical';
 const titular = propia ? p.nombre : `${p.nombre} ${m.nombre}`;

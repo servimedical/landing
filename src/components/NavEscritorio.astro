@@ -13,7 +13,7 @@ const exacta = normalizar(rutaActual);
 /* Dos vistas del mismo catálogo. Líneas lo ordena por método —lista simple,
    sin marcas debajo—; Marcas, por fabricante. Las dos salen de src/datos. */
 const columnasLineas: ColumnaMenu[] = nodosLineas.map((l) => ({
-  titulo: l.titulo,
+  titulo: l.tituloCorto ?? l.titulo,
   url: l.url,
   descriptor: l.descriptor ?? '',
   items: [],
@@ -23,12 +23,13 @@ const columnasMarcas: ColumnaMenu[] = [...marcas]
   .sort((a, b) => a.orden - b.orden)
   .map((m) => ({
     titulo: m.nombre,
+    marca: m.slug,
     url: urlMarca(m.slug),
     descriptor: m.descriptor,
     /* Un ítem por producto, no por línea: 2i aporta dos productos a la misma
        línea y con una entrada por línea solo se veía uno. */
     items: productosDeMarca(m.slug).map((p) => ({
-      titulo: p.nombre === 'Autoclaves' ? 'Autoclaves de vapor' : p.nombre,
+      titulo: p.nombre,
       url: urlProducto(p),
     })),
   }));

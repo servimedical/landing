@@ -34,6 +34,7 @@ const delCarrusel = existsSync(CARRUSEL)
 
 if (delCarrusel.length) {
   const { publicados } = await import('../src/datos/productos.ts');
+  const { resolverProducto } = await import('../src/datos/alias.ts');
   const ids = new Set(publicados.map((p) => `${p.marca}-${p.slug}`));
   let sharpC;
   try { sharpC = (await import('sharp')).default; } catch { /* sin sharp, sólo se listan */ }
@@ -54,7 +55,12 @@ if (delCarrusel.length) {
       if (m.width !== 1600 || m.height !== 1280)
         alfa += ` · ⚠ no es 1600 × 1280`;
     }
-    const emparejada = ids.has(id) ? '' : ' · ⚠ no corresponde a ningún producto: saldrá sin etiqueta';
+    /* Un nombre anterior se acepta —la foto es la misma aunque la línea se
+       llame distinto— pero se avisa, porque el alias no es para siempre. */
+    const { id: idActual, erraVieja } = resolverProducto(id);
+    const emparejada = ids.has(idActual)
+      ? (erraVieja ? ` · \x1b[33m⚠ nombre anterior; conviene renombrar a ${f.replace(id, idActual)}\x1b[0m` : '')
+      : ' · ⚠ no corresponde a ningún producto: saldrá sin etiqueta';
     console.log(`  ${f} · ${dim}${kb} kB${alfa}${emparejada}`);
   }
   /* Sin esto el carrusel sirve la foto completa también en un teléfono, y la
@@ -116,6 +122,8 @@ if (delCarrusel.length) {
 
   if (delCarrusel.length < 4) console.log(`\n  ⚠ Son ${delCarrusel.length}; el carrusel se ve mejor con 4 a 6.`);
   if (delCarrusel.length > 6) console.log(`\n  ⚠ Son ${delCarrusel.length}; con más de 6 el visitante no alcanza a verlas.`);
+  console.log('\n  Nombres válidos (NN-<identificador>.webp):');
+  for (const p of publicados) console.log(`    ${p.marca}-${p.slug}`);
   console.log('');
 } else {
   console.log('CARRUSEL · sin imágenes en public/home/hero');

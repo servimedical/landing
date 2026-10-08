@@ -247,3 +247,83 @@ un domingo.
 **Dónde se tocó:** `src/components/hero/Hero.astro` (subtítulo),
 `src/components/formulario/Formulario.astro` (nota bajo el botón),
 `src/content/sitio.ts` (dato de horario).
+
+---
+
+## 2 · Navbar y estructura
+
+### D10 · «Baja temperatura» en vez de «Plasma», y por qué el cambio es correcto
+
+El encargo pide renombrar «Esterilización por plasma» a «Baja temperatura». No
+es solo un nombre más corto: es más exacto. El plasma es **uno** de los
+métodos de baja temperatura; el peróxido vaporizado sin fase de plasma y el
+óxido de etileno también lo son. La línea queda abierta a lo que ya vende
+Sanqiang y a lo que entre después, sin volver a renombrar.
+
+Se añadió a las frases prohibidas (`src/content.config.ts`) para que nadie la
+reintroduzca sin que el build se detenga.
+
+### D11 · El empaque se funde en «Indicadores y empaque», y el producto declara su etapa
+
+**Qué.** La línea `empaque` desaparece. Su producto —el papel y el Tyvek— pasa
+a `indicadores`, que ahora se llama «Indicadores y empaque» en la página y
+«Indicadores» en el menú (`nombreNav`).
+
+**El problema técnico que destapó.** El validador deriva las etapas del ciclo
+que cubre una marca a partir de las líneas de sus productos. Con una línea que
+abarca dos etapas, el build exigía que 2i declarara «empaque» y SVM
+«monitoreo» — o sea, que las dos marcas dijeran que venden algo que no venden.
+
+**La solución.** `Producto.etapa` opcional. Solo hace falta cuando la línea
+abarca varias: el papel declara `etapa: 'empaque'` y los indicadores heredan
+`monitoreo` de la línea. El validador usa la etapa del producto.
+
+La línea también declara `etapasAdicionales: ['empaque']`, que es lo que hace
+cierta la afirmación de que cubre las dos.
+
+**Tope de párrafos de 3 a 4.** `comoFunciona` estaba limitado a tres. Reunir
+dos materias en una línea y explicarlas en tres párrafos obliga a apretarlas.
+El tope sigue existiendo para que una línea no se vuelva un tratado.
+
+### D12 · Las fotos del carrusel siguen valiendo con el nombre anterior
+
+**Qué.** `src/datos/alias.ts` traduce los identificadores viejos
+(`tuttnauer-vapor` → `tuttnauer-autoclaves`, `servimedical-*` → `svm-*`).
+`npm run hero` acepta el nombre viejo, resuelve al nuevo y avisa **en
+amarillo** de que conviene renombrar. También imprime la lista de nombres
+válidos con la estructura nueva.
+
+**Por qué.** Felipe subió las fotos del carrusel el mismo día del renombrado.
+Romperle las imágenes por un cambio de nombre interno sería hacerle pagar a él
+una decisión nuestra. El alias no es permanente: el día que los archivos estén
+al día, se borra la entrada.
+
+Las carpetas de `public/productos/` sí se renombraron, porque ahí no hay
+archivos de por medio que alguien tenga que volver a subir.
+
+### D13 · El desplegable de marcas muestra el logotipo
+
+**Qué.** La cabecera de cada columna del mega menú de Marcas es el logotipo a
+26 px de alto (tamaño `xs` nuevo), con el nombre como `aria-label`. Debajo
+siguen los productos de esa marca como enlaces de texto.
+
+**Por qué.** Quien llega buscando Tuttnauer reconoce el rojo antes que la
+palabra.
+
+### D14 · El menú móvil **sí** tenía Tuttnauer
+
+El encargo (§3.2) pide corregir el menú móvil «al que hoy le falta Tuttnauer».
+Se verificó con Playwright a 375 px: el menú lista las seis marcas, Tuttnauer
+incluida, con sus tres productos. **No había nada que corregir.** El reporte
+viene de un despliegue viejo; el sitio nunca se ha publicado, así que lo que
+se esté mirando no corresponde al código actual.
+
+Lo mismo pasó en la ronda anterior con la supuesta fila «Fabricante» del hero
+de producto, que tampoco existía.
+
+### D15 · Se quitó la muleta «Autoclaves de vapor»
+
+El menú traducía el producto llamado «Autoclaves» a «Autoclaves de vapor» para
+que no se confundiera con el nombre de la línea, que era «Esterilización por
+vapor». Ahora la línea se llama «Autoclaves» y la muleta sobra: en el
+desplegable de marcas se lee «Tuttnauer → Autoclaves», que es exacto.
