@@ -16,10 +16,12 @@ const RE = /\{\{\s*(POR CONFIRMAR|REQUIERE REVISIÓN JURÍDICA)\s*:?\s*([^}]*)\}
 const comercial = new Map();
 const juridico = new Map();
 
+const normalizar = (t) => t.replace(/[\s*]+/g, ' ').trim();
+
 const anota = (grupo, pagina, campo, tipo, texto) => {
   const destino = tipo === 'POR CONFIRMAR' ? comercial : juridico;
   if (!destino.has(pagina)) destino.set(pagina, []);
-  destino.get(pagina).push([campo, texto.trim() || '(sin detalle)']);
+  destino.get(pagina).push([campo, normalizar(texto) || '(sin detalle)']);
 };
 
 const recorrer = (pagina, obj, prefijo = '') => {
@@ -42,9 +44,6 @@ recorrer('(global) src/content/sitio.ts', sitio);
 recorrer('(global) src/components/Footer.astro', {
   redes: '{{ POR CONFIRMAR: redes sociales propias de SVMG }}',
 });
-recorrer('(global) api/formulario.ts', {
-  destinatarios: '{{ POR CONFIRMAR: dirección interna que recibe el formulario, y si repuestos y servicio técnico van a un destinatario distinto de comercial }}',
-});
 
 /* Los datos del catálogo marcan sus huecos con `// TODO` y `// VERIFICAR` al
    lado del campo, no con llaves dobles: un comentario no se puede colar a la
@@ -52,10 +51,31 @@ recorrer('(global) api/formulario.ts', {
 const { readFileSync: leer } = await import('node:fs');
 const pendientesCatalogo = [];
 for (const archivo of ['src/datos/marcas.ts', 'src/datos/lineas.ts', 'src/datos/productos.ts']) {
-  leer(archivo, 'utf8').split('\n').forEach((linea, i) => {
-    const m = linea.match(/\/\/\s*(TODO|VERIFICAR)\b(.*)$/);
-    if (m) pendientesCatalogo.push([`${archivo}:${i + 1}`, m[1], m[2].trim().replace(/^·\s*/, '')]);
-  });
+  const lineas = leer(archivo, 'utf8').split('\n');
+  for (let i = 0; i < lineas.length; i++) {
+    const m = lineas[i].match(/\/\/\s*(TODO|VERIFICAR)\b(.*)$/);
+    if (!m) continue;
+
+    /* Las menciones entre comillas invertidas son la documentación de la
+       convención, no un pendiente. Sin esto, la cabecera de cada archivo
+       aparecería como tarea. */
+    if (/`/.test(lineas[i])) continue;
+
+    /* Un pendiente puede ocupar varias líneas. Se juntan las continuaciones
+       —comentarios `//` sin marcador propio— para no cortar la frase a la
+       mitad, que es donde suele estar el dato que importa. */
+    const partes = [m[2]];
+    let j = i + 1;
+    while (j < lineas.length) {
+      const sig = lineas[j].match(/^\s*\/\/\s?(.*)$/);
+      if (!sig || /\b(TODO|VERIFICAR)\b/.test(sig[1])) break;
+      partes.push(sig[1]);
+      j++;
+    }
+    const texto = partes.join(' ').replace(/\s+/g, ' ').trim().replace(/^·\s*/, '');
+    pendientesCatalogo.push([`${archivo}:${i + 1}`, m[1], texto]);
+    i = j - 1;
+  }
 }
 
 /* Barrido del código fuente: cualquier marcador que no viva en un módulo de
@@ -82,6 +102,17 @@ for (const dir of ['src', 'api']) {
       yaVisto.add(texto);
       anota(null, `(código) ${archivo}`, 'fuente', m[1], texto);
     }
+  }
+}
+
+/* El mismo marcador puede aparecer en el módulo de contenido y en el barrido
+   del código. Se lista una vez. */
+for (const grupo of [comercial, juridico]) {
+  const vistos = new Set();
+  for (const [pagina, items] of [...grupo]) {
+    const unicos = items.filter(([, t]) => (vistos.has(t) ? false : vistos.add(t)));
+    if (unicos.length) grupo.set(pagina, unicos);
+    else grupo.delete(pagina);
   }
 }
 
