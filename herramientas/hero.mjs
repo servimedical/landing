@@ -65,18 +65,42 @@ if (delCarrusel.length) {
     console.log('\n  Versiones por ancho (public/home/hero/w):');
     for (const f of delCarrusel) {
       const base = f.replace(/\.\w+$/, '');
-      const util = (await sharpC(join(CARRUSEL, f)).metadata()).width;
-      const anchos = ANCHOS.filter((a) => a <= util);
-      if (!anchos.length) anchos.push(util);
+
+      /* Una foto exportada suele traer aire alrededor del equipo. Ese aire
+         cuenta como imagen: con `object-fit: contain` el equipo queda flotando
+         dentro del panel en vez de salirse por abajo, y se ve más pequeño.
+         Se recorta el margen y se vuelve a rellenar a 5:4 poniendo todo el
+         relleno arriba, para que el equipo quede pegado al borde inferior y
+         todas las diapositivas compartan la misma proporción. */
+      const recortada = await sharpC(join(CARRUSEL, f)).trim().toBuffer({ resolveWithObject: true });
+      const { width: w0, height: h0 } = recortada.info;
+      const W = Math.max(w0, Math.round(h0 * 1.25));
+      const H = Math.round(W / 1.25);
+      const lados = Math.round((W - w0) / 2);
+      const encuadrada = await sharpC(recortada.data)
+        .extend({
+          top: H - h0,
+          bottom: 0,
+          left: lados,
+          right: W - w0 - lados,
+          background: { r: 0, g: 0, b: 0, alpha: 0 },
+        })
+        .toBuffer();
+
+      const anchos = ANCHOS.filter((a) => a <= W);
+      if (!anchos.length) anchos.push(W);
       const hechas = [];
       for (const a of anchos) {
-        const info = await sharpC(join(CARRUSEL, f))
+        const info = await sharpC(encuadrada)
           .resize({ width: a, withoutEnlargement: true, fit: 'inside' })
           .webp({ quality: 86 })
           .toFile(join(CARRUSEL_W, `${base}-${a}.webp`));
         hechas.push(`${a}w ${Math.round(info.size / 1024)} kB`);
       }
-      console.log(`    ${base} · ${hechas.join(' · ')}`);
+      const servido = anchos.at(-1);
+      const equipoPx = Math.round(w0 * (Math.min(servido, W) / W));
+      const flojo = equipoPx < 700 ? ` · ⚠ el equipo queda en ${equipoPx} px de ancho: se verá blando en pantalla retina` : '';
+      console.log(`    ${base} · recortado a ${w0} × ${h0} · ${hechas.join(' · ')}${flojo}`);
     }
   }
 

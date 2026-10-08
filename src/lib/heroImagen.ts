@@ -73,7 +73,6 @@ export async function diapositivasHero(): Promise<Diapositiva[]> {
       for (const f of archivos) {
         const id = f.replace(/^\d+-/, '').replace(/\.\w+$/, '');
         const etiqueta = etiquetaDe(id);
-        const { ancho, alto } = await medir(join(CARRUSEL, f));
         /* Sólo los anchos que existen de verdad: anunciar uno que no está
            deja al navegador pidiendo un 404 justo en la imagen LCP. */
         const base = f.replace(/\.\w+$/, '');
@@ -82,8 +81,14 @@ export async function diapositivasHero(): Promise<Diapositiva[]> {
           .filter((m): m is RegExpMatchArray => Boolean(m))
           .map((m) => ({ archivo: m[0], ancho: Number(m[1]) }))
           .sort((a, b) => a.ancho - b.ancho);
+
+        /* Se sirve la versión generada, no el original: es la que trae el
+           equipo recortado y pegado al borde inferior, y pesa una fracción. */
+        const mayor = anchos.at(-1);
+        const servida = mayor ? join(CARRUSEL_W, mayor.archivo) : join(CARRUSEL, f);
+        const { ancho, alto } = await medir(servida);
         slides.push({
-          src: `/home/hero/${f}`,
+          src: mayor ? `/home/hero/w/${mayor.archivo}` : `/home/hero/${f}`,
           srcset:
             anchos.length > 1
               ? anchos.map((a) => `/home/hero/w/${a.archivo} ${a.ancho}w`).join(', ')
