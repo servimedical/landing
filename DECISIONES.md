@@ -576,3 +576,21 @@ lockup: una sola verdad.
 **Pendiente: la versión blanca.** El pie va sobre azul oscuro y sigue con la
 marca tipográfica, que cumple contraste AA. En cuanto exista
 `servimedical-group-blanco.svg` el componente la toma solo.
+
+### D31 · El logotipo sube a 44 px, y eso destapó el desborde horizontal
+
+**Qué.** El logotipo del encabezado pasa de 38 px a 44 de alto: 220 × 44, con
+14 px de aire a cada lado de la barra de 72.
+
+**Lo que apareció al medirlo en móvil.** La página tenía 11 px de
+desplazamiento horizontal en los 375 px, y no era el logotipo —termina en el
+píxel 240—: era el **mega menú de escritorio**, que se ocultaba con
+`visibility` pero seguía maquetándose. Su contenido, desde que muestra
+logotipos de hasta 280 px, se salía del viewport.
+
+Afectaba a **todas las páginas** y venía de antes de esta ronda, aunque los
+logotipos del desplegable lo empeoraron. Ahora el panel lleva `display: none`
+por debajo de `lg`, donde manda el menú del teléfono y el mega menú no existe.
+
+Comprobado a 375, 768 y 1440 px: `scrollWidth` igual al viewport en los tres,
+y el mega menú sigue abriendo en escritorio.

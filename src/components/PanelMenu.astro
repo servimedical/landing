@@ -120,4 +120,12 @@ const activa = (url: string) => rutaActual === url || rutaActual.startsWith(url 
      la transición puede animar sin depender de requestAnimationFrame —que no
      corre cuando la pestaña está en segundo plano—. */
   .panel[data-abierto] { visibility: visible; opacity: 1; }
+
+  /* Por debajo de `lg` el mega menú no existe: manda el menú del teléfono.
+     Ocultarlo solo con `visibility` lo dejaba maquetándose igual, y su
+     contenido —ahora logotipos de hasta 280 px— se salía del viewport y le
+     daba a TODAS las páginas 11 px de desplazamiento horizontal en móvil. */
+  @media (width < 62.5rem) {
+    .panel { display: none; }
+  }
 </style>

@@ -72,19 +72,19 @@ const ancho = Math.round(alto * proporcion);
   /* Alto fijo y ancho al contenido: el logotipo manda el ancho, no al revés,
      para que no se deforme ni empuje la barra.
 
-     38 px, no 46. El logotipo apilado de antes necesitaba altura para que su
-     segunda línea se leyera; el horizontal de ahora es 5:1 y a 46 px se comía
-     la barra de 72. A 38 px la palabra «SERVIMEDICAL» mide lo mismo que
-     antes —ya no compite con un símbolo encima— y quedan 17 px de aire a cada
-     lado.
+     44 px. El apilado de antes iba a 46 porque necesitaba altura para que su
+     segunda línea se leyera; el horizontal de ahora es 5:1 y cada píxel de
+     alto le cuesta cinco de ancho. A 44 ocupa 220 px y deja 14 de aire a
+     cada lado de la barra de 72, que es lo justo para que no se sienta
+     apretado contra el borde.
 
-     El tope de ancho sube a 260: un 5:1 a 38 px pide 190, y 220 dejaba sin
-     margen a un archivo algo más ancho. */
+     El tope de ancho queda en 280 para que un archivo algo más apaisado no
+     se recorte. */
   .svmg-marca {
     display: block;
-    block-size: 38px;
+    block-size: 44px;
     inline-size: auto;
-    max-inline-size: 260px;
+    max-inline-size: 280px;
     object-fit: contain;
     object-position: left center;
   }
