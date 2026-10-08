@@ -1,0 +1,148 @@
+---
+/* Repuestos, con entrada propia en el navbar.
+
+   Es la página que alguien abre con el equipo parado y el jefe de central
+   encima. Por eso arranca con el teléfono y con lo que hay que tener a mano
+   para pedir, no con un párrafo institucional: a esa hora nadie lee.
+
+   El contenido del catálogo no se duplica. Las categorías salen del producto
+   `svm/repuestos`, que es donde viven, y esta página añade lo que no cabía
+   en una ficha: cómo se pide, qué cubre la garantía y por qué el repuesto
+   amparado importa en una auditoría. */
+import Base from '../layouts/Base.astro';
+import Migas from '../components/Migas.astro';
+import Formulario from '../components/formulario/Formulario.astro';
+import { productoPorId, urlProducto } from '../datos/productos.ts';
+import { marcas } from '../datos/marcas.ts';
+import { contacto } from '../content/sitio.ts';
+import { normalizar } from '../content/navegacion.ts';
+
+const rutaActual = normalizar(Astro.url.pathname);
+const ficha = productoPorId('svm/repuestos')!;
+const categorias = ficha.modelos?.[0]?.filas ?? [];
+/* Las marcas que representamos, que son para las que hay canal de fábrica. */
+const representadas = [...marcas]
+  .filter((m) => m.rolSVMG === 'representante' || m.rolSVMG === 'distribuidor')
+  .filter((m) => m.slug !== 'svm')
+  .sort((a, b) => a.orden - b.orden);
+
+const paraPedir = [
+  { que: 'Marca y modelo', porque: 'Están en la placa del equipo, normalmente en el costado o detrás de la puerta.' },
+  { que: 'Número de serie', porque: 'Dos equipos del mismo modelo pueden llevar partes distintas según el año de fabricación.' },
+  { que: 'Qué hace el equipo', porque: 'En qué momento del ciclo se detiene y qué muestra en pantalla. Media hora de diagnóstico ahorra una parte que no era.' },
+  { que: 'Si está parado', porque: 'Un equipo detenido y uno con falla intermitente no se atienden igual ni se cotizan igual.' },
+];
+---
+<Base
+  titulo="Repuestos para equipos de esterilización | Servimedical"
+  descripcion="Empaques de puerta, filtros, válvulas, sensores y bombas para autoclaves, baja temperatura y termodesinfectoras, con existencias en Bogotá y canal directo de fábrica."
+>
+  <Migas rutaActual={rutaActual} />
+
+  <div class="contenedor pt-10 pb-12 lg:pt-12 lg:pb-16">
+    <h1 class="max-w-[18ch] text-[clamp(30px,4vw,48px)]">Repuestos</h1>
+    <p class="mt-5 max-w-[58ch] text-[clamp(16px,1.3vw,18px)] text-steel">{ficha.lead}</p>
+
+    <p class="mt-8 text-[17px]">
+      ¿Equipo detenido? Llame al
+      <a href={contacto.fijo.href} class="border-b border-navy/30 hover:border-navy">{contacto.fijo.valor}</a>
+      o escriba por
+      <a href={contacto.whatsapp.href} class="border-b border-navy/30 hover:border-navy">WhatsApp</a>.
+    </p>
+  </div>
+
+  <section class="field-paper border-t border-rule" aria-labelledby="pedir">
+    <div class="contenedor py-12 lg:py-16">
+      <h2 id="pedir" class="text-[clamp(24px,3vw,34px)]">Qué hay que tener a mano</h2>
+      <p class="mt-4 max-w-[58ch] text-[16px] text-steel">
+        Con estos cuatro datos se identifica la parte sin que nadie tenga que ir dos veces al equipo.
+      </p>
+
+      <ol class="mt-9 grid max-w-[82ch] gap-px bg-rule sm:grid-cols-2">
+        {paraPedir.map((x, i) => (
+          <li class="bg-paper p-5">
+            <span class="meta block text-[10px] text-steel">{String(i + 1).padStart(2, '0')}</span>
+            <p class="font-display mt-2 text-[16px] font-bold [font-variation-settings:'wdth'_110]">{x.que}</p>
+            <p class="mt-1.5 text-[14px] leading-snug text-steel">{x.porque}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  {categorias.length > 0 && (
+    <section class="border-t border-rule" aria-labelledby="categorias">
+      <div class="contenedor py-12 lg:py-16">
+        <h2 id="categorias" class="text-[clamp(24px,3vw,34px)]">Qué se mantiene en inventario</h2>
+        <p class="mt-4 max-w-[58ch] text-[16px] text-steel">
+          Las partes de desgaste de las marcas que representamos. Lo que no está, se trae por el canal de fábrica.
+        </p>
+
+        <div class="deslizable mt-9 max-w-[76ch]">
+          <table class="w-full border-collapse text-left">
+            <thead>
+              <tr class="border-y border-rule">
+                <th scope="col" class="meta py-3 pr-6 text-[10px] text-steel">Categoría</th>
+                <th scope="col" class="meta py-3 text-[10px] text-steel">Aplica a</th>
+              </tr>
+            </thead>
+            <tbody>
+              {categorias.map((fila) => (
+                <tr class="border-b border-rule">
+                  <td class="py-3.5 pr-6 align-top text-[15.5px] font-medium">{fila[0]}</td>
+                  <td class="py-3.5 align-top text-[15.5px] text-steel">{fila[1]}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <p class="mt-7 text-[15.5px]">
+          <a href={urlProducto(ficha)} class="border-b border-navy/30 hover:border-navy">Ver la ficha completa →</a>
+        </p>
+      </div>
+    </section>
+  )}
+
+  <section class="field-paper border-t border-rule" aria-labelledby="amparo">
+    <div class="contenedor py-12 lg:py-16">
+      <h2 id="amparo" class="text-[clamp(24px,3vw,34px)]">Por qué importa de dónde salga la parte</h2>
+
+      <div class="mt-7 grid max-w-[86ch] gap-x-12 gap-y-7 lg:grid-cols-2">
+        <p class="text-[16.5px] leading-relaxed">
+          El <strong class="font-medium">Decreto 4725 de 2005</strong> exige que los repuestos de un equipo
+          biomédico importado estén amparados por el permiso de comercialización del equipo que van a
+          reparar, y que esa importación se reporte al INVIMA.
+        </p>
+        <p class="text-[16.5px] leading-relaxed text-steel">
+          En la práctica eso significa que una parte equivalente conseguida por fuera del canal no es un
+          ahorro: es un hallazgo de auditoría esperando a la próxima visita de habilitación, y deja la hoja
+          de vida del equipo con un registro que no se puede soportar.
+        </p>
+      </div>
+
+      <p class="mt-9 meta text-[10px] text-steel">Canal de fábrica para</p>
+      <ul class="mt-3 flex flex-wrap gap-2">
+        {representadas.map((m) => (
+          <li>
+            <a
+              href={`/marcas/${m.slug}`}
+              class="inline-block border border-rule px-3 py-1.5 text-[14.5px] text-steel transition-colors hover:border-navy/35 hover:text-navy"
+            >{m.nombre}</a>
+          </li>
+        ))}
+      </ul>
+
+      <p class="mt-7 max-w-[62ch] text-[15.5px] text-steel">
+        También se atienden equipos fuera de garantía y de marcas que no vendimos, siempre que haya acceso a
+        repuesto original y a la documentación técnica del fabricante. Si no lo hay, se dice de entrada.
+      </p>
+    </div>
+  </section>
+
+  <Formulario
+    titulo="Pedir un repuesto"
+    encuadre="servicio"
+    tipo="Repuesto"
+  />
+</Base>

@@ -90,6 +90,12 @@ export const navegacion: NodoNav[] = [
   },
 
   { titulo: 'Servicios', url: '/servicios', enNavbar: true, enFooter: 'empresa' },
+
+  /* Repuestos sale del menú de Líneas y sube al navbar. Nunca fue un método
+     de esterilización —estaba ahí porque no había otro sitio—, y es de lo
+     que más se busca con el equipo ya parado: tres clics de distancia era
+     demasiado. */
+  { titulo: 'Repuestos', url: '/repuestos', enNavbar: true, enFooter: 'empresa' },
   { titulo: 'Contacto', url: '/contacto', enNavbar: false, enFooter: 'empresa' },
 
   {
@@ -153,9 +159,14 @@ export const enNavbar: NodoNav[] = navegacion.filter((n) => n.enNavbar);
 export const nodosMarcas: NodoNav[] =
   navegacion.find((n) => n.url === '/marcas')?.hijos ?? [];
 
-/** Las líneas como nodos, para el panel del menú. */
-export const nodosLineas: NodoNav[] =
-  navegacion.find((n) => n.url === '/lineas')?.hijos ?? [];
+/** Las líneas como nodos, para el panel del menú.
+ *
+ *  Repuestos se excluye: tiene entrada propia en el navbar. No se puede sacar
+ *  del árbol —de la rama de Líneas cuelgan las rutas de producto y de ahí
+ *  salen las migas y la validación de enlaces—, así que se filtra la vista. */
+export const nodosLineas: NodoNav[] = (
+  navegacion.find((n) => n.url === '/lineas')?.hijos ?? []
+).filter((n) => !n.url.startsWith('/marcas/svm/repuestos') && n.url !== '/lineas/repuestos');
 
 export function columnaFooter(clave: 'marcas' | 'empresa'): NodoNav[] {
   return todosLosNodos().filter((n) => n.enFooter === clave);

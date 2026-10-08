@@ -57,6 +57,12 @@ export const indice: Entrada[] = [
     url: urlProducto(p),
     grupo: marcaPorSlug(p.marca)!.nombre,
     pista: p.diferenciales.join(' · '),
-    terminos: [...p.franja.map((f) => f.valor), ...(p.normasDeclaradas ?? [])].join(' '),
+    /* `normasDeclaradas` es un arreglo de objetos `{ familia?, normas[] }`:
+       unirlo sin aplanar metía «[object Object]» en el índice, y el buscador
+       no encontraba ninguna norma. */
+    terminos: [
+      ...p.franja.map((f) => f.valor),
+      ...(p.normasDeclaradas ?? []).flatMap((n) => n.normas),
+    ].join(' '),
   })),
 ];

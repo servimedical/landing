@@ -118,7 +118,16 @@ Sin dato o sin fuente, fuera:
 
 - **Tiempos de respuesta.** No hay SLA confirmado. ⚠ Queda marcador en datos y
   la cifra no se renderiza.
-- **Número de técnicos y ciudades.** ⚠ Sin confirmar.
+- **Número de técnicos y ciudades.** ⚠ Sin confirmar, y por eso no se publica
+  ninguna cifra.
+
+  Lo que **sí** se publica —«servicio técnico 24/7», «técnicos propios», «no
+  se subcontrata la visita»— no sale de esta investigación: lo afirma Felipe
+  en el encargo del 8 de octubre, que lo pone como promesa del hero. Es una
+  declaración del dueño del negocio sobre su propia operación, no un dato de
+  fabricante, y se publica bajo su responsabilidad. Lo que no se publica es
+  **cuántos** técnicos, **en qué ciudades** y **en cuántas horas**, que es
+  donde empieza el compromiso verificable.
 - **Existencias de repuestos.** Decir «repuesto en inventario» exige saber de
   qué equipos. ⚠ Sin confirmar.
 - **«Líderes», «soluciones integrales», «alta calidad».** Prohibidas por la

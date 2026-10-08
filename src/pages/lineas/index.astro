@@ -2,7 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import Migas from '../../components/Migas.astro';
 import Formulario from '../../components/formulario/Formulario.astro';
-import { lineas, rotuloEtapa, urlLinea } from '../../datos/lineas.ts';
+import { lineas, urlLinea } from '../../datos/lineas.ts';
 import { productosDeLinea, urlProducto, lineaTienePagina } from '../../datos/productos.ts';
 import { marcaPorSlug } from '../../datos/marcas.ts';
 import { normalizar } from '../../content/navegacion.ts';
@@ -36,7 +36,6 @@ const fichas = [...lineas]
       <ul class="rejilla sm:grid-cols-2 lg:grid-cols-4">
         {fichas.map(({ l, suyos, url }) => (
           <li class="flex flex-col border-b border-r border-rule p-6 lg:p-7">
-            <span class="meta text-[10px] text-steel">{rotuloEtapa(l)}</span>
 
             <a href={url} class="group mt-4">
               <span class="font-display block text-[clamp(18px,2vw,22px)] leading-tight font-bold [font-variation-settings:'wdth'_110] group-hover:text-steel">

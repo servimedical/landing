@@ -11,9 +11,20 @@
    proporción absurda no empuje la fila.
 
    Lo que no resuelve la geometría lo resuelve `logoEscala` en
-   src/datos/marcas.ts: una palabra larga y un símbolo cuadrado no pesan igual
-   a la misma altura. No se recortan los archivos para compensar —ya vienen
-   recortados por `npm run logos`—.
+   src/datos/marcas.ts. El criterio no es la altura sino la **mancha de
+   tinta**: dos logotipos de la misma altura pesan distinto si uno es una
+   palabra maciza y el otro un símbolo con aire. Se mide la densidad de cada
+   archivo —proporción de píxeles opacos sobre su caja recortada— y se calcula
+   la superficie de tinta que cada uno pinta en la franja.
+
+   Igualar la mancha al 100 % sobrecorrige: a Sanqiang, que es un lockup
+   apilado y disperso, lo llevaría a 1,94 y quedaría casi al doble de alto que
+   Tuttnauer. Se aplica **media corrección** —la raíz cuarta de la razón de
+   manchas, no la raíz cuadrada— y un tope de 1,30. Eso acerca los pesos sin
+   que ninguno se desborde de la fila.
+
+   No se recortan los archivos para compensar: ya vienen recortados por
+   `npm run logos`, comprobado con `sharp`.
 
    Si el archivo no está, cae a la marca tipográfica dentro de la misma caja
    —nunca a un ícono genérico ni a un rectángulo vacío—. No se dibuja el
@@ -98,7 +109,7 @@ const escala = marca.logoEscala ?? 1;
   @media (width >= 48rem) {
     .svmg-logo { block-size: var(--h); }
     .svmg-logo img { block-size: calc(var(--h) * var(--escala)); }
-    .svmg-logo .nombre { font-size: calc(var(--h) * 0.46); }
+    .svmg-logo .nombre { font-size: calc(var(--h) * 0.54); }
   }
 
   /* Marca tipográfica: misma altura de caja, ancho al contenido. */
@@ -107,7 +118,7 @@ const escala = marca.logoEscala ?? 1;
     font-family: var(--font-display);
     font-weight: 700;
     font-variation-settings: 'wdth' 108;
-    font-size: calc(var(--h-movil) * 0.46);
+    font-size: calc(var(--h-movil) * 0.54);
     line-height: 1;
     letter-spacing: -0.01em;
     white-space: nowrap;

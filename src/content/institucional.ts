@@ -50,7 +50,7 @@ export type PasoAveria = { titulo: string; que: string; horas?: string };
 /* Cuatro servicios, una sola fuente. La home pinta las tarjetas y /servicios
    el detalle; si se añade uno aquí, aparece en los dos sitios. */
 export const servicios = {
-  lead: 'El equipo se compra una vez y se sostiene durante quince años. Esto es lo que pasa en esos quince años.',
+  lead: 'El equipo se compra una vez y se sostiene durante toda su vida útil. Esto es lo que pasa en el resto del camino.',
   /* Orden deliberado: mantenimiento primero porque es lo que decide si la
      institución vuelve a comprar, e instalación al final porque es lo que
      menos se busca —se da por hecho que viene incluido—. */
@@ -130,7 +130,7 @@ export const servicios = {
       ],
       exigencia: {
         norma: 'Resolución 3100 de 2019',
-        que: 'El estándar de infraestructura exige áreas diferenciadas y flujo que evite el cruce entre material sucio y material estéril. El criterio técnico de recambios de aire y presiones diferenciales se toma de la guía internacional AAMI ST79, que no es norma colombiana y se cita como lo que es.',
+        que: 'La habilitación evalúa la infraestructura del servicio, y el criterio técnico de flujo, recambios de aire y presiones diferenciales de una central se toma de la guía internacional AAMI ST79, que no es norma colombiana y se cita como lo que es. No se le atribuye a la Resolución 3100 un articulado que no se ha verificado.',
       },
       enPapel: [
         'Planos de flujo y zonificación',

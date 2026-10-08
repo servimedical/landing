@@ -1,4 +1,4 @@
-import { ETAPAS, type Linea, type EtapaCiclo } from './tipos.ts';
+import type { Linea } from './tipos.ts';
 
 /* ============================================================================
    LAS LÍNEAS · el método
@@ -126,13 +126,53 @@ export const lineas: Linea[] = [
   },
 
   {
+    slug: 'reprocesadoras-endoscopios',
+    nombre: 'Reprocesadoras de endoscopios',
+    nombreNav: 'Endoscopios',
+    descriptor: 'Lo que no resiste el autoclave',
+    etapa: 'lavado',
+    orden: 4,
+    lead: 'El endoscopio flexible no se puede autoclavar y no se puede abrir: se reprocesa por dentro, canal por canal, y esa es toda la dificultad.',
+    comoFunciona: [
+      'Un endoscopio flexible es un tubo con varios canales de milímetros de diámetro y metros de longitud, hecho de materiales que no soportan 134 °C. No hay ciclo de vapor posible: lo que se hace es limpieza manual previa, lavado automático con irrigación forzada de cada canal, desinfección de alto nivel por inmersión química y enjuague final con agua tratada, porque el agua de red volvería a contaminar lo que se acaba de desinfectar.',
+      'La ISO 15883-4 gobierna estas máquinas. Lo que exige no es solo que laven: exige que el equipo compruebe que cada canal está conectado y permeable antes de empezar, que verifique la ausencia de fugas en el endoscopio —una perforación convierte el ciclo en una contaminación del interior del aparato— y que deje registro de cada ciclo con su identificación de equipo, operador y endoscopio.',
+      'El desinfectante decide el resto del diseño. El ácido peracético actúa rápido y se descompone en ácido acético, agua y oxígeno; el ortoftalaldehído tolera mejor materiales delicados pero mancha y exige enjuague más largo. La elección condiciona el tiempo de ciclo, la ventilación del recinto y el protocolo de protección del personal.',
+    ],
+    compatible: [
+      'Endoscopios flexibles con canal de aire, agua, biopsia y succión',
+      'Desinfección de alto nivel con ácido peracético u ortoftalaldehído',
+      'Enjuague final con agua tratada por ósmosis inversa o filtración absoluta',
+    ],
+    noCompatible: [
+      'Esterilización por vapor de un endoscopio flexible: el material no la resiste',
+      'Reprocesamiento sin limpieza manual previa en el punto de uso',
+      'Enjuague final con agua de red sin tratar',
+    ],
+    normas: [
+      { norma: 'ISO 15883-1', que: 'Lavadoras-desinfectadoras: requisitos generales, definiciones y ensayos.' },
+      { norma: 'ISO 15883-4', que: 'Requisitos propios de las lavadoras-desinfectadoras de endoscopios termolábiles, incluida la prueba de fugas y la verificación de canales.' },
+      { norma: 'Resolución 3100 de 2019', que: 'El estándar de procesos prioritarios exige procedimiento documentado de reprocesamiento y registro por equipo.' },
+    ],
+    faq: [
+      { p: '¿Se puede esterilizar un endoscopio flexible?', r: 'Por vapor no: el material no resiste la temperatura. Existen procesos de esterilización a baja temperatura para algunos modelos, pero el estándar de uso en endoscopia digestiva y respiratoria es la desinfección de alto nivel tras un lavado validado.' },
+      { p: '¿Por qué importa tanto la prueba de fugas?', r: 'Porque una perforación en la cubierta mete líquido en la óptica y en la electrónica. El ciclo no solo no desinfecta el interior: arruina el endoscopio, que cuesta más que la máquina que lo reprocesa.' },
+      { p: '¿Hace falta tratar el agua del enjuague?', r: 'Sí. El enjuague es el último contacto del endoscopio antes de usarse en un paciente; con agua de red se le devuelve la carga microbiana que se acaba de eliminar. La norma pide agua de calidad definida para esa etapa.' },
+      { p: '¿Cuántos endoscopios caben por ciclo?', r: 'Depende del equipo, y esa cifra la define la ficha del fabricante. Es la primera pregunta que hay que resolver contra el volumen de procedimientos de la institución, porque condiciona cuántas máquinas se necesitan.' },
+    ],
+    seo: {
+      titulo: 'Reprocesadoras de endoscopios en Colombia | Servimedical',
+      descripcion: 'Lavado y desinfección de alto nivel de endoscopios flexibles bajo ISO 15883-4, con prueba de fugas, irrigación de canales y enjuague con agua tratada.',
+    },
+  },
+
+  {
     slug: 'otros-equipos',
     nombre: 'Otros equipos de la central',
     nombreNav: 'Otros equipos',
     descriptor: 'Lo que la central también necesita',
     etapa: 'transversal',
-    orden: 4,
-    lead: 'Una central no son solo esterilizadores: sella, incuba y reprocesa, y esos equipos deciden tanto como el autoclave si la carga se libera.',
+    orden: 5,
+    lead: 'Una central no son solo esterilizadores: también sella la barrera e incuba la evidencia, y esos equipos deciden tanto como el autoclave si la carga se libera.',
     comoFunciona: [
       'El sello de la barrera estéril es un proceso, no un gesto. La ISO 11607-2 lo trata como tal: exige validarlo con calificación de instalación, de operación y de desempeño, y comprobar que el sello no tenga canales, discontinuidades, grietas ni despegue del material. Una selladora con control y registro de temperatura, presión y velocidad es lo que hace posible esa validación; la barrera mejor escogida no sirve si el sello no se puede demostrar.',
       'La incubación del indicador biológico es el otro extremo del mismo problema. El indicador se expone en el ciclo, pero el resultado solo existe después de incubarlo a la temperatura y durante el tiempo que exige la referencia. Una incubadora fuera de rango no da un resultado dudoso: da un resultado falso, y sobre ese resultado se libera o no se libera una carga.',
@@ -158,7 +198,7 @@ export const lineas: Linea[] = [
     ],
     seo: {
       titulo: 'Selladoras e incubadoras para central de esterilización | Servimedical',
-      descripcion: 'Selladoras automáticas con control y registro para validar el sello bajo ISO 11607-2, e incubadoras de indicadores biológicos.',
+      descripcion: 'Selladoras automáticas con control y registro de los parámetros del sello, e incubadoras para indicadores biológicos.',
     },
   },
 
@@ -171,7 +211,7 @@ export const lineas: Linea[] = [
     descriptor: 'La barrera y la evidencia',
     etapa: 'monitoreo',
     etapasAdicionales: ['empaque'],
-    orden: 6,
+    orden: 7,
     lead: 'Dos mitades del mismo control: el empaque sostiene la barrera estéril y los indicadores prueban que el proceso funcionó dentro de ella.',
     comoFunciona: [
       'El sistema de barrera estéril deja pasar el agente esterilizante, lo retiene fuera después del ciclo y resiste la manipulación hasta la apertura. La ISO 11607 lo regula como sistema —material, sellado y validación juntos—, no como material suelto. El método decide el material: el vapor atraviesa la celulosa, así que se empaca en papel para esterilización o en rollo papel-película; el peróxido de hidrógeno es neutralizado por la celulosa, así que la baja temperatura exige Tyvek o envoltorio SMS de polipropileno.',
@@ -221,7 +261,7 @@ export const lineas: Linea[] = [
     nombre: 'Mobiliario en acero inoxidable',
     descriptor: 'El flujo de sucio a limpio a estéril',
     etapa: 'almacenamiento',
-    orden: 7,
+    orden: 8,
     lead: 'Mesas, mesones, carros y estanterías que definen el recorrido del material. El mobiliario no acompaña el flujo de la central: lo construye.',
     comoFunciona: [
       'La central se organiza en tres zonas que no se cruzan: sucio, limpio y estéril. El mobiliario es lo que las separa físicamente, y la Resolución 3100 de 2019 exige mesón de trabajo con poceta y unidireccionalidad en cada etapa.',
@@ -240,7 +280,7 @@ export const lineas: Linea[] = [
     ],
     normas: [
       { norma: 'Resolución 3100 de 2019', que: 'Exige mesón de trabajo con poceta y flujo unidireccional en cada etapa de la central.' },
-      { norma: 'Resolución 2183 de 2004', que: 'Fija el almacenamiento estéril entre 18 y 22 °C, con humedad relativa de 35 a 70 %.' },
+      { norma: 'Resolución 2183 de 2004', que: 'Manual de buenas prácticas de esterilización.' },
     ],
     faq: [
       { p: '¿Se puede usar un mismo carro para sucio y para estéril?', r: 'No. En cuanto un carro hace los dos recorridos, la barrera que separa lo sucio de lo estéril deja de significar algo.' },
@@ -257,7 +297,7 @@ export const lineas: Linea[] = [
     nombre: 'Tratamiento de residuos',
     descriptor: 'Vapor y trituración en sitio',
     etapa: 'residuos',
-    orden: 5,
+    orden: 6,
     lead: 'Vapor y trituración en el mismo sitio donde se genera el residuo biosanitario. Sale estéril, irreconocible y con una fracción del volumen.',
     comoFunciona: [
       'El residuo infeccioso entra a un autoclave que lo esteriliza con vapor a presión y lo tritura, antes o después de la exposición. Sale estéril, fragmentado y reducido hasta en un 80 %, y se dispone como residuo ordinario según la reglamentación local.',
@@ -295,10 +335,10 @@ export const lineas: Linea[] = [
     nombre: 'Repuestos',
     descriptor: 'Partes originales con inventario local',
     etapa: 'transversal',
-    orden: 8,
+    orden: 9,
     lead: 'Repuesto para el mantenimiento preventivo, el correctivo y la revalidación anual. Un autoclave detenido es un quirófano detenido.',
     comoFunciona: [
-      'La Resolución 2183 de 2004 exige revalidar los esterilizadores como mínimo cada doce meses y calibrar los instrumentos a intervalos definidos. Esa rutina consume partes: el repuesto no es una emergencia, es un programa.',
+      'El mantenimiento preventivo y la revalidación periódica del esterilizador consumen partes: empaque de puerta, filtros, válvulas y sensores. El repuesto no es una emergencia, es un programa, y se dimensiona contra la rutina del año.',
       'El kit de mantenimiento preventivo anual de un autoclave incluye empaque de puerta, filtro de cámara, fuelle de puerta y válvulas. Lo que decide el tiempo de parada no es el diagnóstico: es si la parte está en el país.',
     ],
     compatible: [
@@ -313,7 +353,7 @@ export const lineas: Linea[] = [
       'Partes adaptadas o equivalentes no originales',
     ],
     normas: [
-      { norma: 'Resolución 2183 de 2004', que: 'Exige revalidar los esterilizadores como mínimo cada doce meses y calibrar los instrumentos.' },
+      { norma: 'Resolución 2183 de 2004', que: 'Manual de buenas prácticas de esterilización.' },
     ],
     faq: [
       { p: '¿Atienden equipos que no compramos a ustedes?', r: 'Sí, dentro y fuera de garantía.' },
@@ -330,8 +370,3 @@ export const lineas: Linea[] = [
 export const lineaPorSlug = (slug: string) => lineas.find((l) => l.slug === slug);
 export const urlLinea = (slug: string) => `/lineas/${slug}`;
 
-/** Rótulo de etapa: «03 · Esterilización», o «Transversal» si no tiene una. */
-export const rotuloEtapa = (l: Linea): string => {
-  const i = ETAPAS.findIndex((e) => e.id === (l.etapa as EtapaCiclo));
-  return i < 0 ? 'Transversal' : `${String(i + 1).padStart(2, '0')} · ${ETAPAS[i]!.titulo}`;
-};

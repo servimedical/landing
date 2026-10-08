@@ -24,7 +24,7 @@ export const marcas: Marca[] = [
     rolSVMG: 'representante',
     // TODO INVIMA · número de registro sanitario por equipo, empezando por PlazMax
     logo: { src: '/logos/marcas/tuttnauer.png', alt: 'Logo de Tuttnauer' },
-    logoEscala: 0.85, // palabra sola y ancha: a la altura nominal pesa más que un símbolo
+    logoEscala: 1.00, // referencia · palabra sola, densidad 0,32
     etapasCiclo: ['lavado', 'esterilizacion'],
     pruebas: [
       { dato: 'Fundada en 1925, con plantas en China y Hungría.', fuente: 'tuttnauer.com · página de empresa' },
@@ -56,7 +56,7 @@ export const marcas: Marca[] = [
     fabricante: { razonSocial: 'Henan Sanqiang Medical Equipment', ciudad: 'Hua County, Henan', pais: 'China', fundacion: '2010' },
     rolSVMG: 'distribuidor',
     logo: { src: '/logos/marcas/sanqiang.png', alt: 'Logo de Sanqiang' },
-    logoEscala: 1.25, // símbolo sobre texto diminuto: necesita más alto para leerse igual
+    logoEscala: 1.30, // lockup apilado y disperso, densidad 0,27: el que más corrección pide
     /* Residuos no entra hasta que el producto se publique: la marca no puede
        declarar una etapa que su catálogo visible no cubre. */
     etapasCiclo: ['lavado', 'esterilizacion'],
@@ -93,7 +93,7 @@ export const marcas: Marca[] = [
     // TODO confirmar con Felipe · ¿representante o distribuidor de Celitron?
     rolSVMG: 'distribuidor',
     logo: { src: '/logos/marcas/celitron.png', alt: 'Logo de Celitron' },
-    logoEscala: 1.05, // la bajada «medical technologies» es muy pequeña
+    logoEscala: 1.16, // símbolo con bajada diminuta, densidad 0,44
     etapasCiclo: ['residuos'],
     /* «Más de 80 países» es de toda la empresa y «más de 40» sólo de residuos:
        no se contradicen. Se usa 40, que es la línea que representamos.
@@ -126,7 +126,7 @@ export const marcas: Marca[] = [
     fabricante: { razonSocial: 'Akar Makina', ciudad: 'Eskişehir', pais: 'Turquía', fundacion: '1990' },
     rolSVMG: 'distribuidor',
     logo: { src: '/logos/marcas/akarmak.png', alt: 'Logo de Akarmak' },
-    logoEscala: 0.80, // proporción 7,4:1; a la altura nominal se comía la franja
+    logoEscala: 0.67, // palabra muy ancha y maciza, densidad 0,53: la de mayor mancha
     etapasCiclo: ['residuos'],
     pruebas: [
       { dato: 'Reducción microbiana de 8 log₁₀ en sistemas con trituración previa.', fuente: 'akarmak.com · esterilización de residuos médicos' },
@@ -159,12 +159,12 @@ export const marcas: Marca[] = [
     // TODO confirmar con Felipe · registro INVIMA y certificación ISO 13485,
     // que no es visible públicamente.
     logo: { src: '/logos/marcas/2i.png', alt: 'Logo de 2i' },
-    logoEscala: 1.15, // símbolo circular pequeño dentro de un lienzo casi cuadrado
+    logoEscala: 1.19, // símbolo circular, densidad 0,79 sobre poca superficie
     etapasCiclo: ['monitoreo'],
     pruebas: [
       { dato: 'Indicadores de las clases 1, 2, 4, 5 y 6 de la ISO 11140-1.', fuente: '2i.ind.br · catálogo de indicadores químicos' },
       { dato: 'Lectura biológica desde 19 minutos en vapor.', fuente: '2i.ind.br · catálogo de indicadores biológicos' },
-      { dato: 'Lectoras de 4 y 12 pozos e incubadora de 6 pozos propias.', fuente: '2i.ind.br · catálogo de equipos' },
+      { dato: 'Lectoras de 4 y 12 pozos e incubadora de 6 pozos propias.', fuente: '2i.ind.br · línea hospitalaria' },
     ],
     respaldo: [
       'Definición del esquema de monitoreo junto con la central',
@@ -186,11 +186,11 @@ export const marcas: Marca[] = [
     lead:
       'Lo que la central consume y lo que la sostiene: papel para esterilización y Tyvek para la barrera estéril, mobiliario en acero inoxidable para el flujo de sucio a limpio a estéril, y repuestos para que los equipos no se detengan.',
     quienEs:
-      'La línea propia de Servimedical cubre lo que no depende de un fabricante de equipos: el empaque bajo ISO 11607 y EN 868, el mobiliario según los ambientes que exige la Resolución 3100 de 2019, y el repuesto para el mantenimiento y la revalidación anual que pide la Resolución 2183 de 2004.',
+      'La línea propia de Servimedical cubre lo que no depende de un fabricante de equipos: el empaque bajo ISO 11607 y EN 868, el mobiliario según los ambientes que exige la Resolución 3100 de 2019, y el repuesto para el mantenimiento preventivo y la revalidación del esterilizador.',
     fabricante: { razonSocial: 'Servimedical Group SAS', ciudad: 'Bogotá', pais: 'Colombia' },
     rolSVMG: 'representante',
     logo: { src: '/logos/marcas/svm.svg', alt: 'Logo de SVM' },
-    logoEscala: 1.00, // referencia
+    logoEscala: 0.90, // trazo continuo, densidad 1,0: todo lo que ocupa es tinta
     etapasCiclo: ['empaque', 'almacenamiento'],
     respaldo: [
       'Abastecimiento programado desde Bogotá',
@@ -211,13 +211,15 @@ export const marcas: Marca[] = [
     descriptor: 'Sellado de la barrera estéril',
     lead: 'Fabricante chino especializado en selladoras para empaque médico. Servimedical representa su línea automática en Colombia.',
     quienEs:
-      'Easyseal Medical Technology fabrica exclusivamente equipo para el sellado del empaque médico: selladoras manuales, automáticas y rotativas, cortadoras de papel, tarjetas de prueba de sellado y consumibles de trazabilidad. Su línea automática integra control por microcomputador con precisión de temperatura de ±1 %, impresión de los parámetros del sello y función de calificación operacional, que es lo que permite a una central sostener la validación que exige la ISO 11607-2.',
+      'Easyseal Medical Technology fabrica exclusivamente equipo para el sellado del empaque médico: selladoras manuales, automáticas y rotativas, cortadoras de papel, tarjetas de prueba de sellado y consumibles de trazabilidad. Su línea automática integra control por microcomputador con precisión de control de temperatura de ≤ 1 %, impresión de los parámetros del sello y función de calificación operacional, que es lo que permite a una central sostener la validación que exige la ISO 11607-2.',
     fabricante: { razonSocial: 'Easyseal Medical Technology Co., Ltd.', pais: 'China' },
     // TODO · año de fundación. El sitio solo trae el aviso de copyright de
     //   2014, que es la fecha del sitio y no la de la empresa.
     rolSVMG: 'distribuidor',
     // TODO · logotipo vectorial oficial. Mientras no llegue, la marca se pinta
     //   con su nombre: no se dibuja el logotipo de un fabricante.
+    /* Sin archivo todavía: el componente cae al nombre en texto. La ruta
+       queda escrita para que subir `easyseal.svg` sea lo único que falte. */
     logo: { src: '/logos/marcas/easyseal.svg', alt: 'Logo de EasySeal' },
     etapasCiclo: ['empaque'],
     pruebas: [

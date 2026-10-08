@@ -435,3 +435,109 @@ dice el fabricante. **No** dice ISO 11607-2: esa norma obliga a validar el
 proceso de sellado y quien valida es la institución, no la máquina. La
 referencia a ISO 11607-2 del catálogo de EasySeal corresponde a su tarjeta de
 prueba, que es otro producto.
+
+---
+
+## Ronda de ajustes posterior
+
+### D23 · Los logotipos se igualan por mancha de tinta, no por altura
+
+**El error anterior.** D5 normalizaba por altura. Eso resolvió el caso
+Akarmak —que salía a 27 px— pero dejó otro problema: dos logotipos de la
+misma altura pesan distinto si uno es una palabra maciza y el otro un símbolo
+con aire.
+
+**Lo que se midió.** La densidad de cada archivo, es decir la proporción de
+píxeles opacos sobre su caja recortada, y de ahí la superficie de tinta que
+cada uno pinta en la franja:
+
+| Marca | Densidad | Mancha | Escala |
+|---|---|---|---|
+| Tuttnauer | 0,32 | 1.357 px² | 1,00 — referencia |
+| Sanqiang | 0,27 | 1.005 px² | 1,30 |
+| Celitron | 0,44 | 1.633 px² | 1,16 |
+| Akarmak | 0,53 | 4.757 px² | 0,67 |
+| 2i | 0,79 | 2.142 px² | 1,19 |
+| SVM | 1,00 | 3.608 px² | 0,90 |
+
+**Por qué media corrección y no completa.** Igualar la mancha al 100 % llevaría
+a Sanqiang a 1,94: casi el doble de alto que Tuttnauer, porque su logotipo es
+un lockup apilado con mucho aire. Se aplica la **raíz cuarta** de la razón de
+manchas en vez de la raíz cuadrada, y un tope de 1,30. Acerca los pesos sin
+que ninguno se desborde de la fila.
+
+Los archivos siguen sin tocarse: se comprobó con `sharp` que los seis vienen
+recortados.
+
+### D24 · Repuestos sale del menú de Líneas y sube al navbar
+
+**Qué.** Entrada propia `/repuestos` en la barra, y fuera del desplegable de
+Líneas. La línea sigue existiendo en los datos.
+
+**Por qué no se pudo borrar del árbol.** De la rama de Líneas cuelgan las
+rutas de producto, y de ahí salen las migas y la validación de enlaces:
+filtrarla en el árbol dejó nueve enlaces de «completa el ciclo» apuntando a
+rutas inexistentes y rompió el build. El filtro vive en `nodosLineas`, que es
+la vista, no en `navegacion`.
+
+**Por qué saltó al navbar.** Repuestos nunca fue un método de esterilización;
+estaba en el menú de métodos porque no había otro sitio. Y es de lo que más
+se busca con el equipo ya parado: tres clics era demasiado.
+
+### D25 · Fuera el rótulo «03 · Esterilización»
+
+Se eliminó `rotuloEtapa` y sus dos usos. Numerar las etapas sugiere una
+secuencia obligatoria que no existe: una central no recorre las seis.
+
+### D26 · Reprocesadoras de endoscopios, como línea propia
+
+Entra en la posición 4, después de termodesinfectoras.
+
+**Lo que se publica es el método, no la máquina.** La página de línea tiene
+contenido completo —ISO 15883-4, prueba de fugas, irrigación de canales,
+enjuague con agua tratada, elección del desinfectante— porque eso es
+conocimiento del método y se sostiene solo.
+
+**La ficha del producto va casi vacía a propósito.** Sanqiang no publica un
+solo dato: no hay tabla de modelos, ni requisitos de instalación, ni normas
+declaradas. Seis `TODO` dicen exactamente qué pedirle al fabricante. Ver D18.
+
+### D27 · Correcciones de la revisión independiente
+
+La revisión del §6.8 encontró once hallazgos. Los que eran reales:
+
+1. **La Resolución 2183 de 2004 se citaba con tres cifras que nadie verificó**
+   (18–22 °C, 35–70 % de humedad, revalidación cada doce meses), en cinco
+   lugares. **El mensaje del commit de servicios afirmaba que no se citaba:
+   era falso.** Se retiraron las tres cifras; la norma se sigue nombrando,
+   que eso sí consta.
+2. **A la Resolución 3100 se le atribuía un estándar de infraestructura** que
+   la investigación no documenta. Reescrito.
+3. **«Tyvek» en las selladoras** no está en ninguna ficha de EasySeal. Fuera.
+4. **«Quince años» de vida útil** no tiene fuente — y el v3 ya había quitado
+   un «cinco años» por lo mismo. Fuera.
+5. **Dos productos de Sanqiang conservaban «220 V monofásico»**, que es justo
+   la formulación que `docs/red-electrica-colombia.md` prohíbe por ambigua.
+6. **El lead de «Otros equipos» prometía reprocesamiento** sin tenerlo.
+7. **La meta de la línea acoplaba las selladoras a ISO 11607-2.**
+8. **La fuente de las lectoras de 2i** citaba un «catálogo de equipos» que la
+   propia investigación declara inexistente.
+9. **`±1 %` y `≤ 1 %`** convivían para el mismo dato de EasySeal.
+
+Lo que la revisión señaló y **no** era error: el `±4 °C`, el microcomputador,
+la impresión de dos líneas y el corte de varios rollos **sí** salen del sitio
+del fabricante. Lo que faltaba era registrarlos en
+`docs/investigacion/easyseal.md`, que ahora los recoge textuales. Y el 24/7 y
+los técnicos propios no salen de la investigación: los afirma Felipe en el
+encargo, y así quedó anotado en `docs/investigacion/servicios.md`.
+
+### D28 · El panel del mega menú cierra con siete marcas
+
+Con 7 marcas en rejilla de 3 quedaban dos celdas vacías, y en los huecos no
+se veía blanco: se veía el fondo gris que hace de línea divisoria. Se
+rellenan con celdas vacías.
+
+### D29 · El índice de búsqueda metía «[object Object]»
+
+`normasDeclaradas` es un arreglo de objetos y se unía sin aplanar. Catorce
+ocurrencias en el índice de las 37 páginas, y ninguna norma era buscable.

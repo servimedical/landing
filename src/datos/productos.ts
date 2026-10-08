@@ -357,7 +357,7 @@ export const productos: Producto[] = [
       { label: 'Vacío final', valor: '−96 kPa, en central' },
     ],
     descripcion: [
-      'Los equipos de mesa SQ-Z son Clase B, a 220 V, con ciclos de 18 a 40 minutos para instrumental sólido y envuelto. Los horizontales SQ-M100 y SQ-M200, bajo EN 13060, sirven a clínicas y quirófanos satélite con generador de vapor integrado.',
+      'Los equipos de mesa SQ-Z son Clase B, de alimentación monofásica, con ciclos de 18 a 40 minutos para instrumental sólido y envuelto. Los horizontales SQ-M100 y SQ-M200, bajo EN 13060, sirven a clínicas y quirófanos satélite con generador de vapor integrado.',
       'En la central, la serie MD.JD y PVS·JD extrae el aire con 1 a 99 pulsos de vacío programables, hasta −96 kPa, y sostiene una uniformidad de ±0,5 °C en cámara. El secado es al vacío y el control, por pantalla táctil con impresora térmica y USB.',
     ],
     modelos: [
@@ -365,9 +365,9 @@ export const productos: Producto[] = [
         familia: 'Mesa, Clase B',
         encabezados: ['Modelo', 'Cámara', 'Medidas de cámara', 'Medidas externas', 'Peso', 'Potencia'],
         filas: [
-          ['SQ-Z18', '18 L', 'Ø246 × 360 mm', '715 × 513 × 425 mm', '45 kg', '1,7 kVA · 220 V'],
-          ['SQ-Z23', '23 L', 'Ø246 × 450 mm', '715 × 513 × 425 mm', '49 kg', '1,7 kVA · 220 V'],
-          ['SQ-Z45', '45 L', 'Ø320 × 620 mm', '900 × 565 × 600 mm', '108 kg', '3,5 kVA · 220 V'],
+          ['SQ-Z18', '18 L', 'Ø246 × 360 mm', '715 × 513 × 425 mm', '45 kg', '1,7 kVA'],
+          ['SQ-Z23', '23 L', 'Ø246 × 450 mm', '715 × 513 × 425 mm', '49 kg', '1,7 kVA'],
+          ['SQ-Z45', '45 L', 'Ø320 × 620 mm', '900 × 565 × 600 mm', '108 kg', '3,5 kVA'],
         ],
       },
       {
@@ -466,7 +466,7 @@ export const productos: Producto[] = [
     ],
     descripcion: [
       'Cámara rectangular en aluminio 5052, control por PLC Siemens con pantalla táctil de siete pulgadas e impresora. Tres ciclos: corto de 30 minutos para carga general, largo de 50 y de lúmenes de 60.',
-      'El peróxido viene en cápsula, lo que elimina la manipulación directa del agente por parte del operario. Opera a 220 V monofásico, que es una diferencia práctica frente a los equipos que exigen trifásico. Los tres modelos comparten gabinete: solo cambia la cámara.',
+      'El peróxido viene en cápsula, lo que elimina la manipulación directa del agente por parte del operario. Opera con alimentación monofásica, que es una diferencia práctica frente a los equipos que exigen trifásico: no obliga a llevar una acometida nueva hasta la central. Los tres modelos comparten gabinete: solo cambia la cámara.',
     ],
     modelos: [
       {
@@ -482,13 +482,13 @@ export const productos: Producto[] = [
     //   3 m flexible es de las series SQ-D y SQ-DZ, no de esta.
     // TODO · registro INVIMA del SQ-WD-135.
     instalacion: [
-      { label: 'Eléctrico', valor: '220 V monofásico · 3,4 a 4,3 kVA según modelo' },
+      { label: 'Eléctrico', valor: 'monofásico · 3,4 a 4,3 kVA según modelo' },
       { label: 'Agua', valor: 'No requiere' },
     ],
     normasDeclaradas: [
       { normas: ['EN ISO 14937', 'EN ISO 13485:2016', 'EN 61010-2-040', 'GB 27955-2020'] },
     ],
-    diferenciales: ['Hasta 190 L', 'Ciclo corto de 30 min', 'Agente en cápsula · 220 V'],
+    diferenciales: ['Hasta 190 L', 'Ciclo corto de 30 min', 'Agente en cápsula · monofásico'],
     preguntasCotizacion: [
       'Volumen de material termosensible por turno',
       'Tipo de lúmenes y longitudes que hay que procesar',
@@ -507,7 +507,7 @@ export const productos: Producto[] = [
     ],
     seo: {
       titulo: 'Plasma SQ-WD de Sanqiang en Colombia | Servimedical',
-      descripcion: 'SQ-WD de Sanqiang: plasma de peróxido de 100 a 190 L, ciclo corto de 30 minutos, agente en cápsula y alimentación a 220 V monofásico.',
+      descripcion: 'SQ-WD de Sanqiang: plasma de peróxido de 100 a 190 L, ciclo corto de 30 minutos, agente en cápsula y alimentación monofásica.',
     },
   },
 
@@ -923,10 +923,16 @@ export const productos: Producto[] = [
       { label: 'Origen', valor: 'Original de fábrica' },
       { label: 'Inventario', valor: 'En Bogotá, las partes de mayor rotación' },
       { label: 'Cobertura', valor: 'Equipos dentro y fuera de garantía' },
-      { label: 'Referencia', valor: 'Resolución 2183 de 2004' },
+      { label: 'Garantía', valor: 'Equipos dentro y fuera de ella' },
     ],
+    /* ⚠ No se publica ninguna cifra atribuida a la Resolución 2183 de 2004
+       hasta leer su texto vigente: en la investigación del 8 de octubre no se
+       consiguió. La norma se nombra —existe y es la de buenas prácticas de
+       esterilización—, pero sin números.
+       TODO · conseguir el texto vigente y reponer las cifras verificadas.
+       Ver docs/investigacion/servicios.md. */
     descripcion: [
-      'La Resolución 2183 de 2004 exige revalidar los esterilizadores como mínimo cada doce meses y calibrar los instrumentos a intervalos definidos. El kit de mantenimiento preventivo anual de un autoclave incluye empaque de puerta, filtro de cámara, fuelle de puerta y válvulas.',
+      'El kit de mantenimiento preventivo anual de un autoclave incluye empaque de puerta, filtro de cámara, fuelle de puerta y válvulas. Son partes de desgaste: se cambian por calendario, no cuando fallan, porque cuando fallan el equipo ya está detenido.',
       'Servimedical mantiene inventario de los repuestos de desgaste de las marcas que representa, para que el equipo no quede detenido esperando una importación. Atendemos también equipos fuera de garantía y de marcas que no vendimos.',
     ],
     modelos: [
@@ -972,7 +978,7 @@ export const productos: Producto[] = [
     nombre: 'Selladoras automáticas',
     tipo: 'equipo',
     orden: 1,
-    lead: 'Selladoras automáticas de corte, sellado e impresión para rollo papel-película y Tyvek, con control de temperatura al 1 % y registro de los parámetros de cada sello.',
+    lead: 'Selladoras automáticas de corte, sellado e impresión para rollo papel-película, con control de temperatura al 1 % y registro de los parámetros de cada sello.',
     franja: [
       { label: 'Velocidad', valor: '10 ± 0,5 m/min' },
       { label: 'Ancho de sello', valor: '12 mm' },
@@ -1080,6 +1086,58 @@ export const productos: Producto[] = [
     seo: {
       titulo: 'Incubadora de indicadores biológicos 2i | Servimedical',
       descripcion: 'Mini incubadora 2i de seis cavidades para indicadores biológicos, de 55 a 60 °C y con alimentación bivolt automática de 127 / 220 V.',
+    },
+  },
+  {
+    marca: 'sanqiang',
+    slug: 'reprocesadoras-endoscopios',
+    linea: 'reprocesadoras-endoscopios',
+    nombre: 'Reprocesadoras de endoscopios',
+    tipo: 'equipo',
+    orden: 4,
+    lead: 'Lavadoras-desinfectadoras automáticas para endoscopios flexibles, dentro del portafolio de control de infecciones de Sanqiang.',
+    franja: [
+      { label: 'Proceso', valor: 'Lavado y desinfección de alto nivel' },
+      { label: 'Norma del método', valor: 'ISO 15883-4' },
+      { label: 'Química', valor: 'Desinfectante de alto nivel por inmersión' },
+    ],
+    descripcion: [
+      'Sanqiang fabrica la máquina dentro de la misma línea con la que ya sostiene lavado, esterilización por vapor y baja temperatura en la central. Para una institución que ya tiene equipo de la marca, eso significa un solo canal de repuesto, un solo interlocutor técnico y un solo cronograma de mantenimiento.',
+      'La ficha completa —endoscopios por ciclo, tiempo, desinfectante, prueba de fugas, trazabilidad y acometidas— se cotiza contra el volumen de procedimientos de la institución, porque es lo que decide cuántas máquinas hacen falta y no al revés.',
+    ],
+    // ⚠ El fabricante no publica ficha técnica de esta familia: la página de
+    //   categoría trae el nombre y una línea de descripción, nada más. Por eso
+    //   aquí no hay tabla de modelos, ni requisitos de instalación, ni normas
+    //   declaradas: lo que no está sostenido no se pinta.
+    // TODO · ficha técnica en PDF de la lavadora-desinfectadora de endoscopios.
+    //   Pedir por separado la de la serie SQ-CH de ácido peracético, que es
+    //   OTRA categoría —esterilizador, no lavadora— y no se puede presentar
+    //   como lo mismo. Ver docs/investigacion/sanqiang-endoscopios.md.
+    // TODO · endoscopios por ciclo, tiempo de ciclo y desinfectante declarado.
+    // TODO · declaración de conformidad con ISO 15883-1 y -4.
+    // TODO · alimentación eléctrica y versión 60 Hz.
+    // TODO · calidad de agua exigida para el enjuague final.
+    // TODO · registro sanitario INVIMA.
+    diferenciales: ['Mismo canal que el resto de la central', 'Servicio técnico propio', 'Para lo que no resiste el autoclave'],
+    preguntasCotizacion: [
+      'Procedimientos endoscópicos por día y por sala',
+      'Cuántos endoscopios tiene la institución y de qué tipo',
+      'Desinfectante que ya usa el servicio y protocolo vigente',
+      'Si hay agua tratada disponible para el enjuague final',
+      'Espacio y ventilación del recinto de reprocesamiento',
+    ],
+    relacionadas: [
+      { producto: 'sanqiang/termodesinfectoras', porque: 'El instrumental rígido va a termodesinfección; el flexible, aquí. La central necesita las dos rutas.' },
+      { producto: '2i/indicadores-biologicos', porque: 'El reprocesamiento también se verifica, y el control del proceso se documenta igual que una carga.' },
+    ],
+    servicio: [
+      'Instalación y verificación de la conexión de canales',
+      'Entrenamiento al personal de endoscopia en la rutina y en la prueba de fugas',
+      'Mantenimiento preventivo de bombas, válvulas y sistema de dosificación',
+    ],
+    seo: {
+      titulo: 'Reprocesadoras de endoscopios Sanqiang en Colombia | Servimedical',
+      descripcion: 'Lavadoras-desinfectadoras automáticas de endoscopios flexibles Sanqiang, con servicio técnico propio y repuesto en el mismo canal de la central.',
     },
   },
 ];

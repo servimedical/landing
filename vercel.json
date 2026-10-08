@@ -137,6 +137,11 @@
       "statusCode": 301
     },
     {
+      "source": "/lineas/reprocesadoras-endoscopios",
+      "destination": "/marcas/sanqiang/reprocesadoras-endoscopios",
+      "statusCode": 301
+    },
+    {
       "source": "/lineas/mobiliario",
       "destination": "/marcas/svm/mobiliario-acero-inoxidable",
       "statusCode": 301

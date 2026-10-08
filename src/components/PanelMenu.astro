@@ -32,6 +32,12 @@ interface Props {
 }
 const { id, columnas, pie, cols, rutaActual, variante = 'completa' } = Astro.props;
 const simple = variante === 'simple';
+/* La rejilla es de columnas iguales sobre un fondo que es la propia línea
+   divisoria. Si la última fila queda a medias, lo que se ve en los huecos no
+   es blanco: es el fondo gris de la rejilla. Se rellenan con celdas vacías
+   para que el panel cierre. */
+const sobran = columnas.length % cols;
+const relleno = sobran === 0 ? 0 : cols - sobran;
 const activa = (url: string) => rutaActual === url || rutaActual.startsWith(url + '/');
 ---
 <div
@@ -98,6 +104,7 @@ const activa = (url: string) => rutaActual === url || rutaActual.startsWith(url 
           )}
         </li>
       ))}
+      {Array.from({ length: relleno }, () => <li class="bg-white" aria-hidden="true"></li>)}
     </ul>
 
     <p class:list={['border-t border-rule', simple ? 'px-5 py-3.5' : 'py-4']}>
