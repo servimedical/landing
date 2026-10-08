@@ -1,25 +1,76 @@
 ---
+/* La página de servicios.
+
+   Es la que decide si una institución vuelve a comprar: el equipo lo vende
+   cualquiera, sostenerlo quince años no. Por eso cada bloque lleva detrás una
+   norma que lo exige y un entregable que se puede pedir, no un adjetivo.
+
+   Lo que no se puede sostener con un dato no se pinta: los tiempos de
+   respuesta viven como marcador en `institucional.ts` y la plantilla los
+   oculta mientras lo sean. Una cifra de respuesta inventada es lo primero que
+   un cliente verifica y lo primero que destruye la confianza. */
 import Base from '../layouts/Base.astro';
 import Migas from '../components/Migas.astro';
 import Formulario from '../components/formulario/Formulario.astro';
 import { servicios } from '../content/institucional.ts';
+import { contacto } from '../content/sitio.ts';
 import { normalizar } from '../content/navegacion.ts';
 
 const rutaActual = normalizar(Astro.url.pathname);
+
+/** Un marcador nunca llega a la vista del visitante. */
+const visible = (v?: string) => Boolean(v && !v.startsWith('{{'));
 ---
 <Base
-  titulo="Servicios | Servimedical"
-  descripcion="Instalación y calificación, mantenimiento preventivo y correctivo, entrenamiento, y estudio y diseño de la central de esterilización. Técnicos propios en Colombia."
+  titulo="Servicio técnico para centrales de esterilización | Servimedical"
+  descripcion="Mantenimiento preventivo y correctivo, entrenamiento, diseño de central e instalación con calificación IQ, OQ y PQ. Técnicos propios y repuesto original amparado."
 >
   <Migas rutaActual={rutaActual} />
 
-  <div class="contenedor pt-10 pb-2 lg:pt-12">
-    <h1 class="text-[clamp(30px,4vw,48px)]">Servicios</h1>
+  <div class="contenedor pt-10 pb-12 lg:pt-12 lg:pb-16">
+    <h1 class="max-w-[16ch] text-[clamp(30px,4vw,48px)]">Servicio técnico propio</h1>
     <p class="mt-5 max-w-[58ch] text-[clamp(16px,1.3vw,18px)] text-steel">{servicios.lead}</p>
+
+    <ul class="mt-9 grid max-w-[78ch] gap-px border border-rule bg-rule sm:grid-cols-3">
+      <li class="bg-white p-5">
+        <p class="font-display text-[16.5px] font-bold [font-variation-settings:'wdth'_110]">Técnicos propios</p>
+        <p class="mt-1.5 text-[14px] leading-snug text-steel">No se subcontrata la visita. El que instala es el que mantiene.</p>
+      </li>
+      <li class="bg-white p-5">
+        <p class="font-display text-[16.5px] font-bold [font-variation-settings:'wdth'_110]">Repuesto amparado</p>
+        <p class="mt-1.5 text-[14px] leading-snug text-steel">Original y cubierto por el permiso de comercialización del equipo, como exige el Decreto 4725 de 2005.</p>
+      </li>
+      <li class="bg-white p-5">
+        <p class="font-display text-[16.5px] font-bold [font-variation-settings:'wdth'_110]">24/7 para equipo detenido</p>
+        <p class="mt-1.5 text-[14px] leading-snug text-steel">La avería no espera a mañana. La cotización sí.</p>
+      </li>
+    </ul>
+
+    <p class="mt-7 text-[15.5px]">
+      ¿Equipo detenido? Llame al
+      <a href={contacto.fijo.href} class="border-b border-navy/30 hover:border-navy">{contacto.fijo.valor}</a>
+    </p>
   </div>
 
-  {servicios.items.map((s, i) => (
-    <section class:list={['border-t border-rule', i % 2 === 1 && 'field-paper']} aria-labelledby={`s-${s.slug}`} id={s.slug}>
+  <section class="field-paper border-t border-rule" aria-labelledby="ciclo">
+    <div class="contenedor py-12 lg:py-16">
+      <h2 id="ciclo" class="text-[clamp(24px,3vw,34px)]">Lo que le pasa a un equipo en quince años</h2>
+      <p class="mt-4 max-w-[58ch] text-[16px] text-steel">La compra es un día. Todo lo demás es esto.</p>
+
+      <ol class="mt-9 grid gap-px bg-rule sm:grid-cols-2 lg:grid-cols-3">
+        {servicios.cicloDeVida.map((paso, i) => (
+          <li class="bg-paper p-5">
+            <span class="meta block text-[10px] text-steel">{String(i + 1).padStart(2, '0')}</span>
+            <p class="font-display mt-2 text-[16px] font-bold [font-variation-settings:'wdth'_110]">{paso.titulo}</p>
+            <p class="mt-1.5 text-[14px] leading-snug text-steel">{paso.que}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  {servicios.items.map((s) => (
+    <section class="border-t border-rule" aria-labelledby={`s-${s.slug}`} id={s.slug}>
       <div class="contenedor py-12 lg:py-16">
         <h2 id={`s-${s.slug}`} class="text-[clamp(24px,3vw,34px)]">{s.titulo}</h2>
         <p class="mt-5 max-w-[56ch] text-[17px] text-steel">{s.resumen}</p>
@@ -30,16 +81,97 @@ const rutaActual = normalizar(Astro.url.pathname);
           </p>
         )}
 
-        <ul class="mt-8 max-w-[70ch] border-t border-rule">
-          {s.puntos.map((x) => (
-            <li class="flex items-start gap-3 border-b border-rule py-3.5 text-[15.5px]">
-              <span aria-hidden="true" class="mt-2 block h-[7px] w-[7px] shrink-0 bg-mist"></span>{x}
-            </li>
-          ))}
-        </ul>
+        <div class="mt-9 grid gap-x-12 gap-y-9 lg:grid-cols-[1.3fr_1fr]">
+          <div>
+            <h3 class="meta text-[10px] text-steel">Qué incluye</h3>
+            <ul class="mt-3 border-t border-rule">
+              {s.puntos.map((x) => (
+                <li class="flex items-start gap-3 border-b border-rule py-3.5 text-[15.5px]">
+                  <span aria-hidden="true" class="mt-2 block h-[7px] w-[7px] shrink-0 bg-mist"></span>{x}
+                </li>
+              ))}
+            </ul>
+
+            {s.cuando && (
+              <>
+                <h3 class="meta mt-9 text-[10px] text-steel">Cuándo se necesita</h3>
+                <ul class="mt-3 space-y-2.5">
+                  {s.cuando.map((x) => <li class="text-[15.5px] text-steel">— {x}</li>)}
+                </ul>
+              </>
+            )}
+          </div>
+
+          <div>
+            {s.exigencia && (
+              <div class="border border-rule p-5">
+                <h3 class="meta text-[10px] text-steel">Qué lo exige</h3>
+                <p class="font-display mt-2.5 text-[16px] font-bold [font-variation-settings:'wdth'_110]">{s.exigencia.norma}</p>
+                <p class="mt-2 text-[14.5px] leading-snug text-steel">{s.exigencia.que}</p>
+              </div>
+            )}
+
+            {s.enPapel && (
+              <>
+                <h3 class="meta mt-8 text-[10px] text-steel">Qué recibe en papel</h3>
+                <ul class="mt-3 border-t border-rule">
+                  {s.enPapel.map((x) => <li class="border-b border-rule py-3 text-[14.5px]">{x}</li>)}
+                </ul>
+              </>
+            )}
+
+            {s.cta && (
+              <a
+                href={s.cta.url}
+                class="mt-7 inline-flex items-center gap-2.5 bg-navy px-5 py-3 text-[15px] text-white transition-colors hover:bg-navy/90"
+              >
+                <span aria-hidden="true" class="senal"></span>{s.cta.texto}
+              </a>
+            )}
+          </div>
+        </div>
       </div>
     </section>
   ))}
 
-  <Formulario titulo="Hable con un especialista en esterilización" />
+  <section class="field-paper border-t border-rule" aria-labelledby="detenido" id="equipo-detenido">
+    <div class="contenedor py-12 lg:py-16">
+      <h2 id="detenido" class="text-[clamp(24px,3vw,34px)]">Cómo trabajamos un equipo detenido</h2>
+      <p class="mt-5 max-w-[58ch] text-[17px] text-steel">{servicios.equipoDetenido.lead}</p>
+
+      <ol class="mt-9 max-w-[82ch] border-t border-rule">
+        {servicios.equipoDetenido.pasos.map((paso, i) => (
+          <li class="grid gap-x-5 gap-y-1.5 border-b border-rule py-5 sm:grid-cols-[2.5rem_1fr_auto]">
+            <span class="meta text-[10px] text-steel">{String(i + 1).padStart(2, '0')}</span>
+            <div>
+              <p class="font-display text-[16px] font-bold [font-variation-settings:'wdth'_110]">{paso.titulo}</p>
+              <p class="mt-1.5 text-[14.5px] leading-snug text-steel">{paso.que}</p>
+            </div>
+            {visible(paso.horas) && <span class="meta text-[11px] whitespace-nowrap sm:text-right">{paso.horas}</span>}
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="border-t border-rule" aria-labelledby="faq">
+    <div class="contenedor py-12 lg:py-16">
+      <h2 id="faq" class="text-[clamp(24px,3vw,34px)]">Preguntas</h2>
+
+      <dl class="mt-9 max-w-[74ch] border-t border-rule">
+        {servicios.faq.map((f) => (
+          <div class="border-b border-rule py-6">
+            <dt class="font-display text-[17px] font-bold [font-variation-settings:'wdth'_110]">{f.p}</dt>
+            <dd class="mt-2.5 max-w-[66ch] text-[15.5px] leading-relaxed text-steel">{f.r}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <Formulario
+    titulo="Hable con un especialista en esterilización"
+    encuadre="servicio"
+    tipo="Servicio técnico"
+  />
 </Base>

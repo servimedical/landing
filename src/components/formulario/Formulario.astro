@@ -6,6 +6,7 @@
    La casilla de autorización no viene marcada y sin ella no se envía:
    Ley 1581 de 2012 y Decreto 1377 de 2013. */
 import { FORMULARIO, TEXTO_AUTORIZACION, URL_POLITICA, CAMPO_TRAMPA, INTRO } from '../../lib/formularios.ts';
+import type { TipoSolicitud } from '../../lib/formularios.ts';
 import { contacto, canalesContacto, sitio } from '../../content/sitio.ts';
 
 interface Props {
@@ -20,12 +21,15 @@ interface Props {
   /** Línea o marca de la página: se escribe al inicio de la descripción,
    *  editable, y preselecciona «Cotización». */
   contexto?: string;
+  /** Preselecciona otro tipo de solicitud. En /servicios no tiene sentido
+   *  que el formulario arranque en «Cotización». */
+  tipo?: TipoSolicitud;
 }
-const { id = 'cotizar', titulo, nivel = 2, detallado = false, encuadre = 'general', contexto } = Astro.props;
+const { id = 'cotizar', titulo, nivel = 2, detallado = false, encuadre = 'general', contexto, tipo } = Astro.props;
 const form = FORMULARIO;
 const Encabezado = nivel === 1 ? 'h1' : 'h2';
 const intro = INTRO[encuadre];
-const tipoPorDefecto = contexto ? 'Cotización' : '';
+const tipoPorDefecto = tipo ?? (contexto ? 'Cotización' : '');
 const descripcionInicial = contexto ? `${contexto}. ` : '';
 const horarioVisible = !sitio.horario.startsWith('{{');
 ---

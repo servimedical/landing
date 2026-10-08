@@ -141,6 +141,10 @@ export type Producto = {
   /** Segmento de la URL: /marcas/{marca}/{slug}. Casi siempre coincide con
    *  `linea`; difiere cuando una marca aporta dos productos a la misma línea,
    *  como los indicadores químicos y biológicos de 2i. */
+  /** Qué etapa del ciclo cubre este producto. Solo hace falta cuando su línea
+   *  abarca varias: en «Indicadores y empaque», el papel es empaque y los
+   *  indicadores son monitoreo. Por defecto, la etapa de la línea. */
+  etapa?: EtapaCiclo;
   slug: string;
   /** Slug de la línea —el método— a la que pertenece. */
   linea: string;
