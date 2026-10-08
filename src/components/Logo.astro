@@ -11,7 +11,7 @@
    Se acepta .svg, .webp o .png con el mismo nombre. Mientras falte el blanco,
    el pie sigue con la marca tipográfica, que ya cumple contraste AA: un
    logotipo azul sobre navy no se lee, y recolorearlo sería rehacer la marca. */
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 interface Props {
@@ -29,13 +29,30 @@ const base = variante === 'oscuro' ? 'servimedical-group-blanco' : 'servimedical
 const archivo = ['svg', 'webp', 'png']
   .map((ext) => `/logos/${base}.${ext}`)
   .find((f) => existsSync(join(process.cwd(), 'public', f)));
+
+/* La proporción se lee del `viewBox` del propio archivo en vez de escribirse
+   a mano. El logotipo anterior era un bloque apilado de 2,2:1 y el actual es
+   horizontal de 5:1; con la proporción escrita a mano, cambiar el archivo
+   dejaba el `width`/`height` mintiendo y el navegador reservando una caja que
+   no era, que es salto de maquetación. */
+const PROPORCION_POR_DEFECTO = 300 / 60;
+const proporcion = (() => {
+  if (!archivo?.endsWith('.svg')) return PROPORCION_POR_DEFECTO;
+  const svg = readFileSync(join(process.cwd(), 'public', archivo), 'utf8').slice(0, 2000);
+  const vb = svg.match(/viewBox="[\d.\s-]*?([\d.]+)[\s,]+([\d.]+)"/);
+  if (!vb) return PROPORCION_POR_DEFECTO;
+  const r = Number(vb[1]) / Number(vb[2]);
+  return Number.isFinite(r) && r > 0 ? r : PROPORCION_POR_DEFECTO;
+})();
+const alto = 60;
+const ancho = Math.round(alto * proporcion);
 ---
 {archivo ? (
   <img
     src={archivo}
     alt="Servimedical Group"
     class:list={['svmg-marca', clase]}
-    width="260" height="119" loading="eager" decoding="async"
+    width={ancho} height={alto} loading="eager" decoding="async"
   />
 ) : (
   <span class:list={['inline-flex items-baseline gap-[7px]', clase]}>
@@ -55,14 +72,19 @@ const archivo = ['svg', 'webp', 'png']
   /* Alto fijo y ancho al contenido: el logotipo manda el ancho, no al revés,
      para que no se deforme ni empuje la barra.
 
-     46 px y no 26: el logotipo de Servimedical es un bloque apilado —símbolo
-     arriba, texto debajo— y por debajo de eso la segunda línea deja de
-     leerse. La barra mide 72 px, así que quedan 13 px de aire a cada lado. */
+     38 px, no 46. El logotipo apilado de antes necesitaba altura para que su
+     segunda línea se leyera; el horizontal de ahora es 5:1 y a 46 px se comía
+     la barra de 72. A 38 px la palabra «SERVIMEDICAL» mide lo mismo que
+     antes —ya no compite con un símbolo encima— y quedan 17 px de aire a cada
+     lado.
+
+     El tope de ancho sube a 260: un 5:1 a 38 px pide 190, y 220 dejaba sin
+     margen a un archivo algo más ancho. */
   .svmg-marca {
     display: block;
-    block-size: 46px;
+    block-size: 38px;
     inline-size: auto;
-    max-inline-size: 220px;
+    max-inline-size: 260px;
     object-fit: contain;
     object-position: left center;
   }

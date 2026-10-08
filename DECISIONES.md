@@ -541,3 +541,38 @@ rellenan con celdas vacías.
 
 `normasDeclaradas` es un arreglo de objetos y se unía sin aplanar. Catorce
 ocurrencias en el índice de las 37 páginas, y ninguna norma era buscable.
+
+### D30 · El logotipo horizontal de Servimedical
+
+**Qué.** Entró `public/logos/servimedical-group.svg`, horizontal, proporción
+5:1. Sustituye al bloque apilado.
+
+**Se optimizó: de 517 kB a 11 kB** (−97,8 %). Era un export de Illustrator con
+veintiún trazos y el resto metadatos del programa. Va en el encabezado de las
+37 páginas, así que medio megabyte ahí se paga en cada visita. El original
+quedó fuera del repositorio; `herramientas/svgo.config.mjs` conserva el
+`viewBox` y el `xmlns`, sin los cuales el archivo no escala o no parsea como
+`<img>`.
+
+**No se recoloreó.** El archivo trae varios tonos propios —un azul `#18375c`,
+negros y grises—. Es la marca del cliente, no una pieza del sistema de color
+del sitio.
+
+**La proporción se lee del `viewBox`, no se escribe a mano.** El componente
+declaraba `width="260" height="119"` (2,2:1), que era la del logotipo
+apilado. Con el nuevo archivo esa reserva mentía y producía salto de
+maquetación. Ahora se calcula: cambiar el archivo basta.
+
+**El alto baja de 46 px a 38.** El apilado necesitaba altura para que su
+segunda línea se leyera; un 5:1 a 46 px se comía la barra de 72. A 38 px la
+palabra «SERVIMEDICAL» mide lo mismo que antes, porque ya no compite con un
+símbolo encima.
+
+**`npm run logos` buscaba el JPG antes que el SVG**, así que cada corrida
+regeneraba el lockup apilado que el vectorial venía a reemplazar. Se invirtió
+el orden. Y se borraron `servimedical-group.png` y `.webp`, que eran ese
+lockup: una sola verdad.
+
+**Pendiente: la versión blanca.** El pie va sobre azul oscuro y sigue con la
+marca tipográfica, que cumple contraste AA. En cuanto exista
+`servimedical-group-blanco.svg` el componente la toma solo.

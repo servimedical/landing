@@ -113,7 +113,10 @@ const ANCHO_EMPRESA = 260; // ~2,5× de lo que mide en la barra
 
 const prepararEmpresa = async () => {
   const dir = new URL('../public/logos/', import.meta.url);
-  const fuente = ['servimedical.jpg', 'servimedical.png', 'servimedical.webp', `${EMPRESA}.svg`]
+  /* El SVG primero. Si alguien entrega el logotipo en vectorial, eso manda:
+     con el JPG de imprenta al frente, cada corrida de este comando volvía a
+     generar el lockup apilado que el vectorial vino a reemplazar. */
+  const fuente = [`${EMPRESA}.svg`, 'servimedical.jpg', 'servimedical.png', 'servimedical.webp']
     .map((f) => new URL(f, dir))
     .find((u) => existsSync(u));
   if (!fuente) return;
