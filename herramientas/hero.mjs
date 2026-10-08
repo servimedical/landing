@@ -55,7 +55,7 @@ if (delCarrusel.length) {
         alfa += ` · ⚠ no es 1600 × 1280`;
     }
     const emparejada = ids.has(id) ? '' : ' · ⚠ no corresponde a ningún producto: saldrá sin etiqueta';
-    console.log(`  ${f} · ${dim}${kb} kB${kb > 250 ? ' · ⚠ pasa de 250 kB' : ''}${alfa}${emparejada}`);
+    console.log(`  ${f} · ${dim}${kb} kB${alfa}${emparejada}`);
   }
   /* Sin esto el carrusel sirve la foto completa también en un teléfono, y la
      primera es la imagen LCP de la portada. */
@@ -83,11 +83,13 @@ if (delCarrusel.length) {
       const anchos = ANCHOS.filter((a) => a <= W);
       if (!anchos.length) anchos.push(W);
       const hechas = [];
+      let pesoMayor = 0;
       for (const a of anchos) {
         const info = await sharpC(recortada.data)
           .resize({ width: a, withoutEnlargement: true, fit: 'inside' })
           .webp({ quality: 86 })
           .toFile(join(CARRUSEL_W, `${base}-${a}.webp`));
+        pesoMayor = Math.max(pesoMayor, Math.round(info.size / 1024));
         hechas.push(`${a}w ${Math.round(info.size / 1024)} kB`);
       }
       /* Nitidez real: el recuadro mide unos 462 × 480 px CSS en escritorio y
@@ -104,7 +106,11 @@ if (delCarrusel.length) {
         densidad < 1.5
           ? ` · ⚠ ${densidad.toFixed(1)}× : se verá blando en pantalla retina, hace falta una foto con el equipo más grande`
           : ` · ${densidad.toFixed(1)}×`;
-      console.log(`    ${base} · recortado a ${w0} × ${h0} · ${hechas.join(' · ')}${flojo}`);
+      /* El aviso de peso va aquí y no sobre el original: lo que descarga el
+         visitante es esta versión, y un PNG de 547 kB que nunca se sirve no
+         es un problema que haya que resolver. */
+      const pesado = pesoMayor > 250 ? ` · ⚠ pasa de 250 kB` : '';
+      console.log(`    ${base} · recortado a ${w0} × ${h0} · ${hechas.join(' · ')}${flojo}${pesado}`);
     }
   }
 
