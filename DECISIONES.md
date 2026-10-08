@@ -594,3 +594,34 @@ por debajo de `lg`, donde manda el menú del teléfono y el mega menú no existe
 
 Comprobado a 375, 768 y 1440 px: `scrollWidth` igual al viewport en los tres,
 y el mega menú sigue abriendo en escritorio.
+
+### D32 · La franja de marcas cabe en el primer pantallazo
+
+**El problema.** El envoltorio ya pedía `100svh − barra`, pero el contenido
+era más alto y la franja caía por debajo del pliegue en **todos** los tamaños
+de escritorio: 1 px a 1440×900, 49 px a 1366×768.
+
+**Dos causas.**
+
+1. **Un píxel de borde.** `--spacing-header` vale 72, pero la caja de la barra
+   mide 73: lleva un borde inferior. La resta se quedaba corta en un píxel, y
+   un píxel por debajo del pliegue es igual de invisible que cien.
+2. **La columna de la figura mandaba el alto.** A `min(60vh, 440px)` ocupaba
+   526 px de los 696 disponibles en un portátil de 768.
+
+**La solución.** El recuadro cede alto cuando la pantalla es baja: 52vh por
+defecto, 46vh por debajo de 800 px de alto, 44vh por debajo de 736 y 38vh por
+debajo de 672. Más aire vertical recortado en el hero a pantalla baja.
+
+Resultado, medido: la franja termina **exactamente en el borde** del viewport
+a 1920×1080, 1512×860, 1440×900, 1440×800, 1366×768, 1280×720 y 1024×768.
+
+**La excepción.** A 1024×640 sigue cayendo 50 px por debajo. Ahí el suelo no
+es el recuadro —que ya está en 38vh— sino la columna de texto, que mide 399 px
+y no se puede encoger sin bajar el tamaño del titular en todas las demás
+pantallas. Ningún equipo estándar tiene ese viewport; es una ventana
+redimensionada a mano.
+
+**En móvil no se fuerza.** El hero del teléfono mide 1.022 px por sí solo;
+meterlo en 812 exigiría encoger titular, texto y equipo hasta dejarlos
+ilegibles. Allí la franja va donde cae.

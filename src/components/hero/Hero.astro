@@ -123,6 +123,11 @@ const etiqueta = slides[0]?.etiqueta;
     inline-size: 100%;
   }
 
+  /* En pantallas bajas el aire vertical es lo primero que sobra. */
+  @media (height < 50rem) and (width >= 62.5rem) {
+    .hero-rejilla { padding-block: 20px 24px; gap: 32px; }
+  }
+
   .hero-titular {
     margin-top: 16px;
     /* 4.6vw y no 7.4: en escritorio el titular vive en media columna,
@@ -378,7 +383,20 @@ const etiqueta = slides[0]?.etiqueta;
     .hero-figura { grid-column: 7 / 13; }
 
     .hero-panel { max-inline-size: none; margin-inline: 0; }
-    .hero-figura { --sobresale: 40px; --alto-caja: min(60vh, 440px); }
+    /* 52vh y no 60: el hero y la franja comparten la primera pantalla, y la
+       columna de la figura es la que manda su alto. A 60vh, en una pantalla
+       de 768 px la franja caía 48 px por debajo del pliegue — justo lo que no
+       se podía permitir, porque la franja existe para contestar «¿y ustedes
+       qué representan?» antes del primer desplazamiento. El tope de 440 px
+       sigue mandando en pantallas altas. */
+    .hero-figura { --sobresale: 40px; --alto-caja: min(52vh, 440px); }
+
+    /* Por debajo de 800 px de alto el 52vh ya no alcanza: la franja volvía a
+       caer fuera. 46vh en portátiles de 768 y 44vh en los de 720. */
+    @media (height < 50rem) { .hero-figura { --alto-caja: 46vh; } }
+    @media (height < 46rem) { .hero-figura { --alto-caja: 44vh; } }
+    /* Portátiles muy bajos: aquí ya no sobra aire, sobra recuadro. */
+    @media (height < 42rem) { .hero-figura { --alto-caja: 38vh; } }
 
     .hero-equipo {
       inline-size: 78%;

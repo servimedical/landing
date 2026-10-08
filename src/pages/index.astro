@@ -19,8 +19,13 @@ const marcas = (await getCollection('marcas'))
   precargarImagen={primeraDelHero?.src ?? null}
 >
   {/* Hero y franja ocupan juntos la primera pantalla: la franja queda abajo,
-      en el borde de lo que se ve al entrar. */}
-  <div class="flex min-h-[calc(100svh-var(--spacing-header))] flex-col">
+      en el borde de lo que se ve al entrar.
+
+      Se resta 1 px además de la barra: `--spacing-header` vale 72, pero la
+      caja de la barra mide 73 porque lleva un borde inferior. Sin ese píxel
+      la franja terminaba justo uno por debajo del pliegue en todas las
+      pantallas, que es exactamente igual de invisible que cien. */}
+  <div class="flex min-h-[calc(100svh-var(--spacing-header)-1px)] flex-col">
     <div class="flex flex-1 items-center"><Hero /></div>
     <FranjaMarcas />
   </div>
