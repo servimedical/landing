@@ -9,9 +9,10 @@
    Si la imagen no está, el panel queda vacío con su etiqueta y no se rompe
    nada. `npm run hero` dice qué falta. */
 import { contacto } from '../../content/sitio.ts';
-import { imagenHero } from '../../lib/heroImagen.ts';
+import { diapositivasHero } from '../../lib/heroImagen.ts';
 
-const { src: imagen, srcset, ancho, alto } = await imagenHero();
+const slides = await diapositivasHero();
+const etiqueta = slides[0]?.etiqueta;
 ---
 <section class="hero w-full" aria-labelledby="hero-h">
   <div class="contenedor hero-rejilla">
@@ -42,35 +43,74 @@ const { src: imagen, srcset, ancho, alto } = await imagenHero();
 
     <div class="hero-figura">
       <div class="hero-panel">
-        <div class="hero-caja">
-          {imagen && (
-            <picture>
-              {srcset && (
-                <source type="image/webp" srcset={srcset} sizes="(min-width: 1024px) 45vw, 90vw" />
+        <div class="hero-caja" data-carrusel={slides.length > 1 ? '' : undefined}>
+          {slides.map((d, i) => (
+            <picture class="hero-lamina" data-activa={i === 0 ? '' : undefined} aria-hidden={i === 0 ? undefined : 'true'}>
+              {d.srcset && (
+                <source type="image/webp" srcset={d.srcset} sizes="(min-width: 1024px) 45vw, 90vw" />
               )}
               <img
                 class="hero-equipo"
-                src={imagen}
-                alt="Autoclave de vapor Tuttnauer de doble puerta, con la cámara cargada"
-                width={ancho}
-                height={alto}
-                fetchpriority="high"
+                src={d.src}
+                alt={d.alt}
+                width={d.ancho}
+                height={d.alto}
+                fetchpriority={i === 0 ? 'high' : undefined}
+                loading={i === 0 ? 'eager' : 'lazy'}
                 decoding="async"
               />
             </picture>
+          ))}
+
+          {slides.length > 1 && (
+            <>
+              <button type="button" class="hero-flecha hero-flecha--atras" data-ir="-1" aria-label="Equipo anterior">
+                <svg viewBox="0 0 10 16" aria-hidden="true"><path d="M8 1 2 8l6 7" fill="none" stroke="currentColor" stroke-width="1.6" /></svg>
+              </button>
+              <button type="button" class="hero-flecha hero-flecha--adelante" data-ir="1" aria-label="Equipo siguiente">
+                <svg viewBox="0 0 10 16" aria-hidden="true"><path d="m2 1 6 7-6 7" fill="none" stroke="currentColor" stroke-width="1.6" /></svg>
+              </button>
+            </>
           )}
         </div>
 
-        <a href="/marcas/tuttnauer/vapor" class="hero-etiqueta">
-          <span aria-hidden="true" class="hero-punto"></span>
-          <span>
-            <span class="hero-etiqueta-titulo">Autoclave de vapor · Tuttnauer</span>
-            <span class="hero-etiqueta-dato">430–565 L · EN 285 →</span>
-          </span>
-        </a>
+        {etiqueta && (
+          <a href={etiqueta.url} class="hero-etiqueta" data-etiqueta>
+            <span aria-hidden="true" class="hero-punto"></span>
+            <span>
+              <span class="hero-etiqueta-titulo" data-etiqueta-titulo>{etiqueta.titulo}</span>
+              <span class="hero-etiqueta-dato" data-etiqueta-dato>{etiqueta.dato} →</span>
+            </span>
+          </a>
+        )}
       </div>
+
+      {slides.length > 1 && (
+        <div class="hero-puntos" role="tablist" aria-label="Equipos destacados">
+          {slides.map((d, i) => (
+            <button
+              type="button"
+              class="hero-punto-nav"
+              role="tab"
+              data-punto={i}
+              data-activa={i === 0 ? '' : undefined}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              aria-label={d.alt}
+            ></button>
+          ))}
+        </div>
+      )}
     </div>
   </div>
+
+  {slides.length > 1 && (
+    <script
+      type="application/json"
+      data-etiquetas
+      set:html={JSON.stringify(slides.map((d) => d.etiqueta ?? null))}
+      is:inline
+    />
+  )}
 </section>
 
 <style>
@@ -173,6 +213,23 @@ const { src: imagen, srcset, ancho, alto } = await imagenHero();
     pointer-events: none;
   }
 
+  /* Las láminas se apilan en la misma celda: el panel mide siempre lo mismo y
+     el cambio de equipo no mueve nada de la página. */
+  .hero-caja[data-carrusel] { display: grid; }
+  .hero-caja[data-carrusel] > .hero-lamina { grid-area: 1 / 1; }
+
+  .hero-lamina {
+    display: contents;
+  }
+  .hero-caja[data-carrusel] > .hero-lamina {
+    display: grid;
+    place-items: end center;
+    opacity: 0;
+    transition: opacity 600ms ease;
+    pointer-events: none;
+  }
+  .hero-caja[data-carrusel] > .hero-lamina[data-activa] { opacity: 1; }
+
   .hero-equipo {
     position: relative;
     z-index: 1;
@@ -185,6 +242,46 @@ const { src: imagen, srcset, ancho, alto } = await imagenHero();
     margin-bottom: -24px;
     animation: hero-entra 600ms ease-out both;
   }
+
+  /* Flechas: sólo en escritorio y sólo cuando hay más de un equipo. */
+  .hero-flecha {
+    position: absolute;
+    top: 50%;
+    z-index: 3;
+    display: none;
+    translate: 0 -50%;
+    inline-size: 36px;
+    block-size: 36px;
+    place-items: center;
+    background: var(--color-white);
+    border: 1px solid var(--color-rule);
+    border-radius: 50%;
+    color: var(--color-navy);
+    cursor: pointer;
+  }
+  .hero-flecha svg { inline-size: 9px; block-size: 14px; }
+  .hero-flecha:hover { border-color: color-mix(in srgb, var(--color-navy) 40%, transparent); }
+  .hero-flecha--atras { left: -18px; }
+  .hero-flecha--adelante { right: -18px; }
+
+  .hero-puntos {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 22px;
+  }
+  .hero-punto-nav {
+    inline-size: 7px;
+    block-size: 7px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: var(--color-mist);
+    cursor: pointer;
+    transition: background-color 160ms ease, scale 160ms ease;
+  }
+  .hero-punto-nav[data-activa] { background: var(--color-navy); scale: 1.3; }
+  .hero-punto-nav:hover { background: var(--color-steel); }
 
   .hero-etiqueta {
     position: relative;
@@ -226,6 +323,7 @@ const { src: imagen, srcset, ancho, alto } = await imagenHero();
 
   @media (prefers-reduced-motion: reduce) {
     .hero-equipo, .hero-etiqueta { animation: none; }
+    .hero-caja[data-carrusel] > .hero-lamina { transition: none; }
   }
 
   /* --------------------------------------------------------------- tablet */
@@ -263,6 +361,8 @@ const { src: imagen, srcset, ancho, alto } = await imagenHero();
 
     .hero-caja::after { bottom: -46px; }
 
+    .hero-flecha { display: grid; }
+
     /* Flotante sobre el panel, abajo a la izquierda, sin tapar el equipo. */
     .hero-etiqueta {
       position: absolute;
@@ -272,3 +372,79 @@ const { src: imagen, srcset, ancho, alto } = await imagenHero();
     }
   }
 </style>
+
+<script>
+  /* Carrusel del hero. Sin librería: son seis imágenes apiladas y un índice.
+
+     La etiqueta no se reconstruye en el guion: viaja como JSON desde los datos
+     del producto, para que no pueda contradecir a la ficha. */
+  const caja = document.querySelector<HTMLElement>('.hero-caja[data-carrusel]');
+
+  if (caja) {
+    const laminas = [...caja.querySelectorAll<HTMLElement>('.hero-lamina')];
+    const puntos = [...document.querySelectorAll<HTMLButtonElement>('.hero-punto-nav')];
+    const flechas = [...caja.querySelectorAll<HTMLButtonElement>('.hero-flecha')];
+    const panel = caja.closest<HTMLElement>('.hero-panel')!;
+    const etiqueta = panel.querySelector<HTMLAnchorElement>('[data-etiqueta]');
+    const titulo = panel.querySelector<HTMLElement>('[data-etiqueta-titulo]');
+    const dato = panel.querySelector<HTMLElement>('[data-etiqueta-dato]');
+
+    const crudo = document.querySelector<HTMLScriptElement>('[data-etiquetas]')?.textContent;
+    const etiquetas: ({ titulo: string; dato: string; url: string } | null)[] =
+      crudo ? JSON.parse(crudo) : [];
+
+    const quieto = matchMedia('(prefers-reduced-motion: reduce)');
+    const INTERVALO = 6000;
+
+    let actual = 0;
+    let reloj: number | undefined;
+
+    const mostrar = (i: number) => {
+      actual = (i + laminas.length) % laminas.length;
+      laminas.forEach((l, k) => {
+        l.toggleAttribute('data-activa', k === actual);
+        /* Lo que no se ve no se anuncia ni recibe foco. */
+        if (k === actual) l.removeAttribute('aria-hidden');
+        else l.setAttribute('aria-hidden', 'true');
+      });
+      puntos.forEach((p, k) => {
+        p.toggleAttribute('data-activa', k === actual);
+        p.setAttribute('aria-selected', String(k === actual));
+      });
+
+      const e = etiquetas[actual];
+      if (etiqueta && titulo && dato) {
+        if (e) {
+          etiqueta.hidden = false;
+          etiqueta.href = e.url;
+          titulo.textContent = e.titulo;
+          dato.textContent = `${e.dato} →`;
+        } else {
+          etiqueta.hidden = true;
+        }
+      }
+    };
+
+    const arrancar = () => {
+      if (quieto.matches) return;
+      detener();
+      reloj = window.setInterval(() => mostrar(actual + 1), INTERVALO);
+    };
+    const detener = () => { if (reloj) window.clearInterval(reloj); reloj = undefined; };
+
+    for (const f of flechas)
+      f.addEventListener('click', () => { mostrar(actual + Number(f.dataset.ir)); arrancar(); });
+
+    puntos.forEach((p, k) =>
+      p.addEventListener('click', () => { mostrar(k); arrancar(); }));
+
+    /* Se pausa mientras el puntero o el foco estén dentro: nadie quiere que la
+       imagen cambie justo cuando va a hacer clic en la etiqueta. */
+    for (const ev of ['mouseenter', 'focusin'] as const) panel.addEventListener(ev, detener);
+    for (const ev of ['mouseleave', 'focusout'] as const) panel.addEventListener(ev, arrancar);
+    document.addEventListener('visibilitychange', () => (document.hidden ? detener() : arrancar()));
+    quieto.addEventListener('change', () => (quieto.matches ? detener() : arrancar()));
+
+    arrancar();
+  }
+</script>

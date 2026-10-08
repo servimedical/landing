@@ -12,13 +12,58 @@ import { existsSync, statSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
 
 const CARPETA = join(process.cwd(), 'public', 'hero');
+const CARRUSEL = join(process.cwd(), 'public', 'home', 'hero');
 const BASE = 'autoclave-tuttnauer';
 const ALTO_MINIMO = 1600;
 const PESO_MAXIMO_KB = 300;
 const ANCHOS = [1600, 800];
 
 const linea = '─'.repeat(68);
-console.log(`\n${linea}\nIMAGEN DEL HERO\n${linea}\n`);
+console.log(`\n${linea}\nIMÁGENES DEL HERO\n${linea}\n`);
+
+/* ------------------------------------------------------------- carrusel --
+   Si hay fotos aquí, son las que manda la portada; la imagen única queda de
+   respaldo. Cada archivo se empareja con su producto por el nombre. */
+const { readdirSync } = await import('node:fs');
+const delCarrusel = existsSync(CARRUSEL)
+  ? readdirSync(CARRUSEL).filter((f) => /^\d+-[a-z0-9-]+\.(webp|png|jpg|jpeg)$/i.test(f)).sort()
+  : [];
+
+if (delCarrusel.length) {
+  const { publicados } = await import('../src/datos/productos.ts');
+  const ids = new Set(publicados.map((p) => `${p.marca}-${p.slug}`));
+  let sharpC;
+  try { sharpC = (await import('sharp')).default; } catch { /* sin sharp, sólo se listan */ }
+
+  console.log(`CARRUSEL · ${delCarrusel.length} imagen(es) en public/home/hero`);
+  for (const f of delCarrusel) {
+    const id = f.replace(/^\d+-/, '').replace(/\.\w+$/, '');
+    const kb = Math.round(statSync(join(CARRUSEL, f)).size / 1024);
+    let dim = '';
+    let alfa = '';
+    if (sharpC) {
+      const img = sharpC(join(CARRUSEL, f));
+      const m = await img.metadata();
+      dim = `${m.width} × ${m.height} px · `;
+      const st = await img.stats();
+      const a = st.channels[3];
+      alfa = m.hasAlpha && a && a.min < 250 ? '' : ' · ⚠ sin transparencia';
+      if (m.width !== 1600 || m.height !== 1280)
+        alfa += ` · ⚠ no es 1600 × 1280`;
+    }
+    const emparejada = ids.has(id) ? '' : ' · ⚠ no corresponde a ningún producto: saldrá sin etiqueta';
+    console.log(`  ${f} · ${dim}${kb} kB${kb > 250 ? ' · ⚠ pasa de 250 kB' : ''}${alfa}${emparejada}`);
+  }
+  if (delCarrusel.length < 4) console.log(`\n  ⚠ Son ${delCarrusel.length}; el carrusel se ve mejor con 4 a 6.`);
+  if (delCarrusel.length > 6) console.log(`\n  ⚠ Son ${delCarrusel.length}; con más de 6 el visitante no alcanza a verlas.`);
+  console.log('');
+} else {
+  console.log('CARRUSEL · sin imágenes en public/home/hero');
+  console.log('  La portada usa la imagen única de public/hero.');
+  console.log('  Cómo subirlas: public/home/hero/LEEME.md\n');
+}
+
+console.log(`${linea}\nIMAGEN ÚNICA\n${linea}\n`);
 
 const original = ['webp', 'png', 'jpg', 'jpeg']
   .map((ext) => join(CARPETA, `${BASE}.${ext}`))

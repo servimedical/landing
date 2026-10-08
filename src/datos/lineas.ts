@@ -92,6 +92,7 @@ export const lineas: Linea[] = [
     comoFunciona: [
       'El autoclave extrae el aire de la cámara con pulsos de vacío —prevacío fraccionado—, introduce vapor saturado, mantiene la temperatura durante el tiempo de exposición y seca la carga al vacío. Sin aire residual, el vapor llega al centro de cada paquete.',
       'La prueba de Bowie-Dick al inicio del día confirma esa extracción de aire, y la prueba de vacío confirma que la cámara no tiene fugas. Son las dos verificaciones que preceden a la primera carga.',
+      'Hay dos escalas. Los esterilizadores pequeños —de mesa y de hasta un módulo— se rigen por la EN 13060, que los clasifica en B para carga hueca y porosa, S para lo que declare el fabricante, y N para sólidos sin envolver. Los grandes, de central, se rigen por la EN 285. Una clínica o un quirófano satélite suele necesitar un Clase B de mesa; una central hospitalaria, uno o varios equipos EN 285.',
     ],
     compatible: [
       'Instrumental metálico',
@@ -114,10 +115,11 @@ export const lineas: Linea[] = [
       { p: '¿121 o 134 °C?', r: '134 °C para la mayoría del instrumental envuelto, con exposición de 4 minutos. 121 °C para material que no tolera 134 °C, con exposición más larga.' },
       { p: '¿Por qué la prueba de Bowie-Dick todos los días?', r: 'Porque detecta aire residual o fugas antes de procesar la primera carga. Un prevacío que falla no se nota en el paquete: se nota en el indicador.' },
       { p: '¿Qué agua necesita el generador?', r: 'Desmineralizada o de baja conductividad, para proteger el generador y la calidad del vapor. La incrustación no se ve hasta que el equipo falla.' },
+      { p: '¿Mesa o central?', r: 'Depende de la carga por turno y del tamaño de los sets. Un equipo de mesa procesa bandejas; uno de central procesa carros completos. Se dimensiona con las cirugías por día.' },
     ],
     seo: {
       titulo: 'Esterilización por vapor en Colombia | Servimedical',
-      descripcion: 'Autoclaves de prevacío a 121 y 134 °C bajo ISO 17665 y EN 285, de 120 a 1.500 L. Equipos Tuttnauer y Sanqiang con servicio técnico propio.',
+      descripcion: 'Autoclaves de vapor de 18 a 1.500 L, de mesa bajo EN 13060 a central bajo EN 285, a 121 y 134 °C. Equipos Tuttnauer y Sanqiang con servicio técnico propio.',
     },
   },
 
@@ -167,7 +169,7 @@ export const lineas: Linea[] = [
     orden: 5,
     lead: 'La evidencia para liberar una carga: el químico confirma que el agente llegó y el biológico, que el proceso mató las esporas.',
     comoFunciona: [
-      'El indicador químico cambia de color al exponerse al proceso. Según la ISO 11140-1, el Tipo 1 distingue un paquete procesado de uno que no; el Tipo 2 es la prueba de Bowie-Dick; y los Tipos 4, 5 y 6 responden a varias variables críticas del ciclo, donde el Tipo 5 —el integrador— sigue el comportamiento de un indicador biológico.',
+      'El indicador químico cambia de color al exponerse al proceso. Según la ISO 11140-1, el Tipo 1 distingue un paquete procesado de uno que no —es la cinta testigo, que no está en el catálogo de 2i—; el Tipo 2 es la prueba de Bowie-Dick; y los Tipos 4, 5 y 6 responden a varias variables críticas del ciclo, donde el Tipo 5 —el integrador— sigue el comportamiento de un indicador biológico.',
       'El indicador biológico lleva esporas de alta resistencia: Geobacillus stearothermophilus en vapor. Tras el ciclo se incuba, y si no hay crecimiento el proceso fue letal. Es la única evidencia directa de letalidad; todo lo demás es indicio.',
       'La Resolución 3100 de 2019 exige indicador químico en cada paquete e indicador biológico como mínimo semanal.',
     ],

@@ -49,22 +49,23 @@ export const marcas: Marca[] = [
     nombre: 'Sanqiang',
     descriptor: 'Esterilización, desinfección y residuos',
     lead:
-      'Fabricante chino de equipos para la central de esterilización, fundado en 2010 y exportador a más de 100 países. Cubre el lavado y la termodesinfección, el vapor, el plasma de peróxido y el tratamiento de residuos hospitalarios, con equipos de gran capacidad de cámara.',
+      'Fabricante chino de equipos para la central de esterilización, fundado en 2010 y exportador a más de 100 países. Cubre el lavado y la termodesinfección, el vapor —desde autoclaves de mesa hasta cámaras de 1.500 L— y el plasma de peróxido.',
     quienEs:
-      'Sanqiang diseña y fabrica en Hua County, en la provincia de Henan, autoclaves de vacío pulsante, esterilizadores de plasma de peróxido, termodesinfectoras y equipos de óxido de etileno, formaldehído a baja temperatura y secado. Declara certificación ISO 13485, ISO 9001 y marcado CE, y un equipo de cincuenta ingenieros de investigación y desarrollo.',
+      'Sanqiang diseña y fabrica en Hua County, en la provincia de Henan, autoclaves de vacío pulsante, esterilizadores de plasma de peróxido, termodesinfectoras y equipos de óxido de etileno, formaldehído y secado. Tiene 304 empleados y una planta de 51.677 m², según su perfil verificado por SGS. Declara ISO 13485, ISO 9001, ISO 14001, ISO 45001, marcado CE y ASME.',
     fabricante: { razonSocial: 'Henan Sanqiang Medical Equipment', ciudad: 'Hua County, Henan', pais: 'China', fundacion: '2010' },
     rolSVMG: 'distribuidor',
     logo: { src: '/logos/marcas/sanqiang.png', alt: 'Logo de Sanqiang' },
     logoEscala: 0.88, // apaisa el peso óptico frente a los logotipos horizontales
-    etapasCiclo: ['lavado', 'esterilizacion', 'residuos'],
-    // VERIFICAR · el sitio de exportación y la tienda oficial se contradicen en
-    // número de empleados (500+ vs 304) y superficie de planta (56.000 vs
-    // 51.677 m²). «5.000+ equipos instalados» sólo aparece en una de las dos.
-    // No se publica ninguna de las tres hasta tener una cifra sola.
+    /* Residuos no entra hasta que el producto se publique: la marca no puede
+       declarar una etapa que su catálogo visible no cubre. */
+    etapasCiclo: ['lavado', 'esterilizacion'],
+    /* Se publican las cifras del perfil verificado por SGS —304 empleados y
+       51.677 m²—, no las del sitio propio, que dice «500+» y «56.000 m²».
+       «5.000+ equipos instalados» no se publica: no está en datos verificados. */
     pruebas: [
-      { dato: 'Cámaras de vapor de hasta 1.500 L.', fuente: 'sanqiangmedical.com · autoclaves grandes' },
+      { dato: 'Cámaras de vapor de hasta 1.500 L.', fuente: 'sanqiangmedical.com · tabla técnica PVS·JD' },
       { dato: 'Plasma de 100 a 190 L, con ciclo corto de 30 minutos.', fuente: 'sanqiangmedical.com · plasma SQ-WD' },
-      { dato: 'Termodesinfectoras de hasta 12 cestas.', fuente: 'sanqiangmedical.com · lavadoras desinfectadoras' },
+      { dato: 'Termodesinfectoras de hasta 12 cestas DIN, en la serie KX.', fuente: 'Tienda oficial verificada · serie SQ-KX' },
     ],
     respaldo: [
       'Instalación y puesta en marcha con técnicos propios',
@@ -93,9 +94,9 @@ export const marcas: Marca[] = [
     logo: { src: '/logos/marcas/celitron.png', alt: 'Logo de Celitron' },
     logoEscala: 0.95, // apaisa el peso óptico frente a los logotipos horizontales
     etapasCiclo: ['residuos'],
-    // VERIFICAR · el sitio dice «más de 5.000 esterilizadores en más de 80
-    // países» en empresa y «40+ países» en la página del ISS. Se usa la del
-    // ISS, que es la línea que representamos. El año de fundación no aparece.
+    /* «Más de 80 países» es de toda la empresa y «más de 40» sólo de residuos:
+       no se contradicen. Se usa 40, que es la línea que representamos.
+       TODO · el año de fundación no está publicado. */
     pruebas: [
       { dato: 'Más de 500 unidades de tratamiento de residuos en más de 40 países.', fuente: 'celitron.com · página del sistema ISS' },
       { dato: 'Fabricación bajo EN 285, con empresa certificada ISO 9001 e ISO 13485.', fuente: 'celitron.com · página de empresa' },

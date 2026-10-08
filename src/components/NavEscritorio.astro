@@ -2,7 +2,7 @@
 import { enNavbar, nodosLineas, rutaActiva, normalizar } from '../content/navegacion.ts';
 import PanelMenu, { type ColumnaMenu } from './PanelMenu.astro';
 import { marcas, urlMarca } from '../datos/marcas.ts';
-import { lineasDeMarca, productosDeMarca, urlProducto } from '../datos/productos.ts';
+import { productosDeMarca, urlProducto } from '../datos/productos.ts';
 
 interface Props { rutaActual: string }
 const { rutaActual } = Astro.props;
@@ -25,10 +25,12 @@ const columnasMarcas: ColumnaMenu[] = [...marcas]
     titulo: m.nombre,
     url: urlMarca(m.slug),
     descriptor: m.descriptor,
-    items: lineasDeMarca(m.slug).map((l) => {
-      const p = productosDeMarca(m.slug).find((x) => x.linea === l.slug)!;
-      return { titulo: l.nombre, url: urlProducto(p) };
-    }),
+    /* Un ítem por producto, no por línea: 2i aporta dos productos a la misma
+       línea y con una entrada por línea solo se veía uno. */
+    items: productosDeMarca(m.slug).map((p) => ({
+      titulo: p.nombre === 'Autoclaves' ? 'Autoclaves de vapor' : p.nombre,
+      url: urlProducto(p),
+    })),
   }));
 
 /* Qué entrada del navbar abre qué panel. */

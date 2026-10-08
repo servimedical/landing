@@ -2,7 +2,7 @@ import { defineCollection } from 'astro:content';
 import { z } from 'zod';
 import { marcas } from './datos/marcas.ts';
 import { lineas } from './datos/lineas.ts';
-import { productos, idProducto, productosDeLinea } from './datos/productos.ts';
+import { productos, publicados, idProducto, productosDeLinea } from './datos/productos.ts';
 
 /* ============================================================================
    COLECCIONES DE CONTENIDO
@@ -64,6 +64,7 @@ const esquemaLinea = z.object({
 
 const esquemaProducto = z.object({
   marca: z.string().regex(SLUG),
+  publicado: z.boolean().optional(),
   slug: z.string().regex(SLUG),
   linea: z.string().regex(SLUG),
   nombre: z.string().min(1),
@@ -71,13 +72,24 @@ const esquemaProducto = z.object({
   lead: z.string().min(1).max(300),
   franja: z.array(spec).min(3).max(4),
   descripcion: z.array(z.string().min(80)).min(1).max(3),
-  modelos: z.object({
+  /* Una tabla por familia: mesa, mediano, central. Una sola de veinte filas
+     no se lee. */
+  modelos: z.array(z.object({
+    familia: z.string().min(1).optional(),
+    nota: z.string().min(1).optional(),
     encabezados: z.array(z.string().min(1)).min(2),
     filas: z.array(z.array(z.string())).min(1),
-  }).optional(),
-  ciclos: z.array(z.string().min(1)).optional(),
+  })).min(1).optional(),
+  ciclos: z.array(z.object({
+    familia: z.string().min(1).optional(),
+    items: z.array(z.string().min(1)).min(1),
+  })).min(1).optional(),
   instalacion: z.array(spec).optional(),
-  normasDeclaradas: z.array(z.string().min(1)).optional(),
+  instalacionFamilia: z.string().min(1).optional(),
+  normasDeclaradas: z.array(z.object({
+    familia: z.string().min(1).optional(),
+    normas: z.array(z.string().min(1)).min(1),
+  })).min(1).optional(),
   diferenciales: z.tuple([z.string().min(1).max(44), z.string().min(1).max(44), z.string().min(1).max(44)]),
   preguntasCotizacion: z.array(z.string().min(1)).min(4).max(5),
   relacionadas: z.array(z.object({ producto: z.string().min(1), porque: z.string().min(1) }))
@@ -101,9 +113,10 @@ const esquemaProducto = z.object({
   for (const r of p.instalacion ?? [])
     if (/seg[uú]n la placa|seg[uú]n el modelo|por confirmar/i.test(r.valor))
       falla(`la fila de instalación «${r.label}» no trae una cifra`);
-  for (const f of p.modelos?.filas ?? [])
-    if (f.length !== p.modelos!.encabezados.length)
-      falla(`una fila de «modelos» no tiene ${p.modelos!.encabezados.length} celdas`);
+  for (const t of p.modelos ?? [])
+    for (const f of t.filas)
+      if (f.length !== t.encabezados.length)
+        falla(`una fila de «${t.familia ?? 'modelos'}» no tiene ${t.encabezados.length} celdas`);
 });
 
 /* ------------------------------------------------- validaciones cruzadas */
@@ -140,13 +153,14 @@ const validarCatalogo = () => {
   const fallos: string[] = [];
   const slugsMarca = new Set(marcas.map((m) => m.slug));
   const slugsLinea = new Set(lineas.map((l) => l.slug));
-  const ids = new Set(productos.map(idProducto));
+  const ids = new Set(publicados.map(idProducto));
 
   for (const p of productos) {
     if (!slugsMarca.has(p.marca)) fallos.push(`${idProducto(p)}: la marca «${p.marca}» no existe`);
     if (!slugsLinea.has(p.linea)) fallos.push(`${idProducto(p)}: la línea «${p.linea}» no existe`);
     for (const r of p.relacionadas)
-      if (!ids.has(r.producto)) fallos.push(`${idProducto(p)}: «${r.producto}» no es un producto del catálogo`);
+      if (!ids.has(r.producto))
+        fallos.push(`${idProducto(p)}: «${r.producto}» no es un producto publicado del catálogo`);
     if (p.relacionadas.some((r) => r.producto === idProducto(p)))
       fallos.push(`${idProducto(p)}: se enlaza a sí mismo en «Completa el ciclo»`);
   }
@@ -154,7 +168,7 @@ const validarCatalogo = () => {
   /* Ninguna línea puede quedar sin producto: su página saldría en blanco y la
      entrada del menú llevaría a la nada. */
   for (const l of lineas)
-    if (productosDeLinea(l.slug).length === 0) fallos.push(`línea ${l.slug}: no tiene ningún producto`);
+    if (productosDeLinea(l.slug).length === 0) fallos.push(`línea ${l.slug}: no tiene ningún producto publicado`);
 
   /* Dos productos de la misma marca en la misma línea necesitan slugs
      distintos, o compartirían ruta. */
@@ -167,7 +181,7 @@ const validarCatalogo = () => {
 
   /* El dropdown de Marcas no admite más de cuatro líneas por marca. */
   for (const m of marcas) {
-    const n = new Set(productos.filter((p) => p.marca === m.slug).map((p) => p.linea)).size;
+    const n = new Set(publicados.filter((p) => p.marca === m.slug).map((p) => p.linea)).size;
     if (n > 4) fallos.push(`${m.slug}: ${n} líneas en el dropdown, el máximo es 4`);
   }
 
@@ -175,7 +189,7 @@ const validarCatalogo = () => {
      el diagrama de la página de marca diría algo distinto del catálogo. */
   for (const m of marcas) {
     const suyas = new Set(
-      productos.filter((p) => p.marca === m.slug)
+      publicados.filter((p) => p.marca === m.slug)
         .map((p) => lineas.find((l) => l.slug === p.linea)!.etapa)
         .filter((e) => e !== 'transversal'),
     );

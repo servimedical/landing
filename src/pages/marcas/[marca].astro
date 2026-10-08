@@ -3,7 +3,6 @@ import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Migas from '../../components/Migas.astro';
 import BrandLogo from '../../components/marca/BrandLogo.astro';
-import CicloEtapas from '../../components/marca/CicloEtapas.astro';
 import Formulario from '../../components/formulario/Formulario.astro';
 import { lineaPorSlug } from '../../datos/lineas.ts';
 import { productosDeMarca, urlProducto } from '../../datos/productos.ts';
@@ -103,15 +102,7 @@ const jsonld = {
     </section>
   )}
 
-  {/* 4 · Dónde entra en la central */}
-  <section class="field-paper border-t border-rule" aria-labelledby="ciclo">
-    <div class="contenedor py-12 lg:py-16">
-      <h2 id="ciclo" class="text-[clamp(22px,2.6vw,30px)]">Dónde entra en la central</h2>
-      <div class="mt-8"><CicloEtapas activas={m.etapasCiclo} marca={m.nombre} /></div>
-    </div>
-  </section>
-
-  {/* 5 · Por qué esta marca — sólo con datos que tengan fuente */}
+  {/* 4 · Por qué esta marca — sólo con datos que tengan fuente */}
   {pruebas.length > 0 && (
     <section class="border-t border-rule" aria-labelledby="pruebas">
       <div class="contenedor py-12 lg:py-16">
@@ -128,7 +119,7 @@ const jsonld = {
     </section>
   )}
 
-  {/* 6 · Respaldo en Colombia */}
+  {/* 5 · Respaldo en Colombia */}
   {m.respaldo?.length ? (
     <section class="border-t border-rule" aria-labelledby="respaldo">
       <div class="contenedor py-12 lg:py-16">
@@ -145,7 +136,7 @@ const jsonld = {
     </section>
   ) : null}
 
-  {/* 7 · Documentación */}
+  {/* 6 · Documentación */}
   {m.documentos?.length ? (
     <section class="border-t border-rule" aria-labelledby="docs">
       <div class="contenedor py-12 lg:py-16">

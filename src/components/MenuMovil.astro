@@ -2,7 +2,7 @@
 import { enNavbar, nodosLineas, rutaActiva, normalizar } from '../content/navegacion.ts';
 import { cta } from '../content/sitio.ts';
 import { marcas, urlMarca } from '../datos/marcas.ts';
-import { lineasDeMarca, productosDeMarca, urlProducto } from '../datos/productos.ts';
+import { productosDeMarca, urlProducto } from '../datos/productos.ts';
 import Buscador from './Buscador.astro';
 
 interface Props { rutaActual: string }
@@ -23,10 +23,10 @@ const ramasDe = (raiz: string): Rama[] =>
     : [...marcas].sort((a, b) => a.orden - b.orden).map((m) => ({
         titulo: m.nombre,
         url: urlMarca(m.slug),
-        hojas: lineasDeMarca(m.slug).map((l) => {
-          const p = productosDeMarca(m.slug).find((x) => x.linea === l.slug)!;
-          return { titulo: l.nombre, url: urlProducto(p) };
-        }),
+        hojas: productosDeMarca(m.slug).map((p) => ({
+          titulo: p.nombre === 'Autoclaves' ? 'Autoclaves de vapor' : p.nombre,
+          url: urlProducto(p),
+        })),
       }));
 
 const DESPLEGABLES = ['/lineas', '/marcas'];

@@ -100,7 +100,15 @@ export type Linea = {
 
 /* --------------------------------------------------------------- PRODUCTO */
 
-export type Modelos = { encabezados: string[]; filas: string[][] };
+/* Una tabla de modelos. Cuando un producto tiene varias familias —mesa,
+   mediano, central— va una tabla por familia con su propio encabezado: una
+   sola de veinte filas no se lee. */
+export type TablaModelos = {
+  familia?: string;
+  nota?: string;
+  encabezados: string[];
+  filas: string[][];
+};
 
 /** Foto, galería y brochure. La plantilla resuelve en build qué existe y
  *  elige la variante del hero. `npm run media` lista lo que falta. */
@@ -118,6 +126,10 @@ export type Relacionado = {
 
 export type Producto = {
   marca: string;
+  /** `false` oculta el producto del sitio entero: rutas, menús, línea y
+   *  venta cruzada. Se usa cuando el fabricante no publica la ficha y no se
+   *  puede afirmar en el sitio un equipo que no se puede documentar. */
+  publicado?: boolean;
   /** Segmento de la URL: /marcas/{marca}/{slug}. Casi siempre coincide con
    *  `linea`; difiere cuando una marca aporta dos productos a la misma línea,
    *  como los indicadores químicos y biológicos de 2i. */
@@ -133,13 +145,17 @@ export type Producto = {
   franja: Spec[];
   /** Dos párrafos sobre este equipo: construcción, control y qué lo distingue. */
   descripcion: string[];
-  modelos?: Modelos;
-  /** Ciclos y pruebas declarados por el fabricante. */
-  ciclos?: string[];
+  modelos?: TablaModelos[];
+  /** Ciclos y pruebas declarados por el fabricante, agrupados por familia
+   *  cuando cambian de una a otra. */
+  ciclos?: { familia?: string; items: string[] }[];
   /** Sólo cifras reales. Sin cifra, la fila no entra. */
   instalacion?: Spec[];
-  /** Lo que el fabricante declara. Distinto de las normas del método. */
-  normasDeclaradas?: string[];
+  /** A qué familia aplican los requisitos de instalación. */
+  instalacionFamilia?: string;
+  /** Lo que el fabricante declara. Distinto de las normas del método.
+   *  Por familia cuando cambian. */
+  normasDeclaradas?: { familia?: string; normas: string[] }[];
   /** Exactamente 3, para la tarjeta de la línea. Son lo que lo distingue. */
   diferenciales: [string, string, string];
   preguntasCotizacion: string[];

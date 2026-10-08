@@ -12,7 +12,7 @@ export function validarEnlaces() {
     hooks: {
       'astro:config:done': async ({ logger }) => {
         const { todosLosNodos, normalizar } = await import('../src/content/navegacion.ts');
-        const { productos, productoPorId, urlProducto, idProducto } = await import('../src/datos/productos.ts');
+        const { publicados, productoPorId, urlProducto, idProducto } = await import('../src/datos/productos.ts');
         const { marcas } = await import('../src/datos/marcas.ts');
         const { home, servicios, contactoPagina } = await import('../src/content/institucional.ts');
 
@@ -27,7 +27,7 @@ export function validarEnlaces() {
         };
 
         /* Venta cruzada de cada producto. */
-        for (const p of productos)
+        for (const p of publicados)
           for (const r of p.relacionadas) {
             const destino = productoPorId(r.producto);
             if (!destino) { total++; fallos.push(`  ${idProducto(p)} · «completa el ciclo»\n    «${r.producto}» no existe`); continue; }
