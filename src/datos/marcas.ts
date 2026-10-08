@@ -204,6 +204,33 @@ export const marcas: Marca[] = [
         'Papel para esterilización y Tyvek bajo ISO 11607, mobiliario en acero inoxidable a la medida del plano, y repuestos con existencias en Bogotá.',
     },
   },
+
+  {
+    slug: 'easyseal',
+    nombre: 'EasySeal',
+    descriptor: 'Sellado de la barrera estéril',
+    lead: 'Fabricante chino especializado en selladoras para empaque médico. Servimedical representa su línea automática en Colombia.',
+    quienEs:
+      'Easyseal Medical Technology fabrica exclusivamente equipo para el sellado del empaque médico: selladoras manuales, automáticas y rotativas, cortadoras de papel, tarjetas de prueba de sellado y consumibles de trazabilidad. Su línea automática integra control por microcomputador con precisión de temperatura de ±1 %, impresión de los parámetros del sello y función de calificación operacional, que es lo que permite a una central sostener la validación que exige la ISO 11607-2.',
+    fabricante: { razonSocial: 'Easyseal Medical Technology Co., Ltd.', pais: 'China' },
+    // TODO · año de fundación. El sitio solo trae el aviso de copyright de
+    //   2014, que es la fecha del sitio y no la de la empresa.
+    rolSVMG: 'distribuidor',
+    // TODO · logotipo vectorial oficial. Mientras no llegue, la marca se pinta
+    //   con su nombre: no se dibuja el logotipo de un fabricante.
+    logo: { src: '/logos/marcas/easyseal.svg', alt: 'Logo de EasySeal' },
+    etapasCiclo: ['empaque'],
+    pruebas: [
+      { dato: 'Seis selladoras automáticas con ficha técnica publicada, de 10 ± 0,5 m/min y 12 mm de ancho de sello.', fuente: 'easyseal.net · fichas de producto' },
+      { dato: 'Precisión de control de temperatura ≤ 1 % en el rango de 60 a 220 °C.', fuente: 'easyseal.net · fichas de producto' },
+      { dato: 'EF122-A y EF058 declaran alimentación de 110/220 V a 50/60 Hz.', fuente: 'easyseal.net · fichas de producto' },
+    ],
+    orden: 7,
+    seo: {
+      titulo: 'EasySeal en Colombia | Servimedical',
+      descripcion: 'Selladoras automáticas EasySeal para empaque médico, con control y registro de los parámetros del sello y función de calificación operacional.',
+    },
+  },
 ];
 
 export const marcaPorSlug = (slug: string) => marcas.find((m) => m.slug === slug);

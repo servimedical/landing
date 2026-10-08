@@ -411,3 +411,27 @@ medias (2i: la incubadora sí, las lectoras no).
 
 La línea se crea con lo que sí se puede sostener. Las otras entradas quedan
 documentadas con la lista exacta de lo que hay que pedirle a cada fabricante.
+
+### D22 · «Otros equipos» nace con dos productos
+
+La línea entra al menú en la posición 4, como pide el encargo, con lo único
+que tiene datos verificables:
+
+- **`easyseal/selladoras`** — las seis automáticas, con ficha del fabricante.
+  Las manuales y las rotativas quedan fuera: hay nombre y foto, no hay dato.
+- **`2i/incubadoras`** — la mini incubadora de seis cavidades. Las lectoras de
+  4 y 12 pozos quedan fuera por lo mismo.
+
+Faltan, documentadas: reprocesadoras Sanqiang (D18) y compresores Hongrun
+(D17, descartados).
+
+**EasySeal se pinta con su nombre, no con un logotipo.** No hay archivo
+oficial y no se dibuja el logotipo de un fabricante. El componente cae solo a
+la marca tipográfica.
+
+**Una precisión que evita una afirmación falsa.** La ficha declara
+«WS 310.2-2016» y «función de calificación operacional (OQ)», que es lo que
+dice el fabricante. **No** dice ISO 11607-2: esa norma obliga a validar el
+proceso de sellado y quien valida es la institución, no la máquina. La
+referencia a ISO 11607-2 del catálogo de EasySeal corresponde a su tarjeta de
+prueba, que es otro producto.

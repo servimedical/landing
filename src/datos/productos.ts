@@ -965,6 +965,123 @@ export const productos: Producto[] = [
       descripcion: 'Empaques de puerta, filtros, válvulas, sensores y bombas para autoclaves, plasma y termodesinfectoras, con existencias en Bogotá.',
     },
   },
+  {
+    marca: 'easyseal',
+    slug: 'selladoras',
+    linea: 'otros-equipos',
+    nombre: 'Selladoras automáticas',
+    tipo: 'equipo',
+    orden: 1,
+    lead: 'Selladoras automáticas de corte, sellado e impresión para rollo papel-película y Tyvek, con control de temperatura al 1 % y registro de los parámetros de cada sello.',
+    franja: [
+      { label: 'Velocidad', valor: '10 ± 0,5 m/min' },
+      { label: 'Ancho de sello', valor: '12 mm' },
+      { label: 'Temperatura', valor: '60 – 220 °C · precisión ≤ 1 %' },
+    ],
+    descripcion: [
+      'Seis modelos sobre la misma base: corte, sellado e impresión de los parámetros en la propia bolsa. La diferencia entre ellos está en el corte —a lo largo, por longitud de bolsa o de varios rollos a la vez— y en la impresión, que en los modelos AB es de fuente grande para lectura a distancia.',
+      'El control por microcomputador mantiene la temperatura dentro del 1 % y detiene la máquina si se sale más de ±4 °C del valor fijado. Esa parada es la diferencia entre una bolsa mal sellada que se detecta y una que llega a sala: el equipo no sigue produciendo barrera que no sirve.',
+    ],
+    modelos: [
+      {
+        nota: 'Datos publicados por el fabricante. Los modelos manuales y rotativos del catálogo no traen ficha técnica publicada y por eso no están aquí.',
+        encabezados: ['Modelo', 'Control', 'Corte', 'Impresión', 'Alimentación'],
+        filas: [
+          ['EF122-A', 'Pantalla capacitiva 7"', '≥ 100 mm de largo', 'De agujas, 2 líneas', '110 / 220 V · 50/60 Hz'],
+          ['EF058', 'Pantalla 5"', '≥ 50 mm de largo', 'No declarada', '110 / 220 V · 50/60 Hz'],
+          ['EF121-A (B)', 'Pantalla capacitiva 7"', '≥ 50 mm de largo', 'De agujas', '110 / 220 V'],
+          ['EF121-B', 'Pantalla capacitiva 7"', '≤ 500 mm de ancho, varios rollos', 'De agujas', '110 / 220 V · 650 W'],
+          ['EF122-AB', 'Pantalla capacitiva 7"', '≤ 500 mm de ancho', 'De agujas, fuente grande', '110 / 220 V'],
+          ['EF120-A (B)', 'Pantalla 7"', '≥ 80 mm de largo', 'No declarada', '110 / 220 V'],
+        ],
+      },
+    ],
+    // Las seis comparten velocidad, ancho de sello, rango de temperatura y
+    // precisión: por eso están en la franja y no repetidos en cada fila.
+    // TODO · confirmar con fábrica la versión 60 Hz de EF121-B, EF122-AB y
+    //   EF120-A/B. Las fichas de esos tres solo declaran 50 Hz, mientras que
+    //   dos de la misma familia declaran 50/60. Ver docs/red-electrica-colombia.md.
+    // TODO · ficha técnica de las selladoras manuales y rotativas.
+    //   Ver docs/investigacion/easyseal.md.
+    instalacion: [
+      { label: 'Eléctrico', valor: 'Monofásico 110 / 220 V ±10 % · 650 W en el EF121-B' },
+      { label: 'Temperatura ambiente', valor: '10 – 40 °C' },
+      { label: 'Espacio', valor: '1.130 × 290 × 200 mm el EF121-B; mesa de trabajo con acceso frontal' },
+    ],
+    // El fabricante declara «función OQ» y la norma china WS 310.2-2016. No
+    // declara ISO 11607-2 para las máquinas: esa referencia es de su tarjeta
+    // de prueba de sellado, que es un consumible. No se mezclan.
+    normasDeclaradas: [{ normas: ['WS 310.2-2016', 'Función de calificación operacional (OQ)'] }],
+    diferenciales: ['Precisión de temperatura ≤ 1 %', 'Parada automática a ±4 °C', 'Impresión de parámetros en la bolsa'],
+    preguntasCotizacion: [
+      'Metros de rollo que sella la central por turno',
+      'Anchos de rollo que maneja y si necesita cortar varios a la vez',
+      'Si la institución exige trazabilidad impresa en el paquete',
+      'Quién valida el proceso de sellado y con qué protocolo',
+    ],
+    relacionadas: [
+      { producto: 'svm/papel-para-esterilizacion', porque: 'La selladora sella lo que la central compra: el ancho de rollo y el material definen la máquina.' },
+      { producto: '2i/indicadores-quimicos', porque: 'El indicador va dentro del paquete que esta máquina cierra. El consumo se mueve al mismo ritmo.' },
+    ],
+    servicio: [
+      'Instalación y verificación del sello contra tarjeta de prueba',
+      'Acompañamiento en la calificación operacional del proceso de sellado',
+      'Mantenimiento preventivo de resistencia, rodillos y control de temperatura',
+    ],
+    seo: {
+      titulo: 'Selladoras automáticas EasySeal en Colombia | Servimedical',
+      descripcion: 'Selladoras automáticas de corte, sellado e impresión para empaque médico: 10 m/min, sello de 12 mm y control de temperatura al 1 %, con registro de parámetros.',
+    },
+  },
+
+  {
+    marca: '2i',
+    slug: 'incubadoras',
+    linea: 'otros-equipos',
+    nombre: 'Incubadoras de indicadores biológicos',
+    tipo: 'equipo',
+    orden: 2,
+    lead: 'Mini incubadora de seis cavidades para indicadores biológicos, con alimentación bivolt automática y lista para usar en quince minutos.',
+    franja: [
+      { label: 'Cavidades', valor: '6' },
+      { label: 'Temperatura', valor: '55 – 60 °C' },
+      { label: 'Alimentación', valor: '127 / 220 V bivolt automático' },
+    ],
+    descripcion: [
+      'El indicador biológico no da resultado al salir del autoclave: lo da después de incubarse a la temperatura y durante el tiempo que exige su referencia. Esta es la parte del monitoreo que se suele improvisar con una estufa de laboratorio, y es donde un grado de diferencia convierte un negativo real en uno falso.',
+      'El bivolt automático importa en Colombia más de lo que parece: 127 V es una de las tensiones normalizadas de la red, y el equipo no necesita selector ni transformador en una central que tenga esa acometida.',
+    ],
+    instalacion: [
+      { label: 'Eléctrico', valor: 'Bivolt automático 127 / 220 V, sin selector' },
+      { label: 'Puesta a punto', valor: '15 minutos de calentamiento antes del primer uso' },
+      { label: 'Construcción', valor: 'Cámara en aluminio, carcasa en ABS' },
+      { label: 'Almacenamiento', valor: '15 – 30 °C, en seco y al abrigo de la luz' },
+    ],
+    // TODO · confirmar con 2i la operación a 60 Hz. El manual declara 50–58 Hz
+    //   y Colombia es 60. En la práctica un calentador resistivo funciona
+    //   igual, pero no se publica una frecuencia que el fabricante no declara.
+    //   Ver docs/investigacion/2i-incubadoras.md.
+    // TODO · fichas de las lectoras de 4 y de 12 pozos. No se encontró ninguna,
+    //   ni en 2i ni en su distribuidor oficial. Sin ficha no hay tabla.
+    diferenciales: ['Seis indicadores a la vez', 'Bivolt sin selector', 'Lista en 15 minutos'],
+    preguntasCotizacion: [
+      'Cuántos indicadores biológicos incuba la central por día',
+      'Qué referencia de indicador usa y qué tiempo de lectura exige',
+      'Si necesita incubar en más de un punto de la institución',
+      'Si el protocolo exige incubar también el control positivo de cada lote',
+    ],
+    relacionadas: [
+      { producto: '2i/indicadores-biologicos', porque: 'El equipo no se escoge solo: se escoge contra la referencia de indicador que usa la central y su tiempo de lectura.' },
+    ],
+    servicio: [
+      'Verificación de temperatura contra patrón trazable',
+      'Entrenamiento en lectura e interpretación del resultado',
+    ],
+    seo: {
+      titulo: 'Incubadora de indicadores biológicos 2i | Servimedical',
+      descripcion: 'Mini incubadora 2i de seis cavidades para indicadores biológicos, de 55 a 60 °C y con alimentación bivolt automática de 127 / 220 V.',
+    },
+  },
 ];
 
 /* ------------------------------------------------------------- consultas */

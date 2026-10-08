@@ -126,6 +126,43 @@ export const lineas: Linea[] = [
   },
 
   {
+    slug: 'otros-equipos',
+    nombre: 'Otros equipos de la central',
+    nombreNav: 'Otros equipos',
+    descriptor: 'Lo que la central también necesita',
+    etapa: 'transversal',
+    orden: 4,
+    lead: 'Una central no son solo esterilizadores: sella, incuba y reprocesa, y esos equipos deciden tanto como el autoclave si la carga se libera.',
+    comoFunciona: [
+      'El sello de la barrera estéril es un proceso, no un gesto. La ISO 11607-2 lo trata como tal: exige validarlo con calificación de instalación, de operación y de desempeño, y comprobar que el sello no tenga canales, discontinuidades, grietas ni despegue del material. Una selladora con control y registro de temperatura, presión y velocidad es lo que hace posible esa validación; la barrera mejor escogida no sirve si el sello no se puede demostrar.',
+      'La incubación del indicador biológico es el otro extremo del mismo problema. El indicador se expone en el ciclo, pero el resultado solo existe después de incubarlo a la temperatura y durante el tiempo que exige la referencia. Una incubadora fuera de rango no da un resultado dudoso: da un resultado falso, y sobre ese resultado se libera o no se libera una carga.',
+    ],
+    compatible: [
+      'Sellado de rollos y sobres papel-película',
+      'Sellado de Tyvek y envoltorio de polipropileno',
+      'Incubación de indicadores biológicos de lectura convencional y rápida',
+    ],
+    noCompatible: [
+      'Sellado por grapa, cinta o doblado, que no constituye barrera estéril',
+      'Incubación a temperatura no controlada o fuera del rango de la referencia',
+    ],
+    normas: [
+      { norma: 'ISO 11607-2', que: 'Validación de los procesos de empaque: formado, sellado y ensamblaje, con IQ, OQ y PQ.' },
+      { norma: 'EN 868-5', que: 'Requisitos de las bolsas y rollos termosellables, incluido el ancho mínimo de sello.' },
+      { norma: 'ISO 11138-1', que: 'Indicadores biológicos: requisitos generales, incluidas las condiciones de incubación.' },
+    ],
+    faq: [
+      { p: '¿Una selladora de bolsas de cocina sirve?', r: 'No. Lo que exige la ISO 11607-2 no es que el sello pegue, sino que el proceso sea reproducible y demostrable: temperatura controlada, presión y velocidad constantes, y registro. Sin eso no hay nada que validar.' },
+      { p: '¿Cada cuánto se verifica el sello?', r: 'La práctica es verificar al inicio de cada turno con una tarjeta o solución de prueba, que revela canales y discontinuidades que no se ven a simple vista. La validación completa del proceso es anual o tras cualquier cambio de material o de equipo.' },
+      { p: '¿Puedo incubar el indicador en una estufa de laboratorio?', r: 'Solo si sostiene el rango de temperatura de la referencia y está calibrada. Una incubadora dedicada es más barata que el riesgo de un falso negativo, que es una carga liberada sin evidencia.' },
+    ],
+    seo: {
+      titulo: 'Selladoras e incubadoras para central de esterilización | Servimedical',
+      descripcion: 'Selladoras automáticas con control y registro para validar el sello bajo ISO 11607-2, e incubadoras de indicadores biológicos.',
+    },
+  },
+
+  {
     slug: 'indicadores',
     nombre: 'Indicadores y empaque',
     /* En el menú sobra «y empaque»: ocupa dos líneas y el visitante que busca
