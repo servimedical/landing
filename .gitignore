@@ -32,3 +32,6 @@ scripts/.og.svg
 src 2/
 public 2/
 .vercel
+
+# Capturas de control de calidad: se regeneran con `npm run capturas`
+qa/

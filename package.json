@@ -17,7 +17,8 @@
     "redirecciones": "node herramientas/redirecciones.mjs",
     "logos": "node herramientas/correr.mjs logos",
     "media": "node herramientas/correr.mjs media",
-    "hero": "node herramientas/correr.mjs hero"
+    "hero": "node herramientas/correr.mjs hero",
+    "capturas": "node herramientas/capturas.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.10",
@@ -30,5 +31,8 @@
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
     "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "playwright": "^1.64.0"
   }
 }
