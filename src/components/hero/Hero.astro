@@ -188,9 +188,15 @@ const etiqueta = slides[0]?.etiqueta;
   /* `hero-panel` envuelve la caja gris y la etiqueta. En móvil la etiqueta va
      debajo, en flujo; en escritorio flota sobre la caja. Por eso son hermanas
      y no está una dentro de la otra. */
+  /* `--sobresale` se declara en el panel para que la lean tanto la caja como
+     los puntos, que son hermanos y no descendientes de la caja. */
   .hero-panel { position: relative; }
+  .hero-figura { --sobresale: 24px; }
 
   .hero-caja {
+    /* Cuánto sobresale el equipo por debajo del panel. Vive aquí porque lo
+       necesitan la imagen, la sombra de piso y los puntos del carrusel: si
+       sólo lo supiera la imagen, los puntos quedarían debajo del equipo. */
     position: relative;
     display: grid;
     place-items: end center;
@@ -207,7 +213,7 @@ const etiqueta = slides[0]?.etiqueta;
     content: '';
     position: absolute;
     inset-inline: 18%;
-    bottom: -30px;
+    bottom: calc(-1 * var(--sobresale) - 6px);
     block-size: 26px;
     background: radial-gradient(ellipse at center, rgba(38, 65, 107, 0.12), transparent 72%);
     pointer-events: none;
@@ -236,10 +242,10 @@ const etiqueta = slides[0]?.etiqueta;
     display: block;
     inline-size: auto;
     max-inline-size: 86%;
-    block-size: calc(100% + 24px);
+    block-size: calc(100% + var(--sobresale));
     object-fit: contain;
     object-position: bottom center;
-    margin-bottom: -24px;
+    margin-bottom: calc(-1 * var(--sobresale));
     animation: hero-entra 600ms ease-out both;
   }
 
@@ -265,10 +271,13 @@ const etiqueta = slides[0]?.etiqueta;
   .hero-flecha--adelante { right: -18px; }
 
   .hero-puntos {
+    position: relative;
+    z-index: 2;
     display: flex;
     justify-content: center;
     gap: 8px;
-    margin-top: 22px;
+    /* Debajo de lo que el equipo sobresale, no debajo del panel. */
+    margin-top: calc(var(--sobresale, 24px) + 22px);
   }
   .hero-punto-nav {
     inline-size: 7px;
@@ -348,10 +357,9 @@ const etiqueta = slides[0]?.etiqueta;
 
     .hero-panel { max-inline-size: none; margin-inline: 0; }
     .hero-caja { block-size: min(60vh, 440px); }
+    .hero-figura { --sobresale: 40px; }
 
     .hero-equipo {
-      block-size: calc(100% + 40px);
-      margin-bottom: -40px;
       max-inline-size: 78%;
       /* A la derecha del centro: la etiqueta vive en la esquina inferior
          izquierda y el encargo pide que no tape el equipo. */
@@ -359,7 +367,7 @@ const etiqueta = slides[0]?.etiqueta;
       margin-inline-end: 6%;
     }
 
-    .hero-caja::after { bottom: -46px; }
+    .hero-caja::after { bottom: calc(-1 * var(--sobresale) - 6px); }
 
     .hero-flecha { display: grid; }
 

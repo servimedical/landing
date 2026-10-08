@@ -8,11 +8,15 @@
  * página. No descarga nada ni recorta fondos: recortar mal un equipo se nota
  * más que no recortarlo.
  */
-import { existsSync, statSync, unlinkSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, rmSync, statSync, unlinkSync } from 'node:fs';
 import { join } from 'node:path';
 
 const CARPETA = join(process.cwd(), 'public', 'hero');
 const CARRUSEL = join(process.cwd(), 'public', 'home', 'hero');
+/* Las versiones por ancho van en una subcarpeta: el carrusel descubre sus
+   diapositivas leyendo los archivos sueltos de CARRUSEL, y una versión
+   `-800.webp` al lado del original entraría como una diapositiva más. */
+const CARRUSEL_W = join(CARRUSEL, 'w');
 const BASE = 'autoclave-tuttnauer';
 const ALTO_MINIMO = 1600;
 const PESO_MAXIMO_KB = 300;
@@ -24,7 +28,6 @@ console.log(`\n${linea}\nIMÁGENES DEL HERO\n${linea}\n`);
 /* ------------------------------------------------------------- carrusel --
    Si hay fotos aquí, son las que manda la portada; la imagen única queda de
    respaldo. Cada archivo se empareja con su producto por el nombre. */
-const { readdirSync } = await import('node:fs');
 const delCarrusel = existsSync(CARRUSEL)
   ? readdirSync(CARRUSEL).filter((f) => /^\d+-[a-z0-9-]+\.(webp|png|jpg|jpeg)$/i.test(f)).sort()
   : [];
@@ -54,6 +57,29 @@ if (delCarrusel.length) {
     const emparejada = ids.has(id) ? '' : ' · ⚠ no corresponde a ningún producto: saldrá sin etiqueta';
     console.log(`  ${f} · ${dim}${kb} kB${kb > 250 ? ' · ⚠ pasa de 250 kB' : ''}${alfa}${emparejada}`);
   }
+  /* Sin esto el carrusel sirve la foto completa también en un teléfono, y la
+     primera es la imagen LCP de la portada. */
+  if (sharpC) {
+    rmSync(CARRUSEL_W, { recursive: true, force: true });
+    mkdirSync(CARRUSEL_W, { recursive: true });
+    console.log('\n  Versiones por ancho (public/home/hero/w):');
+    for (const f of delCarrusel) {
+      const base = f.replace(/\.\w+$/, '');
+      const util = (await sharpC(join(CARRUSEL, f)).metadata()).width;
+      const anchos = ANCHOS.filter((a) => a <= util);
+      if (!anchos.length) anchos.push(util);
+      const hechas = [];
+      for (const a of anchos) {
+        const info = await sharpC(join(CARRUSEL, f))
+          .resize({ width: a, withoutEnlargement: true, fit: 'inside' })
+          .webp({ quality: 86 })
+          .toFile(join(CARRUSEL_W, `${base}-${a}.webp`));
+        hechas.push(`${a}w ${Math.round(info.size / 1024)} kB`);
+      }
+      console.log(`    ${base} · ${hechas.join(' · ')}`);
+    }
+  }
+
   if (delCarrusel.length < 4) console.log(`\n  ⚠ Son ${delCarrusel.length}; el carrusel se ve mejor con 4 a 6.`);
   if (delCarrusel.length > 6) console.log(`\n  ⚠ Son ${delCarrusel.length}; con más de 6 el visitante no alcanza a verlas.`);
   console.log('');

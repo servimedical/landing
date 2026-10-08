@@ -68,3 +68,10 @@ npm run hero
 ```bash
 git add public/home/hero && git commit -m "Agregar fotos del carrusel" && git push
 ```
+
+## La carpeta `w`
+
+`npm run hero` crea una subcarpeta `w` con copias más pequeñas de cada foto.
+Son las que se le mandan a un teléfono, para que no descargue la imagen de
+escritorio. No hay que tocarla ni poner fotos ahí: se borra y se vuelve a
+generar cada vez que corres el comando.

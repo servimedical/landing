@@ -20,6 +20,9 @@ import { lineaPorSlug } from '../datos/lineas.ts';
 import { publicados, urlProducto } from '../datos/productos.ts';
 
 const CARRUSEL = join(process.cwd(), 'public', 'home', 'hero');
+/* `npm run hero` deja aquí las versiones por ancho. Si la carpeta no existe
+   —nadie ha corrido la herramienta— se sirve el original y ya. */
+const CARRUSEL_W = join(CARRUSEL, 'w');
 const UNICA = join(process.cwd(), 'public', 'hero');
 const BASE_UNICA = 'autoclave-tuttnauer';
 
@@ -65,14 +68,26 @@ export async function diapositivasHero(): Promise<Diapositiva[]> {
       .sort();
 
     if (archivos.length) {
+      const versiones = existsSync(CARRUSEL_W) ? readdirSync(CARRUSEL_W) : [];
       const slides: Diapositiva[] = [];
       for (const f of archivos) {
         const id = f.replace(/^\d+-/, '').replace(/\.\w+$/, '');
         const etiqueta = etiquetaDe(id);
         const { ancho, alto } = await medir(join(CARRUSEL, f));
+        /* Sólo los anchos que existen de verdad: anunciar uno que no está
+           deja al navegador pidiendo un 404 justo en la imagen LCP. */
+        const base = f.replace(/\.\w+$/, '');
+        const anchos = versiones
+          .map((v) => v.match(new RegExp(`^${base}-(\\d+)\\.webp$`)))
+          .filter((m): m is RegExpMatchArray => Boolean(m))
+          .map((m) => ({ archivo: m[0], ancho: Number(m[1]) }))
+          .sort((a, b) => a.ancho - b.ancho);
         slides.push({
           src: `/home/hero/${f}`,
-          srcset: '',
+          srcset:
+            anchos.length > 1
+              ? anchos.map((a) => `/home/hero/w/${a.archivo} ${a.ancho}w`).join(', ')
+              : '',
           alt: etiqueta ? `${etiqueta.titulo.replace(' · ', ' ')}` : 'Equipo para central de esterilización',
           ancho,
           alto,
