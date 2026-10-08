@@ -52,7 +52,10 @@ const marcas = (await getCollection('marcas'))
        quitar o añadir una marca recoloca todas las demás y el ritmo depende
        de cuántas haya. */
     justify-content: center;
-    gap: clamp(24px, 3.5vw, 52px);
+    /* Hueco corto a propósito: cada logotipo viene en un lienzo común que ya
+       trae su propio margen interno. Sumarle un hueco grande lo separaría el
+       doble de lo que se dibujó. */
+    gap: clamp(4px, 1vw, 16px);
     margin-inline: calc(-1 * var(--sangria));
     padding-inline: var(--sangria);
   }
@@ -65,7 +68,7 @@ const marcas = (await getCollection('marcas'))
     .franja-caja {
       flex-direction: row;
       align-items: center;
-      gap: clamp(24px, 3vw, 48px);
+      gap: clamp(16px, 2vw, 32px);
       padding-block: 16px;
     }
     .franja-pista {

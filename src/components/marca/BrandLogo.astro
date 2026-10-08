@@ -1,30 +1,28 @@
 ---
-/* Logotipo de fabricante a altura normalizada.
+/* Logotipo de fabricante.
 
-   Manda el alto, no la caja. Con una caja de ancho fijo y `contain`, un
-   logotipo muy apaisado se ajusta por el ancho y queda enano: Akarmak, de
-   proporción 7,4, salía a 18 px de alto donde 2i salía a 46. Aquí el alto es
-   el que se fija y el ancho sale de la proporción del archivo, que es como se
-   alinea ópticamente una fila de logotipos.
+   Todos los archivos vienen en un **lienzo común de 1500 × 800 px**. El
+   relleno que cada logotipo tiene dentro de ese lienzo no es espacio
+   sobrante: es el equilibrio óptico, definido en Figma mirando los seis
+   juntos. Akarmak ocupa el 96 % del ancho y el 24 % del alto; Sanqiang, el
+   58 % y el 87 %. Cada uno llena el lienzo por el eje que le corresponde.
 
-   `--max-w` queda solo de tope de seguridad, para que un archivo con una
-   proporción absurda no empuje la fila.
+   Por eso aquí no hay ninguna corrección por marca. Antes existía
+   `logoEscala`, que compensaba a mano lo que ahora resuelve el archivo; se
+   retiró, porque dos sistemas de equilibrio compitiendo dan peor resultado
+   que cualquiera de los dos solo. Y por eso `npm run logos` ya **no recorta**
+   los PNG: recortar el lienzo destruiría justamente lo que lo hace servir.
 
-   Lo que no resuelve la geometría lo resuelve `logoEscala` en
-   src/datos/marcas.ts. El criterio no es la altura sino la **mancha de
-   tinta**: dos logotipos de la misma altura pesan distinto si uno es una
-   palabra maciza y el otro un símbolo con aire. Se mide la densidad de cada
-   archivo —proporción de píxeles opacos sobre su caja recortada— y se calcula
-   la superficie de tinta que cada uno pinta en la franja.
+   La caja de la página reproduce la proporción del lienzo y el archivo se
+   ajusta dentro con `contain`. Dos logotipos cualesquiera salen, así, en la
+   misma relación en que se dibujaron.
 
-   Igualar la mancha al 100 % sobrecorrige: a Sanqiang, que es un lockup
-   apilado y disperso, lo llevaría a 1,94 y quedaría casi al doble de alto que
-   Tuttnauer. Se aplica **media corrección** —la raíz cuarta de la razón de
-   manchas, no la raíz cuadrada— y un tope de 1,30. Eso acerca los pesos sin
-   que ninguno se desborde de la fila.
-
-   No se recortan los archivos para compensar: ya vienen recortados por
-   `npm run logos`, comprobado con `sharp`.
+   Los archivos llevan fondo blanco opaco, no transparencia. Es deliberado:
+   todas las superficies donde se pintan son blancas —franja, desplegable,
+   tarjetas y encabezado de marca—, y perforar el blanco le abriría agujeros
+   al glifo del 2i y al texto de Celitron. Si alguna vez un logotipo tiene
+   que ir sobre un fondo que no sea blanco, hay que pedir los archivos con
+   alfa; no se puede resolver aquí.
 
    Si el archivo no está, cae a la marca tipográfica dentro de la misma caja
    —nunca a un ícono genérico ni a un rectángulo vacío—. No se dibuja el
@@ -33,29 +31,36 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import type { Marca } from '../../datos/tipos.ts';
 
-/* `h` es el alto en escritorio; `hMovil` el del teléfono. El ancho es tope,
-   no medida. */
+/** Proporción del lienzo común. `herramientas/logos.mjs` avisa si un archivo
+ *  llega con otra, porque entonces deja de estar equilibrado contra el resto. */
+const LIENZO = 1500 / 800;
+
+/** Ancho de la caja. El alto sale del lienzo.
+ *
+ *  `sm` es el que manda: en la franja van siete logotipos más el rótulo en
+ *  una sola fila. A 156 px la fila medía 1.092 px y Akarmak se salía del
+ *  contenedor. */
 const CAJAS = {
-  xs: { maxW: 170, h: 26, hMovil: 24 },  // cabecera de columna del desplegable
-  sm: { maxW: 280, h: 44, hMovil: 32 },  // franja del hero y desplegable de marcas
-  md: { maxW: 340, h: 60, hMovil: 44 },  // tarjetas de la home y de /marcas
-  lg: { maxW: 460, h: 96, hMovil: 64 },  // encabezado de la página de marca
+  xs: 104,  // cabecera de columna del desplegable de marcas
+  sm: 118,  // franja del hero y tarjetas de producto
+  md: 200,  // tarjetas de la home y de /marcas
+  lg: 300,  // encabezado de la página de marca
 } as const;
 
 interface Props {
-  marca: Pick<Marca, 'nombre' | 'logo' | 'logoEscala'>;
+  marca: Pick<Marca, 'nombre' | 'logo'>;
   size?: keyof typeof CAJAS;
   class?: string;
 }
 const { marca, size = 'md', class: clase } = Astro.props;
-const caja = CAJAS[size];
-/* El `width`/`height` del `img` solo reserva proporción para que no haya
-   salto de maquetación; el tamaño real lo pone el CSS. */
+const ancho = CAJAS[size];
+const alto = Math.round(ancho / LIENZO);
 
-/* Se acepta SVG o PNG con el mismo nombre: lo que haya en la carpeta.
+/* Se acepta SVG, WebP o PNG con el mismo nombre: lo que haya en la carpeta.
    La ruta se resuelve contra `process.cwd()` —la raíz del proyecto— y no
-   contra `import.meta.url`, que en el build apunta a dist/.prerender/chunks. */
-/* El WebP primero: lo genera `npm run logos` y pesa una fracción del PNG. Y
+   contra `import.meta.url`, que en el build apunta a dist/.prerender/chunks.
+
+   El WebP primero: lo genera `npm run logos` y pesa una fracción del PNG. Y
    la versión de 280 px salvo en la caja grande, que es la única que la
    necesita: en la franja del hero van seis logotipos encima del pliegue. */
 const sinExt = marca.logo.src.replace(/\.(svg|png|webp)$/, '');
@@ -63,15 +68,14 @@ const candidatos = size === 'lg'
   ? [`${sinExt}.webp`, marca.logo.src, `${sinExt}.svg`, `${sinExt}.png`]
   : [`${sinExt}-280.webp`, `${sinExt}.webp`, marca.logo.src, `${sinExt}.svg`, `${sinExt}.png`];
 const archivo = candidatos.find((f) => existsSync(join(process.cwd(), 'public', f)));
-const escala = marca.logoEscala ?? 1;
 ---
 <span
   class:list={['svmg-logo', clase]}
-  style={`--max-w:${caja.maxW}px;--h:${caja.h}px;--h-movil:${caja.hMovil}px;--escala:${escala}`}
+  style={`--w:${ancho}px;--h:${alto}px`}
   data-tipografico={!archivo || undefined}
 >
   {archivo
-    ? <img src={archivo} alt={marca.logo.alt} width={caja.maxW} height={caja.h} loading="lazy" decoding="async" />
+    ? <img src={archivo} alt={marca.logo.alt} width={ancho} height={alto} loading="lazy" decoding="async" />
     : <span class="nombre">{marca.nombre}</span>}
 </span>
 
@@ -80,25 +84,15 @@ const escala = marca.logoEscala ?? 1;
     /* `inline-grid`, no `grid`: en el caso tipográfico la caja ajusta al
        texto y el nombre queda alineado con el titular, no centrado. */
     display: inline-grid;
-    place-items: center start;
-    /* El alto de la fila lo marca el tamaño nominal, no el logotipo escalado:
-       así una escala alta agranda el logotipo sin mover la fila. */
-    block-size: var(--h-movil);
+    place-items: center;
+    inline-size: var(--w);
+    block-size: var(--h);
   }
 
   .svmg-logo img {
-    /* El alto manda y el ancho sale de la proporción. La escala multiplica el
-       alto permitido en vez de aplicarse como transformación: una
-       transformación no cambia el espacio que ocupa el elemento y los
-       logotipos terminaban encimándose. */
-    block-size: calc(var(--h-movil) * var(--escala));
-    inline-size: auto;
-    max-inline-size: var(--max-w);
+    inline-size: 100%;
+    block-size: 100%;
     object-fit: contain;
-    object-position: left center;
-    /* A color en todo el sitio. El gris de reposo se retiró: apagaba marcas
-       cuyo color es parte de su identidad —el verde de Celitron, el azul de
-       2i— y obligaba a pasar el puntero para verlas como son. */
     transition: opacity 160ms ease;
   }
 
@@ -106,19 +100,16 @@ const escala = marca.logoEscala ?? 1;
     :where(a, button):hover .svmg-logo img { opacity: 0.78; }
   }
 
-  @media (width >= 48rem) {
-    .svmg-logo { block-size: var(--h); }
-    .svmg-logo img { block-size: calc(var(--h) * var(--escala)); }
-    .svmg-logo .nombre { font-size: calc(var(--h) * 0.54); }
-  }
-
-  /* Marca tipográfica: misma altura de caja, ancho al contenido. */
-  .svmg-logo[data-tipografico] { inline-size: max-content; max-inline-size: var(--max-w); }
+  /* Marca tipográfica: misma caja, texto alineado a la izquierda como el
+     resto de los logotipos de su fila. */
+  .svmg-logo[data-tipografico] { place-items: center start; }
   .svmg-logo .nombre {
     font-family: var(--font-display);
     font-weight: 700;
     font-variation-settings: 'wdth' 108;
-    font-size: calc(var(--h-movil) * 0.54);
+    /* Contra el alto de la caja, no contra el ancho: así escala igual que un
+       logotipo real cuando cambia el tamaño. */
+    font-size: calc(var(--h) * 0.30);
     line-height: 1;
     letter-spacing: -0.01em;
     white-space: nowrap;

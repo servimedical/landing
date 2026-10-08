@@ -35,7 +35,6 @@ const esquemaMarca = z.object({
   rolSVMG: z.enum(['representante', 'distribuidor']),
   invima: z.string().min(1).optional(),
   logo: z.object({ src: z.string().min(1), alt: z.string().min(1) }),
-  logoEscala: z.number().positive().max(3).optional(),
   etapasCiclo: z.array(z.enum(ETAPAS)).min(1),
   pruebas: z.array(prueba).optional(),
   respaldo: z.array(z.string().min(1)).optional(),

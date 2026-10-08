@@ -70,9 +70,18 @@ for (const m of marcas) {
     const meta = await img.metadata();
     if (meta.width < ANCHO_MINIMO)
       avisos.push(`  ${png} mide ${meta.width} px de ancho; por debajo de ${ANCHO_MINIMO} px se ve blando en pantalla retina`);
+    /* El lienzo común es el contrato: si uno llega con otra proporción, deja
+       de estar equilibrado contra los demás y hay que rehacerlo en Figma. */
+    const proporcion = meta.width / meta.height;
+    if (Math.abs(proporcion - 1500 / 800) > 0.02)
+      avisos.push(`  ${png} es ${meta.width}×${meta.height} (${proporcion.toFixed(2)}:1) y el lienzo común es 1500×800 (1,88:1): no está equilibrado contra el resto`);
 
+    /* NO se recorta. Los logotipos de marca vienen en un lienzo común de
+       1500 × 800 px, y el relleno que cada uno tiene dentro de ese lienzo
+       **es** el equilibrio óptico: lo definió una persona en Figma mirando
+       los seis juntos. Recortarlo lo destruiría y devolvería el problema que
+       el lienzo vino a resolver. */
     const salida = await img
-      .trim()                                  // fuera el margen vacío
       .resize({ width: ANCHO_MINIMO, withoutEnlargement: true, fit: 'inside' })
       .png({ compressionLevel: 9 })
       .toBuffer();

@@ -670,3 +670,43 @@ Las mismas escalas rigen los tres contextos —franja del hero, desplegable de
 marcas y tarjetas de la home—, porque la corrección es del archivo, no del
 sitio donde se pinta. Verificado en los tres: la caja del logotipo mide lo
 mismo en las siete tarjetas y los enlaces arrancan todos a 28 px del borde.
+
+### D34 · Un lienzo común reemplaza a `logoEscala`
+
+**Qué.** Los seis logotipos de marca llegaron en un **lienzo común de
+1500 × 800 px**, equilibrados entre sí en Figma. Se retiró `logoEscala` —del
+dato, del tipo y del esquema— y la caja de la página reproduce la proporción
+del lienzo con `object-fit: contain`.
+
+**Por qué es mejor que lo anterior.** D23 y D33 intentaron deducir el
+equilibrio desde el archivo: primero por mancha de tinta, luego por banda de
+letra. Las dos métricas chocaban en Akarmak, y ninguna sabía lo que sabe un
+ojo mirando los seis juntos. Con el lienzo, el relleno interno **es** el
+equilibrio: Akarmak ocupa el 96 % del ancho y el 24 % del alto; Sanqiang, el
+58 % y el 87 %. Cada uno llena el lienzo por el eje que le corresponde.
+
+Dos sistemas de equilibrio compitiendo dan peor resultado que cualquiera de
+los dos solo, así que el mío se fue entero.
+
+**Tres cosas que había que desarmar.**
+
+1. **`npm run logos` recortaba los PNG.** Con fondo blanco uniforme, ese
+   recorte ahora sí encontraba margen que quitar, y habría borrado el
+   encuadre. Se desactivó, y el comando avisa si un archivo llega con una
+   proporción distinta a 1,88:1, porque entonces deja de estar equilibrado
+   contra el resto.
+2. **La caja `sm` a 156 px no cabía.** Siete logotipos más el rótulo medían
+   1.092 px y Akarmak se salía del contenedor. Quedó en 118.
+3. **El hueco entre logotipos bajó** de 24–52 px a 4–16. El lienzo ya trae su
+   propio margen interno; sumarle un hueco grande los separaba el doble de lo
+   dibujado.
+
+**Los archivos traen fondo blanco opaco, no alfa.** Se dejó así a propósito:
+las cuatro superficies donde se pintan son blanco puro —se verificó midiendo
+el fondo calculado en la franja, el desplegable, las tarjetas y el encabezado
+de marca— y perforar el blanco le abriría agujeros al glifo del 2i y al texto
+de Celitron. Si alguna vez un logotipo tiene que ir sobre otro fondo, hay que
+pedir los archivos con transparencia.
+
+**Peso.** Los PNG llegaban a 186 kB cada uno. `npm run logos` genera WebP de
+3 a 5 kB: los siete de la franja, encima del pliegue, suman **24 kB**.
