@@ -55,7 +55,7 @@ const marcas = (await getCollection('marcas'))
     /* Hueco corto a propósito: cada logotipo viene en un lienzo común que ya
        trae su propio margen interno. Sumarle un hueco grande lo separaría el
        doble de lo que se dibujó. */
-    gap: clamp(4px, 1vw, 16px);
+    gap: clamp(4px, 0.6vw, 10px);
     margin-inline: calc(-1 * var(--sangria));
     padding-inline: var(--sangria);
   }
@@ -65,14 +65,16 @@ const marcas = (await getCollection('marcas'))
   .franja-enlace { display: block; }
 
   @media (width >= 62.5rem) {
+    /* El rótulo se queda arriba también en escritorio. En línea con los
+       logotipos ocupaba unos 300 px de la fila, y eso obligaba a servir el
+       lienzo a 118 px de ancho para que los siete cupieran. Arriba, la fila
+       dispone del contenedor entero y el lienzo puede ir a 168: el dibujo de
+       cada marca crece un 40 % y se ve al tamaño en que se diseñó. */
     .franja-caja {
-      flex-direction: row;
-      align-items: center;
-      gap: clamp(16px, 2vw, 32px);
-      padding-block: 16px;
+      gap: 10px;
+      padding-block: 14px 16px;
     }
     .franja-pista {
-      flex: 1;
       --sangria: 0px;
       overflow: visible;
     }

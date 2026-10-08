@@ -124,7 +124,7 @@ const etiqueta = slides[0]?.etiqueta;
   }
 
   /* En pantallas bajas el aire vertical es lo primero que sobra. */
-  @media (height < 50rem) and (width >= 62.5rem) {
+  @media (height <= 50rem) and (width >= 62.5rem) {
     .hero-rejilla { padding-block: 20px 24px; gap: 32px; }
   }
 
@@ -393,10 +393,10 @@ const etiqueta = slides[0]?.etiqueta;
 
     /* Por debajo de 800 px de alto el 52vh ya no alcanza: la franja volvía a
        caer fuera. 46vh en portátiles de 768 y 44vh en los de 720. */
-    @media (height < 50rem) { .hero-figura { --alto-caja: 46vh; } }
-    @media (height < 46rem) { .hero-figura { --alto-caja: 44vh; } }
+    @media (height <= 50rem) { .hero-figura { --alto-caja: 40vh; } }
+    @media (height < 46rem) { .hero-figura { --alto-caja: 36vh; } }
     /* Portátiles muy bajos: aquí ya no sobra aire, sobra recuadro. */
-    @media (height < 42rem) { .hero-figura { --alto-caja: 38vh; } }
+    @media (height < 42rem) { .hero-figura { --alto-caja: 30vh; } }
 
     .hero-equipo {
       inline-size: 78%;

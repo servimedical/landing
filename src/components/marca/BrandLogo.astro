@@ -37,15 +37,24 @@ const LIENZO = 1500 / 800;
 
 /** Ancho de la caja. El alto sale del lienzo.
  *
- *  `sm` es el que manda: en la franja van siete logotipos más el rótulo en
- *  una sola fila. A 156 px la fila medía 1.092 px y Akarmak se salía del
- *  contenedor. */
+ *  Son anchos de **lienzo**, no de logotipo: dentro de cada uno el dibujo
+ *  ocupa lo que le corresponde según el encuadre de Figma. Por eso parecen
+ *  grandes comparados con los de antes, cuando la caja ceñía el dibujo. */
 const CAJAS = {
-  xs: 104,  // cabecera de columna del desplegable de marcas
-  sm: 118,  // franja del hero y tarjetas de producto
-  md: 200,  // tarjetas de la home y de /marcas
-  lg: 300,  // encabezado de la página de marca
+  xs: 132,  // cabecera de columna del desplegable de marcas
+  sm: 148,  // franja del hero y tarjetas de producto
+  md: 232,  // tarjetas de la home y de /marcas
+  lg: 340,  // encabezado de la página de marca
 } as const;
+
+/* `sm` es fluido. En la franja van siete lienzos en una fila, y 148 px fijos
+   caben a 1440 pero no a 1024. El `clamp` los encoge con la ventana en vez de
+   cortar el último, y el `width`/`height` del `img` sigue reservando la
+   proporción correcta, que es lo único que importa para el salto de
+   maquetación. */
+const ANCHO_FLUIDO: Partial<Record<keyof typeof CAJAS, string>> = {
+  sm: 'clamp(104px, 11.5vw, 148px)',
+};
 
 interface Props {
   marca: Pick<Marca, 'nombre' | 'logo'>;
@@ -55,6 +64,7 @@ interface Props {
 const { marca, size = 'md', class: clase } = Astro.props;
 const ancho = CAJAS[size];
 const alto = Math.round(ancho / LIENZO);
+const anchoCss = ANCHO_FLUIDO[size] ?? `${ancho}px`;
 
 /* Se acepta SVG, WebP o PNG con el mismo nombre: lo que haya en la carpeta.
    La ruta se resuelve contra `process.cwd()` —la raíz del proyecto— y no
@@ -71,7 +81,7 @@ const archivo = candidatos.find((f) => existsSync(join(process.cwd(), 'public', 
 ---
 <span
   class:list={['svmg-logo', clase]}
-  style={`--w:${ancho}px;--h:${alto}px`}
+  style={`--w:${anchoCss};--h:calc(var(--w) / ${LIENZO})`}
   data-tipografico={!archivo || undefined}
 >
   {archivo

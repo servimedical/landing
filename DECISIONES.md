@@ -710,3 +710,39 @@ pedir los archivos con transparencia.
 
 **Peso.** Los PNG llegaban a 186 kB cada uno. `npm run logos` genera WebP de
 3 a 5 kB: los siete de la franja, encima del pliegue, suman **24 kB**.
+
+### D35 · El lienzo se sirve al tamaño en que se diseñó
+
+**Qué cambió respecto a D34.** El lienzo se servía a 118 px de ancho, y dentro
+de él el dibujo de cada marca quedaba más pequeño que antes de adoptarlo: el
+encuadre de Figma reserva aire alrededor, así que un lienzo de 118 px pinta
+un logotipo de 90.
+
+**Qué lo impedía: el rótulo.** «MARCAS QUE REPRESENTAMOS» iba en línea con los
+logotipos y se comía unos 300 px de los 1.132 de la fila. Con siete marcas,
+eso obligaba a encoger el lienzo hasta que cupieran.
+
+**El rótulo sube a su propia línea**, también en escritorio —en móvil ya
+estaba así—. La fila dispone del contenedor entero y el lienzo pasa de 118 a
+148 px: el dibujo de cada marca crece un 25 %.
+
+**Y el lienzo de la franja es fluido**, `clamp(104px, 11.5vw, 148px)`. Con 148
+fijos los siete caben a 1440 pero no a 1024, donde el último se cortaba. Así
+encogen con la ventana en vez de perderse uno. El `width`/`height` del `img`
+sigue reservando la proporción, que es lo único que importa para el salto de
+maquetación: CLS 0.
+
+Las otras cajas suben en proporción: desplegable 104 → 132, tarjetas 200 →
+232, encabezado de marca 300 → 340.
+
+**El hueco entre logotipos baja a 4–10 px.** Cada lienzo trae su propio
+margen; el hueco solo tiene que separar lienzos, no dibujos.
+
+**El hero cede más alto en pantalla baja** para que la franja, ahora de 150 px,
+siga cabiendo: 40vh por debajo de 800 px de alto, 36vh por debajo de 736 y
+30vh por debajo de 672. Y la consulta pasó de `< 50rem` a `<= 50rem`, porque
+800 px es un alto de pantalla común y quedaba justo fuera.
+
+Verificado a 1920×1080, 1512×860, 1440×900, 1440×800, 1366×768, 1280×720,
+1100×800 y 1024×768: la fila completa y la franja dentro del pliegue en los
+ocho.
