@@ -625,3 +625,48 @@ redimensionada a mano.
 **En móvil no se fuerza.** El hero del teléfono mide 1.022 px por sí solo;
 meterlo en 812 exigiría encoger titular, texto y equipo hasta dejarlos
 ilegibles. Allí la franja va donde cae.
+
+### D33 · Las escalas, revisadas con dos métricas en vez de una
+
+**Qué estaba mal.** D23 igualaba la **mancha total de tinta**. Eso mejoró el
+caso Akarmak pero dejó a Celitron y SVM leyendo pequeños, porque la mancha no
+distingue dónde está esa tinta.
+
+**Lo que se midió esta vez.** Para cada archivo, la **banda de letra**: la
+franja horizontal que contiene el 80 % central de la tinta, expresada como
+fracción del alto total. En una palabra esa banda es la altura de la letra;
+en un lockup con símbolo, es el símbolo.
+
+| Marca | Proporción | Banda de letra | Qué significa |
+|---|---|---|---|
+| Tuttnauer | 3,11 | 0,40 | Palabra con astas: la letra ocupa poco del alto |
+| Akarmak | 7,37 | 0,59 | Palabra sin astas: la letra es casi todo el alto |
+| SVM | 3,66 | 0,81 | Monograma: el trazo llena la caja |
+| Celitron | 1,77 | 0,67 | Palabra más cuadro verde más bajada |
+| Sanqiang | 1,26 | 0,81 | Símbolo sobre texto diminuto |
+| 2i | 1,05 | 0,72 | Símbolo circular |
+
+**Y la conclusión incómoda:** ninguna métrica sola sirve. Igualar la banda de
+letra pedía dejar Akarmak en 0,67 —que es donde estaba cuando Felipe lo vio
+«mucho más grande»—, porque su letra es baja respecto a su enorme ancho: a
+esa escala ocupa 259 px de fila contra los 116 de Tuttnauer. Igualar la
+mancha lo bajaba a 0,55, y entonces su letra quedaba más baja que la de
+todos.
+
+**Se cedió algo de letra a cambio de no dominar la fila: 0,62.** Akarmak
+queda con letra de 16 px contra los 18 de Tuttnauer, y con 201 px de ancho en
+vez de 259.
+
+| Marca | Escala | Pintado | Letra |
+|---|---|---|---|
+| Tuttnauer | 1,00 | 137 × 44 | 18 px |
+| Akarmak | 0,62 | 201 × 27 | 16 px |
+| Celitron | 1,22 | 95 × 54 | — |
+| SVM | 1,08 | 89 × 48 | — |
+| Sanqiang | 1,25 | 69 × 55 | — |
+| 2i | 1,15 | 53 × 51 | — |
+
+Las mismas escalas rigen los tres contextos —franja del hero, desplegable de
+marcas y tarjetas de la home—, porque la corrección es del archivo, no del
+sitio donde se pinta. Verificado en los tres: la caja del logotipo mide lo
+mismo en las siete tarjetas y los enlaces arrancan todos a 28 px del borde.

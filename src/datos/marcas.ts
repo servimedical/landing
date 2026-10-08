@@ -24,7 +24,7 @@ export const marcas: Marca[] = [
     rolSVMG: 'representante',
     // TODO INVIMA · número de registro sanitario por equipo, empezando por PlazMax
     logo: { src: '/logos/marcas/tuttnauer.png', alt: 'Logo de Tuttnauer' },
-    logoEscala: 1.00, // referencia · palabra sola, densidad 0,32
+    logoEscala: 1.00, // referencia · banda de letra 0,40 del alto, 116 px de ancho
     etapasCiclo: ['lavado', 'esterilizacion'],
     pruebas: [
       { dato: 'Fundada en 1925, con plantas en China y Hungría.', fuente: 'tuttnauer.com · página de empresa' },
@@ -56,7 +56,7 @@ export const marcas: Marca[] = [
     fabricante: { razonSocial: 'Henan Sanqiang Medical Equipment', ciudad: 'Hua County, Henan', pais: 'China', fundacion: '2010' },
     rolSVMG: 'distribuidor',
     logo: { src: '/logos/marcas/sanqiang.png', alt: 'Logo de Sanqiang' },
-    logoEscala: 1.30, // lockup apilado y disperso, densidad 0,27: el que más corrección pide
+    logoEscala: 1.25, // símbolo sobre texto diminuto; el alto lo manda el símbolo
     /* Residuos no entra hasta que el producto se publique: la marca no puede
        declarar una etapa que su catálogo visible no cubre. */
     etapasCiclo: ['lavado', 'esterilizacion'],
@@ -93,7 +93,7 @@ export const marcas: Marca[] = [
     // TODO confirmar con Felipe · ¿representante o distribuidor de Celitron?
     rolSVMG: 'distribuidor',
     logo: { src: '/logos/marcas/celitron.png', alt: 'Logo de Celitron' },
-    logoEscala: 1.16, // símbolo con bajada diminuta, densidad 0,44
+    logoEscala: 1.22, // palabra ligera más cuadro verde y bajada diminuta; a 1,34 pasaba a ser el más alto de la fila
     etapasCiclo: ['residuos'],
     /* «Más de 80 países» es de toda la empresa y «más de 40» sólo de residuos:
        no se contradicen. Se usa 40, que es la línea que representamos.
@@ -126,7 +126,7 @@ export const marcas: Marca[] = [
     fabricante: { razonSocial: 'Akar Makina', ciudad: 'Eskişehir', pais: 'Turquía', fundacion: '1990' },
     rolSVMG: 'distribuidor',
     logo: { src: '/logos/marcas/akarmak.png', alt: 'Logo de Akarmak' },
-    logoEscala: 0.67, // palabra muy ancha y maciza, densidad 0,53: la de mayor mancha
+    logoEscala: 0.62, // 7,4:1 y trazo macizo. 0,67 igualaba la altura de letra con Tuttnauer pero ocupaba 259 px de fila; 0,55 la dejaba más baja que todos. 0,62 cede algo de letra a cambio de no dominar
     etapasCiclo: ['residuos'],
     pruebas: [
       { dato: 'Reducción microbiana de 8 log₁₀ en sistemas con trituración previa.', fuente: 'akarmak.com · esterilización de residuos médicos' },
@@ -159,7 +159,7 @@ export const marcas: Marca[] = [
     // TODO confirmar con Felipe · registro INVIMA y certificación ISO 13485,
     // que no es visible públicamente.
     logo: { src: '/logos/marcas/2i.png', alt: 'Logo de 2i' },
-    logoEscala: 1.19, // símbolo circular, densidad 0,79 sobre poca superficie
+    logoEscala: 1.15, // símbolo circular en lienzo casi cuadrado
     etapasCiclo: ['monitoreo'],
     pruebas: [
       { dato: 'Indicadores de las clases 1, 2, 4, 5 y 6 de la ISO 11140-1.', fuente: '2i.ind.br · catálogo de indicadores químicos' },
@@ -190,7 +190,7 @@ export const marcas: Marca[] = [
     fabricante: { razonSocial: 'Servimedical Group SAS', ciudad: 'Bogotá', pais: 'Colombia' },
     rolSVMG: 'representante',
     logo: { src: '/logos/marcas/svm.svg', alt: 'Logo de SVM' },
-    logoEscala: 0.90, // trazo continuo, densidad 1,0: todo lo que ocupa es tinta
+    logoEscala: 1.08, // monograma de trazo fino: leía pequeño a 0,90
     etapasCiclo: ['empaque', 'almacenamiento'],
     respaldo: [
       'Abastecimiento programado desde Bogotá',
