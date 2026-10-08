@@ -108,7 +108,12 @@ void lineasDeMarca;
 /** Forma canónica: sin parámetros, sin `.html` y sin barra final. */
 export function normalizar(url: string): string {
   if (!url.startsWith('/')) return url;
-  const limpia = url.split(/[?#]/)[0]!.replace(/\.html$/, '');
+  /* `build.format: 'file'` sirve la portada como `/index.html`, así que
+     `Astro.url.pathname` trae `/index`. Sin esto, la canónica y la og:url de
+     la portada apuntaban a `https://…/index`, que es una segunda dirección
+     para la misma página: exactamente lo que una canónica existe para
+     evitar. */
+  const limpia = url.split(/[?#]/)[0]!.replace(/\.html$/, '').replace(/\/index$/, '');
   return limpia.length > 1 ? limpia.replace(/\/+$/, '') : '/';
 }
 

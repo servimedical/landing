@@ -19,15 +19,35 @@ const canonica = new URL(rutaActual, sitio.dominio).href;
 const og = new URL('/og.png', sitio.dominio).href;
 const produccion = import.meta.env.PROD && process.env.VERCEL_ENV !== 'preview';
 
+/* Los dos tipos en el mismo nodo y no dos nodos sueltos: es la misma
+   entidad, con una sede física y un área de servicio. Separarlos haría que
+   un buscador tuviera que adivinar que la empresa y el local son lo mismo. */
 const jsonld = {
   '@context': 'https://schema.org',
-  '@type': 'Organization',
+  '@type': ['Organization', 'LocalBusiness'],
   '@id': `${sitio.dominio}/#organizacion`,
   name: sitio.razon,
   alternateName: sitio.nombre,
   url: sitio.dominio,
   telephone: contacto.fijo.valor,
   email: contacto.comercial.valor,
+  contactPoint: [
+    {
+      '@type': 'ContactPoint',
+      contactType: 'ventas',
+      telephone: contacto.fijo.valor,
+      email: contacto.comercial.valor,
+      areaServed: 'CO',
+      availableLanguage: 'es',
+    },
+    {
+      '@type': 'ContactPoint',
+      contactType: 'servicio técnico',
+      telephone: contacto.whatsapp.valor,
+      areaServed: 'CO',
+      availableLanguage: 'es',
+    },
+  ],
   address: {
     '@type': 'PostalAddress',
     streetAddress: 'Transversal 27 N.º 53C-47',
@@ -35,7 +55,9 @@ const jsonld = {
     addressRegion: 'Bogotá D.C.',
     addressCountry: 'CO',
   },
-  areaServed: { '@type': 'Country', name: 'Colombia' },
+  /* El código ISO y no el nombre: «Colombia» es una cadena, «CO» es un país
+     para cualquier consumidor del dato. */
+  areaServed: { '@type': 'Country', name: 'Colombia', identifier: 'CO' },
 };
 ---
 <!doctype html>
