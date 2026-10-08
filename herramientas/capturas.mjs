@@ -34,8 +34,8 @@ const ANCHOS = [
 const PAGINAS = [
   { nombre: 'home', url: '/' },
   { nombre: 'lineas', url: '/lineas' },
-  { nombre: 'linea', url: '/lineas/vapor' },
-  { nombre: 'producto', url: '/marcas/tuttnauer/vapor' },
+  { nombre: 'linea', url: '/lineas/autoclaves' },
+  { nombre: 'producto', url: '/marcas/tuttnauer/autoclaves' },
   { nombre: 'marcas', url: '/marcas' },
   { nombre: 'servicios', url: '/servicios' },
   { nombre: 'menu-lineas', url: '/', abrir: 'panel-lineas' },
