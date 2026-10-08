@@ -327,3 +327,87 @@ El menú traducía el producto llamado «Autoclaves» a «Autoclaves de vapor» 
 que no se confundiera con el nombre de la línea, que era «Esterilización por
 vapor». Ahora la línea se llama «Autoclaves» y la muleta sobra: en el
 desplegable de marcas se lee «Tuttnauer → Autoclaves», que es exacto.
+
+---
+
+## 3 · Mercado colombiano · 4 · Investigación
+
+### D16 · Ningún dato eléctrico de fábrica se publica tal cual
+
+Ver `docs/red-electrica-colombia.md`. Resumen de la regla:
+
+- Si el fabricante declara 60 Hz o una tensión colombiana → se publica.
+- Si declara solo 50 Hz, 380 V o 400 V → **no se publica la cifra**. Queda
+  «Alimentación trifásica, configurada para la red de la institución (60 Hz)».
+- Siempre se publica la potencia en kW o kVA, que es del equipo y no de la red,
+  y es lo que necesita quien dimensiona una acometida.
+
+Se retiraron tensiones europeas de once fichas. Quedan **siete confirmaciones
+de 60 Hz** que pedirle a fábrica, listadas en el documento.
+
+La excepción es Tuttnauer en autoclaves grandes: declara 208–415 V, y 208 V
+**sí** es tensión normalizada colombiana. Esa se publica.
+
+### D17 · Hongrun no entra al sitio
+
+Ver `docs/investigacion/hongrun.md`. El catálogo es odontológico y de
+laboratorio —los modelos se dimensionan por número de sillas odontológicas—,
+no menciona central de esterilización, no declara ninguna norma de aire
+medicinal (ni ISO 8573 ni HTM 02-01) y no publica una sola ficha técnica. Todo
+lo encontrado está en 50 Hz.
+
+El encargo (§4.3) preveía este desenlace: queda documentado y no se publica.
+
+### D18 · Las reprocesadoras de Sanqiang tampoco, todavía
+
+Ver `docs/investigacion/sanqiang-endoscopios.md`. Sanqiang **sí** fabrica
+equipo de reprocesamiento de endoscopios, pero el sitio no publica un solo
+dato técnico: ni endoscopios por ciclo, ni desinfectante, ni prueba de fugas,
+ni ISO 15883-4, ni alimentación.
+
+Hay además una confusión que hay que deshacer antes de escribir nada: el sitio
+muestra **dos** categorías distintas —una lavadora-desinfectadora de
+endoscopios (ISO 15883-4) y un esterilizador de ácido peracético (serie
+SQ-CH)— y no son lo mismo. Publicarlas como una sola sería un error que un
+jefe de central detecta de inmediato.
+
+### D19 · De 2i solo es publicable la mini incubadora
+
+Ver `docs/investigacion/2i-incubadoras.md`. La mini incubadora de 6 cavidades
+tiene datos verificables (55–60 °C, bivolt 127/220 V, cámara de aluminio,
+15 minutos de calentamiento). **El bivolt 127/220 V es buena noticia**: 127 V
+es tensión normalizada colombiana.
+
+Pero declara **50–58 Hz** y Colombia es 60 Hz. Dos hercios por fuera. En la
+práctica un calentador resistivo funciona igual, pero «en la práctica» no se
+publica: la frecuencia queda fuera de la ficha hasta que 2i lo confirme.
+
+De las lectoras de 4 y 12 pozos **no se encontró ninguna ficha**, ni en el
+fabricante ni en su distribuidor oficial.
+
+### D20 · De EasySeal solo se publican las automáticas
+
+Ver `docs/investigacion/easyseal.md`. El fabricante publica ficha técnica de
+sus **seis selladoras automáticas** y de ninguna de las manuales ni de las
+rotativas: hay nombre y fotografía, no hay dato.
+
+Dos precisiones que cambian lo que se puede decir:
+
+1. **EF122-A y EF058 declaran 110/220 V, 50/60 Hz.** Son los dos únicos
+   equipos de todo el portafolio que declaran 60 Hz de fábrica. Esos sí se
+   publican con su tensión.
+2. **Las máquinas no declaran ISO 11607-2.** Declaran «función OQ» y la norma
+   **china** WS 310.2-2016. La referencia a ISO 11607-2 del catálogo
+   corresponde a la tarjeta de prueba EF351, que es un consumible. Decir
+   «selladora ISO 11607-2» sería falso: la ISO 11607-2 obliga a validar el
+   proceso, y quien valida es la institución.
+
+### D21 · «Otros equipos» queda con dos productos, no con cinco
+
+El encargo pide una línea nueva con selladoras EasySeal, reprocesadoras
+Sanqiang, compresores Hongrun e incubadoras 2i. De los cuatro fabricantes,
+**dos no tienen datos publicables** (Hongrun y Sanqiang) y uno los tiene a
+medias (2i: la incubadora sí, las lectoras no).
+
+La línea se crea con lo que sí se puede sostener. Las otras entradas quedan
+documentadas con la lista exacta de lo que hay que pedirle a cada fabricante.

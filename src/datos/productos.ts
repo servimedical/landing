@@ -42,19 +42,19 @@ export const productos: Producto[] = [
         filas: [
           ['T-Top 10', '21 L', 'Ø249 × 450 mm', '585 × 462 × 460 mm', '45 kg', '4 bandejas · llenado manual'],
           ['T-Top 11', '27 L', 'Ø280 × 452 mm', '594 × 495 × 457 mm', '52 kg', 'Llenado manual o automático'],
-          ['T-Edge 10', '23 L', 'Ø250 × 460 mm', '480 × 500 × 580 mm', '53 kg', '5 bandejas · 230 V monofásico'],
-          ['T-Edge 11', '27 L', 'Ø280 × 460 mm', '500 × 500 × 580 mm', '56 kg', '230 V monofásico'],
+          ['T-Edge 10', '23 L', 'Ø250 × 460 mm', '480 × 500 × 580 mm', '53 kg', '5 bandejas · monofásico'],
+          ['T-Edge 11', '27 L', 'Ø280 × 460 mm', '500 × 500 × 580 mm', '56 kg', 'monofásico'],
         ],
       },
       {
         familia: 'Mesa, Clase S · EN 13060',
         encabezados: ['Modelo', 'Cámara', 'Medidas externas', 'Potencia'],
         filas: [
-          ['2540EKA', '23 L', '508 × 362 × 550 mm', '2.200 W · 230 V'],
-          ['D-Line 2840EKA', '28,5 L', '—', '2.200 W · 230 V'],
-          ['3850EA', '65 L', '660 × 525 × 695 mm', '2.400 W · 230 V'],
-          ['D-Line 3850EA', '65 L', '720 × 540 × 765 mm', '2.400 W · 230 V'],
-          ['D-Line 3870EA', '85 L', '720 × 540 × 940 mm', '3.000 W · 230 V'],
+          ['2540EKA', '23 L', '508 × 362 × 550 mm', '2.200 W'],
+          ['D-Line 2840EKA', '28,5 L', '—', '2.200 W'],
+          ['3850EA', '65 L', '660 × 525 × 695 mm', '2.400 W'],
+          ['D-Line 3850EA', '65 L', '720 × 540 × 765 mm', '2.400 W'],
+          ['D-Line 3870EA', '85 L', '720 × 540 × 940 mm', '3.000 W'],
         ],
       },
       {
@@ -119,7 +119,7 @@ export const productos: Producto[] = [
       { label: 'Drenaje', valor: 'Mínimo 2", resistente a 80 °C' },
       { label: 'Aire comprimido', valor: '6–8 bar' },
       { label: 'Vapor de planta', valor: 'Opcional · 97–100 % seco, máximo 2,8 bar' },
-      { label: 'Mesa', valor: 'Toma de 230 V monofásica y agua desmineralizada para el depósito' },
+      { label: 'Mesa', valor: 'Toma monofásica y agua desmineralizada para el depósito' },
     ],
     normasDeclaradas: [
       { familia: 'Mesa', normas: ['EN 13060', 'IEC 61010-1 y -2-040', 'PED 2014/68/UE', 'ISO 13485:2016', 'CE bajo MDR'] },
@@ -180,7 +180,7 @@ export const productos: Producto[] = [
     ],
     ciclos: [{ items: ['Prueba de penetración', 'Prueba de fuga'] }],
     instalacion: [
-      { label: 'Eléctrico', valor: '230 V monofásico · 13,5 y 18,7 A según modelo' },
+      { label: 'Eléctrico', valor: 'Monofásico, configurado para la red de la institución (60 Hz) · 13,5 y 18,7 A según modelo' },
       { label: 'Agua', valor: 'No requiere' },
       { label: 'Fondo con dos puertas', valor: '736 mm · 1.036 mm en el P160' },
     ],
@@ -252,7 +252,7 @@ export const productos: Producto[] = [
     instalacion: [
       { label: 'Agua', valor: 'Fría ablandada y desmineralizada · caliente opcional' },
       { label: 'Drenaje', valor: 'DN40' },
-      { label: 'Eléctrico', valor: 'Tiva 8: 6,3 a 8,8 kW · 230 V monofásico o 380/415 V trifásico' },
+      { label: 'Eléctrico', valor: 'Tiva 8: 6,3 a 8,8 kW · monofásico o trifásico, configurado para la red de la institución (60 Hz)' },
       { label: 'Calentamiento', valor: 'Eléctrico, por vapor o híbrido' },
     ],
     diferenciales: ['Hasta 18 cestas DIN', '40 programas', 'Secado HEPA H14'],
@@ -292,11 +292,11 @@ export const productos: Producto[] = [
       { label: 'Capacidad', valor: '8 a 12 cestas DIN' },
       { label: 'Cámara', valor: '350 – 560 L' },
       { label: 'Desinfección', valor: 'Más de 90 °C · 93–97 °C en la serie KX' },
-      { label: 'Alimentación', valor: '380 V trifásico' },
+      { label: 'Alimentación', valor: 'Trifásico, configurado para la red de la institución (60 Hz) · 30 a 40 kVA según modelo' },
     ],
     descripcion: [
       'La serie KX trabaja entre 93 y 97 °C en la fase de desinfección, con doce cestas en cuatro niveles y programas estándar más configurables. La SQ-X360 es la opción compacta, de doble puerta, con ocho cestas en cuatro niveles.',
-      'El secado es por aire caliente por encima de 100 °C. Todas operan a 380 V trifásico y con presión de agua de 0,2 a 0,5 MPa.',
+      'El secado es por aire caliente por encima de 100 °C. Todas son de alimentación trifásica, configurada para la red de la institución, y piden presión de agua de 0,2 a 0,5 MPa.',
     ],
     modelos: [
       {
@@ -314,12 +314,12 @@ export const productos: Producto[] = [
     //   «6 + DIY» en otro. Mientras tanto no se publica una cifra.
     // TODO · no declara ISO 15883 ni el valor A0.
     instalacion: [
-      { label: 'Eléctrico', valor: 'Trifásico 380 V · 50 Hz' },
+      { label: 'Eléctrico', valor: 'Trifásico, configurado para la red de la institución (60 Hz)' },
       { label: 'Agua', valor: '0,2 – 0,5 MPa' },
       { label: 'Ruido', valor: '≤ 75 dB' },
     ],
     normasDeclaradas: [{ normas: ['CE', 'ISO 13485'] }],
-    diferenciales: ['Hasta 12 cestas DIN', '93 – 97 °C en la serie KX', '380 V trifásico'],
+    diferenciales: ['Hasta 12 cestas DIN', '93 – 97 °C en la serie KX', 'Hasta 40 kVA trifásico'],
     preguntasCotizacion: [
       'Número de procedimientos por día y tipo de instrumental',
       'Cantidad de carros que hay que procesar por turno',
@@ -374,8 +374,8 @@ export const productos: Producto[] = [
         familia: 'Horizontales compactos · EN 13060',
         encabezados: ['Modelo', 'Cámara', 'Medidas de cámara', 'Medidas externas', 'Peso', 'Potencia'],
         filas: [
-          ['SQ-M100', '100 L', 'Ø420 × 700 mm', '1150 × 770 × 1520 mm', '310 kg', '15 kVA · 380 V'],
-          ['SQ-M200', '200 L', 'Ø500 × 1000 mm', '1360 × 810 × 1580 mm', '360 kg', '18 kVA · 380 V'],
+          ['SQ-M100', '100 L', 'Ø420 × 700 mm', '1150 × 770 × 1520 mm', '310 kg', '15 kVA'],
+          ['SQ-M200', '200 L', 'Ø500 × 1000 mm', '1360 × 810 × 1580 mm', '360 kg', '18 kVA'],
         ],
       },
       {
@@ -397,7 +397,9 @@ export const productos: Producto[] = [
     // TODO · qué significan los sufijos S y D. Por convención del sector serían
     //   una y dos puertas, pero el fabricante no lo define: no se publica.
     // TODO · tiempos de ciclo de los equipos de central, no publicados.
-    // TODO · una ficha del SQ-M100 dice 220 V y otra 380 V.
+    // TODO · una ficha del SQ-M100 dice 220 V y otra 380 V. Da igual para
+    //   publicar —la tensión no se publica, ver docs/red-electrica-colombia.md—
+    //   pero hay que resolverlo antes de cotizar una acometida.
     ciclos: [
       {
         familia: 'Mesa · SQ-Z23, tiempo total',
@@ -417,7 +419,7 @@ export const productos: Producto[] = [
       { label: 'Presión de trabajo', valor: 'Máximo 0,28 MPa' },
       { label: 'Temperatura máxima', valor: '139 °C' },
       { label: 'Fuga de vacío', valor: '≤ 0,13 kPa/min' },
-      { label: 'Eléctrico', valor: '380 V · 50 Hz · 48–54 kVA' },
+      { label: 'Eléctrico', valor: 'Trifásico, configurado para la red de la institución (60 Hz) · 48–54 kVA' },
     ],
     // No declara EN 285. No publicar «EN 285» ni «Clase B» para la central.
     normasDeclaradas: [
@@ -579,7 +581,7 @@ export const productos: Producto[] = [
         familia: 'Modelo con ficha vigente',
         encabezados: ['Modelo', 'Cámara', 'Capacidad', 'Ciclo', 'Medidas externas', 'Peso', 'Potencia'],
         filas: [
-          ['ISS AC-575', '150 L · Ø502 × 800 mm', '15 – 30 kg/h', '30 – 40 min', '1290 × 2150 × 2039 mm', '880 kg', '36 kW con generador · 380–400 V trifásico'],
+          ['ISS AC-575', '150 L · Ø502 × 800 mm', '15 – 30 kg/h', '30 – 40 min', '1290 × 2150 × 2039 mm', '880 kg', '36 kW con generador · trifásico'],
         ],
       },
     ],
@@ -588,7 +590,7 @@ export const productos: Producto[] = [
     //   ni en la tabla ni en la franja.
     ciclos: [{ items: ['Residuos', 'Textiles', 'Residuo especial', 'Vidrio', 'Prueba dinámica', 'Limpieza'] }],
     instalacion: [
-      { label: 'Eléctrico', valor: 'Trifásico 380–400 V · 36 kW con generador' },
+      { label: 'Eléctrico', valor: 'Trifásico, configurado para la red de la institución (60 Hz) · 36 kW con generador' },
       { label: 'Accesorios estándar', valor: 'Generador de vapor, ósmosis inversa y drenaje' },
     ],
     normasDeclaradas: [
