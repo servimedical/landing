@@ -163,3 +163,87 @@ cambio de dos líneas en `BrandLogo.astro`.
 
 **Cómo revertirlo.** Añadir `filter: grayscale(1); opacity: .7` al logo y
 quitarlo en `:hover, :focus-visible`.
+
+---
+
+## 1 · Página principal
+
+### D5 · La franja normaliza por altura, no por caja
+
+**Qué.** `BrandLogo.astro` pasó de una caja de ancho fijo con `object-fit:
+contain` a fijar el **alto** y dejar que el ancho salga de la proporción del
+archivo. El ancho queda solo como tope de seguridad.
+
+**Por qué.** Con caja fija, Akarmak —de proporción 7,4:1— se ajustaba por el
+ancho y salía a **27 px de alto** mientras 2i salía a 46. Ninguna escala
+óptica arregla eso, porque el problema era geométrico, no de peso visual.
+
+**Escalas calibradas** (medidas sobre el render, no a ojo). Altura pintada
+resultante en escritorio:
+
+| Marca | `logoEscala` | Alto | Por qué |
+|---|---|---|---|
+| Tuttnauer | 0,85 | 37 px | Palabra sola y ancha: a la altura nominal pesa más que un símbolo. |
+| Sanqiang | 1,25 | 55 px | Símbolo sobre texto diminuto. Es el que el encargo señalaba como pequeño. |
+| Celitron | 1,05 | 46 px | La bajada «medical technologies» es muy pequeña. |
+| Akarmak | 0,80 | 35 px | Proporción 7,4:1; a la altura nominal se comía la franja. |
+| 2i | 1,15 | 51 px | Símbolo circular pequeño dentro de un lienzo casi cuadrado. |
+| SVM | 1,00 | 44 px | Referencia. |
+
+**Los archivos no se tocaron.** Se comprobó con `sharp` que los seis ya vienen
+sin margen transparente: `npm run logos` los recorta al generarlos. La
+pequeñez de Sanqiang no venía de márgenes.
+
+### D6 · La franja se centra en el espacio libre, no en el contenedor
+
+**Qué.** Los logotipos se centran con hueco fijo (`justify-content: center`),
+pero dentro del espacio que deja el rótulo «MARCAS QUE REPRESENTAMOS», que
+sigue a la izquierda.
+
+**Por qué.** Centrarlos en el contenedor completo los metería debajo del
+rótulo. La alternativa —subir el rótulo a una línea propia— añade alto al
+primer pantallazo, y Felipe pidió expresamente que la franja quepa en lo que
+se ve sin desplazar.
+
+**Cómo revertirlo.** Poner `.franja-caja { flex-direction: column }` también en
+escritorio.
+
+### D7 · En móvil la franja sigue siendo un carril deslizable
+
+**Qué.** Se mantuvo el carril horizontal con enganche en vez de pasar a dos o
+tres columnas.
+
+**Por qué.** Ya estaba implementado con la utilidad `deslizable` del proyecto,
+que además fija `scroll-padding-inline` —sin eso el enganche se come la
+sangría—. Una rejilla de dos columnas con seis logotipos de proporciones tan
+distintas (de 1,05 a 7,4) deja huecos muy desiguales.
+
+### D8 · La tarjeta de marca pierde el subtítulo en la home **y** en /marcas
+
+**Qué.** Se quitó el descriptor («Esterilización y desinfección térmica», etc.)
+de `TarjetaMarca.astro`. Se conservaron los enlaces a las líneas de esa marca
+y el «Ver marca →».
+
+**Por qué.** El componente es uno solo y lo usan las dos páginas; dejar el
+subtítulo en una y no en la otra obligaría a duplicarlo. Los enlaces a línea no
+son subtítulo descriptivo: son el camino más corto a un producto, y el bloque
+2.3 pide reforzar justamente esa navegación.
+
+**Cómo revertirlo.** Devolver el `<span>` con `{marca.descriptor}`.
+
+### D9 · El horario deja de estar sin confirmar
+
+**Qué.** `sitio.horario` pasó de `{{ POR CONFIRMAR }}` a «Servicio técnico 24/7
+· Cotizaciones en horario hábil».
+
+**Por qué.** El encargo declara el 24/7 como dato de la empresa y pide que todo
+el sitio sea coherente con él. El formulario decía «Respondemos en horario
+hábil», que lo contradecía de frente.
+
+Se separan los dos relojes a propósito: la avería se atiende a cualquier hora,
+la cotización no. Decirlo junto evita que «24/7» se lea como que alguien cotiza
+un domingo.
+
+**Dónde se tocó:** `src/components/hero/Hero.astro` (subtítulo),
+`src/components/formulario/Formulario.astro` (nota bajo el botón),
+`src/content/sitio.ts` (dato de horario).

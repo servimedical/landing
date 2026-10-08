@@ -12,9 +12,10 @@ export const sitio = {
   idioma: 'es-CO',
   /** Una línea bajo la marca, en el pie. */
   lineaMarca: 'Equipamiento hospitalario y centrales de esterilización.',
-  /* No se muestra en ninguna página mientras no esté confirmado: un
-     marcador nunca va a la vista del visitante (ver VOZ.md). */
-  horario: '{{ POR CONFIRMAR: horario de atención }}',
+  /* Dos relojes distintos: la avería se atiende a cualquier hora, la
+     cotización no. Decirlo junto evita que «24/7» se lea como que alguien
+     cotiza un domingo. */
+  horario: 'Servicio técnico 24/7 · Cotizaciones en horario hábil',
 } as const;
 
 export const contacto = {

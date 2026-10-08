@@ -24,6 +24,7 @@ export const marcas: Marca[] = [
     rolSVMG: 'representante',
     // TODO INVIMA · número de registro sanitario por equipo, empezando por PlazMax
     logo: { src: '/logos/marcas/tuttnauer.png', alt: 'Logo de Tuttnauer' },
+    logoEscala: 0.85, // palabra sola y ancha: a la altura nominal pesa más que un símbolo
     etapasCiclo: ['lavado', 'esterilizacion'],
     pruebas: [
       { dato: 'Fundada en 1925, con plantas en China y Hungría.', fuente: 'tuttnauer.com · página de empresa' },
@@ -55,7 +56,7 @@ export const marcas: Marca[] = [
     fabricante: { razonSocial: 'Henan Sanqiang Medical Equipment', ciudad: 'Hua County, Henan', pais: 'China', fundacion: '2010' },
     rolSVMG: 'distribuidor',
     logo: { src: '/logos/marcas/sanqiang.png', alt: 'Logo de Sanqiang' },
-    logoEscala: 0.88, // apaisa el peso óptico frente a los logotipos horizontales
+    logoEscala: 1.25, // símbolo sobre texto diminuto: necesita más alto para leerse igual
     /* Residuos no entra hasta que el producto se publique: la marca no puede
        declarar una etapa que su catálogo visible no cubre. */
     etapasCiclo: ['lavado', 'esterilizacion'],
@@ -92,7 +93,7 @@ export const marcas: Marca[] = [
     // TODO confirmar con Felipe · ¿representante o distribuidor de Celitron?
     rolSVMG: 'distribuidor',
     logo: { src: '/logos/marcas/celitron.png', alt: 'Logo de Celitron' },
-    logoEscala: 0.95, // apaisa el peso óptico frente a los logotipos horizontales
+    logoEscala: 1.05, // la bajada «medical technologies» es muy pequeña
     etapasCiclo: ['residuos'],
     /* «Más de 80 países» es de toda la empresa y «más de 40» sólo de residuos:
        no se contradicen. Se usa 40, que es la línea que representamos.
@@ -125,6 +126,7 @@ export const marcas: Marca[] = [
     fabricante: { razonSocial: 'Akar Makina', ciudad: 'Eskişehir', pais: 'Turquía', fundacion: '1990' },
     rolSVMG: 'distribuidor',
     logo: { src: '/logos/marcas/akarmak.png', alt: 'Logo de Akarmak' },
+    logoEscala: 0.80, // proporción 7,4:1; a la altura nominal se comía la franja
     etapasCiclo: ['residuos'],
     pruebas: [
       { dato: 'Reducción microbiana de 8 log₁₀ en sistemas con trituración previa.', fuente: 'akarmak.com · esterilización de residuos médicos' },
@@ -157,7 +159,7 @@ export const marcas: Marca[] = [
     // TODO confirmar con Felipe · registro INVIMA y certificación ISO 13485,
     // que no es visible públicamente.
     logo: { src: '/logos/marcas/2i.png', alt: 'Logo de 2i' },
-    logoEscala: 0.85, // apaisa el peso óptico frente a los logotipos horizontales
+    logoEscala: 1.15, // símbolo circular pequeño dentro de un lienzo casi cuadrado
     etapasCiclo: ['monitoreo'],
     pruebas: [
       { dato: 'Indicadores de las clases 1, 2, 4, 5 y 6 de la ISO 11140-1.', fuente: '2i.ind.br · catálogo de indicadores químicos' },
@@ -188,6 +190,7 @@ export const marcas: Marca[] = [
     fabricante: { razonSocial: 'Servimedical Group SAS', ciudad: 'Bogotá', pais: 'Colombia' },
     rolSVMG: 'representante',
     logo: { src: '/logos/marcas/servimedical.svg', alt: 'Logo de Servimedical' },
+    logoEscala: 1.00, // referencia
     etapasCiclo: ['empaque', 'almacenamiento'],
     respaldo: [
       'Abastecimiento programado desde Bogotá',

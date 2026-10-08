@@ -11,9 +11,8 @@ const lineas = lineasDeMarca(marca.slug);
 const productoDe = (slugLinea: string) => productosDeMarca(marca.slug).find((p) => p.linea === slugLinea)!;
 ---
 <li class="flex flex-col border-b border-r border-rule p-6 lg:p-7">
-  <a href={`/marcas/${marca.slug}`} class="group">
+  <a href={`/marcas/${marca.slug}`} class="group" aria-label={`Ver la marca ${marca.nombre}`}>
     <BrandLogo marca={marca} size="md" />
-    <span class="meta mt-5 block text-[10px] text-steel">{marca.descriptor}</span>
   </a>
 
   {lineas.length > 0 && (
