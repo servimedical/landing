@@ -67,39 +67,43 @@ if (delCarrusel.length) {
       const base = f.replace(/\.\w+$/, '');
 
       /* Una foto exportada suele traer aire alrededor del equipo. Ese aire
-         cuenta como imagen: con `object-fit: contain` el equipo queda flotando
-         dentro del panel en vez de salirse por abajo, y se ve más pequeño.
-         Se recorta el margen y se vuelve a rellenar a 5:4 poniendo todo el
-         relleno arriba, para que el equipo quede pegado al borde inferior y
-         todas las diapositivas compartan la misma proporción. */
+         cuenta como imagen: el equipo queda flotando dentro del panel en vez
+         de salirse por abajo, y se ve más pequeño.
+
+         Sólo se recorta; no se vuelve a rellenar. Rellenar a una proporción
+         fija era peor para los equipos altos y estrechos: el archivo quedaba
+         apaisado, `object-fit: contain` lo ajustaba por el ancho y el equipo
+         perdía un cuarto del alto del panel. Recortado al contenido, cada
+         equipo conserva su proporción y usa todo el alto que le cabe; de
+         pegarlo al borde inferior ya se encarga `object-position`. */
       const recortada = await sharpC(join(CARRUSEL, f)).trim().toBuffer({ resolveWithObject: true });
       const { width: w0, height: h0 } = recortada.info;
-      const W = Math.max(w0, Math.round(h0 * 1.25));
-      const H = Math.round(W / 1.25);
-      const lados = Math.round((W - w0) / 2);
-      const encuadrada = await sharpC(recortada.data)
-        .extend({
-          top: H - h0,
-          bottom: 0,
-          left: lados,
-          right: W - w0 - lados,
-          background: { r: 0, g: 0, b: 0, alpha: 0 },
-        })
-        .toBuffer();
+      const W = w0;
 
       const anchos = ANCHOS.filter((a) => a <= W);
       if (!anchos.length) anchos.push(W);
       const hechas = [];
       for (const a of anchos) {
-        const info = await sharpC(encuadrada)
+        const info = await sharpC(recortada.data)
           .resize({ width: a, withoutEnlargement: true, fit: 'inside' })
           .webp({ quality: 86 })
           .toFile(join(CARRUSEL_W, `${base}-${a}.webp`));
         hechas.push(`${a}w ${Math.round(info.size / 1024)} kB`);
       }
-      const servido = anchos.at(-1);
-      const equipoPx = Math.round(w0 * (Math.min(servido, W) / W));
-      const flojo = equipoPx < 700 ? ` · ⚠ el equipo queda en ${equipoPx} px de ancho: se verá blando en pantalla retina` : '';
+      /* Nitidez real: el recuadro mide unos 462 × 480 px CSS en escritorio y
+         la imagen se ajusta dentro, así que un equipo alto se limita por el
+         alto y uno apaisado por el ancho. Comparar el ancho del archivo con
+         un número fijo daba avisos al revés. */
+      const CAJA_W = 462;
+      const CAJA_H = 480;
+      const servido = Math.min(anchos.at(-1), W);
+      const altoCss = Math.min(CAJA_H, CAJA_W * (h0 / w0));
+      const anchoCss = altoCss * (w0 / h0);
+      const densidad = servido / anchoCss;
+      const flojo =
+        densidad < 1.5
+          ? ` · ⚠ ${densidad.toFixed(1)}× : se verá blando en pantalla retina, hace falta una foto con el equipo más grande`
+          : ` · ${densidad.toFixed(1)}×`;
       console.log(`    ${base} · recortado a ${w0} × ${h0} · ${hechas.join(' · ')}${flojo}`);
     }
   }

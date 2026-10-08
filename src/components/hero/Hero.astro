@@ -191,18 +191,21 @@ const etiqueta = slides[0]?.etiqueta;
   /* `--sobresale` se declara en el panel para que la lean tanto la caja como
      los puntos, que son hermanos y no descendientes de la caja. */
   .hero-panel { position: relative; }
-  .hero-figura { --sobresale: 24px; }
+  /* Cuánto sobresale el equipo por debajo del recuadro. Vive en la figura
+     porque lo necesitan la imagen, la sombra de piso y los puntos del
+     carrusel, y los puntos no son descendientes de la caja: si sólo lo
+     supiera la imagen, los puntos quedarían tapados por el equipo. */
+  .hero-figura { --sobresale: 24px; --alto-caja: 300px; }
 
   .hero-caja {
-    /* Cuánto sobresale el equipo por debajo del panel. Vive aquí porque lo
-       necesitan la imagen, la sombra de piso y los puntos del carrusel: si
-       sólo lo supiera la imagen, los puntos quedarían debajo del equipo. */
     position: relative;
     display: grid;
     place-items: end center;
-    background: var(--color-paper);
+    /* Blanco sobre blanco: el recuadro se lee por el filo, no por el relleno. */
+    background: var(--color-white);
+    border: 1px solid var(--color-rule);
     border-radius: 6px;
-    block-size: 300px;
+    block-size: var(--alto-caja);
     /* El equipo se sale por abajo: ese es el gesto. */
     overflow: visible;
   }
@@ -230,6 +233,10 @@ const etiqueta = slides[0]?.etiqueta;
   .hero-caja[data-carrusel] > .hero-lamina {
     display: grid;
     place-items: end center;
+    /* La caja centra en vez de estirar, así que la lámina se encogía al ancho
+       de la imagen y el porcentaje de la imagen se calculaba sobre esa lámina
+       ya encogida: el equipo salía a un 38 % del recuadro. */
+    justify-self: stretch;
     opacity: 0;
     transition: opacity 600ms ease;
     pointer-events: none;
@@ -240,9 +247,13 @@ const etiqueta = slides[0]?.etiqueta;
     position: relative;
     z-index: 1;
     display: block;
-    inline-size: auto;
-    max-inline-size: 86%;
-    block-size: calc(100% + var(--sobresale));
+    /* Cuadro definido en los dos ejes y `contain` dentro. Con `inline-size:
+       auto` el ancho salía del alto ya pintado y los equipos altos se
+       quedaban en el 85 % del recuadro. El alto va contra la variable y no
+       contra un `100%`: la caja alinea al final en vez de estirar, así que la
+       lámina mide lo que mida la imagen y el porcentaje se vuelve circular. */
+    inline-size: 86%;
+    block-size: calc(var(--alto-caja) + var(--sobresale));
     object-fit: contain;
     object-position: bottom center;
     margin-bottom: calc(-1 * var(--sobresale));
@@ -339,7 +350,7 @@ const etiqueta = slides[0]?.etiqueta;
   @media (width >= 48rem) {
     .hero-titular { font-size: clamp(40px, 6vw, 56px); }
     .hero-panel { max-inline-size: 420px; margin-inline: auto; }
-    .hero-caja { block-size: 360px; }
+    .hero-figura { --alto-caja: 360px; }
     .hero-acciones { flex-direction: row; align-items: center; gap: 18px; }
     .hero-cta { padding: 0 24px; }
   }
@@ -356,11 +367,10 @@ const etiqueta = slides[0]?.etiqueta;
     .hero-figura { grid-column: 7 / 13; }
 
     .hero-panel { max-inline-size: none; margin-inline: 0; }
-    .hero-caja { block-size: min(60vh, 440px); }
-    .hero-figura { --sobresale: 40px; }
+    .hero-figura { --sobresale: 40px; --alto-caja: min(60vh, 440px); }
 
     .hero-equipo {
-      max-inline-size: 78%;
+      inline-size: 78%;
       /* A la derecha del centro: la etiqueta vive en la esquina inferior
          izquierda y el encargo pide que no tape el equipo. */
       justify-self: end;
