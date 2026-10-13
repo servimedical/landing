@@ -32,8 +32,7 @@ export const productos: Producto[] = [
       { label: 'Puertas', valor: 'Simple o doble, en central' },
     ],
     descripcion: [
-      'Los equipos de mesa T-Top y T-Edge son Clase B, con prevacío fraccionado para carga hueca y porosa, trazabilidad por USB y conectividad Wi-Fi o Ethernet. Los HSG son medianos sobre ruedas, de 85 y 160 L, que funcionan sin acometidas del edificio.',
-      'En la central, las series GS, 44/55 Compact y T-Max, más los modelos 6671130 y 69180, van de 120 a 1.010 L. Todos llevan cámara de 316L, generador integrado o conexión a vapor de planta, y puerta de barrera que separa el área limpia de la estéril. El sistema AquaMinimal, opcional, reduce el consumo de agua entre un 50 y un 90 %.',
+      'Autoclaves de vapor de 21 a 1.010 L, de mesa hasta doble puerta para central. Cámara en 316L, generador integrado y vacío fraccionado; las series grandes se configuran con una o dos puertas según el flujo de la central.',
     ],
     modelos: [
       {
@@ -165,8 +164,7 @@ export const productos: Producto[] = [
       { label: 'Norma del equipo', valor: 'ISO 14937' },
     ],
     descripcion: [
-      'Tres programas por modelo: estándar, avanzado para lúmenes y endoscopio. La cámara es de aluminio, de una o dos puertas, con canastas de 40 × 60 cm —40 × 90 en el P160—.',
-      'No consume agua y sus subproductos son agua y oxígeno. Cada ciclo se imprime y se exporta por USB y Ethernet. Procesa lúmenes de 1 mm de diámetro, hasta 4 m abiertos en ambos extremos y 1,4 m con un extremo cerrado, según el dispositivo de desafío del fabricante.',
+      'PlazMax: plasma de peróxido de hidrógeno en cámaras de 47, 109 y 162 L, con ciclos de 32 a 48 minutos. Para óptica, electrónica y lúmenes que el vapor destruye; la carga sale lista, sin aireación.',
     ],
     modelos: [
       {
@@ -230,8 +228,7 @@ export const productos: Producto[] = [
       { label: 'Secado', valor: 'Aire filtrado HEPA H14' },
     ],
     descripcion: [
-      'La familia va desde un equipo bajo mesón para quirófano hasta una lavadora de central con puerta de barrera automática. Todas llevan cámara de 316L, dos bombas dosificadoras con caudalímetro para detergente alcalino y neutralizador ácido, y monitoreo de rotación de los brazos de aspersión. Las fabrica AT-OS, en Italia, para Tuttnauer.',
-      'El equipo reconoce el carro cargado y mide la conductividad en el enjuague final, que es por donde entra el manchado del instrumental. El secado es por aire caliente con prefiltro y filtro HEPA H14.',
+      'TIVA: termodesinfectoras de cámara única y doble puerta para instrumental quirúrgico, con lavado, desinfección térmica y secado por aire filtrado en un solo ciclo. Capacidad en cestas DIN según modelo.',
     ],
     modelos: [
       {
@@ -295,8 +292,7 @@ export const productos: Producto[] = [
       { label: 'Alimentación', valor: 'Trifásico, configurado para la red de la institución (60 Hz) · 30 a 40 kVA según modelo' },
     ],
     descripcion: [
-      'La serie KX trabaja entre 93 y 97 °C en la fase de desinfección, con doce cestas en cuatro niveles y programas estándar más configurables. La SQ-X360 es la opción compacta, de doble puerta, con ocho cestas en cuatro niveles.',
-      'El secado es por aire caliente por encima de 100 °C. Todas son de alimentación trifásica, configurada para la red de la institución, y piden presión de agua de 0,2 a 0,5 MPa.',
+      'SQ-X y SQ-KX: termodesinfectoras de 350 a 536 L para hasta doce cestas DIN en cuatro niveles, con desinfección térmica de 93 a 97 °C en la serie KX y secado por aire caliente.',
     ],
     modelos: [
       {
@@ -357,8 +353,7 @@ export const productos: Producto[] = [
       { label: 'Vacío final', valor: '−96 kPa, en central' },
     ],
     descripcion: [
-      'Los equipos de mesa SQ-Z son Clase B, de alimentación monofásica, con ciclos de 18 a 40 minutos para instrumental sólido y envuelto. Los horizontales SQ-M100 y SQ-M200, bajo EN 13060, sirven a clínicas y quirófanos satélite con generador de vapor integrado.',
-      'En la central, la serie MD.JD y PVS·JD extrae el aire con 1 a 99 pulsos de vacío programables, hasta −96 kPa, y sostiene una uniformidad de ±0,5 °C en cámara. El secado es al vacío y el control, por pantalla táctil con impresora térmica y USB.',
+      'Autoclaves de vapor de 18 a 1.500 L: mesa Clase B para procedimientos menores y equipos de central con una o dos puertas. Misma ingeniería de cámara y control de presión en toda la familia.',
     ],
     modelos: [
       {
@@ -465,8 +460,7 @@ export const productos: Producto[] = [
       { label: 'Norma del equipo', valor: 'EN ISO 14937' },
     ],
     descripcion: [
-      'Cámara rectangular en aluminio 5052, control por PLC Siemens con pantalla táctil de siete pulgadas e impresora. Tres ciclos: corto de 30 minutos para carga general, largo de 50 y de lúmenes de 60.',
-      'El peróxido viene en cápsula, lo que elimina la manipulación directa del agente por parte del operario. Opera con alimentación monofásica, que es una diferencia práctica frente a los equipos que exigen trifásico: no obliga a llevar una acometida nueva hasta la central. Los tres modelos comparten gabinete: solo cambia la cámara.',
+      'SQ-WD: plasma de peróxido de 100 a 190 L con ciclo corto de 30 minutos. El agente viene en cápsula, así que el operario no lo manipula, y la alimentación es monofásica: no exige acometida trifásica nueva.',
     ],
     modelos: [
       {
@@ -531,8 +525,7 @@ export const productos: Producto[] = [
       { label: 'Origen', valor: 'Henan, China' },
     ],
     descripcion: [
-      'Sanqiang completa su portafolio de central con el tratamiento del residuo biosanitario en el mismo sitio donde se genera, con la misma ingeniería de cámara y control de presión de sus autoclaves.',
-      'Es la opción para una institución que ya opera equipos Sanqiang y quiere un solo interlocutor técnico para la central y para el recinto de residuos.',
+      'Tratamiento de residuo biosanitario por vapor y trituración en el mismo sitio donde se genera, con la misma ingeniería de cámara y control de presión de los autoclaves de la marca.',
     ],
     diferenciales: ['Tratamiento en sitio', 'Mismo fabricante que la central', 'Importación directa'],
     preguntasCotizacion: [
@@ -573,8 +566,7 @@ export const productos: Producto[] = [
       { label: 'Temperatura', valor: '135 – 155 °C' },
     ],
     descripcion: [
-      'La serie L tritura el residuo antes de la esterilización y trabaja por lote, para hospitales que procesan en sitio con poco espacio. La serie A tritura después del vapor y es la planta centralizada de alto volumen, para una región o un gestor.',
-      'Ambas tienen control por pantalla táctil Siemens y trituradora de doble motor con reversa automática contra atascos. El alcance es llave en mano: generador de vapor, sistema de presurización y cargue y descargue automáticos.',
+      'AKR: tratamiento de residuo biosanitario por trituración y vapor, de 20 a 300 kg por ciclo en la serie de lotes y de 500 a 1.800 en planta. Inactivación de hasta 8 log₁₀ entre 135 y 155 °C.',
     ],
     modelos: [
       {
@@ -642,8 +634,7 @@ export const productos: Producto[] = [
       { label: 'Lectura', valor: 'Inmediata, por viraje' },
     ],
     descripcion: [
-      'El portafolio cubre los dos puntos que la central tiene que documentar: el primer ciclo del día, con la prueba de Bowie-Dick, y el centro de cada paquete, con multivariables, integradores y emuladores.',
-      'El integrador de vapor es Tipo 5 y responde a las tres variables críticas del ciclo: tiempo, temperatura y presencia de vapor. Es el que sigue el comportamiento de un indicador biológico.',
+      'Indicadores de las clases 2, 4, 5 y 6 de la ISO 11140-1, prueba de Bowie-Dick y paquetes de prueba, para vapor, peróxido, óxido de etileno y formaldehído. El integrador Tipo 5 sigue el comportamiento de un indicador biológico.',
     ],
     modelos: [
       {
@@ -702,8 +693,7 @@ export const productos: Producto[] = [
       { label: 'Equipos', valor: 'Lectoras de 4 y 12 pozos' },
     ],
     descripcion: [
-      'El indicador de vapor lleva un mínimo de 10⁶ esporas de Geobacillus stearothermophilus, con un valor D a 121 °C de entre 1,5 y 3 minutos, y se incuba a 60 ± 2 °C en lectora automática. Cumple la ANSI/AAMI/ISO 11138-1:2017.',
-      'Hay versiones de lectura rápida para peróxido, formaldehído y óxido de etileno. La línea se completa con lectoras de cuatro y doce pozos y una mini incubadora de seis.',
+      'Esporas de alta resistencia para verificar la letalidad del ciclo, con lectura desde 19 minutos en vapor y versiones para peróxido, formaldehído y óxido de etileno. Es la única evidencia directa; todo lo demás es indicio.',
     ],
     modelos: [
       {
@@ -765,8 +755,7 @@ export const productos: Producto[] = [
       { label: 'Abastecimiento', valor: 'Programado contra el consumo real' },
     ],
     descripcion: [
-      'Los rollos y sobres papel-película combinan papel médico con película de PET o PP, llevan indicadores de proceso impresos para vapor y óxido de etileno, y se sellan con un ancho mínimo de 6 mm según la EN 868-5.',
-      'Para plasma se usa Tyvek, polietileno de alta densidad hilado por flash, porque la celulosa neutraliza el peróxido. El Tyvek resiste el desgarro y la humedad, y se abre sin desprender fibras sobre el campo estéril.',
+      'Rollos y sobres papel-película para vapor, papel crepado y envoltorio SMS para doblado de sets, y Tyvek para baja temperatura. El material lo decide el método: la celulosa aborta un ciclo de peróxido.',
     ],
     // TODO · catálogo propio con referencias, anchos de rollo, medidas de sobre
     // y unidades por caja. Sin eso no hay tabla de presentaciones.
@@ -809,8 +798,7 @@ export const productos: Producto[] = [
       { label: 'Referencia', valor: 'Resolución 3100 de 2019' },
     ],
     descripcion: [
-      'Se fabrica en acero AISI 304 para mesas y estanterías, y en AISI 316 para zonas húmedas, porque el molibdeno le da más resistencia a cloruros y detergentes. La superficie es continua y la soldadura, pulida: una unión retiene residuo y no se limpia.',
-      'El levantamiento en sitio va antes de la cotización. La altura de trabajo y el largo del puesto deciden cuántos paquetes salen bien conformados al final del turno, y las dimensiones del carro dependen de puertas, ascensores y rampas del recorrido real.',
+      'Mesas de recepción y empaque, carros de transporte y estantería de almacenamiento estéril en acero AISI 304 y 316, fabricados a la medida del plano. Superficie continua y soldadura pulida, sin juntas que retengan residuo.',
     ],
     modelos: [
       {
@@ -869,8 +857,7 @@ export const productos: Producto[] = [
        TODO · conseguir el texto vigente y reponer las cifras verificadas.
        Ver docs/investigacion/servicios.md. */
     descripcion: [
-      'El kit de mantenimiento preventivo anual de un autoclave incluye empaque de puerta, filtro de cámara, fuelle de puerta y válvulas. Son partes de desgaste: se cambian por calendario, no cuando fallan, porque cuando fallan el equipo ya está detenido.',
-      'Servimedical mantiene inventario de los repuestos de desgaste de las marcas que representa, para que el equipo no quede detenido esperando una importación. Atendemos también equipos fuera de garantía y de marcas que no vendimos.',
+      'Empaquetaduras y fuelles de puerta, filtros de cámara, válvulas, sensores, bombas de vacío y resistencias, con existencias en Bogotá de las partes de mayor rotación. Equipos dentro y fuera de garantía.',
     ],
     modelos: [
       {
@@ -922,8 +909,7 @@ export const productos: Producto[] = [
       { label: 'Temperatura', valor: '60 – 220 °C · precisión ≤ 1 %' },
     ],
     descripcion: [
-      'Seis modelos sobre la misma base: corte, sellado e impresión de los parámetros en la propia bolsa. La diferencia entre ellos está en el corte —a lo largo, por longitud de bolsa o de varios rollos a la vez— y en la impresión, que en los modelos AB es de fuente grande para lectura a distancia.',
-      'El control por microcomputador mantiene la temperatura dentro del 1 % y detiene la máquina si se sale más de ±4 °C del valor fijado. Esa parada es la diferencia entre una bolsa mal sellada que se detecta y una que llega a sala: el equipo no sigue produciendo barrera que no sirve.',
+      'Seis modelos automáticos que cortan, sellan e imprimen los parámetros en la propia bolsa, a 10 m/min con sello de 12 mm. El control mantiene la temperatura dentro del 1 % y detiene la máquina si se sale ±4 °C del valor fijado.',
     ],
     modelos: [
       {
@@ -991,8 +977,7 @@ export const productos: Producto[] = [
       { label: 'Alimentación', valor: '127 / 220 V bivolt automático' },
     ],
     descripcion: [
-      'El indicador biológico no da resultado al salir del autoclave: lo da después de incubarse a la temperatura y durante el tiempo que exige su referencia. Esta es la parte del monitoreo que se suele improvisar con una estufa de laboratorio, y es donde un grado de diferencia convierte un negativo real en uno falso.',
-      'El bivolt automático importa en Colombia más de lo que parece: 127 V es una de las tensiones normalizadas de la red, y el equipo no necesita selector ni transformador en una central que tenga esa acometida.',
+      'Mini incubadora de seis cavidades para indicadores biológicos, de 55 a 60 °C y lista en quince minutos. Alimentación bivolt automática de 127/220 V, sin selector ni transformador.',
     ],
     instalacion: [
       { label: 'Eléctrico', valor: 'Bivolt automático 127 / 220 V, sin selector' },
@@ -1039,8 +1024,7 @@ export const productos: Producto[] = [
       { label: 'Química', valor: 'Desinfectante de alto nivel por inmersión' },
     ],
     descripcion: [
-      'Sanqiang fabrica la máquina dentro de la misma línea con la que ya sostiene lavado, esterilización por vapor y baja temperatura en la central. Para una institución que ya tiene equipo de la marca, eso significa un solo canal de repuesto, un solo interlocutor técnico y un solo cronograma de mantenimiento.',
-      'La ficha completa —endoscopios por ciclo, tiempo, desinfectante, prueba de fugas, trazabilidad y acometidas— se cotiza contra el volumen de procedimientos de la institución, porque es lo que decide cuántas máquinas hacen falta y no al revés.',
+      'Lavadoras-desinfectadoras automáticas para endoscopios flexibles, dentro del mismo portafolio con el que Sanqiang cubre lavado, vapor y baja temperatura: un solo canal de repuesto y un solo interlocutor técnico.',
     ],
     // ⚠ El fabricante no publica ficha técnica de esta familia: la página de
     //   categoría trae el nombre y una línea de descripción, nada más. Por eso

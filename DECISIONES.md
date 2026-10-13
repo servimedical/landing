@@ -776,3 +776,25 @@ para cualquier otra ruta que colgara de `/marcas/celitron`.
 entradas anteriores de este archivo son el registro de por qué se hizo cada
 cosa: borrar a Celitron de ahí no quitaría a Celitron del sitio, falsificaría
 el historial. Si se quiere también fuera de los documentos, es otra orden.
+
+### D37 · «Cómo funciona», la descripción del equipo y el texto de marca, a un párrafo
+
+**Qué.** Treinta textos reescritos a **un solo párrafo de 175 a 250
+caracteres** —tres o cuatro líneas de lectura—: los nueve «Cómo funciona» de
+las líneas, las dieciséis descripciones de producto y los seis «Quién es el
+fabricante».
+
+Antes iban de 175 a 1.464 caracteres. «Indicadores y empaque» tenía cuatro
+párrafos y veintidós líneas; las reprocesadoras de endoscopios, dieciocho.
+
+**El tope lo impone ahora el esquema**, no la disciplina: `comoFunciona` y
+`descripcion` pasaron a `z.array(...).length(1)` con `max(360)` por cadena, y
+`quienEs` de 900 a 360 caracteres. Si alguien vuelve a escribir tres
+párrafos, el build se detiene. Sin eso, un texto corto vuelve a crecer solo en
+la siguiente ronda de contenido.
+
+**Qué se conservó al cortar.** La cifra y la razón técnica: temperaturas,
+capacidades, normas y el porqué de cada método. Lo que se fue es la
+explicación extendida —cómo actúa el agente, qué pasa dentro de la cámara,
+la historia del fabricante—, que es material de folleto y no de una página
+donde alguien decide si llama.

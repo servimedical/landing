@@ -18,8 +18,7 @@ export const lineas: Linea[] = [
     orden: 3,
     lead: 'Lavado y desinfección térmica automática del instrumental antes del empaque. Sin una carga limpia no hay esterilización que valga.',
     comoFunciona: [
-      'La termodesinfectora lava el instrumental con agua, detergente enzimático o alcalino y presión, lo enjuaga, y lo desinfecta con agua por encima de 90 °C durante un tiempo controlado. El resultado se expresa como valor A0, según la ISO 15883.',
-      'Al final, el secado con aire caliente filtrado deja la carga lista para inspección y empaque. Reemplaza el lavado manual, que no se puede validar ni repetir igual en cada carga.',
+      'Lavan, desinfectan por calor y secan el instrumental en un solo ciclo cerrado, sin que nadie manipule material contaminado. La ISO 15883 mide la desinfección con el valor A0: A0 600 es el mínimo para instrumental quirúrgico.',
     ],
     compatible: [
       'Instrumental quirúrgico',
@@ -54,9 +53,7 @@ export const lineas: Linea[] = [
     orden: 1,
     lead: 'Vapor saturado a 121 o 134 °C para todo lo que resiste calor y humedad. El método de referencia de la central.',
     comoFunciona: [
-      'El autoclave extrae el aire de la cámara con pulsos de vacío —prevacío fraccionado—, introduce vapor saturado, mantiene la temperatura durante el tiempo de exposición y seca la carga al vacío. Sin aire residual, el vapor llega al centro de cada paquete.',
-      'La prueba de Bowie-Dick al inicio del día confirma esa extracción de aire, y la prueba de vacío confirma que la cámara no tiene fugas. Son las dos verificaciones que preceden a la primera carga.',
-      'Hay dos escalas. Los esterilizadores pequeños —de mesa y de hasta un módulo— se rigen por la EN 13060, que los clasifica en B para carga hueca y porosa, S para lo que declare el fabricante, y N para sólidos sin envolver. Los grandes, de central, se rigen por la EN 285. Una clínica o un quirófano satélite suele necesitar un Clase B de mesa; una central hospitalaria, uno o varios equipos EN 285.',
+      'Vapor saturado a 121 o 134 °C bajo presión, precedido de vacío fraccionado para sacar el aire de los lúmenes: donde queda aire, no hay esterilización. Es el método de referencia de la central, el más barato por carga y el único sin residuo tóxico.',
     ],
     compatible: [
       'Instrumental metálico',
@@ -95,8 +92,7 @@ export const lineas: Linea[] = [
     orden: 2,
     lead: 'Peróxido de hidrógeno vaporizado por debajo de 55 °C para lo que el vapor destruye: óptica, cables, motores y polímeros.',
     comoFunciona: [
-      'El equipo hace vacío en la cámara, vaporiza peróxido de hidrógeno, lo difunde en la carga y lo convierte en plasma, que descompone el residuo en agua y oxígeno. No usa agua de red y no deja residuos tóxicos.',
-      'El ciclo dura entre 30 y 60 minutos, así que el instrumental termosensible vuelve a sala el mismo día. Ahí está su valor: no reemplaza al autoclave, recupera la rotación del instrumental caro.',
+      'Peróxido de hidrógeno vaporizado por debajo de 55 °C, para lo que el vapor destruye: óptica, electrónica, polímeros y lúmenes largos. Ciclos de 30 a 60 minutos y carga lista al terminar, sin aireación.',
     ],
     compatible: [
       'Óptica rígida',
@@ -134,9 +130,7 @@ export const lineas: Linea[] = [
     orden: 4,
     lead: 'El endoscopio flexible no se puede autoclavar y no se puede abrir: se reprocesa por dentro, canal por canal, y esa es toda la dificultad.',
     comoFunciona: [
-      'Un endoscopio flexible es un tubo con varios canales de milímetros de diámetro y metros de longitud, hecho de materiales que no soportan 134 °C. No hay ciclo de vapor posible: lo que se hace es limpieza manual previa, lavado automático con irrigación forzada de cada canal, desinfección de alto nivel por inmersión química y enjuague final con agua tratada, porque el agua de red volvería a contaminar lo que se acaba de desinfectar.',
-      'La ISO 15883-4 gobierna estas máquinas. Lo que exige no es solo que laven: exige que el equipo compruebe que cada canal está conectado y permeable antes de empezar, que verifique la ausencia de fugas en el endoscopio —una perforación convierte el ciclo en una contaminación del interior del aparato— y que deje registro de cada ciclo con su identificación de equipo, operador y endoscopio.',
-      'El desinfectante decide el resto del diseño. El ácido peracético actúa rápido y se descompone en ácido acético, agua y oxígeno; el ortoftalaldehído tolera mejor materiales delicados pero mancha y exige enjuague más largo. La elección condiciona el tiempo de ciclo, la ventilación del recinto y el protocolo de protección del personal.',
+      'Lavan e irrigan cada canal del endoscopio flexible, lo desinfectan de alto nivel por inmersión química y lo enjuagan con agua tratada. La ISO 15883-4 exige además prueba de fugas y registro por ciclo: el endoscopio no se puede autoclavar ni abrir.',
     ],
     compatible: [
       'Endoscopios flexibles con canal de aire, agua, biopsia y succión',
@@ -174,8 +168,7 @@ export const lineas: Linea[] = [
     orden: 5,
     lead: 'Una central no son solo esterilizadores: también sella la barrera e incuba la evidencia, y esos equipos deciden tanto como el autoclave si la carga se libera.',
     comoFunciona: [
-      'El sello de la barrera estéril es un proceso, no un gesto. La ISO 11607-2 lo trata como tal: exige validarlo con calificación de instalación, de operación y de desempeño, y comprobar que el sello no tenga canales, discontinuidades, grietas ni despegue del material. Una selladora con control y registro de temperatura, presión y velocidad es lo que hace posible esa validación; la barrera mejor escogida no sirve si el sello no se puede demostrar.',
-      'La incubación del indicador biológico es el otro extremo del mismo problema. El indicador se expone en el ciclo, pero el resultado solo existe después de incubarlo a la temperatura y durante el tiempo que exige la referencia. Una incubadora fuera de rango no da un resultado dudoso: da un resultado falso, y sobre ese resultado se libera o no se libera una carga.',
+      'Lo que la central también necesita: selladoras que cierran la barrera estéril con temperatura y presión controladas, e incubadoras que revelan el resultado del indicador biológico. Sin ellas, ni el empaque ni la evidencia se sostienen.',
     ],
     compatible: [
       'Sellado de rollos y sobres papel-película',
@@ -214,10 +207,7 @@ export const lineas: Linea[] = [
     orden: 7,
     lead: 'Dos mitades del mismo control: el empaque sostiene la barrera estéril y los indicadores prueban que el proceso funcionó dentro de ella.',
     comoFunciona: [
-      'El sistema de barrera estéril deja pasar el agente esterilizante, lo retiene fuera después del ciclo y resiste la manipulación hasta la apertura. La ISO 11607 lo regula como sistema —material, sellado y validación juntos—, no como material suelto. El método decide el material: el vapor atraviesa la celulosa, así que se empaca en papel para esterilización o en rollo papel-película; el peróxido de hidrógeno es neutralizado por la celulosa, así que la baja temperatura exige Tyvek o envoltorio SMS de polipropileno.',
-      'El indicador químico cambia de color al exponerse al proceso. Según la ISO 11140-1, el Tipo 1 distingue un paquete procesado de uno que no —es la cinta testigo, que no está en el catálogo de 2i—; el Tipo 2 es la prueba de Bowie-Dick; y los Tipos 4, 5 y 6 responden a varias variables críticas del ciclo, donde el Tipo 5 —el integrador— sigue el comportamiento de un indicador biológico.',
-      'El indicador biológico lleva esporas de alta resistencia: Geobacillus stearothermophilus en vapor. Tras el ciclo se incuba, y si no hay crecimiento el proceso fue letal. Es la única evidencia directa de letalidad; todo lo demás es indicio.',
-      'La Resolución 3100 de 2019 exige indicador químico en cada paquete e indicador biológico como mínimo semanal. Las dos mitades se compran juntas porque fallan juntas: un indicador impecable dentro de un empaque que perdió el sello no libera nada, porque lo que se certifica no es el ciclo, es el paquete que llega a sala.',
+      'El empaque sostiene la barrera estéril bajo ISO 11607 y los indicadores prueban que el proceso funcionó dentro de ella: el químico confirma que el agente llegó, el biológico que mató las esporas. Se compran juntos porque fallan juntos.',
     ],
     compatible: [
       'Rollos y sobres papel-película para vapor y óxido de etileno',
@@ -264,8 +254,7 @@ export const lineas: Linea[] = [
     orden: 8,
     lead: 'Mesas, mesones, carros y estanterías que definen el recorrido del material. El mobiliario no acompaña el flujo de la central: lo construye.',
     comoFunciona: [
-      'La central se organiza en tres zonas que no se cruzan: sucio, limpio y estéril. El mobiliario es lo que las separa físicamente, y la Resolución 3100 de 2019 exige mesón de trabajo con poceta y unidireccionalidad en cada etapa.',
-      'La superficie decide la higiene. Una unión, un remache o una junta retienen residuo y no se limpian, así que se fabrica con superficie continua y soldadura pulida. Se usa acero AISI 304 para mesas y estanterías, y AISI 316 en zonas húmedas, donde el molibdeno da más resistencia a cloruros y detergentes.',
+      'Acero inoxidable AISI 304 y 316 dimensionado contra el plano de la central: mesas de recepción y empaque, carros de transporte y estantería de almacenamiento estéril. Define el flujo de sucio a limpio a estéril antes que cualquier equipo.',
     ],
     compatible: [
       'Mesones de lavado con poceta y escurridero, en la zona sucia',
@@ -300,9 +289,7 @@ export const lineas: Linea[] = [
     orden: 6,
     lead: 'Vapor y trituración en el mismo sitio donde se genera el residuo biosanitario. Sale estéril, irreconocible y con una fracción del volumen.',
     comoFunciona: [
-      'El residuo infeccioso entra a un autoclave que lo esteriliza con vapor a presión y lo tritura, antes o después de la exposición. Sale estéril, fragmentado y reducido hasta en un 80 %, y se dispone como residuo ordinario según la reglamentación local.',
-      'Hay dos arquitecturas. La trituración en el mismo recipiente, o antes del vapor, da equipos compactos para un hospital. La trituración después del vapor, en continuo, da plantas centralizadas para una región o para un gestor.',
-      'Tratar en sitio evita transportar residuo infeccioso fuera del hospital y no genera las emisiones de la incineración.',
+      'Trituran y esterilizan con vapor el residuo biosanitario en el mismo sitio donde se genera. Sale irreconocible, estéril y con una fracción del volumen, así que deja de ser residuo peligroso y baja el costo de disposición.',
     ],
     compatible: [
       'Cortopunzantes en contenedor rígido',
@@ -338,8 +325,7 @@ export const lineas: Linea[] = [
     orden: 9,
     lead: 'Repuesto para el mantenimiento preventivo, el correctivo y la revalidación anual. Un autoclave detenido es un quirófano detenido.',
     comoFunciona: [
-      'El mantenimiento preventivo y la revalidación periódica del esterilizador consumen partes: empaque de puerta, filtros, válvulas y sensores. El repuesto no es una emergencia, es un programa, y se dimensiona contra la rutina del año.',
-      'El kit de mantenimiento preventivo anual de un autoclave incluye empaque de puerta, filtro de cámara, fuelle de puerta y válvulas. Lo que decide el tiempo de parada no es el diagnóstico: es si la parte está en el país.',
+      'Partes de desgaste de los equipos de la central: empaquetaduras y fuelles de puerta, filtros, válvulas, sensores y bombas. Se cambian por calendario contra la rutina de mantenimiento, no cuando el equipo ya está detenido.',
     ],
     compatible: [
       'Empaques y fuelles de puerta',

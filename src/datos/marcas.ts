@@ -19,7 +19,7 @@ export const marcas: Marca[] = [
     lead:
       'Fabricante de autoclaves desde 1925, con más de 200 distribuidores en más de 140 países. Autoclaves de vapor, baja temperatura con peróxido de hidrógeno y lavado con termodesinfección para la central, con instalación, calificación y repuesto original desde Bogotá.',
     quienEs:
-      'Tuttnauer empezó en 1925 como taller de recipientes a presión y hoy diseña equipos de esterilización y control de infecciones para hospitales, clínicas, laboratorios y odontología. Tiene oficinas regionales en Estados Unidos, Europa, India y China, y plantas en China desde 2013 y en Hungría desde 2022. Sus autoclaves hospitalarios se fabrican bajo EN 285, ANSI/AAMI ST8, ISO 13485 e ISO 9001, y la Directiva de Equipos a Presión 2014/68/UE.',
+      'Fabricante israelí fundado en 1925, con planta propia y más de 200 distribuidores en 140 países. Fabrica bajo ISO 13485 con marcado CE y registro FDA, y cubre vapor, baja temperatura y termodesinfección para la central.',
     fabricante: { pais: 'China y Hungría', fundacion: '1925' },
     rolSVMG: 'representante',
     // TODO INVIMA · número de registro sanitario por equipo, empezando por PlazMax
@@ -51,7 +51,7 @@ export const marcas: Marca[] = [
     lead:
       'Fabricante chino de equipos para la central de esterilización, fundado en 2010 y exportador a más de 100 países. Cubre el lavado y la termodesinfección, el vapor —desde autoclaves de mesa hasta cámaras de 1.500 L— y el plasma de peróxido.',
     quienEs:
-      'Sanqiang diseña y fabrica en Hua County, en la provincia de Henan, autoclaves de vacío pulsante, esterilizadores de plasma de peróxido, termodesinfectoras y equipos de óxido de etileno, formaldehído y secado. Tiene 304 empleados y una planta de 51.677 m², según su perfil verificado por SGS. Declara ISO 13485, ISO 9001, ISO 14001, ISO 45001, marcado CE y ASME.',
+      'Fabricante chino de equipo de control de infecciones para central hospitalaria, con 304 empleados y 51.677 m² de planta verificados por SGS. Cubre lavado, vapor, baja temperatura, endoscopios y residuos.',
     fabricante: { razonSocial: 'Henan Sanqiang Medical Equipment', ciudad: 'Hua County, Henan', pais: 'China', fundacion: '2010' },
     rolSVMG: 'distribuidor',
     logo: { src: '/logos/marcas/sanqiang.png', alt: 'Logo de Sanqiang' },
@@ -87,7 +87,7 @@ export const marcas: Marca[] = [
     lead:
       'Fabricante turco de autoclaves industriales desde 1990, con clientes en más de 70 países. Su línea médica esteriliza y tritura residuos biosanitarios, desde equipos para un solo hospital hasta plantas centralizadas.',
     quienEs:
-      'Akarmak fabrica autoclaves y recipientes a presión para las industrias del vidrio, los compuestos, el caucho y la construcción, y aplica esa ingeniería al tratamiento de residuos médicos. Fabrica bajo la Directiva de Equipos a Presión 2014/68/UE, ASME VIII, AD 2000 e ISO 9001:2015, y sus sistemas de residuos están validados por organismos independientes como el Instituto Robert Koch, en nivel STAATT IV.',
+      'Fabricante turco —Akar Makina— de sistemas de tratamiento de residuo biosanitario por trituración y vapor, de equipos por lote a plantas de 1.800 kg por ciclo. Fabricación con marcado CE.',
     fabricante: { razonSocial: 'Akar Makina', ciudad: 'Eskişehir', pais: 'Turquía', fundacion: '1990' },
     rolSVMG: 'distribuidor',
     logo: { src: '/logos/marcas/akarmak.png', alt: 'Logo de Akarmak' },
@@ -117,7 +117,7 @@ export const marcas: Marca[] = [
     lead:
       'Indicadores químicos y biológicos para monitorear vapor, peróxido de hidrógeno, óxido de etileno y formaldehído, con lectura rápida desde 19 minutos en vapor. La evidencia con la que la central libera cada carga.',
     quienEs:
-      '2i fabrica en Brasil indicadores para todas las clases de la ISO 11140-1, indicadores biológicos autocontenidos, paquetes de prueba, pruebas de limpieza para lavadoras, y lectoras e incubadoras propias.',
+      'Fabricante brasileño de indicadores químicos y biológicos para monitoreo de esterilización, bajo ISO 11140-1 e ISO 11138. Produce además las lectoras e incubadoras de su propia línea.',
     fabricante: { razonSocial: '2i Health Care', ciudad: 'Cambé, Paraná', pais: 'Brasil' },
     rolSVMG: 'distribuidor',
     // TODO confirmar con Felipe · registro INVIMA y certificación ISO 13485,
@@ -149,7 +149,7 @@ export const marcas: Marca[] = [
     lead:
       'Lo que la central consume y lo que la sostiene: papel para esterilización y Tyvek para la barrera estéril, mobiliario en acero inoxidable para el flujo de sucio a limpio a estéril, y repuestos para que los equipos no se detengan.',
     quienEs:
-      'La línea propia de Servimedical cubre lo que no depende de un fabricante de equipos: el empaque bajo ISO 11607 y EN 868, el mobiliario según los ambientes que exige la Resolución 3100 de 2019, y el repuesto para el mantenimiento preventivo y la revalidación del esterilizador.',
+      'La línea propia de Servimedical Group: lo que la central consume y lo que la sostiene. Empaque bajo ISO 11607 y EN 868, mobiliario en acero inoxidable a la medida del plano, y repuestos con existencias en Bogotá.',
     fabricante: { razonSocial: 'Servimedical Group SAS', ciudad: 'Bogotá', pais: 'Colombia' },
     rolSVMG: 'representante',
     logo: { src: '/logos/marcas/svm.svg', alt: 'Logo de SVM' },
@@ -173,7 +173,7 @@ export const marcas: Marca[] = [
     descriptor: 'Sellado de la barrera estéril',
     lead: 'Fabricante chino especializado en selladoras para empaque médico. Servimedical representa su línea automática en Colombia.',
     quienEs:
-      'Easyseal Medical Technology fabrica exclusivamente equipo para el sellado del empaque médico: selladoras manuales, automáticas y rotativas, cortadoras de papel, tarjetas de prueba de sellado y consumibles de trazabilidad. Su línea automática integra control por microcomputador con precisión de control de temperatura de ≤ 1 %, impresión de los parámetros del sello y función de calificación operacional, que es lo que permite a una central sostener la validación que exige la ISO 11607-2.',
+      'Fabricante chino especializado en sellado de empaque médico. Su línea automática integra control de temperatura con precisión de ≤ 1 %, impresión de los parámetros del sello y función de calificación operacional.',
     fabricante: { razonSocial: 'Easyseal Medical Technology Co., Ltd.', pais: 'China' },
     // TODO · año de fundación. El sitio solo trae el aviso de copyright de
     //   2014, que es la fecha del sitio y no la de la empresa.

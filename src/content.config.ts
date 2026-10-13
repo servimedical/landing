@@ -25,7 +25,8 @@ const esquemaMarca = z.object({
   nombre: z.string().min(1),
   descriptor: z.string().min(1).max(60),
   lead: z.string().min(1).max(420),
-  quienEs: z.string().min(120).max(900),
+  /* De 900 a 360: quién fabrica y qué lo respalda, sin la historia. */
+  quienEs: z.string().min(120).max(360),
   fabricante: z.object({
     razonSocial: z.string().optional(),
     ciudad: z.string().optional(),
@@ -53,10 +54,12 @@ const esquemaLinea = z.object({
   etapasAdicionales: z.array(z.enum(ETAPAS)).optional(),
   nombreNav: z.string().optional(),
   lead: z.string().min(1).max(260),
-  /* Cuatro y no tres: «Indicadores y empaque» reúne dos materias que se
-     compran juntas, y explicarlas en tres párrafos obliga a apretarlas. El
-     tope sigue existiendo para que una línea no se vuelva un tratado. */
-  comoFunciona: z.array(z.string().min(80)).min(2).max(4),
+  /* Un solo párrafo, y corto. La página de línea no es el sitio para
+     enseñar el método: es el sitio para decir qué es, en lo que alguien lee
+     de pie frente a una pantalla. El tope de 360 caracteres son tres o
+     cuatro líneas de lectura; el esquema lo impone para que no vuelva a
+     crecer solo. */
+  comoFunciona: z.array(z.string().min(80).max(360)).length(1),
   compatible: z.array(z.string().min(1)).min(2),
   noCompatible: z.array(z.string().min(1)).min(1),
   empaque: z.string().min(1).optional(),
@@ -76,7 +79,8 @@ const esquemaProducto = z.object({
   tipo: z.enum(['equipo', 'consumible', 'mobiliario']),
   lead: z.string().min(1).max(300),
   franja: z.array(spec).min(3).max(4),
-  descripcion: z.array(z.string().min(80)).min(1).max(3),
+  /* Mismo criterio que `comoFunciona`: qué es el equipo, no un folleto. */
+  descripcion: z.array(z.string().min(80).max(360)).length(1),
   /* Una tabla por familia: mesa, mediano, central. Una sola de veinte filas
      no se lee. */
   modelos: z.array(z.object({
