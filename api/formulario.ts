@@ -1,19 +1,29 @@
 /* ============================================================================
    RECEPCIÓN DE FORMULARIOS — función de Vercel
 
-   Existe por dos razones que no se pueden resolver en el navegador:
-   la validación del servidor (la del cliente es comodidad, no control) y el
-   envío por servicio transaccional con dominio verificado.
+   Existe por dos razones que no se pueden resolver en el navegador: la
+   validación del servidor (la del cliente es comodidad, no control) y el
+   acceso a credenciales que no pueden viajar al cliente.
 
-   Si el servicio de correo no está configurado, responde 503 con un motivo
-   explícito: el navegador conserva lo escrito y ofrece WhatsApp o correo
-   directo. Es preferible a perder el mensaje.
+   **Airtable es el registro de verdad.** El lead se guarda en LEADS WEB y
+   eso es lo que decide si la petición salió bien: si Airtable falla, el
+   visitante se entera y conserva lo escrito.
+
+   **El correo es opcional y no bloquea.** Hoy Resend está sin configurar a
+   propósito. Mientras lo esté, el formulario funciona igual: guarda en
+   Airtable, responde 200 y deja constancia de que el aviso no salió. Cuando
+   se configure, empieza a enviar sin tocar una línea.
+
+   El orden importa y es deliberado: primero el registro, después el aviso.
+   Al revés, un Airtable caído haría perder la fila de un lead que ya recibió
+   su acuse.
    ========================================================================== */
 
 import {
   FORMULARIO, validar, hayErrores,
   CAMPO_TRAMPA, MINIMO_SEGUNDOS, VERSION_AUTORIZACION, TEXTO_AUTORIZACION,
 } from '../src/lib/formularios.ts';
+import { buscarCliente, guardarLead, configurado } from '../src/lib/airtable.ts';
 
 type Peticion = { method?: string; body?: unknown; headers: Record<string, string | string[] | undefined> };
 type Respuesta = {
@@ -115,6 +125,39 @@ export default async function handler(req: Peticion, res: Respuesta) {
     `${INTERNO}. Política de tratamiento: ` +
     `https://www.servimedicalgroup.com/politica-de-tratamiento-de-datos\n`;
 
+  /* 1 · El registro. Es lo que no se puede perder. */
+  if (!configurado()) {
+    res.setHeader('Cache-Control', 'no-store');
+    return res.status(503).json({ ok: false, motivo: 'sin-configurar' });
+  }
+
+  try {
+    const lead = {
+      tipo: datos.tipo ?? '',
+      nombre: datos.nombre ?? '',
+      cargo: datos.cargo ?? '',
+      institucion: datos.institucion ?? '',
+      ciudad: datos.ciudad,
+      correo: datos.correo ?? '',
+      telefono: datos.telefono,
+      descripcion: datos.descripcion ?? '',
+      origen,
+      autorizacion,
+      recibido: ahora,
+    };
+    /* La nota de «ya es cliente» nunca hace fallar el guardado: si la
+       consulta se cae, el lead entra igual y sin nota. */
+    const coincidencia = await buscarCliente(lead);
+    await guardarLead(lead, coincidencia);
+  } catch (err) {
+    const codigo = (err as { codigo?: string }).codigo ?? 'airtable';
+    res.setHeader('Cache-Control', 'no-store');
+    return res.status(503).json({ ok: false, motivo: codigo });
+  }
+
+  /* 2 · El aviso. Si no sale, el lead ya está guardado: no se le dice al
+     visitante que algo falló, porque para él no falló nada. */
+  let aviso: 'enviado' | 'sin-configurar' | 'fallido' = 'enviado';
   try {
     await enviar(
       destinoDe(datos.tipo ?? ''),
@@ -124,10 +167,10 @@ export default async function handler(req: Peticion, res: Respuesta) {
     if (datos.correo) {
       await enviar(datos.correo, `Recibimos su ${form.titulo.toLowerCase()} — Servimedical Group`, acuse);
     }
-    return res.status(200).json({ ok: true });
   } catch (err) {
-    const codigo = (err as { codigo?: string }).codigo ?? 'envio-fallido';
-    res.setHeader('Cache-Control', 'no-store');
-    return res.status(503).json({ ok: false, motivo: codigo });
+    aviso = (err as { codigo?: string }).codigo === 'sin-configurar' ? 'sin-configurar' : 'fallido';
+    console.warn(`[formulario] lead guardado, aviso por correo ${aviso}`);
   }
+
+  return res.status(200).json({ ok: true, aviso });
 }
