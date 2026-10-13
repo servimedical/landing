@@ -19,7 +19,7 @@ export const marcas: Marca[] = [
     lead:
       'Fabricante de autoclaves desde 1925, con más de 200 distribuidores en más de 140 países. Autoclaves de vapor, baja temperatura con peróxido de hidrógeno y lavado con termodesinfección para la central, con instalación, calificación y repuesto original desde Bogotá.',
     quienEs:
-      'Fabricante israelí fundado en 1925, con planta propia y más de 200 distribuidores en 140 países. Fabrica bajo ISO 13485 con marcado CE y registro FDA, y cubre vapor, baja temperatura y termodesinfección para la central.',
+      'Fabricante fundado en 1925, con plantas en China desde 2013 y en Hungría desde 2022, y más de 200 distribuidores en 140 países. Los autoclaves de central se fabrican bajo EN 285, ANSI/AAMI ST8, ISO 13485 y la Directiva de Equipos a Presión 2014/68/UE.',
     fabricante: { pais: 'China y Hungría', fundacion: '1925' },
     rolSVMG: 'representante',
     // TODO INVIMA · número de registro sanitario por equipo, empezando por PlazMax
@@ -51,7 +51,7 @@ export const marcas: Marca[] = [
     lead:
       'Fabricante chino de equipos para la central de esterilización, fundado en 2010 y exportador a más de 100 países. Cubre el lavado y la termodesinfección, el vapor —desde autoclaves de mesa hasta cámaras de 1.500 L— y el plasma de peróxido.',
     quienEs:
-      'Fabricante chino de equipo de control de infecciones para central hospitalaria, con 304 empleados y 51.677 m² de planta verificados por SGS. Cubre lavado, vapor, baja temperatura, endoscopios y residuos.',
+      'Fabricante chino con 304 empleados y una planta de 51.677 m² en Hua County, Henan, según su perfil verificado por SGS. Fabrica autoclaves de vacío pulsante, plasma de peróxido, termodesinfectoras y equipos de óxido de etileno y formaldehído.',
     fabricante: { razonSocial: 'Henan Sanqiang Medical Equipment', ciudad: 'Hua County, Henan', pais: 'China', fundacion: '2010' },
     rolSVMG: 'distribuidor',
     logo: { src: '/logos/marcas/sanqiang.png', alt: 'Logo de Sanqiang' },
@@ -87,7 +87,7 @@ export const marcas: Marca[] = [
     lead:
       'Fabricante turco de autoclaves industriales desde 1990, con clientes en más de 70 países. Su línea médica esteriliza y tritura residuos biosanitarios, desde equipos para un solo hospital hasta plantas centralizadas.',
     quienEs:
-      'Fabricante turco —Akar Makina— de sistemas de tratamiento de residuo biosanitario por trituración y vapor, de equipos por lote a plantas de 1.800 kg por ciclo. Fabricación con marcado CE.',
+      'Fabricante turco —Akar Makina— que aplica al residuo biosanitario su ingeniería de autoclaves y recipientes a presión industriales. Fabrica bajo la Directiva de Equipos a Presión 2014/68/UE, ASME VIII, AD 2000 e ISO 9001:2015.',
     fabricante: { razonSocial: 'Akar Makina', ciudad: 'Eskişehir', pais: 'Turquía', fundacion: '1990' },
     rolSVMG: 'distribuidor',
     logo: { src: '/logos/marcas/akarmak.png', alt: 'Logo de Akarmak' },
@@ -117,7 +117,7 @@ export const marcas: Marca[] = [
     lead:
       'Indicadores químicos y biológicos para monitorear vapor, peróxido de hidrógeno, óxido de etileno y formaldehído, con lectura rápida desde 19 minutos en vapor. La evidencia con la que la central libera cada carga.',
     quienEs:
-      'Fabricante brasileño de indicadores químicos y biológicos para monitoreo de esterilización, bajo ISO 11140-1 e ISO 11138. Produce además las lectoras e incubadoras de su propia línea.',
+      'Fabricante brasileño de indicadores para todas las clases de la ISO 11140-1, indicadores biológicos autocontenidos, paquetes de prueba y pruebas de limpieza para lavadoras. Produce también las lectoras e incubadoras de su propia línea.',
     fabricante: { razonSocial: '2i Health Care', ciudad: 'Cambé, Paraná', pais: 'Brasil' },
     rolSVMG: 'distribuidor',
     // TODO confirmar con Felipe · registro INVIMA y certificación ISO 13485,
