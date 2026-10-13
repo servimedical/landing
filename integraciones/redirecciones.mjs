@@ -8,8 +8,8 @@
 /* Líneas con un solo producto: /lineas/<linea> no tiene página propia porque
    sería un paso intermedio vacío, así que va directo al producto. Se deriva de
    los datos: el día que una segunda marca entre a la línea, la página aparece
-   y esta redirección desaparece sola. Así pasó con residuos hospitalarios al
-   sumar Celitron y Akarmak. */
+   y esta redirección desaparece sola. Y al revés: al salir una marca de una
+   línea, la página desaparece y la redirección vuelve a aparecer. */
 async function lineasDeUnProducto() {
   const { lineas } = await import('../src/datos/lineas.ts');
   const { productosDeLinea, urlProducto } = await import('../src/datos/productos.ts');
@@ -67,6 +67,14 @@ export const redirecciones = [
   ['/marcas/servimedical',                           '/marcas/svm'],
   ['/marcas/servimedical/mobiliario-acero-inoxidable', '/marcas/svm/mobiliario-acero-inoxidable'],
   ['/marcas/servimedical/repuestos',                 '/marcas/svm/repuestos'],
+
+  // Celitron sale del portafolio. Su única línea era el tratamiento de
+  // residuos, que sigue cubierta por Akarmak: ahí van tanto la página de
+  // marca como la de producto, que es lo que buscaba quien llegue por un
+  // enlace viejo.
+  ['/marcas/celitron',                               '/marcas/akarmak/residuos-hospitalarios'],
+  ['/marcas/celitron/residuos-hospitalarios',        '/marcas/akarmak/residuos-hospitalarios'],
+  ['/marcas/celitron/:resto*',                       '/marcas/akarmak/residuos-hospitalarios'],
 
   // El fabricante turco es Akar Makina: Akarmak, no «Arkarmak».
   ['/marcas/arkarmak',                               '/marcas/akarmak'],

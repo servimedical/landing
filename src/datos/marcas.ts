@@ -79,38 +79,6 @@ export const marcas: Marca[] = [
     },
   },
 
-  {
-    slug: 'celitron',
-    nombre: 'Celitron',
-    descriptor: 'Tratamiento de residuos biosanitarios',
-    lead:
-      'Fabricante húngaro del sistema ISS, que tritura y esteriliza residuos biosanitarios en un solo recipiente, dentro del hospital. Más de 500 unidades en más de 40 países.',
-    quienEs:
-      'Celitron diseña y fabrica en Vác, en Hungría, autoclaves hospitalarios bajo EN 285 y equipos de tratamiento de residuos sin incineración. Es una empresa certificada ISO 9001 e ISO 13485, con productos con marcado CE. Reporta más de quinientas unidades de tratamiento de residuos vendidas en más de cuarenta países.',
-    fabricante: { razonSocial: 'Celitron Medical Technologies', ciudad: 'Vác', pais: 'Hungría' },
-    // TODO confirmar con Felipe · ¿representante o distribuidor de Celitron?
-    rolSVMG: 'distribuidor',
-    logo: { src: '/logos/marcas/celitron.png', alt: 'Logo de Celitron' },
-    etapasCiclo: ['residuos'],
-    /* «Más de 80 países» es de toda la empresa y «más de 40» sólo de residuos:
-       no se contradicen. Se usa 40, que es la línea que representamos.
-       TODO · el año de fundación no está publicado. */
-    pruebas: [
-      { dato: 'Más de 500 unidades de tratamiento de residuos en más de 40 países.', fuente: 'celitron.com · página del sistema ISS' },
-      { dato: 'Fabricación bajo EN 285, con empresa certificada ISO 9001 e ISO 13485.', fuente: 'celitron.com · página de empresa' },
-    ],
-    respaldo: [
-      'Instalación y puesta en marcha con técnicos propios',
-      'Mantenimiento del circuito de vapor y del sistema de trituración',
-      'Entrenamiento al personal del recinto de residuos',
-    ],
-    orden: 5,
-    seo: {
-      titulo: 'Celitron en Colombia — sistema ISS | Servimedical',
-      descripcion:
-        'Sistema ISS de Celitron: tritura y esteriliza residuos biosanitarios en un solo recipiente, dentro del hospital, en 15 a 35 minutos.',
-    },
-  },
 
   {
     slug: 'akarmak',
@@ -134,7 +102,7 @@ export const marcas: Marca[] = [
       'Instalación y puesta en marcha con técnicos propios',
       'Mantenimiento del sistema de trituración',
     ],
-    orden: 6,
+    orden: 5,
     seo: {
       titulo: 'Akarmak en Colombia — residuos biosanitarios | Servimedical',
       descripcion:
@@ -221,7 +189,7 @@ export const marcas: Marca[] = [
       { dato: 'Precisión de control de temperatura ≤ 1 % en el rango de 60 a 220 °C.', fuente: 'easyseal.net · fichas de producto' },
       { dato: 'EF122-A y EF058 declaran alimentación de 110/220 V a 50/60 Hz.', fuente: 'easyseal.net · fichas de producto' },
     ],
-    orden: 7,
+    orden: 6,
     seo: {
       titulo: 'EasySeal en Colombia | Servimedical',
       descripcion: 'Selladoras automáticas EasySeal para empaque médico, con control y registro de los parámetros del sello y función de calificación operacional.',

@@ -557,69 +557,6 @@ export const productos: Producto[] = [
     },
   },
 
-  /* ════════════════════════════════════════════════════════ CELITRON ════ */
-  {
-    marca: 'celitron',
-    slug: 'residuos-hospitalarios',
-    linea: 'residuos-hospitalarios',
-    nombre: 'ISS',
-    tipo: 'equipo',
-    orden: 1,
-    lead: 'Esterilizador y triturador integrado: el residuo biosanitario se tritura y se esteriliza con vapor a 134 °C en un solo recipiente, dentro del hospital.',
-    franja: [
-      { label: 'Cámara', valor: '150 L' },
-      { label: 'Capacidad', valor: '15 – 30 kg/h' },
-      { label: 'Ciclo', valor: '30 – 40 min' },
-      { label: 'Inactivación', valor: 'SAL superior a 6 log₁₀' },
-    ],
-    descripcion: [
-      'El ISS carga el residuo, lo tritura con cuchillas reversibles y lo esteriliza con vapor a 134 °C sin abrir el recipiente. No hay manipulación de residuo infeccioso entre la trituración y la esterilización, que es donde está el riesgo en los sistemas de dos equipos.',
-      'El residuo sale estéril, seco y reducido a una quinta parte de su volumen, y se dispone como residuo ordinario. Celitron fabrica la línea en tres tamaños —25, 150 y 560 L—; la ficha vigente es la del modelo de 150 L, pensado para hospitales medianos.',
-    ],
-    modelos: [
-      {
-        familia: 'Modelo con ficha vigente',
-        encabezados: ['Modelo', 'Cámara', 'Capacidad', 'Ciclo', 'Medidas externas', 'Peso', 'Potencia'],
-        filas: [
-          ['ISS AC-575', '150 L · Ø502 × 800 mm', '15 – 30 kg/h', '30 – 40 min', '1290 × 2150 × 2039 mm', '880 kg', '36 kW con generador · trifásico'],
-        ],
-      },
-    ],
-    // TODO · fichas vigentes del ISS de 25 L y de 560 L. Sus capacidades sólo
-    //   aparecen en un folleto de 2019 alojado por un tercero, así que no entran
-    //   ni en la tabla ni en la franja.
-    ciclos: [{ items: ['Residuos', 'Textiles', 'Residuo especial', 'Vidrio', 'Prueba dinámica', 'Limpieza'] }],
-    instalacion: [
-      { label: 'Eléctrico', valor: 'Trifásico, configurado para la red de la institución (60 Hz) · 36 kW con generador' },
-      { label: 'Accesorios estándar', valor: 'Generador de vapor, ósmosis inversa y drenaje' },
-    ],
-    normasDeclaradas: [
-      { normas: ['CE', 'Directiva de Máquinas 2006/42/CE', 'PED 2014/68/UE', 'EMC 2014/30/UE', 'RoHS II'] },
-    ],
-    diferenciales: ['Un solo recipiente', '15 – 30 kg/h', 'Reducción a una quinta parte'],
-    preguntasCotizacion: [
-      'Kilos de residuo biosanitario por día y por turno',
-      'Espacio disponible en el recinto de residuos y acceso para el contenedor',
-      'Costo actual de la gestión externa, para comparar',
-      'Autorización ambiental vigente de la institución',
-    ],
-    relacionadas: [
-      { producto: 'svm/mobiliario-acero-inoxidable', porque: 'El residuo se mueve en carro cerrado y diferenciado hasta el recinto de tratamiento.' },
-      { producto: '2i/indicadores-biologicos', porque: 'La inactivación se verifica con control biológico, igual que una carga de esterilización.' },
-      { producto: 'svm/repuestos', porque: 'Las cuchillas de trituración son la parte de mayor desgaste del equipo.' },
-    ],
-    servicio: [
-      'Instalación y puesta en marcha con técnicos propios',
-      'Mantenimiento del circuito de vapor y del sistema de trituración',
-      'Entrenamiento al personal del recinto de residuos',
-    ],
-    fuenteBrochure: 'https://celitron.com/storage/download/iss-medical-en.pdf',
-    seo: {
-      titulo: 'Sistema ISS de Celitron en Colombia | Servimedical',
-      descripcion: 'ISS de Celitron: tritura y esteriliza residuo biosanitario en un solo recipiente, de 15 a 30 kg por hora, con inactivación superior a 6 log₁₀.',
-    },
-  },
-
   /* ═════════════════════════════════════════════════════════ AKARMAK ════ */
   {
     marca: 'akarmak',
@@ -897,7 +834,7 @@ export const productos: Producto[] = [
     ],
     relacionadas: [
       { producto: 'svm/papel-para-esterilizacion', porque: 'El paquete se conforma en la mesa y se guarda en la estantería. Se dimensionan juntas.' },
-      { producto: 'celitron/residuos-hospitalarios', porque: 'El residuo sale de la central en carro cerrado y diferenciado, hasta el recinto de tratamiento.' },
+      { producto: 'akarmak/residuos-hospitalarios', porque: 'El residuo sale de la central en carro cerrado y diferenciado, hasta el recinto de tratamiento.' },
       { producto: 'tuttnauer/termodesinfectoras', porque: 'Cuando el volumen de lúmenes crece, el lavado manual deja de sostener el proceso.' },
     ],
     servicio: [

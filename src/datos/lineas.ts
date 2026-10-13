@@ -326,7 +326,7 @@ export const lineas: Linea[] = [
     ],
     seo: {
       titulo: 'Tratamiento de residuos hospitalarios | Servimedical',
-      descripcion: 'Esterilización con vapor y trituración de residuo biosanitario en sitio, de 20 kg por ciclo a 1.800 kg por hora. Sanqiang, Celitron y Akarmak.',
+      descripcion: 'Esterilización con vapor y trituración de residuo biosanitario en sitio, de 20 a 1.800 kg por ciclo. Equipos Akarmak en Colombia.',
     },
   },
 

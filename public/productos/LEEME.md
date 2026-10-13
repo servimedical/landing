@@ -32,7 +32,6 @@ Las carpetas, con el nombre exacto:
 | `sanqiang-baja-temperatura` | SQ-WD |
 | `sanqiang-termodesinfectoras` | SQ-KX y SQ-X360 |
 | `sanqiang-residuos-hospitalarios` | Tratamiento de residuos Sanqiang |
-| `celitron-residuos-hospitalarios` | ISS |
 | `akarmak-residuos-hospitalarios` | AKR |
 | `2i-indicadores-quimicos` | Indicadores químicos 2i |
 | `2i-indicadores-biologicos` | Indicadores biológicos 2i |

@@ -746,3 +746,33 @@ siga cabiendo: 40vh por debajo de 800 px de alto, 36vh por debajo de 736 y
 Verificado a 1920×1080, 1512×860, 1440×900, 1440×800, 1366×768, 1280×720,
 1100×800 y 1024×768: la fila completa y la franja dentro del pliegue en los
 ocho.
+
+### D36 · Celitron sale del portafolio
+
+**Qué se borró.** La marca, su producto `celitron/residuos-hospitalarios`, sus
+tres archivos de logotipo y la carpeta de fotos. Seis marcas en vez de siete.
+
+**Lo que había que desenredar antes de borrar.**
+
+1. **El mobiliario de SVM le vendía cruzado a Celitron.** Esa referencia sola
+   habría roto el build —la validación de enlaces de contenido no perdona un
+   destino inexistente—. Se reapuntó a Akarmak, que es quien queda cubriendo
+   la línea.
+2. **La línea de residuos se queda con un solo producto publicado.** El de
+   Sanqiang está sin publicar y el de Celitron ya no está, así que solo queda
+   Akarmak. Por el diseño del sitio, una línea con un producto no tiene página
+   propia: `/lineas/residuos-hospitalarios` desaparece y su redirección 301
+   **se generó sola**, porque sale de los datos. De 37 páginas a 34.
+3. **La descripción SEO de la línea nombraba a las tres marcas** y además
+   decía «1.800 kg por hora» donde la ficha de Akarmak dice «kg/ciclo». Se
+   corrigieron las dos cosas.
+
+**Redirecciones.** Tres nuevas, todas a la ficha de Akarmak, que es lo que
+buscaba quien llegue por un enlace viejo: la marca, el producto y un comodín
+para cualquier otra ruta que colgara de `/marcas/celitron`.
+
+**Lo que se dejó a propósito.** Las menciones en `docs/` y en esta bitácora.
+`docs/svmg-catalogo-contenido-v3.md` es el encargo que escribió Felipe y las
+entradas anteriores de este archivo son el registro de por qué se hizo cada
+cosa: borrar a Celitron de ahí no quitaría a Celitron del sitio, falsificaría
+el historial. Si se quiere también fuera de los documentos, es otra orden.

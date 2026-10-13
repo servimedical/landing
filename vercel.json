@@ -117,6 +117,21 @@
       "statusCode": 301
     },
     {
+      "source": "/marcas/celitron",
+      "destination": "/marcas/akarmak/residuos-hospitalarios",
+      "statusCode": 301
+    },
+    {
+      "source": "/marcas/celitron/residuos-hospitalarios",
+      "destination": "/marcas/akarmak/residuos-hospitalarios",
+      "statusCode": 301
+    },
+    {
+      "source": "/marcas/celitron/:resto*",
+      "destination": "/marcas/akarmak/residuos-hospitalarios",
+      "statusCode": 301
+    },
+    {
       "source": "/marcas/arkarmak",
       "destination": "/marcas/akarmak",
       "statusCode": 301
@@ -139,6 +154,11 @@
     {
       "source": "/lineas/reprocesadoras-endoscopios",
       "destination": "/marcas/sanqiang/reprocesadoras-endoscopios",
+      "statusCode": 301
+    },
+    {
+      "source": "/lineas/residuos-hospitalarios",
+      "destination": "/marcas/akarmak/residuos-hospitalarios",
       "statusCode": 301
     },
     {
