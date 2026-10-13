@@ -19,11 +19,18 @@
    su acuse.
    ========================================================================== */
 
+/* Los imports de este archivo y los de `src/lib/airtable.ts` llevan `.js` y
+   no `.ts` a propósito. El empaquetador de funciones de Vercel transpila los
+   `.ts` a `.js` pero **no reescribe los especificadores**: con `.ts`, el
+   paquete queda con `formularios.js` en disco y un `import … from
+   './formularios.ts'` que Node no encuentra, y la función revienta entera al
+   cargar. Era un defecto anterior a Airtable: este endpoint nunca llegó a
+   responder en producción. */
 import {
   FORMULARIO, validar, hayErrores,
   CAMPO_TRAMPA, MINIMO_SEGUNDOS, VERSION_AUTORIZACION, TEXTO_AUTORIZACION,
-} from '../src/lib/formularios.ts';
-import { buscarCliente, guardarLead, configurado } from '../src/lib/airtable.ts';
+} from '../src/lib/formularios.js';
+import { buscarCliente, guardarLead, configurado } from '../src/lib/airtable.js';
 
 type Peticion = { method?: string; body?: unknown; headers: Record<string, string | string[] | undefined> };
 type Respuesta = {

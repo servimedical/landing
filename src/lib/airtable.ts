@@ -10,7 +10,7 @@
    enlace ni una fusión.
    ========================================================================== */
 
-import { TIPOS_SOLICITUD } from './formularios.ts';
+import { TIPOS_SOLICITUD } from './formularios.js';
 
 const API = 'https://api.airtable.com/v0';
 
