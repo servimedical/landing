@@ -35,3 +35,4 @@ public 2/
 
 # Capturas de control de calidad: se regeneran con `npm run capturas`
 qa/
+.env*
