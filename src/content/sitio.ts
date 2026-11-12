@@ -19,7 +19,6 @@ export const sitio = {
 } as const;
 
 export const contacto = {
-  fijo:      { rotulo: 'Fijo',      valor: '+57 (601) 211 4014',            href: 'tel:+576012114014' },
   whatsapp:  { rotulo: 'WhatsApp',  valor: '+57 319 206 0943',              href: 'https://wa.me/573192060943' },
   comercial: { rotulo: 'Comercial', valor: 'comercial@servimedicalgroup.com', href: 'mailto:comercial@servimedicalgroup.com' },
   general:   { rotulo: 'General',   valor: 'info@servimedicalgroup.com',     href: 'mailto:info@servimedicalgroup.com' },
@@ -27,7 +26,7 @@ export const contacto = {
 } as const;
 
 export const canalesContacto = [
-  contacto.fijo, contacto.whatsapp, contacto.comercial, contacto.general, contacto.sede,
+  contacto.whatsapp, contacto.comercial, contacto.general, contacto.sede,
 ];
 
 

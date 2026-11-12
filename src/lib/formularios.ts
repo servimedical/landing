@@ -77,7 +77,7 @@ export const DESCRIPCION_POR_TIPO: Record<TipoSolicitud, { marcador: string; ayu
   },
   'Servicio técnico': {
     marcador: 'Equipo, marca y modelo (están en la placa), qué falla y desde cuándo.',
-    ayuda: 'Si el equipo está detenido, llame también al fijo.',
+    ayuda: 'Si el equipo está detenido, escriba también al WhatsApp.',
   },
   'Repuesto': {
     marcador: 'Equipo, marca, modelo y serie, y la referencia del repuesto si la tiene.',
@@ -93,7 +93,7 @@ export const INTRO = {
   equipo: 'Dimensionamos el equipo con su volumen de carga, su flujo y la infraestructura de la central.',
   consumible: 'Armamos el esquema de consumo con sus cargas por día y el método de cada equipo.',
   general: 'Cuéntenos qué necesita su central y le responde un especialista, no un formulario automático.',
-  servicio: 'Marca, modelo y qué muestra el equipo en pantalla. Si está detenido, llame además al fijo: el formulario no despierta a nadie.',
+  servicio: 'Marca, modelo y qué muestra el equipo en pantalla. Si está detenido, escriba además al WhatsApp: el formulario no despierta a nadie.',
 } as const;
 
 /* La rejilla es de dos columnas: un campo ancho, seis a media columna —tres

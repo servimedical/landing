@@ -191,7 +191,7 @@ export const servicios = {
   equipoDetenido: {
     lead: 'Un autoclave detenido no es un equipo averiado: es una programación quirúrgica que se cae esa misma tarde.',
     pasos: [
-      { titulo: 'Llamada', que: 'Marca, modelo, serie y qué muestra el equipo en pantalla. Si el equipo está detenido, al fijo y no al formulario.', horas: '{{ CONFIRMAR SLA · contacto }}' },
+      { titulo: 'Aviso', que: 'Marca, modelo, serie y qué muestra el equipo en pantalla. Si el equipo está detenido, por WhatsApp y no por el formulario.', horas: '{{ CONFIRMAR SLA · contacto }}' },
       { titulo: 'Diagnóstico remoto', que: 'Buena parte de lo que detiene un ciclo es agua, vapor o carga, no la máquina. Se descarta por teléfono antes de mover a un técnico.', horas: '{{ CONFIRMAR SLA · diagnóstico }}' },
       { titulo: 'Visita', que: 'Técnico en sitio con el histórico del equipo y las partes de desgaste más probables.', horas: '{{ CONFIRMAR SLA · visita en Bogotá }}' },
       { titulo: 'Repuesto', que: 'Si la parte no está en inventario, se informa el tiempo real de importación el mismo día. No se promete una fecha que dependa de una aduana.', horas: '{{ CONFIRMAR SLA · repuesto }}' },
@@ -239,7 +239,7 @@ export const contactoPagina = {
     'Dimensionamos el equipo con su volumen de carga, su flujo y la infraestructura de la central. Si ya tiene pliego, trabajamos sobre eso.',
   rutas: [
     { titulo: 'Cotización', texto: 'Equipos, consumibles, accesorios o mobiliario.', ancla: '#cotizacion' },
-    { titulo: 'Servicio técnico', texto: 'Marca, modelo y falla. Si el equipo está detenido, llame también al fijo.', ancla: '#cotizar' },
+    { titulo: 'Servicio técnico', texto: 'Marca, modelo y falla. Si el equipo está detenido, escriba también al WhatsApp.', ancla: '#cotizar' },
     { titulo: 'Licitaciones', texto: 'Envíe el pliego a comercial@servimedicalgroup.com y lo revisamos contra lo que podemos cubrir.', ancla: null },
   ],
 } as const;

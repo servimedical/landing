@@ -1,10 +1,8 @@
 ---
 import Logo from './Logo.astro';
 import { columnaFooter, inicio, politicaDatos } from '../content/navegacion.ts';
-import { sitio, canalesContacto, contacto } from '../content/sitio.ts';
+import { sitio, canalesContacto } from '../content/sitio.ts';
 
-/* El fijo no va en el pie: se deja WhatsApp, correos y sede. */
-const canalesPie = canalesContacto.filter((c) => c !== contacto.fijo);
 const columnaMarcas = columnaFooter('marcas');
 const compania = columnaFooter('empresa');
 const anio = new Date().getFullYear();
@@ -41,7 +39,7 @@ const anio = new Date().getFullYear();
       <div>
         <h2 class="meta mb-3 text-white/70">Contacto</h2>
         <ul>
-          {canalesPie.map((c) => (
+          {canalesContacto.map((c) => (
             <li class="py-[3px] text-[14px]">
               {c.href
                 ? <a href={c.href} rel={c.href.startsWith('http') ? 'noopener' : undefined} class="hover:text-white">{c.valor}</a>

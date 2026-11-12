@@ -27,7 +27,7 @@ export const politica: Seccion[] = [
     titulo: 'Responsable del tratamiento',
     parrafos: [
       'Servimedical Group SAS, sociedad domiciliada en Bogotá D.C., Colombia, en la Transversal 27 N.º 53C-47, es responsable del tratamiento de los datos personales recogidos a través de este sitio web.',
-      'Teléfono fijo +57 (601) 211 4014. WhatsApp +57 319 206 0943. Correo comercial@servimedicalgroup.com.',
+      'WhatsApp +57 319 206 0943. Correo comercial@servimedicalgroup.com.',
     ],
   },
   {
