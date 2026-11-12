@@ -55,6 +55,7 @@ const etiqueta = slides[0]?.etiqueta;
                 alt={d.alt}
                 width={d.ancho}
                 height={d.alto}
+                data-ancha={d.ancha ? '' : undefined}
                 fetchpriority={i === 0 ? 'high' : undefined}
                 loading={i === 0 ? 'eager' : 'lazy'}
                 decoding="async"
@@ -407,6 +408,11 @@ const etiqueta = slides[0]?.etiqueta;
     }
 
     .hero-caja::after { bottom: calc(-1 * var(--sobresale) - 6px); }
+
+    /* Una foto apaisada —una caja de indicadores— ocupa todo el ancho y,
+       pegada abajo, quedaba detrás de la etiqueta. Se sube un poco para que
+       la etiqueta flote debajo. En móvil la etiqueta va fuera del recuadro. */
+    .hero-equipo[data-ancha] { object-position: center 30%; }
 
     .hero-flecha { display: grid; }
 

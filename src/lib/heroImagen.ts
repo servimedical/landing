@@ -33,6 +33,8 @@ export type Diapositiva = {
   alt: string;
   ancho: number;
   alto: number;
+  /** Más ancha que alta, como una caja de indicadores: ver Hero.astro. */
+  ancha: boolean;
   etiqueta?: { titulo: string; dato: string; url: string };
 };
 
@@ -100,6 +102,7 @@ export async function diapositivasHero(): Promise<Diapositiva[]> {
           alt: etiqueta ? `${etiqueta.titulo.replace(' · ', ' ')}` : 'Equipo para central de esterilización',
           ancho,
           alto,
+          ancha: ancho > alto * 1.5,
           etiqueta,
         });
       }
@@ -130,6 +133,7 @@ export async function diapositivasHero(): Promise<Diapositiva[]> {
     alt: 'Autoclave de vapor Tuttnauer de doble puerta, con la cámara cargada',
     ancho,
     alto,
+    ancha: ancho > alto * 1.5,
     etiqueta: etiquetaDe('tuttnauer-autoclaves'),
   }];
 }
