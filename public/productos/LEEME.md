@@ -38,6 +38,9 @@ Las carpetas, con el nombre exacto:
 | `svm-papel-para-esterilizacion` | Papel para esterilización y Tyvek |
 | `svm-mobiliario-acero-inoxidable` | Mobiliario en acero inoxidable |
 | `svm-repuestos` | Repuestos originales |
+| `2i-incubadoras` | Mini incubadora 2i |
+| `sanqiang-reprocesadoras-endoscopios` | Reprocesadoras de endoscopios Sanqiang |
+| `easyseal-selladoras` | Selladoras automáticas Easyseal |
 
 ---
 
@@ -55,6 +58,20 @@ Las carpetas, con el nombre exacto:
 De dónde sacarlas, en este orden: el kit de prensa del fabricante, la ficha
 técnica en PDF (muchas traen la foto en alta), o pedírsela al contacto
 comercial del fabricante.
+
+Para dejarla en 4:3, .webp y bajo 400 kB sin abrir un editor:
+
+```bash
+npm run foto -- ruta/a/la/foto.png tuttnauer-autoclaves relleno
+```
+
+`relleno` centra el equipo sobre blanco (fotos de fábrica sobre blanco),
+`extender` ensancha un fondo de estudio en degradado y `recorte` corta al
+centro (fondos de color de la marca, como los de 2i). Nunca amplía una foto
+chica: si avisa que quedó por debajo de 1600 px, hay que pedirla más grande.
+
+En `src/datos/productos.ts`, encima de cada `media`, va un comentario con el
+modelo que muestra la foto y la página del fabricante de donde salió.
 
 ---
 

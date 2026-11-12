@@ -24,7 +24,7 @@ const destino = new URL(`./${herramienta}.mjs`, import.meta.url);
 
 if (!herramienta || !existsSync(destino)) {
   console.error(`\nNo existe la herramienta «${herramienta ?? ''}».`);
-  console.error('Disponibles: logos · media · marcadores\n');
+  console.error('Disponibles: logos · media · foto · marcadores\n');
   process.exit(1);
 }
 

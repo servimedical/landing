@@ -17,6 +17,7 @@
     "redirecciones": "node herramientas/redirecciones.mjs",
     "logos": "node herramientas/correr.mjs logos",
     "media": "node herramientas/correr.mjs media",
+    "foto": "node herramientas/correr.mjs foto",
     "hero": "node herramientas/correr.mjs hero",
     "capturas": "node herramientas/capturas.mjs",
     "enlaces": "node herramientas/enlaces.mjs"

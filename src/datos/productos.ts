@@ -143,6 +143,8 @@ export const productos: Producto[] = [
       'Repuesto original con existencias en Bogotá',
     ],
     fuenteBrochure: 'https://tuttnauer.com/medical-autoclaves/hospital-cssd/large-autoclaves/44-and-55-compact-series/technical-chart',
+    // Foto: Serie 69 de central, horizontal de puerta abatible. Fuente: https://tuttnauer.com/medical-autoclaves/hospital-cssd/large-autoclaves
+    media: { foto: '/productos/tuttnauer-autoclaves/foto.webp' },
     seo: {
       titulo: 'Autoclaves Tuttnauer en Colombia | Servimedical',
       descripcion: 'Autoclaves de vapor Tuttnauer de 21 a 1.010 L: mesa Clase B bajo EN 13060 y central bajo EN 285. Instalación, calificación y repuesto original desde Bogotá.',
@@ -207,6 +209,8 @@ export const productos: Producto[] = [
       'Entrenamiento en carga, empaque compatible y control del proceso',
     ],
     fuenteBrochure: 'https://tuttnauer.com/sites/default/files/brochures/plazmax-low-temperature-plasma-sterilizer--tuttnauer--es--29-11-2020.pdf',
+    // Foto: PlazMax, tomada del brochure oficial en español. Fuente: https://tuttnauer.com/sites/default/files/brochures/plazmax-low-temperature-plasma-sterilizer--tuttnauer--es--29-11-2020.pdf
+    media: { foto: '/productos/tuttnauer-baja-temperatura/foto.webp' },
     seo: {
       titulo: 'PlazMax Tuttnauer en Colombia | Servimedical',
       descripcion: 'PlazMax de Tuttnauer: plasma de peróxido de hidrógeno de 47 a 162 L, ciclos de 32 a 48 minutos por debajo de 55 °C y sin consumo de agua.',
@@ -270,6 +274,8 @@ export const productos: Producto[] = [
       'Entrenamiento al personal de la zona de lavado',
     ],
     fuenteBrochure: 'https://www.tuttnauer.com/sites/default/files/2023-11/TIVA-disinfector-washers--Tuttnauer-EN-2022.pdf',
+    // Foto: Tiva 8 con carga. Fuente: https://tuttnauer.com/dental-autoclaves/washer-disinfectors/tiva-8-washer
+    media: { foto: '/productos/tuttnauer-termodesinfectoras/foto.webp' },
     seo: {
       titulo: 'Termodesinfectoras TIVA de Tuttnauer | Servimedical',
       descripcion: 'TIVA de Tuttnauer: termodesinfectoras de 65 a 430 L, hasta 18 cestas DIN, con secado por aire filtrado HEPA H14 y cuarenta programas.',
@@ -332,6 +338,8 @@ export const productos: Producto[] = [
       'Mantenimiento preventivo con protocolo definido por equipo',
       'Entrenamiento al personal de la zona de lavado',
     ],
+    // Foto: SQ-X360 con las cestas fuera. Fuente: https://www.sanqiangmedical.com/Automatic-cleaning-and-disinfection-device.html
+    media: { foto: '/productos/sanqiang-termodesinfectoras/foto.webp' },
     seo: {
       titulo: 'Termodesinfectoras Sanqiang en Colombia | Servimedical',
       descripcion: 'SQ-X y SQ-KX de Sanqiang: termodesinfectoras de 350 a 560 L, de 8 a 12 cestas DIN, con desinfección a 93–97 °C y secado por aire caliente.',
@@ -439,6 +447,8 @@ export const productos: Producto[] = [
       'Mantenimiento preventivo y correctivo',
       'Repuesto original por importación directa',
     ],
+    // Foto: Serie MD.JD de vacío pulsante. Fuente: https://www.sanqiangmedical.com/Large-autoclave-sterilizer.html
+    media: { foto: '/productos/sanqiang-autoclaves/foto.webp' },
     seo: {
       titulo: 'Autoclaves Sanqiang en Colombia | Servimedical',
       descripcion: 'Autoclaves Sanqiang de 18 a 1.500 L: mesa Clase B, horizontales compactos EN 13060 y vacío pulsante de central con uniformidad de ±0,5 °C.',
@@ -499,6 +509,8 @@ export const productos: Producto[] = [
       'Mantenimiento preventivo con rutina propia del equipo de plasma',
       'Entrenamiento en carga y empaque compatible',
     ],
+    // Foto: SQ-WD. Fuente: https://www.sanqiangmedical.com/Plasma-Sterilizer.html
+    media: { foto: '/productos/sanqiang-baja-temperatura/foto.webp' },
     seo: {
       titulo: 'Plasma SQ-WD de Sanqiang en Colombia | Servimedical',
       descripcion: 'SQ-WD de Sanqiang: plasma de peróxido de 100 a 190 L, ciclo corto de 30 minutos, agente en cápsula y alimentación monofásica.',
@@ -613,6 +625,8 @@ export const productos: Producto[] = [
     ],
     // El brochure 2025 no tiene capa de texto: se publica como PDF descargable tal cual.
     fuenteBrochure: 'https://www.akarmak.com/uploads/urunler_kategori/1687132054.pdf',
+    // Foto: AKR con trituración previa (AKR250L a AKR2500L). Fuente: https://www.akarmak.com/en/products/medical-waste-sterilization/pre-autoclave-shredding
+    media: { foto: '/productos/akarmak-residuos-hospitalarios/foto.webp' },
     seo: {
       titulo: 'Sistemas AKR de Akarmak en Colombia | Servimedical',
       descripcion: 'AKR de Akarmak: esterilización de residuo biosanitario con vapor y trituradora propia, de 20 kg por ciclo a 1.800 kg por hora, con 8 log₁₀ validados.',
@@ -673,6 +687,8 @@ export const productos: Producto[] = [
       'Abastecimiento programado por carga y por equipo',
       'Entrenamiento en lectura e interpretación de viraje',
     ],
+    // Foto: Bowie & Dick Test, línea hospitalaria. Fuente: https://www.2i.ind.br/cópia-linha-odontológica
+    media: { foto: '/productos/2i-indicadores-quimicos/foto.webp' },
     seo: {
       titulo: 'Indicadores químicos 2i en Colombia | Servimedical',
       descripcion: 'Indicadores químicos 2i de las clases 4, 5 y 6 de ISO 11140-1, prueba de Bowie-Dick y paquetes de prueba para vapor, peróxido, óxido de etileno y formaldehído.',
@@ -731,6 +747,8 @@ export const productos: Producto[] = [
       'Abastecimiento programado, con reserva para cargas con implantes',
       'Entrenamiento en incubación, lectura y conducta ante resultado no conforme',
     ],
+    // Foto: Biological Test Steam 1h, línea hospitalaria. Fuente: https://www.2i.ind.br/cópia-linha-odontológica
+    media: { foto: '/productos/2i-indicadores-biologicos/foto.webp' },
     seo: {
       titulo: 'Indicadores biológicos 2i en Colombia | Servimedical',
       descripcion: 'Indicadores biológicos 2i autocontenidos con lectura desde 19 minutos en vapor, bajo ISO 11138-1, y lectoras e incubadora propias.',
@@ -1005,6 +1023,8 @@ export const productos: Producto[] = [
       'Verificación de temperatura contra patrón trazable',
       'Entrenamiento en lectura e interpretación del resultado',
     ],
+    // Foto: Mini Incubadora. Fuente: https://www.2i.ind.br/produtos
+    media: { foto: '/productos/2i-incubadoras/foto.webp' },
     seo: {
       titulo: 'Incubadora de indicadores biológicos 2i | Servimedical',
       descripcion: 'Mini incubadora 2i de seis cavidades para indicadores biológicos, de 55 a 60 °C y con alimentación bivolt automática de 127 / 220 V.',
@@ -1056,6 +1076,8 @@ export const productos: Producto[] = [
       'Entrenamiento al personal de endoscopia en la rutina y en la prueba de fugas',
       'Mantenimiento preventivo de bombas, válvulas y sistema de dosificación',
     ],
+    // Foto: Endoscope Washer-Disinfector. Fuente: https://www.sanqiangmedical.com/Endoscope-Reprocessor.html
+    media: { foto: '/productos/sanqiang-reprocesadoras-endoscopios/foto.webp' },
     seo: {
       titulo: 'Reprocesadoras de endoscopios Sanqiang en Colombia | Servimedical',
       descripcion: 'Lavadoras-desinfectadoras automáticas de endoscopios flexibles Sanqiang, con servicio técnico propio y repuesto en el mismo canal de la central.',
