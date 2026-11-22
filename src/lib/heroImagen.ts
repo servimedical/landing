@@ -65,9 +65,9 @@ const TITULO_HERO: Record<string, string> = {
  *  desde que todas llegan cuadradas, se ven enteras. */
 const ENCUADRE_HERO: Record<string, string> = {};
 
-/** Fotos en las que la etiqueta va abajo a la derecha (en escritorio). En la
- *  de Sanqiang, a la izquierda tapaba el logo pintado en la máquina. */
-const ETIQUETA_DERECHA = new Set(['sanqiang-baja-temperatura']);
+/** Fotos en las que la etiqueta va abajo a la derecha (en escritorio), cuando
+ *  a la izquierda taparía lo importante. Hoy ninguna. */
+const ETIQUETA_DERECHA = new Set<string>([]);
 
 /** Etiqueta del producto, armada desde su ficha. */
 /* `nombre` es lo que va tras el número en el archivo. Puede llevar una
