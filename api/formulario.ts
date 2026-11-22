@@ -124,7 +124,7 @@ export default async function handler(req: Peticion, res: Respuesta) {
   const acuse =
     `${form.acuse}\n\n` +
     `Esto fue lo que recibimos:\n\n${detalle}\n\n` +
-    `— — —\nServimedical Group SAS · Transversal 27 N.º 53C-47, Bogotá\n` +
+    `— — —\nServimedical Group SAS · Trsv. 27 N. 53C-47 Bogotá D.C.- Colombia\n` +
     `Fijo +57 (601) 211 4014 · WhatsApp +57 319 206 0943\n\n` +
     `Usted autorizó el tratamiento de sus datos el ${enBogota(ahora)} ` +
     `(versión ${VERSION_AUTORIZACION}). Puede conocerlos, actualizarlos, ` +

@@ -38,7 +38,7 @@ const rutaActual = normalizar(Astro.url.pathname);
     <div class="contenedor py-12 lg:py-16">
       <div class="max-w-[70ch]">
         {politica.map((s, i) => (
-          <div class="border-t border-rule py-8 first:border-t-0 first:pt-0">
+          <div id={s.titulo === 'Cookies y analítica' ? 'cookies' : undefined} class="border-t border-rule py-8 first:border-t-0 first:pt-0">
             <p class="meta text-steel">{String(i + 1).padStart(2, '0')}</p>
             <h2 class="mt-3 text-[clamp(20px,2.2vw,26px)]">{s.titulo}</h2>
             {s.parrafos?.map((t) => (<p class="mt-4 text-[16px] leading-relaxed text-steel">{t}</p>))}

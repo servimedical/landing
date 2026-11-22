@@ -92,9 +92,11 @@ export const politica: Seccion[] = [
   {
     titulo: 'Cookies y analítica',
     parrafos: [
-      'Este sitio no instala cookies de seguimiento ni de publicidad, y no utiliza identificadores que permitan reconocer a una persona entre visitas.',
-      'La medición de uso se hace de forma agregada y sin cookies: se registra qué páginas se consultan y qué elementos se usan, sin asociar esa información a una persona identificable. Por esa razón el sitio no muestra aviso de cookies: no hay nada que consentir.',
-      'Si en el futuro se incorpora una herramienta que sí utilice cookies no esenciales, se añadirá el aviso correspondiente con opción de aceptar o rechazar antes de instalarlas.',
+      // {{ REQUIERE REVISIÓN JURÍDICA }} · texto actualizado el 22/11/2026 al
+      //   incorporar Google Analytics con aviso de cookies.
+      'El sitio usa dos herramientas de medición. La primera, Vercel Web Analytics, funciona sin cookies: registra de forma agregada qué páginas se consultan, desde qué país y con qué tipo de dispositivo, sin identificar a nadie.',
+      'La segunda es Google Analytics, de Google LLC, que se carga a través de Google Tag Manager. Solo instala sus cookies de analítica (como _ga, que puede durar hasta dos años) si usted las acepta en el aviso que aparece al entrar. Sirven para saber qué páginas se visitan, cómo se llega al sitio y desde qué ciudad, y no se usan para publicidad.',
+      'Si rechaza las cookies, Google Analytics no las instala y el sitio funciona igual. Puede cambiar su decisión cuando quiera desde el enlace «Preferencias de cookies» del pie de página, o borrar las cookies desde su navegador.',
     ],
   },
   {

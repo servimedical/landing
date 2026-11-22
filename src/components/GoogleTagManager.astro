@@ -1,0 +1,44 @@
+---
+/* Google Tag Manager (contenedor GTM-KF6KD3TN), donde vive la etiqueta de
+   Google Analytics 4.
+
+   Con el modo de consentimiento de Google: todo arranca «denegado», así que
+   Analytics no guarda cookies ni identifica la visita hasta que la persona
+   acepta en el aviso de cookies (AvisoCookies.astro). Si ya aceptó en una
+   visita anterior, la decisión se lee de localStorage antes de cargar GTM.
+
+   Solo en producción: en local y en las vistas previas de Vercel no se carga,
+   para no contar como visitas las pruebas del equipo. */
+interface Props { produccion: boolean }
+const { produccion } = Astro.props;
+const ID = 'GTM-KF6KD3TN';
+---
+{produccion && (
+  <>
+    <script is:inline define:vars={{ ID }}>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      window.gtag = gtag;
+      gtag('consent', 'default', {
+        analytics_storage: 'denied',
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        wait_for_update: 500,
+      });
+      try {
+        if (localStorage.getItem('svmg-cookies') === 'aceptadas') {
+          gtag('consent', 'update', { analytics_storage: 'granted' });
+        }
+      } catch (e) {}
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+        var f = d.getElementsByTagName(s)[0], j = d.createElement(s);
+        j.async = true;
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'dataLayer', ID);
+    </script>
+  </>
+)}

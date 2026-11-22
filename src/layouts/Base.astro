@@ -3,6 +3,9 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Analytics from '@vercel/analytics/astro';
+import BotonWhatsApp from '../components/BotonWhatsApp.astro';
+import GoogleTagManager from '../components/GoogleTagManager.astro';
+import AvisoCookies from '../components/AvisoCookies.astro';
 import { sitio, contacto } from '../content/sitio.ts';
 import { normalizar } from '../content/navegacion.ts';
 
@@ -66,6 +69,9 @@ const jsonld = {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  {/* Lo antes posible en el head, como pide Google: el consentimiento por
+      defecto tiene que estar fijado antes de que cargue el contenedor. */}
+  <GoogleTagManager produccion={produccion} />
   <title>{titulo}</title>
   <meta name="description" content={descripcion} />
   <link rel="canonical" href={canonica} />
@@ -96,9 +102,14 @@ const jsonld = {
   <Analytics />
 </head>
 <body>
+  {produccion && (
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KF6KD3TN" height="0" width="0" style="display:none;visibility:hidden" title="Google Tag Manager"></iframe></noscript>
+  )}
   <a href="#contenido" class="salto">Saltar al contenido</a>
   <Header rutaActual={rutaActual} />
   <main id="contenido"><slot /></main>
   <Footer />
+  <AvisoCookies />
+  <BotonWhatsApp />
 </body>
 </html>

@@ -55,6 +55,11 @@ const anio = new Date().getFullYear();
       <a href={politicaDatos.url} class="underline decoration-white/30 underline-offset-4 hover:text-white">
         {politicaDatos.titulo}
       </a>
+      {/* Vuelve a abrir el aviso de cookies (AvisoCookies.astro) para cambiar
+          la decisión. Sin JavaScript, lleva a la sección de la política. */}
+      <a href={`${politicaDatos.url}#cookies`} data-preferencias-cookies class="underline decoration-white/30 underline-offset-4 hover:text-white">
+        Preferencias de cookies
+      </a>
       <span class="ml-auto">{sitio.ciudad} · {sitio.pais}</span>
     </div>
 

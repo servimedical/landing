@@ -22,7 +22,7 @@ export const contacto = {
   whatsapp:  { rotulo: 'WhatsApp',  valor: '+57 319 206 0943',              href: 'https://wa.me/573192060943' },
   comercial: { rotulo: 'Comercial', valor: 'comercial@servimedicalgroup.com', href: 'mailto:comercial@servimedicalgroup.com' },
   general:   { rotulo: 'General',   valor: 'info@servimedicalgroup.com',     href: 'mailto:info@servimedicalgroup.com' },
-  sede:      { rotulo: 'Sede',      valor: 'Transversal 27 N.º 53C-47, Bogotá', href: null },
+  sede:      { rotulo: 'Sede',      valor: 'Trsv. 27 N. 53C-47 Bogotá D.C.- Colombia', href: null },
 } as const;
 
 export const canalesContacto = [

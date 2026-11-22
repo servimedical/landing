@@ -1,0 +1,88 @@
+---
+/* Aviso de cookies de analítica. Aparece abajo a la izquierda mientras la
+   persona no haya decidido, y deja el espacio de la derecha al botón de
+   WhatsApp. «Aceptar» activa el almacenamiento de analítica en el modo de
+   consentimiento de Google; «Rechazar» lo deja denegado. La decisión se
+   guarda en localStorage («svmg-cookies») y se puede cambiar desde el enlace
+   «Preferencias de cookies» del pie de página, que vuelve a abrir el aviso.
+
+   Las cookies de publicidad quedan siempre denegadas: el sitio no hace
+   publicidad. */
+import { politicaDatos } from '../content/navegacion.ts';
+---
+<div class="aviso-cookies" role="dialog" aria-live="polite" aria-label="Aviso de cookies" hidden data-aviso-cookies>
+  <p class="aviso-texto">
+    Usamos cookies de Google Analytics para saber qué páginas se consultan y mejorar el sitio. No las usamos para publicidad.
+    <a href={`${politicaDatos.url}#cookies`} class="aviso-enlace">Más información</a>
+  </p>
+  <div class="aviso-botones">
+    <button type="button" class="aviso-boton aviso-boton--rechazar" data-cookies="rechazadas">Rechazar</button>
+    <button type="button" class="aviso-boton aviso-boton--aceptar" data-cookies="aceptadas">Aceptar</button>
+  </div>
+</div>
+
+<script>
+  const CLAVE = 'svmg-cookies';
+  const aviso = document.querySelector<HTMLElement>('[data-aviso-cookies]');
+
+  const leer = () => { try { return localStorage.getItem(CLAVE); } catch { return null; } };
+  const guardar = (v: string) => { try { localStorage.setItem(CLAVE, v); } catch { /* sin almacenamiento: vale para esta visita */ } };
+  const gtag = (...a: unknown[]) => (window as unknown as { gtag?: (...x: unknown[]) => void }).gtag?.(...a);
+
+  if (aviso) {
+    if (!leer()) aviso.hidden = false;
+
+    aviso.querySelectorAll<HTMLButtonElement>('[data-cookies]').forEach((b) =>
+      b.addEventListener('click', () => {
+        const decision = b.dataset.cookies!;
+        guardar(decision);
+        gtag('consent', 'update', { analytics_storage: decision === 'aceptadas' ? 'granted' : 'denied' });
+        aviso.hidden = true;
+      }),
+    );
+
+    /* El enlace del pie vuelve a abrir el aviso para cambiar la decisión. */
+    document.querySelectorAll('[data-preferencias-cookies]').forEach((e) =>
+      e.addEventListener('click', (ev) => { ev.preventDefault(); aviso.hidden = false; }),
+    );
+  }
+</script>
+
+<style>
+  .aviso-cookies {
+    position: fixed;
+    left: calc(16px + env(safe-area-inset-left));
+    /* El botón de WhatsApp ocupa los 56 px de la derecha más su margen. */
+    right: calc(92px + env(safe-area-inset-right));
+    bottom: calc(20px + env(safe-area-inset-bottom));
+    z-index: 45;
+    max-inline-size: 460px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px 18px;
+    background: var(--color-white);
+    border: 1px solid var(--color-rule);
+    box-shadow: 0 10px 30px rgba(27, 48, 80, 0.16) !important;
+    color: var(--color-navy);
+  }
+  .aviso-cookies[hidden] { display: none; }
+
+  .aviso-texto { font-size: 13.5px; line-height: 1.5; color: var(--color-steel); }
+  .aviso-enlace { color: var(--color-navy); text-decoration: underline; text-underline-offset: 3px; }
+
+  .aviso-botones { display: flex; gap: 8px; justify-content: flex-end; }
+  .aviso-boton {
+    min-block-size: 40px;
+    padding: 0 16px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--color-navy);
+  }
+  .aviso-boton--rechazar { background: var(--color-white); color: var(--color-navy); }
+  .aviso-boton--aceptar { background: var(--color-navy); color: var(--color-white); }
+  .aviso-boton--aceptar:hover { background: var(--color-navy-deep); }
+
+  @media print { .aviso-cookies { display: none; } }
+</style>
