@@ -425,9 +425,10 @@ que tiene datos verificables:
 Faltan, documentadas: reprocesadoras Sanqiang (D18) y compresores Hongrun
 (D17, descartados).
 
-**EasySeal se pinta con su nombre, no con un logotipo.** No hay archivo
-oficial y no se dibuja el logotipo de un fabricante. El componente cae solo a
-la marca tipográfica.
+**EasySeal ya tiene logotipo.** El 22/11/2026 llegó el archivo oficial y
+reemplazó a la marca tipográfica en todo el sitio (`easyseal.png` en el lienzo
+común). La franja de «Marcas que representamos» ya no muestra SVM, que es la
+línea propia.
 
 **Una precisión que evita una afirmación falsa.** La ficha declara
 «WS 310.2-2016» y «función de calificación operacional (OQ)», que es lo que

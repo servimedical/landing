@@ -35,22 +35,48 @@ export type Diapositiva = {
   alto: number;
   /** Más ancha que alta, como una caja de indicadores: ver Hero.astro. */
   ancha: boolean;
-  etiqueta?: { titulo: string; dato: string; url: string };
+  /** Foto con fondo (sin transparencia): llena el recuadro en vez de
+   *  sobresalir de él. Ver Hero.astro. */
+  foto: boolean;
+  /** Encuadre de una foto con fondo dentro del recuadro (`object-position`). */
+  encuadre?: string;
+  etiqueta?: { titulo: string; dato: string; url: string; lado?: 'derecha' };
 };
 
 const medir = async (ruta: string) => {
   try {
     const sharp = (await import('sharp')).default;
     const m = await sharp(ruta).metadata();
-    if (m.width && m.height) return { ancho: m.width, alto: m.height };
+    if (m.width && m.height) return { ancho: m.width, alto: m.height, alfa: Boolean(m.hasAlpha) };
   } catch {
     /* sin sharp se usan proporciones por defecto; no vale romper el build */
   }
-  return { ancho: 1600, alto: 1280 };
+  return { ancho: 1600, alto: 1280, alfa: true };
 };
 
+/** Títulos que no salen de «línea · marca». El papel vive en la línea de
+ *  indicadores, y «Indicadores · Servimedical» no dice qué muestra la foto. */
+const TITULO_HERO: Record<string, string> = {
+  'svm-papel-para-esterilizacion': 'Papel para esterilización',
+  'svm-papel-para-esterilizacion--bolsas': 'Bolsas de esterilización',
+};
+
+/** Encuadre de las fotos con fondo que no van centradas. La de Sanqiang
+ *  lleva el logo abajo en la máquina: centrada, `cover` se lo cortaba. */
+const ENCUADRE_HERO: Record<string, string> = {
+  'sanqiang-baja-temperatura': 'center 85%',
+};
+
+/** Fotos en las que la etiqueta va abajo a la derecha (en escritorio). En la
+ *  de Sanqiang, a la izquierda tapaba el logo pintado en la máquina. */
+const ETIQUETA_DERECHA = new Set(['sanqiang-baja-temperatura']);
+
 /** Etiqueta del producto, armada desde su ficha. */
-const etiquetaDe = (idCrudo: string) => {
+/* `nombre` es lo que va tras el número en el archivo. Puede llevar una
+   variante tras `--` (`svm-papel-para-esterilizacion--bolsas`): enlaza al
+   mismo producto con otro título, para dos fotos de una misma ficha. */
+const etiquetaDe = (nombre: string) => {
+  const idCrudo = nombre.split('--')[0] ?? nombre;
   /* El nombre del archivo puede venir con el identificador anterior: la foto
      es la misma aunque la línea se llame distinto. */
   const { id } = resolverProducto(idCrudo);
@@ -60,7 +86,7 @@ const etiquetaDe = (idCrudo: string) => {
   const l = lineaPorSlug(p.linea);
   if (!m || !l) return undefined;
   return {
-    titulo: `${l.nombre} · ${m.nombre}`,
+    titulo: TITULO_HERO[nombre] ?? TITULO_HERO[id] ?? `${l.nombre} · ${m.nombre}`,
     dato: p.franja.slice(0, 2).map((f) => f.valor).join(' · '),
     url: urlProducto(p),
   };
@@ -78,7 +104,10 @@ export async function diapositivasHero(): Promise<Diapositiva[]> {
       const slides: Diapositiva[] = [];
       for (const f of archivos) {
         const id = f.replace(/^\d+-/, '').replace(/\.\w+$/, '');
-        const etiqueta = etiquetaDe(id);
+        const etiquetaBase = etiquetaDe(id);
+        const etiqueta = etiquetaBase && ETIQUETA_DERECHA.has(id)
+          ? { ...etiquetaBase, lado: 'derecha' as const }
+          : etiquetaBase;
         /* Sólo los anchos que existen de verdad: anunciar uno que no está
            deja al navegador pidiendo un 404 justo en la imagen LCP. */
         const base = f.replace(/\.\w+$/, '');
@@ -93,6 +122,10 @@ export async function diapositivasHero(): Promise<Diapositiva[]> {
         const mayor = anchos.at(-1);
         const servida = mayor ? join(CARRUSEL_W, mayor.archivo) : join(CARRUSEL, f);
         const { ancho, alto } = await medir(servida);
+        /* Escena o producto se decide por el original: el WebP generado pierde
+           el canal alfa cuando la imagen es opaca, aunque venga de un PNG
+           preparado como producto sobre blanco. */
+        const { alfa } = await medir(join(CARRUSEL, f));
         slides.push({
           src: mayor ? `/home/hero/w/${mayor.archivo}` : `/home/hero/${f}`,
           srcset:
@@ -102,7 +135,11 @@ export async function diapositivasHero(): Promise<Diapositiva[]> {
           alt: etiqueta ? `${etiqueta.titulo.replace(' · ', ' ')}` : 'Equipo para central de esterilización',
           ancho,
           alto,
-          ancha: ancho > alto * 1.5,
+          /* 1,3 y no 1,5: los rollos de papel (1,36:1) también son apaisados y,
+             pegados abajo, quedaban hundidos detrás de la etiqueta. */
+          ancha: alfa && ancho > alto * 1.3,
+          foto: !alfa,
+          encuadre: ENCUADRE_HERO[f.replace(/^\d+-/, '').replace(/\.\w+$/, '')],
           etiqueta,
         });
       }
@@ -134,6 +171,7 @@ export async function diapositivasHero(): Promise<Diapositiva[]> {
     ancho,
     alto,
     ancha: ancho > alto * 1.5,
+    foto: false,
     etiqueta: etiquetaDe('tuttnauer-autoclaves'),
   }];
 }

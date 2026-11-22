@@ -41,7 +41,8 @@ if (delCarrusel.length) {
 
   console.log(`CARRUSEL · ${delCarrusel.length} imagen(es) en public/home/hero`);
   for (const f of delCarrusel) {
-    const id = f.replace(/^\d+-/, '').replace(/\.\w+$/, '');
+    /* Lo que va tras `--` es una variante de la misma ficha: no cuenta. */
+    const id = f.replace(/^\d+-/, '').replace(/\.\w+$/, '').split('--')[0];
     const kb = Math.round(statSync(join(CARRUSEL, f)).size / 1024);
     let dim = '';
     let alfa = '';
@@ -82,7 +83,13 @@ if (delCarrusel.length) {
          perdía un cuarto del alto del panel. Recortado al contenido, cada
          equipo conserva su proporción y usa todo el alto que le cabe; de
          pegarlo al borde inferior ya se encarga `object-position`. */
-      const recortada = await sharpC(join(CARRUSEL, f)).trim().toBuffer({ resolveWithObject: true });
+      /* Una foto con fondo (sin transparencia) no se recorta: su borde parejo
+         es parte del encuadre —la pared de la foto de las bolsas— y llena el
+         recuadro con `cover`. */
+      const conAlfa = (await sharpC(join(CARRUSEL, f)).metadata()).hasAlpha;
+      const recortada = conAlfa
+        ? await sharpC(join(CARRUSEL, f)).trim().toBuffer({ resolveWithObject: true })
+        : await sharpC(join(CARRUSEL, f)).toBuffer({ resolveWithObject: true });
       const { width: w0, height: h0 } = recortada.info;
       const W = w0;
 

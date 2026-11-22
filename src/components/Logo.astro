@@ -72,17 +72,16 @@ const ancho = Math.round(alto * proporcion);
   /* Alto fijo y ancho al contenido: el logotipo manda el ancho, no al revés,
      para que no se deforme ni empuje la barra.
 
-     44 px. El apilado de antes iba a 46 porque necesitaba altura para que su
-     segunda línea se leyera; el horizontal de ahora es 5:1 y cada píxel de
-     alto le cuesta cinco de ancho. A 44 ocupa 220 px y deja 14 de aire a
-     cada lado de la barra de 72, que es lo justo para que no se sienta
-     apretado contra el borde.
+     26 px. Desde el 22/11/2026 el archivo es solo el texto «SERVIMEDICAL
+     GROUP SAS» —sin el símbolo SVM—, en curvas, con el trazo engrosado y el
+     viewBox ceñido a las letras. Sin el margen vertical que traía el archivo
+     anterior, 26 px de caja son unas letras un 25 % más altas que antes.
 
      El tope de ancho queda en 280 para que un archivo algo más apaisado no
      se recorte. */
   .svmg-marca {
     display: block;
-    block-size: 44px;
+    block-size: 26px;
     inline-size: auto;
     max-inline-size: 280px;
     object-fit: contain;

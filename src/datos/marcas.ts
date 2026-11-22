@@ -54,7 +54,13 @@ export const marcas: Marca[] = [
       'Fabricante chino con 304 empleados y una planta de 51.677 m² en Hua County, Henan, según su perfil verificado por SGS. Fabrica autoclaves de vacío pulsante, plasma de peróxido, termodesinfectoras y equipos de óxido de etileno y formaldehído.',
     fabricante: { razonSocial: 'Henan Sanqiang Medical Equipment', ciudad: 'Hua County, Henan', pais: 'China', fundacion: '2010' },
     rolSVMG: 'distribuidor',
-    logo: { src: '/logos/marcas/sanqiang.png', alt: 'Logo de Sanqiang' },
+    // Desde el 22/11/2026: el texto «SANQIANG MEDICAL» en curvas, en el azul de
+    //   la marca (#0254A4), en dos líneas y centrado en el lienzo común al 99 %
+    //   del ancho. En una sola línea (sanqiang-texto.svg) las letras quedaban a
+    //   la mitad de alto que en dos, y en las cajas chicas —menú, tarjetas de
+    //   producto— no se leían. El logo anterior con símbolo queda en
+    //   sanqiang.png por si hay que volver.
+    logo: { src: '/logos/marcas/sanqiang-texto-2l.svg', alt: 'Logo de Sanqiang' },
     /* Residuos no entra hasta que el producto se publique: la marca no puede
        declarar una etapa que su catálogo visible no cubre. */
     etapasCiclo: ['lavado', 'esterilizacion'],
@@ -122,7 +128,9 @@ export const marcas: Marca[] = [
     rolSVMG: 'distribuidor',
     // TODO confirmar con Felipe · registro INVIMA y certificación ISO 13485,
     // que no es visible públicamente.
-    logo: { src: '/logos/marcas/2i.png', alt: 'Logo de 2i' },
+    // Desde el 22/11/2026: logo con «Indicadores químicos y biológicos» debajo,
+    //   en el lienzo común. El anterior, solo el círculo, queda en 2i.png.
+    logo: { src: '/logos/marcas/2i-texto.png', alt: 'Logo de 2i' },
     etapasCiclo: ['monitoreo'],
     pruebas: [
       { dato: 'Indicadores de las clases 1, 2, 4, 5 y 6 de la ISO 11140-1.', fuente: '2i.ind.br · catálogo de indicadores químicos' },
@@ -152,7 +160,9 @@ export const marcas: Marca[] = [
       'La línea propia de Servimedical Group: lo que la central consume y lo que la sostiene. Empaque bajo ISO 11607 y EN 868, mobiliario en acero inoxidable a la medida del plano, y repuestos con existencias en Bogotá.',
     fabricante: { razonSocial: 'Servimedical Group SAS', ciudad: 'Bogotá', pais: 'Colombia' },
     rolSVMG: 'representante',
-    logo: { src: '/logos/marcas/svm.svg', alt: 'Logo de SVM' },
+    // Desde el 22/11/2026: SVM como marca del papel para esterilización
+    //   («Papel esterilización · Tyvek y vapor»), en el lienzo común.
+    logo: { src: '/logos/marcas/svm-papel.svg', alt: 'Logo de SVM, papel para esterilización' },
     etapasCiclo: ['empaque', 'almacenamiento'],
     respaldo: [
       'Abastecimiento programado desde Bogotá',
@@ -178,11 +188,9 @@ export const marcas: Marca[] = [
     // TODO · año de fundación. El sitio solo trae el aviso de copyright de
     //   2014, que es la fecha del sitio y no la de la empresa.
     rolSVMG: 'distribuidor',
-    // TODO · logotipo vectorial oficial. Mientras no llegue, la marca se pinta
-    //   con su nombre: no se dibuja el logotipo de un fabricante.
-    /* Sin archivo todavía: el componente cae al nombre en texto. La ruta
-       queda escrita para que subir `easyseal.svg` sea lo único que falte. */
-    logo: { src: '/logos/marcas/easyseal.svg', alt: 'Logo de EasySeal' },
+    // Logotipo oficial entregado el 22/11/2026 (JPG de 1928 × 464), puesto en
+    //   el lienzo común de 1500 × 800 al 86 % del ancho.
+    logo: { src: '/logos/marcas/easyseal.png', alt: 'Logo de EasySeal' },
     etapasCiclo: ['empaque'],
     pruebas: [
       { dato: 'Seis selladoras automáticas con ficha técnica publicada, de 10 ± 0,5 m/min y 12 mm de ancho de sello.', fuente: 'easyseal.net · fichas de producto' },

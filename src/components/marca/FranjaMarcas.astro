@@ -1,7 +1,12 @@
 ---
 /* Franja de logotipos bajo el hero. Forma parte del primer pantallazo: es lo
    que responde «¿y ustedes qué representan?» antes de cualquier scroll.
-   En móvil se desliza con enganche, sin barra visible. */
+   En móvil se desliza con enganche, sin barra visible.
+
+   Cada marca es una columna: el logo arriba y, debajo, una línea en
+   mayúsculas que dice qué es. El texto se escribe aquí y no viene dibujado en
+   los logos, para que todas las marcas lo lleven con la misma tipografía y en
+   la misma fila. */
 import { getCollection } from 'astro:content';
 import BrandLogo from './BrandLogo.astro';
 import { urlMarca } from '../../datos/marcas.ts';
@@ -9,19 +14,67 @@ import { urlMarca } from '../../datos/marcas.ts';
 const marcas = (await getCollection('marcas'))
   .sort((a, b) => a.data.orden - b.data.orden)
   .map((e) => e.data);
+
+/* Logos propios de esta franja, en `public/logos/marcas/*-franja.*`.
+   Todos comparten un lienzo de 100 unidades de alto: las mayúsculas (o las
+   ascendentes, en Akarmak) miden 36 y apoyan en la línea 68, así que mostrados
+   al mismo alto quedan con letras iguales y la misma línea base. Los genera
+   un script a partir de los originales; `ancho` es el del archivo cuando 100
+   unidades miden 128 px. */
+type LogoFranja = {
+  src: string;
+  ancho: number;
+  /** Alto del lienzo en unidades, si no es 100, y dónde empieza (0 = arriba). */
+  alto?: number;
+  desde?: number;
+  /** Qué es la marca, en una frase corta. Se muestra en mayúsculas. */
+  texto: string;
+};
+const LOGO_FRANJA: Record<string, LogoFranja> = {
+  // Sanqiang va a 4/5 del alto de letra común (28,8 en vez de 36), en la misma
+  // línea base. Texto en curvas, en el azul de la marca (#0254A4).
+  sanqiang: { src: '/logos/marcas/sanqiang-franja.svg', ancho: 582, texto: 'Equipos para esterilización' },
+  tuttnauer: { src: '/logos/marcas/tuttnauer-franja.webp', ancho: 258, texto: 'Equipos para esterilización' },
+  // 2i a 1,5×, solo el círculo: 108 unidades centradas en 50, así que el
+  // lienzo va de -4 a 104.
+  '2i': { src: '/logos/marcas/2i-franja.webp', ancho: 152, alto: 108, desde: -4, texto: 'Indicadores químicos y biológicos' },
+  // SVM, marca del papel, a 1,5×: la sigla mide 54 y apoya en la línea 68.
+  svm: { src: '/logos/marcas/svm-franja.svg', ancho: 258, texto: 'Papel esterilización, Tyvek y vapor' },
+  akarmak: { src: '/logos/marcas/akarmak-franja.webp', ancho: 353, texto: 'Tratamiento de residuos hospitalarios' },
+  easyseal: { src: '/logos/marcas/easyseal-franja.webp', ancho: 279, texto: 'Selladoras para esterilización' },
+};
 ---
 <section class="franja" aria-labelledby="franja-h">
   <div class="contenedor franja-caja">
     <h2 id="franja-h" class="meta franja-rotulo">Marcas que representamos</h2>
 
     <ul class="franja-pista deslizable [--sangria:clamp(20px,5vw,64px)]">
-      {marcas.map((m) => (
-        <li>
-          <a href={urlMarca(m.slug)} title={m.descriptor} class="franja-enlace">
-            <BrandLogo marca={m} size="sm" />
-          </a>
-        </li>
-      ))}
+      {marcas.map((m) => {
+        const l = LOGO_FRANJA[m.slug];
+        return (
+          <li class="franja-marca">
+            <a href={urlMarca(m.slug)} title={m.descriptor} class="franja-enlace">
+              <span class="franja-logo-caja">
+                {l ? (
+                  <img
+                    class="franja-logo"
+                    src={l.src}
+                    alt={m.logo.alt}
+                    width={l.ancho}
+                    height={Math.round(1.28 * (l.alto ?? 100))}
+                    style={`--alto:${(l.alto ?? 100) / 100};--desde:${(l.desde ?? 0) / 100}`}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                ) : (
+                  <BrandLogo marca={m} size="sm" />
+                )}
+              </span>
+              {l?.texto && <span class="franja-texto">{l.texto}</span>}
+            </a>
+          </li>
+        );
+      })}
     </ul>
   </div>
 </section>
@@ -46,23 +99,77 @@ const marcas = (await getCollection('marcas'))
      además fija `scroll-padding-inline`: sin eso, el enganche arrastra la
      pista hasta pegar el primer logo al borde y se come la sangría. */
   .franja-pista {
+    /* `--u` es lo que miden 100 unidades de lienzo de logo. */
+    --u: clamp(40px, 3.9vw, 56px);
     display: flex;
-    align-items: center;
+    /* Arriba y no al centro: todas las columnas empiezan en la misma línea, y
+       como la caja del logo mide lo mismo en todas, los textos también. */
+    align-items: flex-start;
     /* Centrada con hueco fijo, no repartida con `space-between`: con reparto,
        quitar o añadir una marca recoloca todas las demás y el ritmo depende
        de cuántas haya. */
     justify-content: center;
-    /* Hueco corto a propósito: cada logotipo viene en un lienzo común que ya
-       trae su propio margen interno. Sumarle un hueco grande lo separaría el
-       doble de lo que se dibujó. */
-    gap: clamp(4px, 0.6vw, 10px);
+    gap: clamp(16px, 1.7vw, 24px);
     margin-inline: calc(-1 * var(--sangria));
     padding-inline: var(--sangria);
   }
-  .franja-pista > li { flex: none; }
+
+  /* Ancho mínimo para que el texto quepa en dos líneas aunque el logo sea
+     angosto (el círculo de 2i); una marca de logo ancho manda con su logo. */
+  .franja-marca {
+    flex: none;
+    min-inline-size: clamp(116px, 10.4vw, 150px);
+  }
 
   /* El foco lo pinta la regla global de global.css, en verde señal. */
-  .franja-enlace { display: block; }
+  .franja-enlace {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+  }
+
+  /* Caja de alto común para el logo: va de -4 a 104 unidades, lo que ocupa
+     el más alto (el círculo de 2i). Así la línea base de los logos y la fila
+     de los textos son las mismas en todas las columnas. */
+  .franja-logo-caja {
+    display: block;
+    block-size: calc(var(--u) * 1.08);
+  }
+  .franja-logo {
+    display: block;
+    block-size: calc(var(--u) * var(--alto, 1));
+    margin-block-start: calc(var(--u) * (0.04 + var(--desde, 0)));
+    inline-size: auto;
+    transition: opacity 160ms ease;
+  }
+
+  /* Misma voz para todas: la tipografía de títulos ensanchada, en mayúsculas
+     espaciadas, como el texto que traían dibujado los logos de 2i y SVM. */
+  .franja-texto {
+    display: block;
+    /* Ancho 0 con mínimo del 100 %: el texto no ensancha la columna, se
+       acomoda al ancho que dan el logo o el mínimo de la columna. */
+    inline-size: 0;
+    min-inline-size: 100%;
+    font-family: var(--font-display);
+    font-variation-settings: 'wdth' 112;
+    font-weight: 600;
+    font-size: clamp(8px, 0.62vw, 9px);
+    line-height: 1.35;
+    /* 0,08 em: con más aire, «Tratamiento de residuos hospitalarios» pasaba
+       a tres líneas en la columna de 150 px. */
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: center;
+    text-wrap: balance;
+    color: var(--color-navy);
+  }
+
+  @media (hover: hover) {
+    .franja-enlace:hover .franja-logo,
+    .franja-enlace:hover .franja-texto { opacity: 0.78; }
+  }
 
   @media (width >= 62.5rem) {
     /* El rótulo se queda arriba también en escritorio. En línea con los

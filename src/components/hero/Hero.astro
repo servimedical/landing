@@ -56,6 +56,8 @@ const etiqueta = slides[0]?.etiqueta;
                 width={d.ancho}
                 height={d.alto}
                 data-ancha={d.ancha ? '' : undefined}
+                data-foto={d.foto ? '' : undefined}
+                style={d.encuadre ? `object-position:${d.encuadre}` : undefined}
                 fetchpriority={i === 0 ? 'high' : undefined}
                 loading={i === 0 ? 'eager' : 'lazy'}
                 decoding="async"
@@ -76,7 +78,7 @@ const etiqueta = slides[0]?.etiqueta;
         </div>
 
         {etiqueta && (
-          <a href={etiqueta.url} class="hero-etiqueta" data-etiqueta>
+          <a href={etiqueta.url} class="hero-etiqueta" data-etiqueta data-lado={etiqueta.lado}>
             <span aria-hidden="true" class="hero-punto"></span>
             <span>
               <span class="hero-etiqueta-titulo" data-etiqueta-titulo>{etiqueta.titulo}</span>
@@ -266,6 +268,17 @@ const etiqueta = slides[0]?.etiqueta;
     animation: hero-entra 600ms ease-out both;
   }
 
+  /* Foto con fondo —una escena, no un equipo recortado—: no puede salirse del
+     recuadro sin que se vea el corte, así que lo llena entero. */
+  .hero-equipo[data-foto] {
+    inline-size: 100%;
+    block-size: var(--alto-caja);
+    object-fit: cover;
+    object-position: center;
+    margin-bottom: 0;
+    border-radius: 5px;
+  }
+
   /* Flechas: sólo en escritorio y sólo cuando hay más de un equipo. */
   .hero-flecha {
     position: absolute;
@@ -414,6 +427,14 @@ const etiqueta = slides[0]?.etiqueta;
        la etiqueta flote debajo. En móvil la etiqueta va fuera del recuadro. */
     .hero-equipo[data-ancha] { object-position: center 30%; }
 
+    /* La foto con fondo llena el recuadro: sin el corrimiento a la derecha
+       del equipo recortado, que la sacaba del borde. */
+    .hero-equipo[data-foto] {
+      inline-size: 100%;
+      justify-self: stretch;
+      margin-inline-end: 0;
+    }
+
     .hero-flecha { display: grid; }
 
     /* Flotante sobre el panel, abajo a la izquierda, sin tapar el equipo. */
@@ -423,6 +444,9 @@ const etiqueta = slides[0]?.etiqueta;
       bottom: 20px;
       margin-top: 0;
     }
+    /* Algunas fotos tienen lo importante abajo a la izquierda (el logo en la
+       máquina de Sanqiang): ahí la etiqueta se pasa a la derecha. */
+    .hero-etiqueta[data-lado='derecha'] { left: auto; right: 20px; }
   }
 </style>
 
@@ -443,7 +467,7 @@ const etiqueta = slides[0]?.etiqueta;
     const dato = panel.querySelector<HTMLElement>('[data-etiqueta-dato]');
 
     const crudo = document.querySelector<HTMLScriptElement>('[data-etiquetas]')?.textContent;
-    const etiquetas: ({ titulo: string; dato: string; url: string } | null)[] =
+    const etiquetas: ({ titulo: string; dato: string; url: string; lado?: string } | null)[] =
       crudo ? JSON.parse(crudo) : [];
 
     const quieto = matchMedia('(prefers-reduced-motion: reduce)');
@@ -471,6 +495,8 @@ const etiqueta = slides[0]?.etiqueta;
           etiqueta.hidden = false;
           etiqueta.href = e.url;
           titulo.textContent = e.titulo;
+          if (e.lado) etiqueta.dataset.lado = e.lado;
+          else delete etiqueta.dataset.lado;
           dato.textContent = `${e.dato} →`;
         } else {
           etiqueta.hidden = true;
