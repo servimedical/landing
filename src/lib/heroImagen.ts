@@ -59,6 +59,8 @@ const medir = async (ruta: string) => {
 const TITULO_HERO: Record<string, string> = {
   'svm-papel-para-esterilizacion': 'Papel para esterilización',
   'svm-papel-para-esterilizacion--bolsas': 'Bolsas de esterilización',
+  '2i-indicadores-biologicos': 'Indicadores químicos y biológicos 2i',
+  '2i-incubadoras': 'Incubadora indicadores biológicos 2i',
 };
 
 /** Encuadre de las fotos que no van centradas en el recuadro. Hoy ninguna:

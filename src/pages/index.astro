@@ -31,10 +31,6 @@ const marcas = (await getCollection('marcas'))
     <FranjaMarcas />
   </div>
 
-  {/* Fuera de la primera pantalla a propósito: hero y franja de marcas tienen
-      que entrar completos al abrir la página. */}
-  <FranjaCertificaciones />
-
   <!-- Marcas que representamos -->
   <section class="border-t border-rule" aria-labelledby="marcas">
     <div class="contenedor py-14 lg:py-20">
@@ -50,6 +46,9 @@ const marcas = (await getCollection('marcas'))
       <a href="/marcas" class="meta mt-8 inline-block text-[10px] text-steel hover:text-navy">Ver todas las marcas →</a>
     </div>
   </section>
+
+  {/* Certificaciones y registros, después de «Nuestras marcas». */}
+  <FranjaCertificaciones />
 
   <!-- Servicios -->
   <section class="field-paper border-t border-rule" aria-labelledby="servicios">

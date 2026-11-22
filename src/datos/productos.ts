@@ -1082,6 +1082,8 @@ export const productos: Producto[] = [
       'Acompañamiento en la calificación operacional del proceso de sellado',
       'Mantenimiento preventivo de resistencia, rodillos y control de temperatura',
     ],
+    // Foto: la entregó Servimedical (selladora rotativa con mesa de rodillos).
+    media: { foto: '/productos/easyseal-selladoras/foto.webp' },
     seo: {
       titulo: 'Selladoras automáticas EasySeal en Colombia | Servimedical',
       descripcion: 'Selladoras automáticas de corte, sellado e impresión para empaque médico: 10 m/min, sello de 12 mm y control de temperatura al 1 %, con registro de parámetros.',
