@@ -483,11 +483,24 @@ const etiqueta = slides[0]?.etiqueta;
        alto para no empujar la franja de marcas fuera de la vista. Centrado
        en la columna: así los puntos, que se centran en la columna, quedan
        justo debajo del recuadro. */
+    /* El lado del cuadrado sale del alto de la pantalla: lo que queda después
+       de la barra, el aire del hero (32 + 24), los puntos (~32) y la franja
+       de marcas (--alto-franja), para que la franja entre completa en la
+       primera vista. Nunca más ancho que la columna ni menor de 340 px. */
     .hero-panel {
-      inline-size: min(100%, max(calc(var(--alto-caja) * 1.2), 62vh));
+      --alto-franja: 148px;
+      inline-size: min(
+        100%,
+        max(340px, calc(100svh - var(--spacing-header) - 56px - 32px - var(--alto-franja)))
+      );
       margin-inline: auto;
     }
+    .hero-rejilla { padding-block: 32px 24px; }
   }
+
+  /* Los puntos, pegados al recuadro: con el cuadrado ya no hay equipo que
+     sobresalga por abajo y el aire de 22 px sobraba. */
+  .hero-puntos { margin-top: 8px; }
 </style>
 
 <script>

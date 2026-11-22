@@ -99,7 +99,9 @@ const LOGO_FRANJA: Record<string, LogoFranja> = {
      pista hasta pegar el primer logo al borde y se come la sangría. */
   .franja-pista {
     /* `--u` es lo que miden 100 unidades de lienzo de logo. */
-    --u: clamp(40px, 3.9vw, 56px);
+    /* 50 de tope: con 56 la franja no entraba en la primera pantalla junto
+       al carrusel cuadrado. */
+    --u: clamp(38px, 3.5vw, 50px);
     display: flex;
     /* Arriba y no al centro: todas las columnas empiezan en la misma línea, y
        como la caja del logo mide lo mismo en todas, los textos también. */
@@ -125,7 +127,7 @@ const LOGO_FRANJA: Record<string, LogoFranja> = {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 7px;
+    gap: 5px;
   }
 
   /* Caja de alto común para el logo: va de -4 a 104 unidades, lo que ocupa
@@ -177,8 +179,8 @@ const LOGO_FRANJA: Record<string, LogoFranja> = {
        dispone del contenedor entero y el lienzo puede ir a 168: el dibujo de
        cada marca crece un 40 % y se ve al tamaño en que se diseñó. */
     .franja-caja {
-      gap: 10px;
-      padding-block: 14px 16px;
+      gap: 8px;
+      padding-block: 10px 12px;
     }
     .franja-pista {
       --sangria: 0px;
