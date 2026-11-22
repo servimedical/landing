@@ -12,9 +12,14 @@
    y al pasar el puntero el botón sube y aparece la etiqueta «Escríbanos por
    WhatsApp». Sin animación si el sistema pide reducir movimiento. */
 import { contacto } from '../content/sitio.ts';
+
+/* Mensaje con el que se abre el chat. La persona lo completa antes de
+   enviarlo; así el equipo sabe que el contacto llegó desde la web. */
+const MENSAJE = '¡Hola! Visité la página web y estoy interesado en...';
+const enlace = `${contacto.whatsapp.href}?text=${encodeURIComponent(MENSAJE)}`;
 ---
 <a
-  href={contacto.whatsapp.href}
+  href={enlace}
   class="wa-flotante"
   target="_blank"
   rel="noopener"
