@@ -91,11 +91,11 @@ export const navegacion: NodoNav[] = [
 
   { titulo: 'Servicios', url: '/servicios', enNavbar: true, enFooter: 'empresa' },
 
-  /* Repuestos sale del menú de Líneas y sube al navbar. Nunca fue un método
-     de esterilización —estaba ahí porque no había otro sitio—, y es de lo
-     que más se busca con el equipo ya parado: tres clics de distancia era
-     demasiado. */
-  { titulo: 'Repuestos', url: '/repuestos', enNavbar: true, enFooter: 'empresa' },
+  /* Desde el 22/11/2026 Repuestos vuelve al menú de Líneas, como último
+     ítem (ver `nodosLineas`), y su lugar en el navbar lo toma Clientes. La
+     página /repuestos sigue igual y en el pie. */
+  { titulo: 'Clientes', url: '/clientes', enNavbar: true, enFooter: 'empresa' },
+  { titulo: 'Repuestos', url: '/repuestos', enNavbar: false, enFooter: 'empresa' },
   { titulo: 'Contacto', url: '/contacto', enNavbar: false, enFooter: 'empresa' },
 
   {
@@ -161,12 +161,16 @@ export const nodosMarcas: NodoNav[] =
 
 /** Las líneas como nodos, para el panel del menú.
  *
- *  Repuestos se excluye: tiene entrada propia en el navbar. No se puede sacar
- *  del árbol —de la rama de Líneas cuelgan las rutas de producto y de ahí
- *  salen las migas y la validación de enlaces—, así que se filtra la vista. */
-export const nodosLineas: NodoNav[] = (
-  navegacion.find((n) => n.url === '/lineas')?.hijos ?? []
-).filter((n) => !n.url.startsWith('/marcas/svm/repuestos') && n.url !== '/lineas/repuestos');
+ *  Repuestos va al final y apunta a la página /repuestos —cómo pedir, qué
+ *  tener a mano—, no a la ficha del producto `svm/repuestos`, que es a donde
+ *  apunta su nodo en el árbol. Por eso se saca de su posición y se agrega al
+ *  final como entrada propia. */
+const lineaRepuestos = (navegacion.find((n) => n.url === '/lineas')?.hijos ?? [])
+  .find((n) => n.url.startsWith('/marcas/svm/repuestos') || n.url === '/lineas/repuestos');
+export const nodosLineas: NodoNav[] = [
+  ...(navegacion.find((n) => n.url === '/lineas')?.hijos ?? []).filter((n) => n !== lineaRepuestos),
+  { titulo: 'Repuestos', url: '/repuestos', descriptor: lineaRepuestos?.descriptor },
+];
 
 export function columnaFooter(clave: 'marcas' | 'empresa'): NodoNav[] {
   return todosLosNodos().filter((n) => n.enFooter === clave);

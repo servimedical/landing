@@ -1,0 +1,104 @@
+---
+/* Banda de certificaciones y registros, justo debajo de «Marcas que
+   representamos»: solo los logos, en una fila y a la misma altura.
+
+   Logos originales de cada entidad (archivos fuente en
+   docs/certificaciones/originales/):
+   - INVIMA: invima.gov.co. Su manual pide autorización previa para usar el
+     logo y no permite uso comercial: ver docs/certificaciones/LEEME.md.
+   - ASME: asme.org (la única versión pública es blanca; aquí va en su azul
+     para fondo claro). Su política (CA-1 2025) reserva el logo a ASME.
+   - CE: archivo oficial de la Comisión Europea, de uso libre.
+   - CCAA: no existe logo (certificado administrativo del INVIMA), así que va
+     como sello de texto.
+   El uso de INVIMA y ASME lo decidió Servimedical el 22/11/2026.
+
+   {{ POR CONFIRMAR: números de registro sanitario INVIMA por equipo y número
+   y vigencia del CCAA de Servimedical }} */
+
+type Sello = {
+  nombre: string;
+  imagen?: { src: string; ancho: number; alto: number };
+};
+
+const SELLOS: Sello[] = [
+  { nombre: 'INVIMA', imagen: { src: '/logos/certificaciones/invima.webp', ancho: 900, alto: 264 } },
+  { nombre: 'CCAA' },
+  { nombre: 'ASME', imagen: { src: '/logos/certificaciones/asme.svg', ancho: 124, alto: 74 } },
+  { nombre: 'Marcado CE', imagen: { src: '/logos/certificaciones/ce.svg', ancho: 280, alto: 200 } },
+];
+---
+<section class="certs" aria-labelledby="certs-h">
+  <div class="contenedor certs-caja">
+    <h2 id="certs-h" class="meta certs-rotulo">Certificaciones y registros</h2>
+
+    <ul class="certs-pista deslizable [--sangria:clamp(20px,5vw,64px)]">
+      {SELLOS.map((s) => (
+        <li class="certs-item">
+          {s.imagen ? (
+            <img
+              src={s.imagen.src}
+              alt={s.nombre}
+              width={s.imagen.ancho}
+              height={s.imagen.alto}
+              loading="lazy"
+              decoding="async"
+            />
+          ) : (
+            <span class="certs-sello-texto" aria-label={s.nombre}>{s.nombre}</span>
+          )}
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .certs {
+    border-top: 1px solid var(--color-rule);
+    background: var(--color-paper);
+  }
+  .certs-caja {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-block: 20px 24px;
+  }
+  .certs-rotulo { font-size: 10px; color: var(--color-steel); }
+
+  .certs-pista {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(32px, 6vw, 88px);
+    margin-inline: calc(-1 * var(--sangria));
+    padding-inline: var(--sangria);
+  }
+
+  /* Todos los logos al mismo alto (--alto-sello) y centrados en la fila; el
+     sello de texto CCAA usa ese mismo alto como altura de línea. */
+  .certs-pista { --alto-sello: 52px; }
+  .certs-item {
+    flex: none;
+    display: grid;
+    place-items: center;
+    block-size: var(--alto-sello);
+  }
+  .certs-item img {
+    block-size: var(--alto-sello);
+    inline-size: auto;
+  }
+  .certs-sello-texto {
+    font-family: var(--font-display);
+    font-variation-settings: 'wdth' 125;
+    font-weight: 800;
+    font-size: 40px;
+    line-height: var(--alto-sello);
+    letter-spacing: 0.02em;
+    color: var(--color-navy);
+  }
+
+  @media (width >= 62.5rem) {
+    .certs-pista { --sangria: 0px; overflow: visible; }
+  }
+</style>

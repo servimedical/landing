@@ -1,0 +1,26 @@
+---
+/* Clientes. Página reservada: Servimedical va a enviar la estructura.
+   Mientras tanto queda con el titular y un llamado al contacto, sin datos que
+   no estén confirmados.
+   {{ POR CONFIRMAR: estructura y contenido de la página de clientes }} */
+import Base from '../layouts/Base.astro';
+import Migas from '../components/Migas.astro';
+import { normalizar } from '../content/navegacion.ts';
+
+const rutaActual = normalizar(Astro.url.pathname);
+---
+<Base
+  titulo="Clientes | Servimedical"
+  descripcion="Instituciones de salud en Colombia que trabajan con Servimedical en equipos, consumibles y servicio técnico para la central de esterilización."
+>
+  <Migas rutaActual={rutaActual} />
+  <section class="contenedor py-14 lg:py-20">
+    <h1 class="max-w-[20ch] text-[clamp(28px,3.6vw,44px)]">Clientes</h1>
+    <p class="mt-5 max-w-[56ch] text-[17px] leading-relaxed text-steel">
+      Instituciones de salud en Colombia que trabajan con Servimedical en la central de esterilización.
+    </p>
+    <a href="/contacto" class="mt-8 inline-flex items-center gap-2.5 border border-navy bg-navy px-5 py-3.5 text-[14.5px] font-medium text-white hover:bg-navy-deep">
+      <span aria-hidden="true" class="senal"></span>Hablar con un especialista
+    </a>
+  </section>
+</Base>
