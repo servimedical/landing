@@ -1,7 +1,8 @@
 ---
 /* Tarjeta de producto en la página de línea. Muestra la marca, el nombre de la
-   familia, el origen, el rol de Servimedical y los tres diferenciales: lo que
-   de verdad separa a un fabricante de otro en ese método. */
+   familia, el rol de Servimedical y los tres diferenciales: lo que de verdad
+   separa a un fabricante de otro en ese método. Sin el origen del fabricante
+   desde el 22/11/2026: no se habla de quién es el fabricante. */
 import BrandLogo from '../marca/BrandLogo.astro';
 import { marcaPorSlug } from '../../datos/marcas.ts';
 import { urlProducto } from '../../datos/productos.ts';
@@ -10,7 +11,6 @@ import type { Producto } from '../../datos/tipos.ts';
 interface Props { producto: Producto }
 const { producto: p } = Astro.props;
 const m = marcaPorSlug(p.marca)!;
-const origen = [m.fabricante.ciudad, m.fabricante.pais].filter(Boolean).join(', ');
 const rol = m.rolSVMG === 'representante' ? 'Representante en Colombia' : 'Distribuidor autorizado';
 ---
 <li class="flex flex-col border-b border-r border-rule bg-white">
@@ -25,7 +25,7 @@ const rol = m.rolSVMG === 'representante' ? 'Representante en Colombia' : 'Distr
     <span class="font-display mt-4 block text-[clamp(17px,1.9vw,21px)] leading-tight font-bold [font-variation-settings:'wdth'_110]">
       {p.nombre}
     </span>
-    <span class="meta mt-2 block text-[10px] text-steel">{origen} · {rol}</span>
+    <span class="meta mt-2 block text-[10px] text-steel">{rol}</span>
 
     <ul class="mt-5 border-t border-rule">
       {p.diferenciales.map((d) => (

@@ -17,7 +17,7 @@ export const marcas: Marca[] = [
     nombre: 'Tuttnauer',
     descriptor: 'Esterilización y desinfección térmica',
     lead:
-      'Fabricante de autoclaves desde 1925, con más de 200 distribuidores en más de 140 países. Autoclaves de vapor, baja temperatura con peróxido de hidrógeno y lavado con termodesinfección para la central, con instalación, calificación y repuesto original desde Bogotá.',
+      'Autoclaves de vapor, baja temperatura con peróxido de hidrógeno y termodesinfectoras para la central de esterilización, con instalación, calificación y repuesto original desde Bogotá.',
     quienEs:
       'Fabricante fundado en 1925, con plantas en China desde 2013 y en Hungría desde 2022, y más de 200 distribuidores en 140 países. Los autoclaves de central se fabrican bajo EN 285, ANSI/AAMI ST8, ISO 13485 y la Directiva de Equipos a Presión 2014/68/UE.',
     fabricante: { pais: 'China y Hungría', fundacion: '1925' },
@@ -47,9 +47,9 @@ export const marcas: Marca[] = [
   {
     slug: 'sanqiang',
     nombre: 'Sanqiang',
-    descriptor: 'Esterilización, desinfección y residuos',
+    descriptor: 'Esterilización y desinfección',
     lead:
-      'Fabricante chino de equipos para la central de esterilización, fundado en 2010 y exportador a más de 100 países. Cubre el lavado y la termodesinfección, el vapor —desde autoclaves de mesa hasta cámaras de 1.500 L— y el plasma de peróxido.',
+      'Autoclaves de vapor —de mesa, verticales de laboratorio y de central hasta 1.500 L—, plasma de peróxido, termodesinfectoras y reprocesadoras de endoscopios para la central de esterilización.',
     quienEs:
       'Fabricante chino con 304 empleados y una planta de 51.677 m² en Hua County, Henan, según su perfil verificado por SGS. Fabrica autoclaves de vacío pulsante, plasma de peróxido, termodesinfectoras y equipos de óxido de etileno y formaldehído.',
     fabricante: { razonSocial: 'Henan Sanqiang Medical Equipment', ciudad: 'Hua County, Henan', pais: 'China', fundacion: '2010' },
@@ -81,7 +81,7 @@ export const marcas: Marca[] = [
     seo: {
       titulo: 'Sanqiang en Colombia | Servimedical',
       descripcion:
-        'Autoclaves de vacío pulsante hasta 1.500 L, plasma SQ-WD, termodesinfectoras y tratamiento de residuos. Importación directa y servicio técnico propio.',
+        'Autoclaves de mesa, verticales y de vacío pulsante hasta 1.500 L, plasma SQ-WD, termodesinfectoras y reprocesadoras de endoscopios. Servicio técnico propio.',
     },
   },
 
@@ -91,7 +91,7 @@ export const marcas: Marca[] = [
     nombre: 'Akarmak',
     descriptor: 'Tratamiento de residuos biosanitarios',
     lead:
-      'Fabricante turco de autoclaves industriales desde 1990, con clientes en más de 70 países. Su línea médica esteriliza y tritura residuos biosanitarios, desde equipos para un solo hospital hasta plantas centralizadas.',
+      'Equipos que esterilizan y trituran el residuo biosanitario dentro de la institución, desde un solo hospital hasta plantas centralizadas.',
     quienEs:
       'Fabricante turco —Akar Makina— que aplica al residuo biosanitario su ingeniería de autoclaves y recipientes a presión industriales. Fabrica bajo la Directiva de Equipos a Presión 2014/68/UE, ASME VIII, AD 2000 e ISO 9001:2015.',
     fabricante: { razonSocial: 'Akar Makina', ciudad: 'Eskişehir', pais: 'Turquía', fundacion: '1990' },
@@ -181,7 +181,7 @@ export const marcas: Marca[] = [
     slug: 'easyseal',
     nombre: 'EasySeal',
     descriptor: 'Sellado de la barrera estéril',
-    lead: 'Fabricante chino especializado en selladoras para empaque médico. Servimedical representa su línea automática en Colombia.',
+    lead: 'Selladoras automáticas para empaque médico, con control de temperatura, impresión de los parámetros del sello y función de calificación operacional.',
     quienEs:
       'Fabricante chino especializado en sellado de empaque médico. Su línea automática integra control de temperatura con precisión de ≤ 1 %, impresión de los parámetros del sello y función de calificación operacional.',
     fabricante: { razonSocial: 'Easyseal Medical Technology Co., Ltd.', pais: 'China' },

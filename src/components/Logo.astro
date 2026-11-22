@@ -47,7 +47,16 @@ const proporcion = (() => {
 const alto = 60;
 const ancho = Math.round(alto * proporcion);
 ---
-{archivo ? (
+{variante === 'claro' ? (
+  /* Encabezado: el nombre en texto, con la tipografía del titular del hero
+     (Archivo, ancho 112, negrita) y «GROUP SAS» centrado debajo, más
+     pequeño. Desde el 22/11/2026 reemplaza al archivo
+     servimedical-group.svg, que queda en la carpeta sin uso aquí. */
+  <span class:list={['svmg-nombre', clase]}>
+    <span class="svmg-nombre-principal">SERVIMEDICAL</span>
+    <span class="svmg-nombre-sufijo">GROUP SAS</span>
+  </span>
+) : archivo ? (
   <img
     src={archivo}
     alt="Servimedical Group"
@@ -86,5 +95,31 @@ const ancho = Math.round(alto * proporcion);
     max-inline-size: 280px;
     object-fit: contain;
     object-position: left center;
+  }
+
+  /* Bloque de dos líneas centradas. El sufijo se espacia para que su ancho
+     se acerque al del nombre sin crecer de tamaño. */
+  .svmg-nombre {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: var(--font-display);
+    font-variation-settings: 'wdth' 112;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--color-navy);
+  }
+  .svmg-nombre-principal {
+    font-size: 23px;
+    letter-spacing: -0.01em;
+  }
+  .svmg-nombre-sufijo {
+    margin-top: 4px;
+    font-size: 11px;
+    letter-spacing: 0.32em;
+    /* El espaciado deja aire tras la última letra; se compensa para que el
+       centrado sea óptico y no se corra a la izquierda. */
+    margin-inline-end: -0.32em;
+    color: var(--color-steel);
   }
 </style>

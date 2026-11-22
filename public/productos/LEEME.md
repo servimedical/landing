@@ -29,6 +29,8 @@ Las carpetas, con el nombre exacto:
 | `tuttnauer-baja-temperatura` | PlazMax |
 | `tuttnauer-termodesinfectoras` | TIVA |
 | `sanqiang-autoclaves` | Serie MD.JD |
+| `sanqiang-autoclaves-de-mesa` | SQ-Z23 y SQ-Y45 |
+| `sanqiang-autoclaves-verticales` | SQ-ZL50, SQ-ZL80 y SQ-ZL100 |
 | `sanqiang-baja-temperatura` | SQ-WD |
 | `sanqiang-termodesinfectoras` | SQ-KX y SQ-X360 |
 | `sanqiang-residuos-hospitalarios` | Tratamiento de residuos Sanqiang |

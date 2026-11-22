@@ -20,12 +20,14 @@ const { m } = Astro.props;
 const rutaActual = normalizar(Astro.url.pathname);
 const suyos = productosDeMarca(m.slug);
 
-/* Ficha rápida: sólo lo confirmado. Un campo vacío no se renderiza. */
-const origen = [m.fabricante.razonSocial, m.fabricante.ciudad, m.fabricante.pais].filter(Boolean).join(' · ');
+/* Ficha rápida: sólo lo confirmado. Un campo vacío no se renderiza.
+   Sin fila «Fabricante» ni sección «Quién es el fabricante» desde el
+   22/11/2026: la página habla de lo que Servimedical ofrece de la marca. Los
+   datos siguen en src/datos/marcas.ts (`fabricante`, `quienEs`). */
+const lineasSuyas = [...new Set(suyos.map((p) => lineaPorSlug(p.linea)!.nombre))];
 const ficha: [string, string][] = [
-  ['Fabricante', m.fabricante.fundacion ? `${origen} · desde ${m.fabricante.fundacion}` : origen],
   ['Rol de Servimedical', m.rolSVMG === 'representante' ? 'Representante en Colombia' : 'Distribuidor autorizado'],
-  ...(suyos.length ? ([['Líneas', suyos.map((p) => lineaPorSlug(p.linea)!.nombre).join(' · ')]] as [string, string][]) : []),
+  ...(lineasSuyas.length ? ([['Líneas', lineasSuyas.join(' · ')]] as [string, string][]) : []),
   ...(m.invima ? ([['Registro INVIMA', m.invima]] as [string, string][]) : []),
 ];
 
@@ -65,14 +67,6 @@ const jsonld = {
       ))}
     </dl>
   </div>
-
-  {/* 2 · Quién es el fabricante */}
-  <section class="field-paper border-t border-rule" aria-labelledby="quien">
-    <div class="contenedor py-12 lg:py-16">
-      <h2 id="quien" class="text-[clamp(22px,2.6vw,30px)]">Quién es el fabricante</h2>
-      <p class="mt-7 max-w-[68ch] text-[16.5px] leading-relaxed text-steel">{m.quienEs}</p>
-    </div>
-  </section>
 
   {/* 3 · Productos de esta marca */}
   {suyos.length > 0 && (

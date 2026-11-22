@@ -26,7 +26,6 @@ const propia = m.slug === 'servimedical';
 const titular = propia ? p.nombre : `${p.nombre} ${m.nombre}`;
 const cotizar = `Cotizar ${titular}`;
 const conFoto = Boolean(p.media?.foto);
-const tituloBloque = esEquipo ? 'El equipo' : p.tipo === 'mobiliario' ? 'El mobiliario' : 'El producto';
 /* La nota sobre las normas del método sólo tiene sentido si la línea tiene
    página; si no, enlazaría a este mismo producto. */
 const lineaConPagina = lineaTienePagina(l.slug);
@@ -99,15 +98,9 @@ const jsonld = {
     </div>
   </div>
 
-  {/* 2 · Descripción */}
-  <section class="field-paper border-t border-rule" aria-labelledby="descripcion">
-    <div class="contenedor py-12 lg:py-16">
-      <h2 id="descripcion" class="text-[clamp(22px,2.6vw,30px)]">{tituloBloque}</h2>
-      <div class="mt-7 max-w-[68ch] space-y-5">
-        {p.descripcion.map((t) => (<p class="text-[16.5px] leading-relaxed text-steel">{t}</p>))}
-      </div>
-    </div>
-  </section>
+  {/* La sección de descripción («El equipo», «El producto», «El
+      mobiliario») se quitó el 22/11/2026: el lead y la franja de datos ya
+      dicen lo que hace falta. El texto sigue en `descripcion` de cada ficha. */}
 
   {/* 3 · Modelos. Una tabla por familia cuando el producto tiene varias:
       mesa, mediano, central. Una sola de veinte filas no se lee. */}

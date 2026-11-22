@@ -23,7 +23,7 @@ export const productos: Producto[] = [
     linea: 'autoclaves',
     nombre: 'Autoclaves',
     tipo: 'equipo',
-    orden: 2,
+    orden: 1,
     lead: 'Autoclaves de vapor de 21 a 1.010 L: de mesa Clase B para clínica y quirófano, medianos móviles, y de central bajo EN 285, de una o dos puertas.',
     franja: [
       { label: 'Cámara', valor: '21 – 1.010 L' },
@@ -157,7 +157,7 @@ export const productos: Producto[] = [
     linea: 'baja-temperatura',
     nombre: 'PlazMax',
     tipo: 'equipo',
-    orden: 3,
+    orden: 2,
     lead: 'Esterilización a baja temperatura con peróxido de hidrógeno vaporizado, por debajo de 55 °C y en ciclos de 32 a 48 minutos. Sin consumo de agua.',
     franja: [
       { label: 'Cámara', valor: '47 · 109 · 162 L' },
@@ -223,7 +223,7 @@ export const productos: Producto[] = [
     linea: 'termodesinfectoras',
     nombre: 'TIVA',
     tipo: 'equipo',
-    orden: 1,
+    orden: 3,
     lead: 'Termodesinfectoras de 65 a 430 L, de 8 a 18 cestas DIN, con secado por aire filtrado HEPA H14 y cuarenta programas.',
     franja: [
       { label: 'Capacidad', valor: 'Hasta 18 cestas DIN' },
@@ -289,7 +289,7 @@ export const productos: Producto[] = [
     linea: 'termodesinfectoras',
     nombre: 'SQ-X y SQ-KX',
     tipo: 'equipo',
-    orden: 1,
+    orden: 3,
     lead: 'Termodesinfectoras de 350 a 560 L, de 8 a 12 cestas DIN, que lavan, desinfectan térmicamente y secan en un solo ciclo.',
     franja: [
       { label: 'Capacidad', valor: '8 a 12 cestas DIN' },
@@ -352,27 +352,18 @@ export const productos: Producto[] = [
     linea: 'autoclaves',
     nombre: 'Autoclaves',
     tipo: 'equipo',
-    orden: 2,
-    lead: 'Autoclaves de vapor de 18 a 1.500 L: de mesa Clase B, horizontales compactos, y de vacío pulsante para centrales de alto volumen.',
+    orden: 1,
+    lead: 'Autoclaves de vapor de 100 a 1.500 L: horizontales compactos y de vacío pulsante para centrales de alto volumen.',
     franja: [
-      { label: 'Cámara', valor: '18 – 1.500 L' },
+      { label: 'Cámara', valor: '100 – 1.500 L' },
       { label: 'Temperatura', valor: '121 y 134 °C' },
       { label: 'Uniformidad', valor: '± 0,5 °C, en central' },
       { label: 'Vacío final', valor: '−96 kPa, en central' },
     ],
     descripcion: [
-      'Autoclaves de vapor de 18 a 1.500 L: mesa Clase B para procedimientos menores y equipos de central con una o dos puertas. Misma ingeniería de cámara y control de presión en toda la familia.',
+      'Autoclaves de vapor de 100 a 1.500 L: horizontales compactos para servicios pequeños y equipos de central con una o dos puertas. Misma ingeniería de cámara y control de presión en toda la familia. Los de mesa y los verticales de laboratorio tienen ficha propia.',
     ],
     modelos: [
-      {
-        familia: 'Mesa, Clase B',
-        encabezados: ['Modelo', 'Cámara', 'Medidas de cámara', 'Medidas externas', 'Peso', 'Potencia'],
-        filas: [
-          ['SQ-Z18', '18 L', 'Ø246 × 360 mm', '715 × 513 × 425 mm', '45 kg', '1,7 kVA'],
-          ['SQ-Z23', '23 L', 'Ø246 × 450 mm', '715 × 513 × 425 mm', '49 kg', '1,7 kVA'],
-          ['SQ-Z45', '45 L', 'Ø320 × 620 mm', '900 × 565 × 600 mm', '108 kg', '3,5 kVA'],
-        ],
-      },
       {
         familia: 'Horizontales compactos · EN 13060',
         encabezados: ['Modelo', 'Cámara', 'Medidas de cámara', 'Medidas externas', 'Peso', 'Potencia'],
@@ -403,20 +394,6 @@ export const productos: Producto[] = [
     // TODO · una ficha del SQ-M100 dice 220 V y otra 380 V. Da igual para
     //   publicar —la tensión no se publica, ver docs/red-electrica-colombia.md—
     //   pero hay que resolverlo antes de cotizar una acometida.
-    ciclos: [
-      {
-        familia: 'Mesa · SQ-Z23, tiempo total',
-        items: [
-          'Sólidos 134 °C · 18–30 min',
-          'Envuelto 134 °C · 30–40 min',
-          'Textil · 45–65 min',
-          'Priones · 45–70 min',
-          'Plásticos 105 °C · 50–65 min',
-          'Bowie-Dick · 22–35 min',
-          'Prueba de vacío · 4–10 min',
-        ],
-      },
-    ],
     instalacionFamilia: 'Central',
     instalacion: [
       { label: 'Presión de trabajo', valor: 'Máximo 0,28 MPa' },
@@ -426,11 +403,10 @@ export const productos: Producto[] = [
     ],
     // No declara EN 285. No publicar «EN 285» ni «Clase B» para la central.
     normasDeclaradas: [
-      { familia: 'Mesa', normas: ['Clase B'] },
       { familia: 'Compactos', normas: ['EN 13060'] },
       { familia: 'Central', normas: ['CE', 'ISO 13485', 'ASME'] },
     ],
-    diferenciales: ['18 – 1.500 L, de mesa a central', 'Uniformidad ± 0,5 °C', '1 a 99 pulsos de vacío'],
+    diferenciales: ['100 – 1.500 L, compactos y central', 'Uniformidad ± 0,5 °C', '1 a 99 pulsos de vacío'],
     preguntasCotizacion: [
       'Cargas por turno y turnos que opera la central',
       'Si procesa bandejas o carros completos',
@@ -451,7 +427,138 @@ export const productos: Producto[] = [
     media: { foto: '/productos/sanqiang-autoclaves/foto.webp' },
     seo: {
       titulo: 'Autoclaves Sanqiang en Colombia | Servimedical',
-      descripcion: 'Autoclaves Sanqiang de 18 a 1.500 L: mesa Clase B, horizontales compactos EN 13060 y vacío pulsante de central con uniformidad de ±0,5 °C.',
+      descripcion: 'Autoclaves Sanqiang de 100 a 1.500 L: horizontales compactos EN 13060 y vacío pulsante de central con uniformidad de ±0,5 °C.',
+    },
+  },
+
+  {
+    marca: 'sanqiang',
+    slug: 'autoclaves-de-mesa',
+    linea: 'autoclaves',
+    nombre: 'Autoclaves de mesa',
+    tipo: 'equipo',
+    orden: 5,
+    lead: 'Autoclaves de mesa Clase B de 23 y 45 L, con triple vacío, secado al vacío e impresora integrada para el registro de cada ciclo.',
+    franja: [
+      { label: 'Cámara', valor: '23 y 45 L' },
+      { label: 'Temperatura', valor: '121 y 134 °C' },
+      { label: 'Vacío', valor: 'Pre y post vacío, 3 pulsos' },
+      { label: 'Registro', valor: 'Impresora térmica y USB' },
+    ],
+    descripcion: [
+      'Generador de vapor integrado y cámara en acero inoxidable 304, con canasta de tres bandejas; cada ciclo gasta unos 500 ml de agua. Doble bloqueo de puerta, autodiagnóstico con alarma y protección contra sobrecalentamiento, y cada ciclo sale impreso y se descarga por USB.',
+    ],
+    modelos: [
+      {
+        familia: 'Mesa · Clase B',
+        encabezados: ['Modelo', 'Cámara', 'Temperaturas', 'Vacío', 'Secado'],
+        filas: [
+          ['SQ-Z23', '23 L', '121 y 134 °C', '3 pulsos', 'Al vacío'],
+          ['SQ-Y45', '45 L', '121 y 134 °C', '3 pulsos', 'Al vacío'],
+        ],
+      },
+    ],
+    // TODO · medidas de cámara y externas, peso y potencia: el fabricante no
+    //   las publica en la ficha del SQ-Z23 / SQ-Y45 (consultada el 22/11/2026).
+    //   Las del SQ-Z18 y SQ-Z45 que tenía el sitio ya no aparecen en sanqiangmedical.com.
+    ciclos: [
+      {
+        familia: 'SQ-Z23 y SQ-Y45, tiempo total',
+        items: [
+          'Sólidos 134 °C · 18–30 min',
+          'Envuelto 134 °C · 30–40 min',
+          'Textil · 45–65 min',
+          'Priones · 45–70 min',
+          'Plásticos 105 °C · 50–65 min',
+          'Bowie-Dick · 22–35 min',
+          'Prueba de vacío · 4–10 min',
+        ],
+      },
+    ],
+    instalacion: [
+      { label: 'Agua', valor: 'Tanque de 2 L limpia y 8 L residual · 500 ml por ciclo' },
+    ],
+    normasDeclaradas: [{ normas: ['Clase B (norma europea)'] }],
+    diferenciales: ['Clase B con triple vacío', 'Impresora térmica y USB', '500 ml de agua por ciclo'],
+    preguntasCotizacion: [
+      'Ciclos por día y tipo de instrumental',
+      'Si procesa material envuelto, textil o plásticos',
+      'Si necesita el registro impreso o en USB para la trazabilidad',
+      'Espacio disponible en el mesón y toma eléctrica',
+    ],
+    relacionadas: [
+      { producto: 'svm/papel-para-esterilizacion', porque: 'El vapor solo esteriliza lo que atraviesa. El empaque sostiene la barrera hasta sala.' },
+      { producto: '2i/indicadores-biologicos', porque: 'La evidencia de letalidad del ciclo, sin la cual no hay liberación.' },
+      { producto: 'svm/repuestos', porque: 'Empaquetadura y válvulas definen el tiempo de parada cuando fallan.' },
+    ],
+    servicio: [
+      'Instalación y puesta en marcha con técnicos propios',
+      'Mantenimiento preventivo y correctivo',
+      'Repuesto original por importación directa',
+    ],
+    // Fuente: https://www.sanqiangmedical.com/Tabletop-autoclave.html (22/11/2026).
+    // Foto: la entregó Servimedical (23L Pulsating, SQ-Z23).
+    media: { foto: '/productos/sanqiang-autoclaves-de-mesa/foto.webp' },
+    seo: {
+      titulo: 'Autoclaves de mesa Sanqiang en Colombia | Servimedical',
+      descripcion: 'Autoclaves de mesa Sanqiang Clase B de 23 y 45 L: triple vacío, secado al vacío, 121 y 134 °C, impresora térmica y USB para la trazabilidad.',
+    },
+  },
+
+  {
+    marca: 'sanqiang',
+    slug: 'autoclaves-verticales',
+    linea: 'autoclaves',
+    nombre: 'Autoclaves verticales',
+    tipo: 'equipo',
+    orden: 6,
+    lead: 'Autoclaves verticales de laboratorio de 50, 80 y 100 L, con cámara cilíndrica de carga superior y presión de trabajo de 0,2 MPa.',
+    franja: [
+      { label: 'Cámara', valor: '50 – 100 L' },
+      { label: 'Presión de trabajo', valor: '0,2 MPa' },
+      { label: 'Canastas', valor: '1 o 2' },
+      { label: 'Potencia', valor: '3,6 – 6,1 kVA' },
+    ],
+    descripcion: [
+      'Esterilizadores de vapor a presión para laboratorio, con cámara cilíndrica de Ø365 mm y canastas de Ø362 mm. El más grande ocupa 610 × 546 mm de piso: cabe junto al mesón sin obra.',
+    ],
+    modelos: [
+      {
+        familia: 'Vertical · laboratorio',
+        encabezados: ['Modelo', 'Cámara', 'Medidas de cámara', 'Medidas externas', 'Canastas', 'Peso', 'Potencia'],
+        filas: [
+          ['SQ-ZL50', '50 L', 'Ø365 × 667 mm', '570 × 546 × 990 mm', '1', '70 kg', '3,6 kVA'],
+          ['SQ-ZL80', '80 L', 'Ø365 × 695 mm', '610 × 546 × 1030 mm', '2', '90 kg', '5,1 kVA'],
+          ['SQ-ZL100', '100 L', 'Ø365 × 860 mm', '610 × 546 × 1200 mm', '2', '95 kg', '6,1 kVA'],
+        ],
+      },
+    ],
+    // TODO · temperatura en °C, programas, tiempos de ciclo, secado y normas:
+    //   no publicados. La ficha dice «Working Temperature 0.2MPa» (un valor de
+    //   presión bajo el rótulo de temperatura): se publica como presión.
+    diferenciales: ['50 a 100 L de carga superior', 'Huella de 610 × 546 mm', 'Para laboratorio'],
+    preguntasCotizacion: [
+      'Qué procesa el laboratorio: medios de cultivo, material o residuos',
+      'Volumen por ciclo y ciclos por día',
+      'Si el material va en canasta abierta o en recipientes',
+      'Espacio y acometida eléctrica disponibles',
+    ],
+    relacionadas: [
+      { producto: '2i/indicadores-biologicos', porque: 'La evidencia de letalidad del ciclo, sin la cual no hay liberación.' },
+      { producto: 'svm/papel-para-esterilizacion', porque: 'El vapor solo esteriliza lo que atraviesa. El empaque sostiene la barrera.' },
+      { producto: 'svm/repuestos', porque: 'Empaquetadura y válvulas definen el tiempo de parada cuando fallan.' },
+    ],
+    servicio: [
+      'Instalación y puesta en marcha con técnicos propios',
+      'Mantenimiento preventivo y correctivo',
+      'Repuesto original por importación directa',
+    ],
+    // Fuente: https://www.sanqiangmedical.com/Laboratory-autoclave-sterilizer.html (22/11/2026).
+    // Foto: la entregó Servimedical (Vertical Steam Sterilizer).
+    media: { foto: '/productos/sanqiang-autoclaves-verticales/foto.webp' },
+    seo: {
+      titulo: 'Autoclaves verticales Sanqiang en Colombia | Servimedical',
+      descripcion: 'Autoclaves verticales Sanqiang de laboratorio de 50, 80 y 100 L: carga superior, 0,2 MPa de presión de trabajo y huella de 610 × 546 mm.',
     },
   },
 
@@ -461,7 +568,7 @@ export const productos: Producto[] = [
     linea: 'baja-temperatura',
     nombre: 'SQ-WD',
     tipo: 'equipo',
-    orden: 3,
+    orden: 2,
     lead: 'Plasma de peróxido de hidrógeno de 100 a 190 L, con ciclo corto de 30 minutos y agente en cápsula.',
     franja: [
       { label: 'Cámara', valor: '100 · 135 · 190 L' },
@@ -529,7 +636,7 @@ export const productos: Producto[] = [
     publicado: false,
     nombre: 'Tratamiento de residuos',
     tipo: 'equipo',
-    orden: 4,
+    orden: 9,
     lead: 'Tratamiento de residuo biosanitario por vapor dentro de la institución, antes de que el material salga por la puerta.',
     franja: [
       { label: 'Método', valor: 'Vapor con trituración' },
