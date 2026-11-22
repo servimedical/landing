@@ -15,7 +15,18 @@ import { contacto } from '../content/sitio.ts';
 
 /* Mensaje con el que se abre el chat. La persona lo completa antes de
    enviarlo; así el equipo sabe que el contacto llegó desde la web. */
-const MENSAJE = '¡Hola! Visité la página web y estoy interesado en...';
+const MENSAJE = [
+  'Buen día. Visité su página web y quisiera recibir información sobre:',
+  '',
+  '1. Autoclaves',
+  '2. Esterilización a baja temperatura',
+  '3. Termodesinfectoras',
+  '4. Indicadores químicos y biológicos',
+  '5. Papel, bolsas y empaque para esterilización',
+  '6. Servicio técnico o repuestos',
+  '',
+  'Me interesa la opción: ',
+].join('\n');
 const enlace = `${contacto.whatsapp.href}?text=${encodeURIComponent(MENSAJE)}`;
 ---
 <a
