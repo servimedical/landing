@@ -10,6 +10,7 @@
 import { getCollection } from 'astro:content';
 import BrandLogo from './BrandLogo.astro';
 import { urlMarca } from '../../datos/marcas.ts';
+import { QUE_HACE } from '../../datos/marcasTexto.ts';
 
 const marcas = (await getCollection('marcas'))
   .sort((a, b) => a.data.orden - b.data.orden)
@@ -27,21 +28,19 @@ type LogoFranja = {
   /** Alto del lienzo en unidades, si no es 100, y dónde empieza (0 = arriba). */
   alto?: number;
   desde?: number;
-  /** Qué es la marca, en una frase corta. Se muestra en mayúsculas. */
-  texto: string;
 };
 const LOGO_FRANJA: Record<string, LogoFranja> = {
   // Sanqiang va a 4/5 del alto de letra común (28,8 en vez de 36), en la misma
   // línea base. Texto en curvas, en el azul de la marca (#0254A4).
-  sanqiang: { src: '/logos/marcas/sanqiang-franja.svg', ancho: 582, texto: 'Equipos para esterilización' },
-  tuttnauer: { src: '/logos/marcas/tuttnauer-franja.webp', ancho: 258, texto: 'Equipos para esterilización' },
+  sanqiang: { src: '/logos/marcas/sanqiang-franja.svg', ancho: 582 },
+  tuttnauer: { src: '/logos/marcas/tuttnauer-franja.webp', ancho: 258 },
   // 2i a 1,5×, solo el círculo: 108 unidades centradas en 50, así que el
   // lienzo va de -4 a 104.
-  '2i': { src: '/logos/marcas/2i-franja.webp', ancho: 152, alto: 108, desde: -4, texto: 'Indicadores químicos y biológicos' },
+  '2i': { src: '/logos/marcas/2i-franja.webp', ancho: 152, alto: 108, desde: -4 },
   // SVM, marca del papel, a 1,5×: la sigla mide 54 y apoya en la línea 68.
-  svm: { src: '/logos/marcas/svm-franja.svg', ancho: 258, texto: 'Papel esterilización, Tyvek y vapor' },
-  akarmak: { src: '/logos/marcas/akarmak-franja.webp', ancho: 353, texto: 'Tratamiento de residuos hospitalarios' },
-  easyseal: { src: '/logos/marcas/easyseal-franja.webp', ancho: 279, texto: 'Selladoras para esterilización' },
+  svm: { src: '/logos/marcas/svm-franja.svg', ancho: 258 },
+  akarmak: { src: '/logos/marcas/akarmak-franja.webp', ancho: 353 },
+  easyseal: { src: '/logos/marcas/easyseal-franja.webp', ancho: 279 },
 };
 ---
 <section class="franja" aria-labelledby="franja-h">
@@ -70,7 +69,7 @@ const LOGO_FRANJA: Record<string, LogoFranja> = {
                   <BrandLogo marca={m} size="sm" />
                 )}
               </span>
-              {l?.texto && <span class="franja-texto">{l.texto}</span>}
+              {QUE_HACE[m.slug] && <span class="franja-texto">{QUE_HACE[m.slug]}</span>}
             </a>
           </li>
         );

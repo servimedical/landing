@@ -108,7 +108,7 @@ export const marcas: Marca[] = [
       'Instalación y puesta en marcha con técnicos propios',
       'Mantenimiento del sistema de trituración',
     ],
-    orden: 5,
+    orden: 4,
     seo: {
       titulo: 'Akarmak en Colombia — residuos biosanitarios | Servimedical',
       descripcion:
@@ -142,7 +142,7 @@ export const marcas: Marca[] = [
       'Abastecimiento programado por carga y por equipo',
       'Entrenamiento en lectura e interpretación',
     ],
-    orden: 3,
+    orden: 5,
     seo: {
       titulo: '2i en Colombia — indicadores químicos y biológicos | Servimedical',
       descripcion:
@@ -169,7 +169,7 @@ export const marcas: Marca[] = [
       'Mobiliario fabricado a la medida del flujo de la central',
       'Repuesto de desgaste en inventario para las marcas que representamos',
     ],
-    orden: 4,
+    orden: 6,
     seo: {
       titulo: 'Servimedical — empaque, mobiliario y repuestos | Servimedical',
       descripcion:
@@ -197,7 +197,7 @@ export const marcas: Marca[] = [
       { dato: 'Precisión de control de temperatura ≤ 1 % en el rango de 60 a 220 °C.', fuente: 'easyseal.net · fichas de producto' },
       { dato: 'EF122-A y EF058 declaran alimentación de 110/220 V a 50/60 Hz.', fuente: 'easyseal.net · fichas de producto' },
     ],
-    orden: 6,
+    orden: 3,
     seo: {
       titulo: 'EasySeal en Colombia | Servimedical',
       descripcion: 'Selladoras automáticas EasySeal para empaque médico, con control y registro de los parámetros del sello y función de calificación operacional.',

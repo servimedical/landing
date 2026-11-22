@@ -61,11 +61,9 @@ const TITULO_HERO: Record<string, string> = {
   'svm-papel-para-esterilizacion--bolsas': 'Bolsas de esterilización',
 };
 
-/** Encuadre de las fotos con fondo que no van centradas. La de Sanqiang
- *  lleva el logo abajo en la máquina: centrada, `cover` se lo cortaba. */
-const ENCUADRE_HERO: Record<string, string> = {
-  'sanqiang-baja-temperatura': 'center 85%',
-};
+/** Encuadre de las fotos que no van centradas en el recuadro. Hoy ninguna:
+ *  desde que todas llegan cuadradas, se ven enteras. */
+const ENCUADRE_HERO: Record<string, string> = {};
 
 /** Fotos en las que la etiqueta va abajo a la derecha (en escritorio). En la
  *  de Sanqiang, a la izquierda tapaba el logo pintado en la máquina. */

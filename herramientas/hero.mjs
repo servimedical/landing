@@ -20,7 +20,7 @@ const CARRUSEL_W = join(CARRUSEL, 'w');
 const BASE = 'autoclave-tuttnauer';
 const ALTO_MINIMO = 1600;
 const PESO_MAXIMO_KB = 300;
-const ANCHOS = [1600, 800];
+const ANCHOS = [1200, 600];
 
 const linea = '─'.repeat(68);
 console.log(`\n${linea}\nIMÁGENES DEL HERO\n${linea}\n`);
@@ -53,8 +53,8 @@ if (delCarrusel.length) {
       const st = await img.stats();
       const a = st.channels[3];
       alfa = m.hasAlpha && a && a.min < 250 ? '' : ' · ⚠ sin transparencia';
-      if (m.width !== 1600 || m.height !== 1280)
-        alfa += ` · ⚠ no es 1600 × 1280`;
+      if (m.width !== 1200 || m.height !== 1200)
+        alfa += ` · ⚠ no es 1200 × 1200`;
     }
     /* Un nombre anterior se acepta —la foto es la misma aunque la línea se
        llame distinto— pero se avisa, porque el alias no es para siempre. */
@@ -83,13 +83,11 @@ if (delCarrusel.length) {
          perdía un cuarto del alto del panel. Recortado al contenido, cada
          equipo conserva su proporción y usa todo el alto que le cabe; de
          pegarlo al borde inferior ya se encarga `object-position`. */
-      /* Una foto con fondo (sin transparencia) no se recorta: su borde parejo
-         es parte del encuadre —la pared de la foto de las bolsas— y llena el
-         recuadro con `cover`. */
-      const conAlfa = (await sharpC(join(CARRUSEL, f)).metadata()).hasAlpha;
-      const recortada = conAlfa
-        ? await sharpC(join(CARRUSEL, f)).trim().toBuffer({ resolveWithObject: true })
-        : await sharpC(join(CARRUSEL, f)).toBuffer({ resolveWithObject: true });
+      /* Desde el 22/11/2026 las fotos del carrusel llegan cuadradas
+         (1200 × 1200), con el producto ya encuadrado y su margen. No se
+         recortan: el margen es parte del encuadre y lo que hace que todas
+         midan lo mismo en el recuadro. */
+      const recortada = await sharpC(join(CARRUSEL, f)).toBuffer({ resolveWithObject: true });
       const { width: w0, height: h0 } = recortada.info;
       const W = w0;
 
@@ -109,8 +107,8 @@ if (delCarrusel.length) {
          la imagen se ajusta dentro, así que un equipo alto se limita por el
          alto y uno apaisado por el ancho. Comparar el ancho del archivo con
          un número fijo daba avisos al revés. */
-      const CAJA_W = 462;
-      const CAJA_H = 480;
+      const CAJA_W = 530;
+      const CAJA_H = 530;
       const servido = Math.min(anchos.at(-1), W);
       const altoCss = Math.min(CAJA_H, CAJA_W * (h0 / w0));
       const anchoCss = altoCss * (w0 / h0);

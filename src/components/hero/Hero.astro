@@ -448,6 +448,43 @@ const etiqueta = slides[0]?.etiqueta;
        máquina de Sanqiang): ahí la etiqueta se pasa a la derecha. */
     .hero-etiqueta[data-lado='derecha'] { left: auto; right: 20px; }
   }
+
+  /* ------------------------------------------------- carrusel cuadrado --
+     Desde el 22/11/2026 todas las fotos llegan cuadradas (1200 × 1200), con
+     el producto ya encuadrado, y el recuadro también es cuadrado: cada foto lo
+     llena entera y todas se ven del mismo tamaño. Esto reemplaza el gesto del
+     equipo que sobresalía por abajo, que con fotos de escena dejaba
+     rectángulos sueltos. Va al final para mandar sobre las reglas de arriba. */
+  .hero-figura { --sobresale: 0px; }
+  .hero-caja {
+    aspect-ratio: 1;
+    block-size: auto;
+  }
+  .hero-caja::after { display: none; }
+  .hero-caja[data-carrusel] > .hero-lamina {
+    align-self: stretch;
+    place-items: stretch;
+  }
+  .hero-caja .hero-equipo,
+  .hero-caja .hero-equipo[data-foto],
+  .hero-caja .hero-equipo[data-ancha] {
+    inline-size: 100%;
+    block-size: 100%;
+    object-fit: contain;
+    object-position: center;
+    margin: 0;
+    justify-self: stretch;
+    border-radius: 5px;
+  }
+
+  @media (width >= 62.5rem) {
+    /* El lado del cuadrado sale del alto que se le permite al recuadro, para
+       que la franja de marcas siga entrando en la primera pantalla. */
+    .hero-panel {
+      inline-size: min(100%, calc(var(--alto-caja) * 1.2));
+      margin-inline: auto 0;
+    }
+  }
 </style>
 
 <script>

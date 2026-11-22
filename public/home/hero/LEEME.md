@@ -26,10 +26,10 @@ Entre **4 y 6** fotos. Con más, el visitante no alcanza a verlas.
 
 | | |
 |---|---|
-| **Tamaño** | 1600 × 1280 px, proporción 5:4 |
+| **Tamaño** | 1200 × 1200 px, cuadrada (desde el 22/11/2026) |
 | **Formato** | WebP con fondo transparente |
 | **Peso** | Máximo 250 kB |
-| **Encuadre** | Equipo recortado y centrado, apoyado en el borde inferior, ocupando un 85 % del alto |
+| **Encuadre** | Producto recortado sobre transparente, ocupando cerca del 86 % del ancho o del 74 % del alto, dejando libre el 15 % de abajo para la etiqueta. Una foto con fondo (escena) va recortada en cuadrado y llena el recuadro |
 | **Márgenes** | Al menos un 10 % libre a cada lado |
 | **Esquina inferior izquierda** | Despejada: ahí va la etiqueta del producto |
 | **Ángulo** | El mismo en todas —frontal o 3/4— para que el cambio no salte |
