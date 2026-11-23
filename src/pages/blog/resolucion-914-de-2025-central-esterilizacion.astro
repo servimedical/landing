@@ -1,0 +1,338 @@
+---
+/* Artículo: Resolución 914 de 2025. Texto entregado por Servimedical el
+   22/11/2026, con los datos de publicación (título SEO, meta descripción,
+   URL y enlaces internos) que traía el documento. Las cifras de la empresa
+   (20 años, más de 300 equipos instalados) vienen de ese texto.
+   Es contenido normativo: si el Ministerio expide la resolución que la
+   reemplaza, hay que actualizar fechas, tabla y preguntas frecuentes. */
+import Base from '../../layouts/Base.astro';
+import Migas from '../../components/Migas.astro';
+import { articulos, fechaLegible } from '../../content/blog.ts';
+import { normalizar } from '../../content/navegacion.ts';
+import { contacto, sitio } from '../../content/sitio.ts';
+
+const rutaActual = normalizar(Astro.url.pathname);
+const a = articulos.find((x) => x.slug === 'resolucion-914-de-2025-central-esterilizacion')!;
+const url = new URL(rutaActual, sitio.dominio).href;
+
+const wa = `${contacto.whatsapp.href}?text=${encodeURIComponent('Buen día. Leí el artículo sobre la Resolución 914 de 2025 y quisiera una asesoría para mi central de esterilización.')}`;
+
+const preguntas = [
+  {
+    p: '¿La Resolución 914 de 2025 ya está vigente?',
+    r: 'No. Rige desde el 3 de enero de 2027. Mientras tanto sigue aplicando la Resolución 2183 de 2004.',
+  },
+  {
+    p: '¿Si el proyecto de 2026 se expide, cambia la fecha?',
+    r: 'El proyecto todavía no es norma. Si se expide, la nueva resolución traerá su propia fecha de vigencia. Las etapas del reprocesamiento no cambian, así que prepararse ahora no es trabajo perdido.',
+  },
+  {
+    p: 'Tengo un consultorio odontológico con tres sillas. ¿Necesito central?',
+    r: 'Con la Resolución 914, no: está exceptuado. Con el proyecto de 2026, sí la necesitaría.',
+  },
+  {
+    p: '¿Puedo seguir esterilizando en un autoclave pequeño?',
+    r: 'Sí, si el equipo está calificado, sus ciclos se controlan con indicadores y cada carga queda registrada.',
+  },
+  {
+    p: '¿Puedo contratar la esterilización por fuera?',
+    r: 'Sí, si está exceptuado. Usted hace la limpieza y entrega el instrumental limpio y seco a un operador externo de esterilización.',
+  },
+];
+
+const jsonld = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: a.titulo,
+    description: a.descripcion,
+    datePublished: a.fecha,
+    dateModified: a.fecha,
+    inLanguage: 'es-CO',
+    mainEntityOfPage: url,
+    author: { '@type': 'Organization', name: sitio.razon, url: sitio.dominio },
+    publisher: { '@id': `${sitio.dominio}/#organizacion` },
+    keywords: 'resolución 914 de 2025, central de esterilización, reprocesamiento DMER, operador externo de esterilización, central de esterilización consultorio odontológico',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: preguntas.map((q) => ({
+      '@type': 'Question',
+      name: q.p,
+      acceptedAnswer: { '@type': 'Answer', text: q.r },
+    })),
+  },
+];
+---
+<Base titulo={a.tituloSeo} descripcion={a.descripcion}>
+  <Migas rutaActual={rutaActual} />
+
+  <article class="contenedor articulo py-12 lg:py-16">
+    <header class="max-w-[46rem]">
+      <p class="meta text-[10px] text-steel">{a.etiquetas.join(' · ')}</p>
+      <h1 class="mt-4 text-[clamp(28px,3.6vw,44px)]">{a.titulo}</h1>
+      <p class="meta mt-5 text-[10px] text-steel">
+        <time datetime={a.fecha}>{fechaLegible(a.fecha)}</time> · {sitio.nombre}
+      </p>
+    </header>
+
+    <div class="prosa">
+      <p class="entradilla">
+        El <strong>3 de enero de 2027</strong> empieza a regir la Resolución 914 de 2025. Desde esa fecha, todo
+        prestador que reutilice instrumental deberá reprocesarlo según un nuevo manual de buenas prácticas.
+        Algunos prestadores tendrán que tener central de esterilización propia.
+      </p>
+      <p>
+        En este artículo explicamos quiénes están obligados, qué cambiaría con el proyecto de 2026 y qué
+        equipos necesita su central. Si dirige una clínica, una IPS o un consultorio odontológico, le quedan
+        pocas semanas para prepararse.
+      </p>
+
+      <h2>¿Qué es la Resolución 914 de 2025 y desde cuándo rige?</h2>
+      <p>
+        Es la norma del Ministerio de Salud que adopta el Manual de Requisitos para las Buenas Prácticas de
+        Reprocesamiento de Dispositivos Médicos y Elementos Reutilizables (DMER). Fue firmada el 15 de mayo de
+        2025 y publicada en el Diario Oficial 53.170 el 3 de julio de 2025.
+      </p>
+      <p>
+        Rige 18 meses después de su publicación: <strong>desde el 3 de enero de 2027</strong> (artículo 15).
+        Algunos artículos en internet dicen que rige desde 2025; el texto oficial dice otra cosa.
+      </p>
+      <ul>
+        <li><strong>A quién aplica:</strong> a los prestadores que usan y reprocesan DMER (IPS, profesionales independientes, entidades con objeto social diferente y transporte especial de pacientes). También a los Operadores Externos de Esterilización (OEE).</li>
+        <li><strong>Qué reemplaza:</strong> deroga la Resolución 2183 de 2004, el manual de esterilización que regía desde 2004, y ajusta varios estándares de la Resolución 3100 de 2019.</li>
+        <li><strong>Qué no cubre:</strong> los dispositivos de un solo uso, el repotenciamiento y la remanufactura.</li>
+      </ul>
+
+      <h2>El proyecto de 2026 que la reemplazaría</h2>
+      <p>
+        En julio de 2026 el Ministerio publicó para comentarios un proyecto que derogaría la Resolución 914 y
+        adoptaría una versión nueva del manual. A la fecha de este artículo sigue siendo un proyecto, no una
+        norma expedida.
+      </p>
+      <p>Según el análisis publicado por Consultor Salud, la mayoría de los cambios son de redacción y orden. Hay dos cambios de fondo:</p>
+      <ol>
+        <li><strong>Consultorios odontológicos con 3 o más unidades</strong> tendrían que contar con central de reprocesamiento propia (nuevo numeral 4.4). Hoy la obligación depende del tipo de servicio, no del número de unidades.</li>
+        <li><strong>Personal exclusivo:</strong> la regla de que el personal de reprocesamiento no se comparte con otros servicios se extendería también a los prestadores exceptuados.</li>
+      </ol>
+      <p>
+        Lo que no cambia: las etapas del reprocesamiento son las mismas para quien tiene central y para quien
+        está exceptuado. La diferencia está en la infraestructura: un área unidireccional para el exceptuado, o
+        una central completa con ambientes independientes.
+      </p>
+
+      <h2>¿Quién debe tener central de reprocesamiento propia?</h2>
+      <p>
+        Según el artículo 4 de la Resolución 914, están obligados los prestadores con servicios quirúrgicos,
+        las IPS de alta complejidad que usan DMER y las IPS con convenios docencia-servicio. Los demás quedan
+        exceptuados (artículo 5), pero deben cumplir igual todas las etapas del reprocesamiento.
+      </p>
+      <div class="tabla">
+        <table>
+          <thead>
+            <tr><th>Tipo de prestador</th><th>Resolución 914 de 2025</th><th>Proyecto de 2026</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Servicios habilitados del grupo quirúrgico</td><td class="si">Central propia obligatoria</td><td class="si">Central propia obligatoria</td></tr>
+            <tr><td>IPS de alta complejidad que usan DMER reprocesados</td><td class="si">Central propia obligatoria</td><td class="si">Central propia obligatoria</td></tr>
+            <tr><td>IPS con convenio docencia-servicio en reprocesamiento (cualquier complejidad)</td><td class="si">Central propia obligatoria</td><td class="si">Central propia obligatoria</td></tr>
+            <tr><td>Consultorio odontológico con 3 o más unidades</td><td>Exceptuado</td><td class="si">Central propia obligatoria</td></tr>
+            <tr><td>Consultorio odontológico con 1 o 2 unidades</td><td>Exceptuado</td><td>Exceptuado</td></tr>
+            <tr><td>IPS de baja complejidad, profesionales independientes, transporte de pacientes</td><td>Exceptuado</td><td>Exceptuado</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p><strong>Opciones del prestador exceptuado</strong> (artículo 5):</p>
+      <ul>
+        <li>Montar una central propia de forma voluntaria.</li>
+        <li>Usar la central de su red, o hacer la limpieza y descontaminación en sus instalaciones y contratar el empaque y la esterilización con un OEE.</li>
+        <li>Contratar un OEE para empaque y esterilización, entregándole el instrumental limpio y seco.</li>
+      </ul>
+      <p>Los prestadores obligados también deben evaluar el riesgo de infecciones asociadas a la atención en salud (IAAS).</p>
+
+      <h2>¿Qué equipos y consumibles necesita una central?</h2>
+      <p>
+        La dotación depende del volumen y del tipo de instrumental. Esta es la base de una central que sigue el
+        flujo unidireccional de la norma, de lo sucio a lo estéril:
+      </p>
+      <div class="tabla">
+        <table>
+          <thead><tr><th>Etapa</th><th>Equipos y consumibles típicos</th></tr></thead>
+          <tbody>
+            <tr><td>Limpieza y descontaminación</td><td><a href="/lineas/termodesinfectoras">Termodesinfectadora</a> o lavadora ultrasónica, detergentes enzimáticos, pocetas en acero inoxidable</td></tr>
+            <tr><td>Inspección y empaque</td><td><a href="/marcas/svm/mobiliario-acero-inoxidable">Mesas en acero</a>, lupa con luz, <a href="/marcas/easyseal/selladoras">selladora</a>, <a href="/marcas/svm/papel-para-esterilizacion">papel grado médico y rollos mixtos</a></td></tr>
+            <tr><td>Esterilización a vapor</td><td><a href="/lineas/autoclaves">Autoclave</a> con ciclos validados y registro de cada carga</td></tr>
+            <tr><td>Esterilización a baja temperatura</td><td><a href="/lineas/baja-temperatura">Esterilizador de peróxido de hidrógeno (plasma)</a> para instrumental termosensible</td></tr>
+            <tr><td>Control de cada ciclo</td><td><a href="/lineas/indicadores">Indicadores químicos, prueba Bowie-Dick, indicadores biológicos</a> e <a href="/marcas/2i/incubadoras">incubadora</a></td></tr>
+            <tr><td>Almacenamiento</td><td><a href="/marcas/svm/mobiliario-acero-inoxidable">Estantería en acero</a> en área limpia, con control de fechas</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        La norma exige además que los esterilizadores, equipos y máquinas tengan <strong>calificación de
+        instalación, operación y desempeño</strong>. Quien la hace debe tener una formación de mínimo 48 horas,
+        con vigencia de tres años (artículo 9.1).
+      </p>
+
+      <h3>Calidad y monitoreo del agua</h3>
+      <p>
+        El agua toca el instrumental en el lavado, en el enjuague final y en el vapor del autoclave. Un agua con
+        dureza, cloro o sílice deja manchas, corroe el instrumental y daña la cámara y las resistencias del
+        autoclave.
+      </p>
+      <ul>
+        <li><strong>Agua potable certificada:</strong> el agua de la central debe cumplir la norma de agua para consumo humano (Decreto 1575 y Resolución 2115 de 2007). La Secretaría de Salud expide la certificación sanitaria del agua del municipio. Además, la IPS debe analizar el agua dentro de su sede (tanques y agua tratada) y guardar los registros.</li>
+        <li><strong>Agua tratada para el enjuague final y el autoclave:</strong> use agua desmineralizada u ósmosis inversa, según lo que pidan el fabricante del equipo y del instrumental.</li>
+        <li><strong>Monitoreo periódico:</strong> mida conductividad, dureza y pH con la frecuencia que defina su programa de calidad, y registre cada medición. Si su central tiene generador de vapor, controle también la calidad del vapor.</li>
+      </ul>
+
+      <h3>Equipos de apoyo: lupas, carros y más</h3>
+      <p>Estos equipos parecen menores, pero sostienen el flujo de sucio a estéril y la trazabilidad:</p>
+      <div class="tabla">
+        <table>
+          <thead><tr><th>Equipo</th><th>Para qué sirve</th></tr></thead>
+          <tbody>
+            <tr><td>Lupa con luz (de mesa o de brazo)</td><td>Inspeccionar filos, articulaciones y restos de suciedad antes de empacar</td></tr>
+            <tr><td>Carros cerrados para material sucio</td><td>Llevar el instrumental usado desde cirugía u odontología hasta el área de lavado, sin exponerlo</td></tr>
+            <tr><td>Carros para material estéril</td><td>Transportar los paquetes al servicio sin romper el empaque ni mezclarlos con lo sucio</td></tr>
+            <tr><td>Carros de carga para autoclave</td><td>Cargar y descargar la cámara sin manipular cada paquete</td></tr>
+            <tr><td>Pistolas de agua y aire comprimido</td><td>Limpiar y secar canales y lúmenes</td></tr>
+            <tr><td>Pruebas de limpieza (proteína, ATP)</td><td>Verificar que el lavado sea efectivo</td></tr>
+            <tr><td>Lector o software de trazabilidad</td><td>Registrar qué paquete pasó por qué ciclo y a qué paciente llegó</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p>
+        El manual del Ministerio dedica capítulos a la dotación de ambientes y áreas y a los vehículos de
+        transporte de DMER. Revise esos capítulos antes de comprar.
+      </p>
+
+      <h2>Pasos para prepararse antes de 2027</h2>
+      <ol>
+        <li><strong>Defina si está obligado o exceptuado.</strong> Revise sus servicios habilitados contra la tabla de arriba. Si es consultorio odontológico, cuente sus unidades.</li>
+        <li><strong>Haga un diagnóstico de su área actual.</strong> Verifique que el flujo vaya de sucio a limpio sin cruces y que cada zona esté separada.</li>
+        <li><strong>Revise sus equipos.</strong> Confirme que su autoclave y demás equipos estén calificados y con <a href="/servicios">mantenimiento al día</a>. Si no se pueden calificar, planee el reemplazo.</li>
+        <li><strong>Organice su talento humano.</strong> Designe un responsable profesional en enfermería o instrumentación quirúrgica. El personal sin formación de auxiliar tiene 42 meses para obtenerla, y la formación continua es de mínimo 24 horas cada dos años.</li>
+        <li><strong>Documente.</strong> Monte el sistema de gestión de calidad del reprocesamiento: procedimientos, trazabilidad de cada carga y registros de los controles.</li>
+        <li><strong>Si contrata un OEE,</strong> verifique que opere como establecimiento comercial vigilado por la Secretaría de Salud.</li>
+      </ol>
+
+      <h2>Preguntas frecuentes</h2>
+      <dl class="faq">
+        {preguntas.map((q) => (
+          <div>
+            <dt>{q.p}</dt>
+            <dd>{q.r}</dd>
+          </div>
+        ))}
+      </dl>
+
+      <aside class="cta" aria-labelledby="cta-h">
+        <h2 id="cta-h">¿Le ayudamos a preparar su central?</h2>
+        <p>
+          En Servimedical Group llevamos 20 años en esterilización, con más de 300 equipos instalados en
+          clínicas, hospitales e IPS públicas y privadas de Colombia. Le ayudamos a:
+        </p>
+        <ul>
+          <li>Revisar si su prestador está obligado o exceptuado y qué le falta.</li>
+          <li>Elegir el <a href="/lineas/autoclaves">autoclave</a> o el <a href="/lineas/baja-temperatura">esterilizador de baja temperatura</a> según su volumen.</li>
+          <li>Calificar y mantener sus equipos con nuestro <a href="/servicios">servicio técnico propio</a>.</li>
+          <li>Abastecerse de <a href="/marcas/svm/papel-para-esterilizacion">papel grado médico</a>, <a href="/lineas/indicadores">indicadores biológicos y químicos</a>, e <a href="/marcas/2i/incubadoras">incubadoras</a>.</li>
+        </ul>
+        <div class="cta-botones">
+          <a href={wa} target="_blank" rel="noopener" class="cta-primario">
+            <span aria-hidden="true" class="senal"></span>Asesoría sin costo por WhatsApp
+          </a>
+          <a href="/contacto" class="cta-secundario">Escribir a {contacto.comercial.valor} →</a>
+        </div>
+      </aside>
+
+      <p class="aviso">Este artículo es informativo y no reemplaza la lectura de la norma ni la asesoría jurídica.</p>
+
+      <h2>Fuentes</h2>
+      <ul class="fuentes">
+        <li><a href="https://normograma.invima.gov.co/compilacion/docs/resolucion_minsaludps_0914_2025.htm" target="_blank" rel="noopener">Resolución 914 de 2025, texto oficial (Normograma Invima)</a></li>
+        <li><a href="https://www.minsalud.gov.co/sites/rid/Lists/BibliotecaDigital/RIDE/VS/MET/manual-practicas-reprocesamiento-dmer.pdf" target="_blank" rel="noopener">Manual de Buenas Prácticas de Reprocesamiento de DMER (Minsalud)</a></li>
+        <li><a href="https://www.minsalud.gov.co/Normatividad_Nuevo/Resoluci%C3%B3n%20No%20914%20de%202025.pdf" target="_blank" rel="noopener">Ministerio de Salud: texto de la Resolución 914 de 2025 (PDF)</a></li>
+        {/* {{ POR CONFIRMAR: enlace al análisis de Consultor Salud }} */}
+        <li>Consultor Salud: Resolución 914 de 2025 en revisión</li>
+      </ul>
+    </div>
+  </article>
+
+  <script type="application/ld+json" set:html={JSON.stringify(jsonld)} is:inline />
+</Base>
+
+<style>
+  /* Texto largo: columna de lectura cómoda, jerarquía clara y tablas que se
+     deslizan en el celular en vez de romper la página. */
+  .prosa {
+    max-inline-size: 46rem;
+    margin-top: 32px;
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--color-steel);
+  }
+  /* `:where` deja esta regla sin peso, para que los márgenes propios de los
+     títulos (abajo) le ganen. */
+  .prosa > :where(* + *) { margin-top: 18px; }
+  .prosa .entradilla { font-size: clamp(18px, 1.5vw, 20px); color: var(--color-navy); }
+  .prosa h2 {
+    margin-top: 48px;
+    font-size: clamp(22px, 2.4vw, 28px);
+    color: var(--color-navy);
+  }
+  .prosa h3 {
+    margin-top: 36px;
+    font-size: clamp(18px, 1.8vw, 21px);
+    color: var(--color-navy);
+  }
+  .prosa strong { color: var(--color-navy); font-weight: 600; }
+  .prosa a { color: var(--color-navy); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: color-mix(in srgb, var(--color-navy) 35%, transparent); }
+  .prosa a:hover { text-decoration-color: var(--color-navy); }
+  .prosa ul, .prosa ol { padding-inline-start: 1.25em; }
+  .prosa ul { list-style: disc; }
+  .prosa ol { list-style: decimal; }
+  .prosa li + li { margin-top: 8px; }
+  .prosa li::marker { color: var(--color-steel); }
+
+  .tabla { overflow-x: auto; border: 1px solid var(--color-rule); }
+  .tabla table { inline-size: 100%; min-inline-size: 560px; border-collapse: collapse; font-size: 15px; line-height: 1.5; }
+  .tabla th {
+    padding: 12px 14px;
+    background: var(--color-paper);
+    color: var(--color-navy);
+    font-weight: 600;
+    text-align: left;
+    border-bottom: 1px solid var(--color-rule);
+  }
+  .tabla td { padding: 12px 14px; border-top: 1px solid var(--color-rule); vertical-align: top; }
+  .tabla td.si { color: var(--color-navy); font-weight: 600; }
+
+  .faq > div { border-top: 1px solid var(--color-rule); padding-block: 16px; }
+  .faq > div:last-child { border-bottom: 1px solid var(--color-rule); }
+  .faq dt { color: var(--color-navy); font-weight: 600; }
+  .faq dd { margin: 6px 0 0; }
+
+  .cta {
+    margin-top: 48px;
+    padding: 28px;
+    background: var(--color-paper);
+    border: 1px solid var(--color-rule);
+  }
+  .cta h2 { margin-top: 0; }
+  .cta > :where(* + *) { margin-top: 14px; }
+  .cta-botones { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; margin-top: 22px; }
+  .cta-primario {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 14px 20px;
+    background: var(--color-navy); color: var(--color-white) !important;
+    text-decoration: none !important; font-size: 15px; font-weight: 500;
+  }
+  .cta-primario:hover { background: var(--color-navy-deep); }
+  .cta-secundario { font-size: 15px; }
+
+  .aviso { font-size: 14px; font-style: italic; }
+  .fuentes { font-size: 15px; }
+</style>

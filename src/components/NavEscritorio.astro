@@ -41,7 +41,7 @@ const PANELES: Record<string, { id: string; etiqueta: string }> = {
 };
 ---
 <nav aria-label="Principal" class="hidden lg:block">
-  <ul class="flex items-center gap-5 xl:gap-7">
+  <ul class="flex items-center gap-4 xl:gap-7">
     {enNavbar.map((nodo) => {
       const panel = PANELES[nodo.url];
       return (

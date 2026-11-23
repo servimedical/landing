@@ -15,6 +15,7 @@ import { marcas } from '../datos/marcas.ts';
 import { lineas, urlLinea } from '../datos/lineas.ts';
 import { productos, productosDeLinea, lineasDeMarca, urlProducto, lineaTienePagina } from '../datos/productos.ts';
 import { marcaPorSlug, urlMarca } from '../datos/marcas.ts';
+import { articulos, urlArticulo } from './blog.ts';
 
 export type NodoNav = {
   titulo: string;
@@ -95,6 +96,14 @@ export const navegacion: NodoNav[] = [
      ítem (ver `nodosLineas`), y su lugar en el navbar lo toma Clientes. La
      página /repuestos sigue igual y en el pie. */
   { titulo: 'Clientes', url: '/clientes', enNavbar: true, enFooter: 'empresa' },
+  {
+    titulo: 'Blog',
+    url: '/blog',
+    enNavbar: true,
+    enFooter: 'empresa',
+    /* Los artículos cuelgan de aquí para que la miga diga Inicio / Blog / … */
+    hijos: articulos.map((a) => ({ titulo: a.titulo, url: urlArticulo(a.slug) })),
+  },
   { titulo: 'Repuestos', url: '/repuestos', enNavbar: false, enFooter: 'empresa' },
   { titulo: 'Contacto', url: '/contacto', enNavbar: false, enFooter: 'empresa' },
 

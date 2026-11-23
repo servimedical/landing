@@ -1,0 +1,38 @@
+---
+/* Listado del blog: una tarjeta por artículo, el más reciente primero. */
+import Base from '../../layouts/Base.astro';
+import Migas from '../../components/Migas.astro';
+import { articulos, urlArticulo, fechaLegible } from '../../content/blog.ts';
+import { normalizar } from '../../content/navegacion.ts';
+
+const rutaActual = normalizar(Astro.url.pathname);
+const lista = [...articulos].sort((a, b) => b.fecha.localeCompare(a.fecha));
+---
+<Base
+  titulo="Blog | Servimedical"
+  descripcion="Normativa, buenas prácticas y equipos para la central de esterilización en Colombia, explicados por el equipo de Servimedical Group."
+>
+  <Migas rutaActual={rutaActual} />
+
+  <section class="contenedor py-12 lg:py-16">
+    <h1 class="text-[clamp(28px,3.6vw,44px)]">Blog</h1>
+    <p class="mt-5 max-w-[60ch] text-[17px] leading-relaxed text-steel">
+      Normativa, buenas prácticas y equipos para la central de esterilización en Colombia.
+    </p>
+
+    <ul class="rejilla mt-10 sm:grid-cols-2 lg:grid-cols-3">
+      {lista.map((a) => (
+        <li class="flex flex-col border-b border-r border-rule">
+          <a href={urlArticulo(a.slug)} class="group flex h-full flex-col p-6 transition-colors hover:bg-paper lg:p-7">
+            <span class="meta text-[10px] text-steel">{a.etiquetas.join(' · ')} · {fechaLegible(a.fecha)}</span>
+            <span class="font-display mt-3 block text-[clamp(18px,1.9vw,22px)] leading-tight font-bold [font-variation-settings:'wdth'_110]">
+              {a.titulo}
+            </span>
+            <span class="mt-3 text-[14.5px] leading-relaxed text-steel">{a.resumen}</span>
+            <span class="meta mt-auto block pt-6 text-[10px] text-steel group-hover:text-navy">Leer artículo →</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Base>
